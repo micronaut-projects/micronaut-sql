@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2018 original authors
+ * Copyright 2018 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 /**
- * Configuration for Tomcat JDBC data sources.
+ * This package contains a configuration for Hibernate and JPA
+ *
+ * @author graemerocher
+ * @since 1.0
  */
 @Configuration
-@Requires(classes = DataSource.class)
-package io.micronaut.configuration.jdbc.tomcat;
+@Requires(classes = {SessionFactory.class, Entity.class})
+package io.micronaut.configuration.hibernate.jpa;
 
 import io.micronaut.context.annotation.Configuration;
 import io.micronaut.context.annotation.Requires;
-import org.apache.tomcat.jdbc.pool.DataSource;
+import org.hibernate.SessionFactory;
+
+import javax.persistence.Entity;
