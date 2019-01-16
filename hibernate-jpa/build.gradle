@@ -1,0 +1,29 @@
+dependencies {
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    // needed because otherwise IntelliJ integration broken
+    compileOnly "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"    
+
+    compile "org.hibernate:hibernate-core:$hibernateVersion"
+    // included for Java 11
+    runtime 'javax.xml.bind:jaxb-api:2.3.1'
+
+    compile "io.micronaut:micronaut-aop:$micronautVersion"
+    compile "io.micronaut:micronaut-jdbc:$micronautVersion"
+    compile "io.micronaut:micronaut-spring:$micronautVersion"
+    compile "org.springframework:spring-orm:$springVersion"
+    compile "io.micronaut:micronaut-runtime:$micronautVersion"
+    compile "io.micronaut.configuration:micronaut-hibernate-validator:$micronautVersion"
+    compileOnly "io.micronaut:micronaut-management"
+    compileOnly "io.micronaut.configuration:micronaut-micrometer-core"
+
+
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+    testCompile "io.micronaut:micronaut-management"
+    testCompile "io.micronaut:micronaut-inject-groovy"
+    testCompile "io.micronaut:micronaut-function-web"
+
+    testRuntime project(":jdbc-tomcat")
+    testRuntime "com.h2database:h2"
+    testCompile "io.micronaut.configuration:micronaut-micrometer-core"
+}

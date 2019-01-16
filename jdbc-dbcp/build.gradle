@@ -1,0 +1,21 @@
+dependencies {
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"    
+
+    compile "io.micronaut:micronaut-jdbc:$micronautVersion"
+    compile "io.micronaut:micronaut-inject:$micronautVersion"
+
+    compile 'org.apache.commons:commons-dbcp2:2.1.1'
+
+    testRuntime "org.apache.tomcat:tomcat-jdbc"
+    testRuntime "com.h2database:h2"
+
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+    testCompile "io.micronaut:micronaut-spring"
+    testCompile "io.micronaut:micronaut-http-server-netty"
+    testCompile "io.micronaut:micronaut-http-client"
+    testCompile "io.micronaut:micronaut-management"
+    testCompile "io.micronaut.configuration:micronaut-micrometer-core"
+    
+    testCompile "org.springframework:spring-jdbc:$springVersion"
+}
