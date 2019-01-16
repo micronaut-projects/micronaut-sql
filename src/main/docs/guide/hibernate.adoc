@@ -1,0 +1,100 @@
+==== Setting up a Hibernate/JPA EntityManager
+
+[TIP]
+.Using the CLI
+====
+If you are creating your project using the Micronaut CLI, supply the `hibernate-jpa` feature to include a Hibernate JPA configuration in your project:
+----
+$ mn create-app my-app --features hibernate-jpa
+----
+====
+
+Micronaut features built in support for configuring a http://hibernate.org[Hibernate] / JPA `EntityManager` that builds on the <<jdbc, SQL DataSource support>>.
+
+Once you have <<jdbc, configured one or many DataSources>> to use Hibernate, you will need to add the `hibernate-jpa` dependency to your build configuration:
+
+dependency:micronaut-hibernate-jpa[groupId="io.micronaut.configuration"]
+
+And that is it. For each registered SQL `DataSource`, Micronaut will configure the following beans using api:configuration.hibernate.jpa.EntityManagerFactoryBean[]:
+
+* link:{hibernateapi}/org/hibernate/boot/registry/StandardServiceRegistry.html[StandardServiceRegistry] - The Hibernate `StandardServiceRegistry`
+* link:{hibernateapi}/org/hibernate/boot/MetadataSources.html[MetadataSources] - The Hibernate `MetadataSources`
+* link:{hibernateapi}/org/hibernate/boot/SessionFactoryBuilder.html[SessionFactoryBuilder] - The Hibernate `SessionFactoryBuilder`
+* link:{hibernateapi}/org/hibernate/SessionFactory.html[SessionFactory] - The Hibernate `SessionFactory` bean which also implements the JPA `EntityManagerFactory` interface.
+
+==== Injecting an EntityManager or Hibernate Session
+
+You can use the `javax.persistence.PersistenceContext` annotation to inject an `EntityManager` (or Hibernate `Session`). To do so you need to make sure the JPA annotations are on the `annotationProcessor` path in your build:
+
+[source,groovy]
+.Adding the JPA dependency to `annotationProcessor` in Gradle
+----
+annotationProcessor "javax.persistence:javax.persistence-api:2.2"
+----
+
+[source,java]
+.Using `@PersistenceContext`
+----
+@PersistenceContext
+EntityManager entityManager;
+
+@PersistenceContext(name = "other")
+EntityManager otherManager;
+----
+
+Micronaut will inject a compile time scoped proxy that retrieves the `EntityManager` associated with the current transaction when using https://docs.micronaut.io/latest/api/io/micronaut/spring/tx/annotation/Transactional.html[@Transactional] (see "Using Spring Transaction Management" below).
+
+Note the examples above use field injection, since the `@PersistenceContext` annotation does not support declaration on a parameter of a constructor or method argument. Therefore if you wish to instead use constructor or method injection you must use the ann:configuration.hibernate.jpa.scope.CurrentSession[] instead:
+
+[source,java]
+.Using `@CurrentSession` for constructor injection
+----
+public MyService(@CurrentSession EntityManager entityManager) {
+     this.entityManager = entityManager;
+}
+----
+
+
+==== Customizing Hibernate / JPA Configuration
+
+There are several different ways you can customize and configure how the `SessionFactory` is built. The easiest way is via configuration in `application.yml`. The following configuration demonstrates an example:
+
+.Configuring Hibernate Properties
+[source,yaml]
+----
+datasources:
+    default:
+        name: 'mydb'
+jpa:
+    default:
+        packages-to-scan:
+            - 'foo.bar'
+            - 'foo.baz'
+        properties:
+            hibernate:
+                hbm2ddl:
+                    auto: update
+                show_sql: true
+----
+
+The above example configures the packages to be scanned and sets properties to be passed to Hibernate. As you can see these are done on a per `DataSource` basis. Refer to the api:configuration.hibernate.jpa.JpaConfiguration[] configuration class for the possible options.
+
+If you need even further control over how the `SessionFactory` is built then you can register api:context.event.BeanCreatedEventListener[] beans that listen for the creation of the link:{hibernateapi}/org/hibernate/boot/SessionFactoryBuilder.html[SessionFactoryBuilder], link:{hibernateapi}/org/hibernate/boot/MetadataSources.html[MetadataSources] etc. and apply your custom configuration in the listener.
+
+You may also optionally create beans of type link:{hibernateapi}/org/hibernate/integrator/spi/Integrator.html[Integrator] and link:{hibernateapi}/org/hibernate/Interceptor.html[Interceptor] and these will be picked up and injected automatically.
+
+==== Using Spring Transaction Management
+
+Micronaut's Hibernate integration will also automatically provide a Spring `HibernateTransactionManager` bean so you can use Spring-based transaction management.
+
+You should use Micronaut's https://docs.micronaut.io/latest/api/io/micronaut/spring/tx/annotation/Transactional.html[@Transactional] annotation to ensure low-overhead, compile-time transaction management is applied to your classes.
+
+==== Understanding LazyInitializationException
+
+Micronaut is built on Netty which is based on a non-blocking, event loop model. JDBC and Hibernate are blocking APIs and hence when they are used in a Micronaut application the work is shifted to a blocking I/O thread pool.
+
+When using ann:spring.tx.annotation.Transactional[] the Hibernate `Session` will only be open for the duration of this method execution and then will automatically be closed. This ensures that the blocking operation is kept as short as possible.
+
+There is no notion of OpenSessionInView (OSIV) in Micronaut and never will be, since it is https://vladmihalcea.com/the-open-session-in-view-anti-pattern/[sub-optimal and not recommended]. You should optimize the queries that you write to return all the necessary data Micronaut will need to encode your objects into JSON either by using the appropriate join queries or using a https://vladmihalcea.com/the-best-way-to-map-a-projection-query-to-a-dto-with-jpa-and-hibernate/[data transfer object (DTO)].
+
+If you encounter a `LazyInitializationException` when returning a Hibernate entity from a method it is an indication that your query is suboptimal and you should perform a join.
