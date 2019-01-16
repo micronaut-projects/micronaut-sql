@@ -41,8 +41,7 @@ if [[ $EXIT_STATUS -eq 0 ]]; then
         git clone https://${GH_TOKEN}@github.com/micronaut-projects/micronaut-sql.git -b gh-pages gh-pages --single-branch > /dev/null
 
         cd gh-pages
-
-        If this is the master branch then update the snapshot
+        
         if [[ $TRAVIS_BRANCH =~ ^master|[12]\..\.x$ ]]; then
            mkdir -p snapshot
            cp -r ../build/docs/. ./snapshot/
