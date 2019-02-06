@@ -1,1 +1,11 @@
 This project includes modules to support SQL Database access in Micronaut.
+
+=== Release History
+
+==== 1.1.0
+
+* Hibernate `5.3.7.Final` -> `5.4.0.Final`
+* Hikari `2.7.9` -> `3.3.0`
+* Commons DBCP 2 `2.1.1` -> `2.5.0`
+* Tomcat Pool `9.0.1` -> `9.0.14`
+* Reactive Postgres `0.10.5` -> `0.11.2`
