@@ -1,0 +1,13 @@
+io.micronaut.configuration.hibernate.jpa
+io.micronaut.configuration.hibernate.jpa.condition
+io.micronaut.configuration.hibernate.jpa.jcache
+io.micronaut.configuration.hibernate.jpa.metrics
+io.micronaut.configuration.hibernate.jpa.scope
+io.micronaut.configuration.jdbc.dbcp
+io.micronaut.configuration.jdbc.dbcp.metadata
+io.micronaut.configuration.jdbc.hikari
+io.micronaut.configuration.jdbc.tomcat
+io.micronaut.configuration.jdbc.tomcat.metadata
+io.micronaut.configuration.postgres.reactive
+io.micronaut.configuration.postgres.reactive.condition
+io.micronaut.configuration.postgres.reactive.health
