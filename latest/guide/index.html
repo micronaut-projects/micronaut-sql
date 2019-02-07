@@ -97,7 +97,7 @@
         <h1>Micronaut SQL Libraries</h1>
         <p></p>
         <p>Projects to support SQL Database access in Micronaut</p>
-        <p><strong>Version:</strong> 1.0.4</p>
+        <p><strong>Version:</strong> 1.1.0.RC2</p>
     </div>
     
 
@@ -112,6 +112,31 @@
 
 <div class="paragraph">
 <p>This project includes modules to support SQL Database access in Micronaut.</p>
+</div>
+<div class="sect2">
+<h3 id="_release_history">Release History</h3>
+<div class="sect3">
+<h4 id="_1_1_0">1.1.0</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Hibernate <code>5.3.7.Final</code> &#8594; <code>5.4.0.Final</code></p>
+</li>
+<li>
+<p>Hikari <code>2.7.9</code> &#8594; <code>3.3.0</code></p>
+</li>
+<li>
+<p>Commons DBCP 2 <code>2.1.1</code> &#8594; <code>2.5.0</code></p>
+</li>
+<li>
+<p>Tomcat Pool <code>9.0.1</code> &#8594; <code>9.0.14</code></p>
+</li>
+<li>
+<p>Reactive Postgres <code>0.10.5</code> &#8594; <code>0.11.2</code></p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 
 
@@ -190,13 +215,13 @@
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">runtime <span class="hljs-string">'io.micronaut.configuration:micronaut-jdbc-dbcp'</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">runtime <span class="hljs-string">'io.micronaut.coiguration:micronaut-jdbc-dbcp'</span></code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
-    &lt;groupId&gt;io.micronaut.configuration&lt;/groupId&gt;
+    &lt;groupId&gt;io.micronaut.coiguration&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-jdbc-dbcp&lt;/artifactId&gt;
     &lt;scope&gt;runtime&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
@@ -354,7 +379,7 @@
 <p>Once you have configured a JDBC <code>DataSource</code> the <a href="https://docs.micronaut.io/latest/api/io/micronaut/management/health/indicator/jdbc/JdbcIndicator.html">JdbcIndicator</a> is activated resulting in the <code>/health</code> endpoint and <a href="https://docs.micronaut.io/latest/api/io/micronaut/health/CurrentHealthStatus.html">CurrentHealthStatus</a> interface resolving the health of the JDBC connection.</p>
 </div>
 <div class="paragraph">
-<p>See the section on the &lt;<a href="https://docs.micronaut.io/latest/guide/index.html#healthEndpoint">Health Endpoint</a> for more information.</p>
+<p>See the section on the <a href="https://docs.micronaut.io/latest/guide/index.html#healthEndpoint">Health Endpoint</a> for more information.</p>
 </div>
 </div>
 </div>
