@@ -17,7 +17,7 @@ dependency:micronaut-jdbc-tomcat[groupId="io.micronaut.configuration", scope="ru
 
 dependency:micronaut-jdbc-hikari[groupId="io.micronaut.configuration", scope="runtime"]
 
-dependency:micronaut-jdbc-dbcp[groupId="io.micronaut.coiguration", scope="runtime"]
+dependency:micronaut-jdbc-dbcp[groupId="io.micronaut.configuration", scope="runtime"]
 
 You also need to add a JDBC driver dependency to your classpath. For example to add the http://www.h2database.com[H2 In-Memory Database]:
 
