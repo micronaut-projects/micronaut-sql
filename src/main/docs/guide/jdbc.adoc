@@ -17,7 +17,7 @@ dependency:micronaut-jdbc-tomcat[groupId="io.micronaut.configuration", scope="ru
 
 dependency:micronaut-jdbc-hikari[groupId="io.micronaut.configuration", scope="runtime"]
 
-dependency:micronaut-jdbc-dbcp[groupId="io.micronaut.configuration", scope="runtime"]
+dependency:micronaut-jdbc-dbcp[groupId="io.micronaut.coiguration", scope="runtime"]
 
 You also need to add a JDBC driver dependency to your classpath. For example to add the http://www.h2database.com[H2 In-Memory Database]:
 
@@ -98,7 +98,7 @@ When injecting link:{jdkapi}/javax/sql/DataSource.html[DataSource] beans, the on
 
 Once you have configured a JDBC `DataSource` the https://docs.micronaut.io/latest/api/io/micronaut/management/health/indicator/jdbc/JdbcIndicator.html[JdbcIndicator] is activated resulting in the `/health` endpoint and https://docs.micronaut.io/latest/api/io/micronaut/health/CurrentHealthStatus.html[CurrentHealthStatus] interface resolving the health of the JDBC connection.
 
-See the section on the <https://docs.micronaut.io/latest/guide/index.html#healthEndpoint[Health Endpoint] for more information.
+See the section on the https://docs.micronaut.io/latest/guide/index.html#healthEndpoint[Health Endpoint] for more information.
 
 == Using Spring Transaction Management
 
