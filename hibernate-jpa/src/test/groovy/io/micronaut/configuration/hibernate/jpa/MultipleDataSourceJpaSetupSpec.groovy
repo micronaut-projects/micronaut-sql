@@ -23,6 +23,9 @@ import io.micronaut.spring.tx.annotation.Transactional
 import org.hibernate.Session
 import org.hibernate.SessionFactory
 import org.springframework.orm.hibernate5.HibernateTransactionManager
+import org.springframework.transaction.TransactionStatus
+import org.springframework.transaction.interceptor.TransactionAspectSupport
+import org.springframework.transaction.support.TransactionSynchronizationManager
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
@@ -32,6 +35,7 @@ import javax.inject.Named
 import javax.inject.Singleton
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
+import javax.sql.DataSource
 
 /**
  * @author graemerocher
@@ -58,6 +62,8 @@ class MultipleDataSourceJpaSetupSpec extends Specification{
         defaultSessionFactory != otherSessionFactory
         defaultSessionFactory.getMetamodel().entity(Book)
         otherSessionFactory.getMetamodel().entity(Author)
+        defaultTxManager.dataSource == applicationContext.getBean(DataSource)
+        otherTxManager.dataSource == applicationContext.getBean(DataSource, Qualifiers.byName('other'))
         defaultTxManager.sessionFactory == defaultSessionFactory
         otherTxManager.sessionFactory == otherSessionFactory
         defaultSessionFactory.jdbcServices.jdbcEnvironment.currentCatalog.toString() == "MYDB"
@@ -70,10 +76,10 @@ class MultipleDataSourceJpaSetupSpec extends Specification{
         MutipleDataSourceJavaService javaService = applicationContext.getBean(MutipleDataSourceJavaService)
 
         expect:"Methods that retrieve the current session don't throw an exception"
+        service.testOther()
         service.testCurrent()
         service.testContextOther()
         service.testViaSF()
-        service.testOther()
         service.testEM()
         service.testContext()
         javaService.testCurrent()

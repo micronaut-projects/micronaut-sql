@@ -42,7 +42,7 @@ public class HibernateTransactionManagerFactory {
     @Bean
     @Requires(classes = HibernateTransactionManager.class)
     @EachBean(SessionFactory.class)
-    HibernateTransactionManager hibernateTransactionManager(SessionFactory sessionFactory, DataSource dataSource) {
+    HibernateTransactionManager hibernateTransactionManager(SessionFactory sessionFactory, @Parameter DataSource dataSource) {
         HibernateTransactionManager hibernateTransactionManager = new HibernateTransactionManager(sessionFactory);
         hibernateTransactionManager.setDataSource(dataSource);
         return hibernateTransactionManager;

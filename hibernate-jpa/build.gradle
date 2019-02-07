@@ -20,6 +20,7 @@ dependencies {
 
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+    testCompile "io.micronaut:micronaut-inject-java"
     testCompile "org.hibernate:hibernate-jcache:$hibernateVersion"
     testCompile "io.micronaut:micronaut-management"
     testCompile "io.micronaut:micronaut-inject-groovy"
