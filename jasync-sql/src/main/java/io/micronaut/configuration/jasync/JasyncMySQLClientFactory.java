@@ -18,7 +18,6 @@ package io.micronaut.configuration.jasync;
 
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.mysql.MySQLConnectionBuilder;
-import com.github.jasync.sql.db.postgresql.PostgreSQLConnectionBuilder;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
@@ -29,8 +28,8 @@ import javax.inject.Singleton;
  * The Factory for creating Reactive Postgres client.
  */
 @Factory
-@Requires(classes= PostgreSQLConnectionBuilder.class)
-public class JasyncPostgreSQLClientFactory {
+@Requires(classes= MySQLConnectionBuilder.class)
+public class JasyncMySQLClientFactory {
 
     private final JasyncPoolConfiguration jasyncPoolConfiguration;
 
@@ -39,7 +38,7 @@ public class JasyncPostgreSQLClientFactory {
      *
      * @param jasyncPoolConfiguration The Reactive Postgres configurations
      */
-    public JasyncPostgreSQLClientFactory(JasyncPoolConfiguration jasyncPoolConfiguration) {
+    public JasyncMySQLClientFactory(JasyncPoolConfiguration jasyncPoolConfiguration) {
         this.jasyncPoolConfiguration = jasyncPoolConfiguration;
     }
 
@@ -50,7 +49,7 @@ public class JasyncPostgreSQLClientFactory {
     @Singleton
     @Bean(preDestroy = "disconnect")
     public Connection client() {
-        return PostgreSQLConnectionBuilder.createConnectionPool(this.jasyncPoolConfiguration.jasyncOptions);
+        return MySQLConnectionBuilder.createConnectionPool(this.jasyncPoolConfiguration.jasyncOptions);
     }
 
 }
