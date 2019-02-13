@@ -57,7 +57,8 @@ public class JaysncHealthIndicator implements HealthIndicator {
         return s -> client.sendQuery(QUERY)
                 .whenComplete((result, error) -> {
                     if (error != null) {
-                        s.onError(error);
+                        HealthResult health = HealthResult.builder(NAME, HealthStatus.DOWN).exception(error).build();
+                        s.onNext(health);
                     } else {
                         HealthResult.Builder status = HealthResult.builder(NAME, HealthStatus.UP);
                         status.details(Collections.singletonMap("version", result.getRows().get(0).get(0)));
