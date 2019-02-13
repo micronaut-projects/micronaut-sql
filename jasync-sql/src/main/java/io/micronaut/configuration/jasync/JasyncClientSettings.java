@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-/**
- * Reactive Pg Client heath indicator.
- *
- * @author puneetbehl
- * @since 1.0
- */
-package io.micronaut.configuration.postgres.reactive.health;
+package io.micronaut.configuration.jasync;
 
+
+public interface JasyncClientSettings {
+    /**
+     * The prefix to use for all Jasync Client settings.
+     */
+    String PREFIX = "jasync.client";
+}

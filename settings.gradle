@@ -4,5 +4,6 @@ include 'jdbc-dbcp'
 include 'jdbc-hikari'
 include 'jdbc-tomcat'
 include 'postgres-reactive'
+include 'jasync-sql'
 include 'hibernate-jpa'
 

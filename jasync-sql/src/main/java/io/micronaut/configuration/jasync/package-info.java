@@ -15,10 +15,14 @@
  */
 
 /**
- * Reactive Postgres Client condition.
+ * Reactive Postgres Client PgPoolConfiguration classes.
  *
  * @author puneetbehl
  * @since 1.0
  */
+@Configuration
+@RequiresJasyncClient
+package io.micronaut.configuration.jasync;
 
-package io.micronaut.configuration.postgres.reactive.condition;
+import io.micronaut.configuration.jasync.condition.RequiresJasyncClient;
+import io.micronaut.context.annotation.Configuration;

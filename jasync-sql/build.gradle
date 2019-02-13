@@ -1,0 +1,14 @@
+dependencies {
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"    
+
+    compile "io.micronaut:micronaut-inject:$micronautVersion"
+    compile "com.github.jasync-sql:jasync-mysql:$jasyncClientVersion"
+    compile "com.github.jasync-sql:jasync-postgresql:$jasyncClientVersion"
+    compileOnly "io.micronaut:micronaut-management:$micronautVersion"
+
+    testCompile "io.micronaut:micronaut-management:$micronautVersion"
+    testCompile "org.testcontainers:spock:1.10.1"
+    testCompile "org.testcontainers:postgresql:1.10.1"
+    
+}
