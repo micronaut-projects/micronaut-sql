@@ -17,6 +17,7 @@
 package io.micronaut.configuration.jasync;
 
 import com.github.jasync.sql.db.ConnectionPoolConfiguration;
+import com.github.jasync.sql.db.ConnectionPoolConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
 
@@ -30,13 +31,13 @@ import io.micronaut.context.annotation.ConfigurationProperties;
 public class JasyncPoolConfiguration {
 
     @ConfigurationBuilder
-    protected ConnectionPoolConfiguration jasyncOptions = new ConnectionPoolConfiguration();
+    protected ConnectionPoolConfigurationBuilder jasyncOptions = new ConnectionPoolConfigurationBuilder();
 
     /**
      *
      * @return The options for configuring a connection pool.
      */
     public ConnectionPoolConfiguration getJasyncOptions() {
-        return jasyncOptions;
+        return jasyncOptions.build();
     }
 }

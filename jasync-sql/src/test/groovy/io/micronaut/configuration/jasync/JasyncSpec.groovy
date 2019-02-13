@@ -1,6 +1,7 @@
 package io.micronaut.configuration.jasync
 
 import com.github.jasync.sql.db.Connection
+import com.github.jasync.sql.db.QueryResult
 import com.github.jasync.sql.db.ResultSet
 
 /*
@@ -50,7 +51,7 @@ class JasyncSpec extends Specification {
                 'jasync.client.port': postgres.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT),
                 'jasync.client.host': postgres.getContainerIpAddress(),
                 'jasync.client.database': postgres.databaseName,
-                'jasync.client.user': postgres.username,
+                'jasync.client.username': postgres.username,
                 'jasync.client.password': postgres.password
         )
 
@@ -64,16 +65,16 @@ class JasyncSpec extends Specification {
         // end::pgPool-bean[]
 
         // tag::query[]
-        result = client.rxQuery('SELECT * FROM pg_stat_database').map({ ResultSet resultSet -> // <1>
-            return "Size: ${resultSet.size()}"
-        }).blockingGet()
+        result = client.sendQuery('SELECT * FROM pg_stat_database').thenApply({ QueryResult resultSet -> // <1>
+            return "Size: ${resultSet.rows.size()}"
+        }).get()
         // end::query[]
 
         then:
         result == "Size: 4"
 
         cleanup:
-        client.close()
+        client.disconnect()
         postgres.stop()
     }
     //end::pg-dbstats[]

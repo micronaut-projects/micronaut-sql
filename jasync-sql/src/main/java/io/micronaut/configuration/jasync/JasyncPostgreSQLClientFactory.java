@@ -18,11 +18,14 @@ package io.micronaut.configuration.jasync;
 
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.mysql.MySQLConnectionBuilder;
+import com.github.jasync.sql.db.pool.ConnectionPool;
+import com.github.jasync.sql.db.postgresql.PostgreSQLConnection;
 import com.github.jasync.sql.db.postgresql.PostgreSQLConnectionBuilder;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 
+import javax.annotation.PreDestroy;
 import javax.inject.Singleton;
 
 /**
@@ -30,9 +33,10 @@ import javax.inject.Singleton;
  */
 @Factory
 @Requires(classes= PostgreSQLConnectionBuilder.class)
-public class JasyncPostgreSQLClientFactory {
+public class JasyncPostgreSQLClientFactory implements AutoCloseable {
 
     private final JasyncPoolConfiguration jasyncPoolConfiguration;
+    private ConnectionPool<PostgreSQLConnection> connection;
 
     /**
      * Create the factory with given Pool configuration
@@ -48,9 +52,18 @@ public class JasyncPostgreSQLClientFactory {
      * @return client A pool of connections.
      */
     @Singleton
-    @Bean(preDestroy = "disconnect")
     public Connection client() {
-        return PostgreSQLConnectionBuilder.createConnectionPool(this.jasyncPoolConfiguration.jasyncOptions);
+        if (this.connection == null || !this.connection.isConnected()) {
+            this.connection = PostgreSQLConnectionBuilder.createConnectionPool(this.jasyncPoolConfiguration.jasyncOptions);
+        }
+        return this.connection;
     }
 
+    @Override
+    @PreDestroy
+    public void close() {
+        if (this.connection != null && this.connection.isConnected()) {
+            this.connection.disconnect();
+        }
+    }
 }

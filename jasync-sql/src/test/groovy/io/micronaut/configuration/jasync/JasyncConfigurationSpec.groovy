@@ -25,23 +25,23 @@ class JasyncConfigurationSpec extends Specification {
     void "test jasync-client configuration"() {
         when:
         ApplicationContext applicationContext = ApplicationContext.run(
-                'jasync.client.port': '5432',
+                'jasync.client.port': '5433',
                 'jasync.client.host': 'the-host',
                 'jasync.client.database': 'the-db',
-                'jasync.client.user': 'user',
+                'jasync.client.username': 'user',
                 'jasync.client.password': 'secret',
-                'jasync.client.maxSize': '5'
+                'jasync.client.maxActiveConnections': '5'
         )
 
         then:
         applicationContext.containsBean(JasyncPoolConfiguration)
         applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions
-        applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions.port == 5432
-        applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions.host == 'the-host'
+        applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions.port == 5433
         applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions.database == 'the-db'
-        applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions.user == 'user'
+        applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions.username == 'user'
         applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions.password == 'secret'
-        applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions.maxSize == 5
+        applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions.maxActiveConnections == 5
+        applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions.host == 'the-host'
 
 
         cleanup:

@@ -24,6 +24,8 @@ import io.reactivex.Flowable
 import org.testcontainers.containers.PostgreSQLContainer
 import spock.lang.Specification
 
+import java.util.concurrent.TimeUnit
+
 
 class JasyncHealthIndicatorSpec extends Specification {
 
@@ -35,13 +37,13 @@ class JasyncHealthIndicatorSpec extends Specification {
                 'jasync.client.port': postgres.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT),
                 'jasync.client.host': postgres.getContainerIpAddress(),
                 'jasync.client.database': postgres.databaseName,
-                'jasync.client.user': postgres.username,
+                'jasync.client.username': postgres.username,
                 'jasync.client.password': postgres.password
         )
 
         when:
         JaysncHealthIndicator indicator = applicationContext.getBean(JaysncHealthIndicator)
-        HealthResult result = Flowable.fromPublisher(indicator.getResult()).blockingFirst()
+        HealthResult result = Flowable.fromPublisher(indicator.getResult()).timeout(10, TimeUnit.SECONDS).blockingFirst()
 
         then:
         result.status == HealthStatus.UP
@@ -49,7 +51,7 @@ class JasyncHealthIndicatorSpec extends Specification {
 
         when:
         postgres.stop()
-        result = Flowable.fromPublisher(indicator.getResult()).blockingFirst()
+        result = Flowable.fromPublisher(indicator.getResult()).timeout(10, TimeUnit.SECONDS).blockingFirst()
 
         then:
         result.status == HealthStatus.DOWN
