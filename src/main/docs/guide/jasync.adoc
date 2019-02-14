@@ -19,15 +19,14 @@ You should then configure the https://github.com/jasync-sql/jasync-sql/wiki/Conf
 [source,yaml]
 .application.yml
 ----
-postgres:
-	reactive:
-	    client:
-            port: 5432
-            host: the-host
-            database: the-db
-            username: test
-            password: test
-            maxActiveConnections: 5
+jasync:
+    client:
+        port: 5432
+        host: the-host
+        database: the-db
+        username: test
+        password: test
+        maxActiveConnections: 5
 ----
 
 Once you have the above configuration in place then you can inject the `com.github.jasync.sql.db.Connection` bean. The following is the simplest way to connect:
