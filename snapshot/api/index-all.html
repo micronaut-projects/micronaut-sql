@@ -82,7 +82,19 @@
 </a>
 <h2 class="title">C</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncMySQLClientFactory.html#client--">client()</a></span> - Method in class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncMySQLClientFactory.html" title="class in io.micronaut.configuration.jasync">JasyncMySQLClientFactory</a></dt>
+<dd>
+<div class="block">Create a connection pool to the database configured with the <a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html" title="class in io.micronaut.configuration.jasync"><code>JasyncPoolConfiguration</code></a>.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncPostgreSQLClientFactory.html#client--">client()</a></span> - Method in class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPostgreSQLClientFactory.html" title="class in io.micronaut.configuration.jasync">JasyncPostgreSQLClientFactory</a></dt>
+<dd>
+<div class="block">Create a connection pool to the database configured with the <a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html" title="class in io.micronaut.configuration.jasync"><code>JasyncPoolConfiguration</code></a>.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/postgres/reactive/PgPoolClientFactory.html#client--">client()</a></span> - Method in class io.micronaut.configuration.postgres.reactive.<a href="io/micronaut/configuration/postgres/reactive/PgPoolClientFactory.html" title="class in io.micronaut.configuration.postgres.reactive">PgPoolClientFactory</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncMySQLClientFactory.html#close--">close()</a></span> - Method in class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncMySQLClientFactory.html" title="class in io.micronaut.configuration.jasync">JasyncMySQLClientFactory</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncPostgreSQLClientFactory.html#close--">close()</a></span> - Method in class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPostgreSQLClientFactory.html" title="class in io.micronaut.configuration.jasync">JasyncPostgreSQLClientFactory</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/hikari/DatasourceFactory.html#close--">close()</a></span> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceFactory.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceFactory</a></dt>
 <dd>&nbsp;</dd>
@@ -257,6 +269,8 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html#getIdle--">getIdle()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.metadata.<a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.tomcat.metadata">TomcatDataSourcePoolMetadata</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html#getJasyncOptions--">getJasyncOptions()</a></span> - Method in class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html" title="class in io.micronaut.configuration.jasync">JasyncPoolConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#getJndiName--">getJndiName()</a></span> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration</a></dt>
 <dd>
 <div class="block">Get Jndi name.</div>
@@ -294,6 +308,8 @@
 <div class="block">Return the number of connections that have been released from the
  data source or 0 if that information is not available.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/health/JaysncHealthIndicator.html#getResult--">getResult()</a></span> - Method in class io.micronaut.configuration.jasync.health.<a href="io/micronaut/configuration/jasync/health/JaysncHealthIndicator.html" title="class in io.micronaut.configuration.jasync.health">JaysncHealthIndicator</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/postgres/reactive/health/PgPoolHealthIndicator.html#getResult--">getResult()</a></span> - Method in class io.micronaut.configuration.postgres.reactive.health.<a href="io/micronaut/configuration/postgres/reactive/health/PgPoolHealthIndicator.html" title="class in io.micronaut.configuration.postgres.reactive.health">PgPoolHealthIndicator</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/postgres/reactive/PgPoolConfiguration.html#getUri--">getUri()</a></span> - Method in class io.micronaut.configuration.postgres.reactive.<a href="io/micronaut/configuration/postgres/reactive/PgPoolConfiguration.html" title="class in io.micronaut.configuration.postgres.reactive">PgPoolConfiguration</a></dt>
@@ -401,6 +417,18 @@
 <dd>
 <div class="block">Classes related to the <a href="io/micronaut/configuration/hibernate/jpa/scope/CurrentSession.html" title="annotation in io.micronaut.configuration.hibernate.jpa.scope"><code>CurrentSession</code></a> scope.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/jasync/package-summary.html">io.micronaut.configuration.jasync</a> - package io.micronaut.configuration.jasync</dt>
+<dd>
+<div class="block">Reactive Postgres Client PgPoolConfiguration classes.</div>
+</dd>
+<dt><a href="io/micronaut/configuration/jasync/condition/package-summary.html">io.micronaut.configuration.jasync.condition</a> - package io.micronaut.configuration.jasync.condition</dt>
+<dd>
+<div class="block">Reactive Postgres Client condition.</div>
+</dd>
+<dt><a href="io/micronaut/configuration/jasync/health/package-summary.html">io.micronaut.configuration.jasync.health</a> - package io.micronaut.configuration.jasync.health</dt>
+<dd>
+<div class="block">Reactive Pg Client heath indicator.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/jdbc/dbcp/package-summary.html">io.micronaut.configuration.jdbc.dbcp</a> - package io.micronaut.configuration.jdbc.dbcp</dt>
 <dd>
 <div class="block">Configuration for Apache DBCP data sources.</div>
@@ -422,23 +450,51 @@
 <div class="block">Contains classes for reading JDBC metadata for Tomcat.</div>
 </dd>
 <dt><a href="io/micronaut/configuration/postgres/reactive/package-summary.html">io.micronaut.configuration.postgres.reactive</a> - package io.micronaut.configuration.postgres.reactive</dt>
-<dd>
-<div class="block">Reactive Postgres Client PgPoolConfiguration classes.</div>
-</dd>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/postgres/reactive/condition/package-summary.html">io.micronaut.configuration.postgres.reactive.condition</a> - package io.micronaut.configuration.postgres.reactive.condition</dt>
-<dd>
-<div class="block">Reactive Postgres Client condition.</div>
-</dd>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/postgres/reactive/health/package-summary.html">io.micronaut.configuration.postgres.reactive.health</a> - package io.micronaut.configuration.postgres.reactive.health</dt>
-<dd>
-<div class="block">Reactive Pg Client heath indicator.</div>
-</dd>
+<dd>&nbsp;</dd>
 </dl>
 <a name="I:J">
 <!--   -->
 </a>
 <h2 class="title">J</h2>
 <dl>
+<dt><a href="io/micronaut/configuration/jasync/JasyncClientSettings.html" title="interface in io.micronaut.configuration.jasync"><span class="typeNameLink">JasyncClientSettings</span></a> - Interface in <a href="io/micronaut/configuration/jasync/package-summary.html">io.micronaut.configuration.jasync</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jasync/JasyncMySQLClientFactory.html" title="class in io.micronaut.configuration.jasync"><span class="typeNameLink">JasyncMySQLClientFactory</span></a> - Class in <a href="io/micronaut/configuration/jasync/package-summary.html">io.micronaut.configuration.jasync</a></dt>
+<dd>
+<div class="block">The Factory for creating Reactive Postgres client.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncMySQLClientFactory.html#JasyncMySQLClientFactory-io.micronaut.configuration.jasync.JasyncPoolConfiguration-">JasyncMySQLClientFactory(JasyncPoolConfiguration)</a></span> - Constructor for class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncMySQLClientFactory.html" title="class in io.micronaut.configuration.jasync">JasyncMySQLClientFactory</a></dt>
+<dd>
+<div class="block">Create the factory with given Pool configuration</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html#jasyncOptions">jasyncOptions</a></span> - Variable in class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html" title="class in io.micronaut.configuration.jasync">JasyncPoolConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html" title="class in io.micronaut.configuration.jasync"><span class="typeNameLink">JasyncPoolConfiguration</span></a> - Class in <a href="io/micronaut/configuration/jasync/package-summary.html">io.micronaut.configuration.jasync</a></dt>
+<dd>
+<div class="block">The configuration class for Jasync Client.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html#JasyncPoolConfiguration--">JasyncPoolConfiguration()</a></span> - Constructor for class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html" title="class in io.micronaut.configuration.jasync">JasyncPoolConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jasync/JasyncPostgreSQLClientFactory.html" title="class in io.micronaut.configuration.jasync"><span class="typeNameLink">JasyncPostgreSQLClientFactory</span></a> - Class in <a href="io/micronaut/configuration/jasync/package-summary.html">io.micronaut.configuration.jasync</a></dt>
+<dd>
+<div class="block">The Factory for creating Reactive Postgres client.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncPostgreSQLClientFactory.html#JasyncPostgreSQLClientFactory-io.micronaut.configuration.jasync.JasyncPoolConfiguration-">JasyncPostgreSQLClientFactory(JasyncPoolConfiguration)</a></span> - Constructor for class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPostgreSQLClientFactory.html" title="class in io.micronaut.configuration.jasync">JasyncPostgreSQLClientFactory</a></dt>
+<dd>
+<div class="block">Create the factory with given Pool configuration</div>
+</dd>
+<dt><a href="io/micronaut/configuration/jasync/health/JaysncHealthIndicator.html" title="class in io.micronaut.configuration.jasync.health"><span class="typeNameLink">JaysncHealthIndicator</span></a> - Class in <a href="io/micronaut/configuration/jasync/health/package-summary.html">io.micronaut.configuration.jasync.health</a></dt>
+<dd>
+<div class="block">A  <code>HealthIndicator</code> for reactive Postgres client.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/health/JaysncHealthIndicator.html#JaysncHealthIndicator-com.github.jasync.sql.db.Connection-">JaysncHealthIndicator(Connection)</a></span> - Constructor for class io.micronaut.configuration.jasync.health.<a href="io/micronaut/configuration/jasync/health/JaysncHealthIndicator.html" title="class in io.micronaut.configuration.jasync.health">JaysncHealthIndicator</a></dt>
+<dd>
+<div class="block">Constructor.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa"><span class="typeNameLink">JpaConfiguration</span></a> - Class in <a href="io/micronaut/configuration/hibernate/jpa/package-summary.html">io.micronaut.configuration.hibernate.jpa</a></dt>
 <dd>
 <div class="block">Configuration for JPA and Hibernate.</div>
@@ -459,6 +515,8 @@
 </a>
 <h2 class="title">N</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/health/JaysncHealthIndicator.html#NAME">NAME</a></span> - Static variable in class io.micronaut.configuration.jasync.health.<a href="io/micronaut/configuration/jasync/health/JaysncHealthIndicator.html" title="class in io.micronaut.configuration.jasync.health">JaysncHealthIndicator</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/postgres/reactive/health/PgPoolHealthIndicator.html#NAME">NAME</a></span> - Static variable in class io.micronaut.configuration.postgres.reactive.health.<a href="io/micronaut/configuration/postgres/reactive/health/PgPoolHealthIndicator.html" title="class in io.micronaut.configuration.postgres.reactive.health">PgPoolHealthIndicator</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -506,6 +564,10 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncClientSettings.html#PREFIX">PREFIX</a></span> - Static variable in interface io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncClientSettings.html" title="interface in io.micronaut.configuration.jasync">JasyncClientSettings</a></dt>
+<dd>
+<div class="block">The prefix to use for all Jasync Client settings.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/postgres/reactive/PgPoolClientSettings.html#PREFIX">PREFIX</a></span> - Static variable in interface io.micronaut.configuration.postgres.reactive.<a href="io/micronaut/configuration/postgres/reactive/PgPoolClientSettings.html" title="interface in io.micronaut.configuration.postgres.reactive">PgPoolClientSettings</a></dt>
 <dd>
 <div class="block">The prefix to use for all Reactive Postgres Client settings.</div>
@@ -516,6 +578,8 @@
 </a>
 <h2 class="title">Q</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/health/JaysncHealthIndicator.html#QUERY">QUERY</a></span> - Static variable in class io.micronaut.configuration.jasync.health.<a href="io/micronaut/configuration/jasync/health/JaysncHealthIndicator.html" title="class in io.micronaut.configuration.jasync.health">JaysncHealthIndicator</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/postgres/reactive/health/PgPoolHealthIndicator.html#QUERY">QUERY</a></span> - Static variable in class io.micronaut.configuration.postgres.reactive.health.<a href="io/micronaut/configuration/postgres/reactive/health/PgPoolHealthIndicator.html" title="class in io.micronaut.configuration.postgres.reactive.health">PgPoolHealthIndicator</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -528,6 +592,8 @@
 <dd>
 <div class="block">A custom condition that scans for entities in the configured packages.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/jasync/condition/RequiresJasyncClient.html" title="annotation in io.micronaut.configuration.jasync.condition"><span class="typeNameLink">RequiresJasyncClient</span></a> - Annotation Type in <a href="io/micronaut/configuration/jasync/condition/package-summary.html">io.micronaut.configuration.jasync.condition</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/postgres/reactive/condition/RequiresReactivePgClient.html" title="annotation in io.micronaut.configuration.postgres.reactive.condition"><span class="typeNameLink">RequiresReactivePgClient</span></a> - Annotation Type in <a href="io/micronaut/configuration/postgres/reactive/condition/package-summary.html">io.micronaut.configuration.postgres.reactive.condition</a></dt>
 <dd>&nbsp;</dd>
 </dl>

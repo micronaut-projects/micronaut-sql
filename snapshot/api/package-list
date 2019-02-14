@@ -3,6 +3,9 @@ io.micronaut.configuration.hibernate.jpa.condition
 io.micronaut.configuration.hibernate.jpa.jcache
 io.micronaut.configuration.hibernate.jpa.metrics
 io.micronaut.configuration.hibernate.jpa.scope
+io.micronaut.configuration.jasync
+io.micronaut.configuration.jasync.condition
+io.micronaut.configuration.jasync.health
 io.micronaut.configuration.jdbc.dbcp
 io.micronaut.configuration.jdbc.dbcp.metadata
 io.micronaut.configuration.jdbc.hikari

@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>4 Configuring Reactive Postgres 1.1.0.BUILD-SNAPSHOT</title>
+    <title>5 Configuring JAsync SQL 1.1.0.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -62,18 +62,16 @@ function addJsClass() {
             <div id="main" class="corner-all">
 
                 
-                    <div class="toc-item prev-left"><a href="../guide/hibernate.html">&lt;&lt; <strong>3</strong><span>Configuring Hibernate</span></a></div>
+                    <div class="toc-item prev-left"><a href="../guide/pgclient.html">&lt;&lt; <strong>4</strong><span>Configuring Reactive Postgres</span></a></div>
                 
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
                 
-                    <div class="toc-item next-right"><a href="../guide/jasync.html"><strong>5</strong><span>Configuring JAsync SQL</span> >></a></div>
-                
 
 
                 <div class="project">
-                    <h1>4 Configuring Reactive Postgres</h1>
+                    <h1>5 Configuring JAsync SQL</h1>
 
                     <p><strong>Version:</strong> 1.1.0.BUILD-SNAPSHOT</p>
                 </div>
@@ -82,20 +80,20 @@ function addJsClass() {
 
                 
 
-<h1 id="pgclient">4 Configuring Reactive Postgres</h1>
+<h1 id="jasync">5 Configuring JAsync SQL</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/pgclient.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/jasync.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>Micronaut supports reactive and non-blocking client to connect to Postgres using <a href="https://github.com/reactiverse/reactive-pg-client">reactive-pg-client</a>, allowing  to handle many database connections with a single thread.</p>
+<p>Micronaut supports reactive and non-blocking client to connect to PostgreSQL and MySQL using <a href="https://github.com/jasync-sql/jasync-sql">jasync-sql</a>, allowing to handle many database connections with a single thread.</p>
 </div>
 <div class="sect1">
-<h2 id="_configuring_the_reactive_postgres_client">Configuring the Reactive Postgres Client</h2>
+<h2 id="_configuring_jasync_sql_client">Configuring jasync-sql Client</h2>
 <div class="sectionbody">
 <div class="admonitionblock tip">
 <table>
@@ -106,11 +104,11 @@ function addJsClass() {
 <td class="content">
 <div class="title">Using the CLI</div>
 <div class="paragraph">
-<p>If you are creating your project using the Micronaut CLI, supply the <code>postgres-reactive</code> feature to configure the Reactive Postgres client in your project:</p>
+<p>If you are creating your project using the Micronaut CLI, supply the <code>jasync-sql</code> feature to configure the Jasync PostgreSQL and MySQL client in your project:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ mn create-app my-app --features postgres-reactive</pre>
+<pre>$ mn create-app my-app --features jasync-sql</pre>
 </div>
 </div>
 </td>
@@ -118,90 +116,71 @@ function addJsClass() {
 </table>
 </div>
 <div class="paragraph">
-<p>To configure the Reactive Postgres client you should first add <code>postgres-reactive</code> module to your classpath:</p>
+<p>To configure the Jasync client you should first add <code>jasync-sql</code> module to your classpath:</p>
 </div>
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut.configuration:micronaut-postgres-reactive'</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut.configuration:micronaut-jasync-sql'</span></code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
     &lt;groupId&gt;io.micronaut.configuration&lt;/groupId&gt;
-    &lt;artifactId&gt;micronaut-postgres-reactive&lt;/artifactId&gt;
+    &lt;artifactId&gt;micronaut-jasync-sql&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
 </p>
 </div>
 <div class="paragraph">
-<p>You should then configure the URI or <a href="https://reactiverse.io/reactive-pg-client/apidocs/index.html"><code>PoolOptions</code></a> of the Postgres server you wish to communicate with in <code>application.yml</code>:</p>
+<p>You should then configure the <a href="https://github.com/jasync-sql/jasync-sql/wiki/Configuring-and-Managing-Connections"><code>PoolOptions</code></a> of the database server you wish to communicate with in <code>application.yml</code>:</p>
 </div>
 <div class="listingblock">
 <div class="title">application.yml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">postgres:
-	reactive:
-	    client:
-            port: 5432
-            host: the-host
-            database: the-db
-            user: test
-            password: test
-            maxSize: 5</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">jasync:
+    client:
+        port: 5432
+        host: the-host
+        database: the-db
+        username: test
+        password: test
+        maxActiveConnections: 5</code></pre>
 </div>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-You can also connect to Postgres using <code>uri</code> instead of the other properties.
-</td>
-</tr>
-</table>
 </div>
 <div class="paragraph">
-<p>Once you have the above configuration in place then you can inject the <code>io.reactiverse.reactivex.pgclient.PgPool</code> bean. The following is the simplest way to connect:</p>
+<p>Once you have the above configuration in place then you can inject the <code>com.github.jasync.sql.db.Connection</code> bean. The following is the simplest way to connect:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">result = client.rxQuery('SELECT * FROM pg_stat_database').map({ PgRowSet pgRowSet -&gt; <i class="conum" data-value="1"></i><b>(1)</b>
-    int size = 0
-    PgIterator iterator = pgRowSet.iterator()
-    while (iterator.hasNext()) {
-        iterator.next()
-        size++
-    }
-    return "Size: ${size}"
-}).blockingGet()</code></pre>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">result = client.sendQuery('SELECT * FROM pg_stat_database').thenApply({ QueryResult resultSet -&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+    return "Size: ${resultSet.rows.size()}"
+}).get()</code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td><code>client</code> is an instance of the <code>io.reactiverse.reactivex.pgclient.PgPool</code> bean.</td>
+<td><code>client</code> is an instance of the <code>com.github.jasync.sql.db.Connection</code> bean.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>For more information on running queries on Postgres using the reactive client please read the "Running queries" section in the documentation of <a href="https://reactiverse.io/reactive-pg-client/guide/groovy/index.html">reactive-pg-client</a>.</p>
+<p>For more information on running queries on using the client please read the "Running queries" section in the documentation of <a href="https://github.com/jasync-sql/jasync-sql/wiki/Executing-Statements">jasync-sql</a>.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_postgres_health_checks">Postgres Health Checks</h2>
+<h2 id="_database_health_checks">Database Health Checks</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>When the <code>postgres-reactive</code> module is activated a <a href="../api/io/micronaut/configuration/postgres/reactive/health/PgPoolHealthIndicator.html">PgPoolHealthIndicator</a> is activated resulting in the <code>/health</code> endpoint and <a href="../api/io/micronaut/health/CurrentHealthStatus.html">CurrentHealthStatus</a> interface resolving the health of the Postgres connection.</p>
+<p>When the <code>jasync-sql</code> module is activated a <a href="../api/io/micronaut/configuration/jasync/health/JasyncHealthIndicator.html">JasyncHealthIndicator</a> is activated resulting in the <code>/health</code> endpoint and <a href="../api/io/micronaut/health/CurrentHealthStatus.html">CurrentHealthStatus</a> interface resolving the health of the connection.</p>
 </div>
 <div class="paragraph">
-<p>The only configuration option supported is to enable or disable the indicator by the <code>endpoints.health.postgres.reactive.enabled</code> key.</p>
+<p>The only configuration option supported is to enable or disable the indicator by the <code>endpoints.health.jasync.enabled</code> key.</p>
 </div>
 <div class="paragraph">
 <p>See the section on the &lt;<a href="https://docs.micronaut.io/latest/guide/index.html#healthEndpoint">Health Endpoint</a> for more information.</p>
@@ -212,9 +191,7 @@ You can also connect to Postgres using <code>uri</code> instead of the other pro
 
                 <div style="clear:both;margin-top:15px;"></div>
                 
-                    <div class="toc-item prev-left"><a href="../guide/hibernate.html">&lt;&lt; <strong>3</strong><span>Configuring Hibernate</span></a></div>
-                
-                    <div class="toc-item next-right"><a href="../guide/jasync.html"><strong>5</strong><span>Configuring JAsync SQL</span> >></a></div>
+                    <div class="toc-item prev-left"><a href="../guide/pgclient.html">&lt;&lt; <strong>4</strong><span>Configuring Reactive Postgres</span></a></div>
                 
                 <div style="clear:both"></div>
             </div>
