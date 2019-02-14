@@ -15,14 +15,10 @@
  */
 
 /**
- * Reactive Postgres Client PgPoolConfiguration classes.
+ * Reactive Pg Client heath indicator.
  *
  * @author puneetbehl
  * @since 1.0
  */
-@Configuration
-@RequiresReactivePgClient
-package io.micronaut.configuration.postgres.reactive;
+package io.micronaut.configuration.jasync.health;
 
-import io.micronaut.configuration.postgres.reactive.condition.RequiresReactivePgClient;
-import io.micronaut.context.annotation.Configuration;
