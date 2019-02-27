@@ -4,6 +4,7 @@ This project includes modules to support SQL Database access in Micronaut.
 
 ==== 1.1.0
 
+* Support for JAsync SQL
 * Hibernate `5.3.7.Final` -> `5.4.0.Final`
 * Hikari `2.7.9` -> `3.3.0`
 * Commons DBCP 2 `2.1.1` -> `2.5.0`
