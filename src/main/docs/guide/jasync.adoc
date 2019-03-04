@@ -46,4 +46,4 @@ When the `jasync-sql` module is activated a api:configuration.jasync.health.Jasy
 
 The only configuration option supported is to enable or disable the indicator by the `endpoints.health.jasync.enabled` key.
 
-See the section on the <https://docs.micronaut.io/latest/guide/index.html#healthEndpoint[Health Endpoint] for more information.
+See the section on the https://docs.micronaut.io/latest/guide/index.html#healthEndpoint[Health Endpoint] for more information.
