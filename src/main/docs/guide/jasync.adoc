@@ -1,4 +1,4 @@
-Micronaut supports reactive and non-blocking client to connect to PostgreSQL and MySQL using https://github.com/jasync-sql/jasync-sql[jasync-sql], allowing to handle many database connections with a single thread.
+Micronaut supports asynchronous access to PostgreSQL and MySQL using https://github.com/jasync-sql/jasync-sql[jasync-sql], allowing to handle many database connections with a single thread.
 
 == Configuring jasync-sql Client
 [TIP]
