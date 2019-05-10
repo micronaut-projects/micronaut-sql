@@ -15,7 +15,6 @@
  */
 package io.micronaut.configuration.hibernate.jpa
 
-import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.FunctionCounter
 import io.micrometer.core.instrument.MeterRegistry
 import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession
@@ -30,7 +29,6 @@ import io.micronaut.spring.tx.annotation.BindableRuleBasedTransactionAttribute
 import io.micronaut.spring.tx.annotation.TransactionInterceptor
 import io.micronaut.spring.tx.annotation.Transactional
 import org.hibernate.Session
-import org.hibernate.SessionFactory
 import org.springframework.transaction.TransactionDefinition
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Propagation
@@ -150,7 +148,7 @@ class JpaSetupSpec extends Specification {
         bookService.saveError()
 
         then:
-        def e  = thrown(RuntimeException)
+        def e  = thrown(Exception)
 
         when:
         books = bookService.listBooks()
