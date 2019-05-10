@@ -26,6 +26,8 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
+import io.micronaut.core.beans.BeanIntrospection;
+import io.micronaut.core.beans.BeanIntrospector;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import org.hibernate.Interceptor;
@@ -124,12 +126,11 @@ public class EntityManagerFactoryBean {
         StandardServiceRegistry standardServiceRegistry) {
 
         MetadataSources metadataSources = createMetadataSources(standardServiceRegistry);
-        String[] packagesToScan = jpaConfiguration.getPackagesToScan();
-        if (ArrayUtils.isNotEmpty(packagesToScan)) {
-            environment.scan(Entity.class, packagesToScan).forEach(metadataSources::addAnnotatedClass);
-        } else {
-            environment.scan(Entity.class).forEach(metadataSources::addAnnotatedClass);
-        }
+        String[] packagesToScan = getPackagesToScan(jpaConfiguration);
+        BeanIntrospector.SHARED
+            .findIntrospections(Entity.class, packagesToScan).stream()
+            .map(BeanIntrospection::getBeanType)
+            .forEach(metadataSources::addAnnotatedClass);
         return metadataSources;
     }
 
@@ -194,5 +195,20 @@ public class EntityManagerFactoryBean {
     @SuppressWarnings("WeakerAccess")
     protected MetadataSources createMetadataSources(@Nonnull StandardServiceRegistry serviceRegistry) {
         return new MetadataSources(serviceRegistry);
+    }
+
+    /**
+     * Get an array of packages to scan or environment packages.
+     *
+     * @param jpaConfiguration The JPA configuration
+     * @return The array of packages
+     */
+    @SuppressWarnings("WeakerAccess")
+    protected String[] getPackagesToScan(@Nonnull JpaConfiguration jpaConfiguration) {
+        String[] packagesToScan = jpaConfiguration.getPackagesToScan();
+        if (ArrayUtils.isNotEmpty(packagesToScan)) {
+            return packagesToScan;
+        }
+        return environment.getPackages().toArray(new String[0]);
     }
 }

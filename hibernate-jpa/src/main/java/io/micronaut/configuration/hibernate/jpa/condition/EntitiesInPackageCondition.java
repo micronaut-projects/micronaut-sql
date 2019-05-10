@@ -24,9 +24,9 @@ import io.micronaut.context.condition.Condition;
 import io.micronaut.context.condition.ConditionContext;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.AnnotationMetadataProvider;
+import io.micronaut.core.beans.BeanIntrospector;
 import io.micronaut.core.naming.NameResolver;
 import io.micronaut.core.util.ArrayUtils;
-import io.micronaut.core.util.StringUtils;
 import io.micronaut.inject.BeanDefinition;
 import io.micronaut.inject.qualifiers.Qualifiers;
 
@@ -51,16 +51,13 @@ public class EntitiesInPackageCondition implements Condition {
                 final Optional<String> name = definition instanceof NameResolver ? ((NameResolver) definition).resolveName() : Optional.empty();
                 final Qualifier<JpaConfiguration> q = Qualifiers.byName(name.orElse("default"));
                 final Optional<JpaConfiguration> jpaConfiguration = beanContext.findBean(JpaConfiguration.class, q);
-                final String[] packagesToScan = jpaConfiguration.map(JpaConfiguration::getPackagesToScan).orElse(StringUtils.EMPTY_STRING_ARRAY);
-
                 final Environment environment = ((ApplicationContext) beanContext).getEnvironment();
-                if (ArrayUtils.isNotEmpty(packagesToScan)) {
-                    return environment.scan(Entity.class, packagesToScan).findAny().isPresent();
-                } else {
-                    return environment.scan(Entity.class).findAny().isPresent();
-                }
+                final String[] packagesToScan = jpaConfiguration.map(JpaConfiguration::getPackagesToScan)
+                    .filter(ArrayUtils::isNotEmpty).orElseGet(() -> environment.getPackages().toArray(new String[0]));
+                return !BeanIntrospector.SHARED.findIntrospections(Entity.class, packagesToScan).isEmpty();
             }
         }
         return true;
     }
+
 }
