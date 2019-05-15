@@ -10,12 +10,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "book")
-public class Book {
+@Table(name = "product")
+public class Product {
 
-    public Book() {}
+    public Product() {}
 
-    public Book(@NotNull String isbn, @NotNull String name) {
+    public Product(@NotNull String isbn, @NotNull String name) {
         this.isbn = isbn;
         this.name = name;
     }

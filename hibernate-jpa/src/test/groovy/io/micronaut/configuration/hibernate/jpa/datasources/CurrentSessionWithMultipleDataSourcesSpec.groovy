@@ -1,7 +1,7 @@
 package io.micronaut.configuration.hibernate.jpa.datasources
 
 
-import io.micronaut.configuration.hibernate.jpa.datasources.db1.BookRepository
+import io.micronaut.configuration.hibernate.jpa.datasources.db1.ProductRepository
 import io.micronaut.configuration.hibernate.jpa.datasources.db2.BookstoreMethodLevelTransaction
 import io.micronaut.configuration.hibernate.jpa.datasources.db2.BookstoreRepository
 import io.micronaut.context.ApplicationContext
@@ -20,21 +20,21 @@ class CurrentSessionWithMultipleDataSourcesSpec extends Specification {
                 'jpa.db2.entity-scan.packages': ['io.micronaut.configuration.hibernate.jpa.datasources.db2'],
         )
 
-        BookRepository bookRepository = context.getBean(BookRepository)
+        ProductRepository productRepository = context.getBean(ProductRepository)
         BookstoreRepository bookstoreRepository = context.getBean(BookstoreRepository)
         BookstoreMethodLevelTransaction methodLevelTransaction = context.getBean(BookstoreMethodLevelTransaction)
 
         when:"Some data is saved in each database"
         def store1 = bookstoreRepository.save("Waterstones")
         def store2 = bookstoreRepository.save("Amazon")
-        def book1 = bookRepository.save("1234", "The Stand")
-        def book2 = bookRepository.save("1234", "The Stand")
+        def product1 = productRepository.save("1234", "The Stand")
+        def product2 = productRepository.save("1234", "The Stand")
 
         then:"The data is available"
         bookstoreRepository.findById(store1.id).isPresent()
         bookstoreRepository.findById(store2.id).isPresent()
-        bookRepository.findById(book1.id).isPresent()
-        bookRepository.findById(book2.id).isPresent()
+        productRepository.findById(product1.id).isPresent()
+        productRepository.findById(product2.id).isPresent()
         methodLevelTransaction.findById(store1.id).isPresent()
         methodLevelTransaction.findById(store2.id).isPresent()
 

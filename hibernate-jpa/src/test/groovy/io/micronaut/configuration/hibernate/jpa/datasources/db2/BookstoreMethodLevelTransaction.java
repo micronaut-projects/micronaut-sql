@@ -4,12 +4,13 @@ import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.spring.tx.annotation.Transactional;
 
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
-@Context
+@Singleton
 public class BookstoreMethodLevelTransaction {
 
     private final EntityManager entityManager;
