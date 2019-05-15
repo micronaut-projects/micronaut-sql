@@ -150,7 +150,7 @@ class JpaSetupSpec extends Specification {
         bookService.saveError()
 
         then:
-        def e  = thrown(RuntimeException)
+        def e  = thrown(Exception)
 
         when:
         books = bookService.listBooks()
