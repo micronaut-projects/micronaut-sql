@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -48,7 +48,7 @@ var activeTableTab = "activeTableTab";
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../../../io/micronaut/configuration/hibernate/jpa/HibernateTransactionManagerFactory.html" title="class in io.micronaut.configuration.hibernate.jpa"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li>Next&nbsp;Class</li>
+<li><a href="../../../../../io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../index.html?io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" target="_top">Frames</a></li>
@@ -72,7 +72,7 @@ var activeTableTab = "activeTableTab";
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
 <li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
@@ -124,6 +124,27 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="nested.class.summary">
+<!--   -->
+</a>
+<h3>Nested Class Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Nested Class Summary table, listing nested classes, and an explanation">
+<caption><span>Nested Classes</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static class&nbsp;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a></span></code>
+<div class="block">The entity scan configuration.</div>
+</td>
+</tr>
+</table>
+</li>
+</ul>
 <!-- =========== FIELD SUMMARY =========== -->
 <ul class="blockList">
 <li class="blockList"><a name="field.summary">
@@ -160,6 +181,12 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#JpaConfiguration-io.micronaut.context.ApplicationContext-org.hibernate.integrator.spi.Integrator-">JpaConfiguration</a></span>(io.micronaut.context.ApplicationContext&nbsp;applicationContext,
                 <a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html?is-external=true" title="class or interface in org.hibernate.integrator.spi">Integrator</a>&nbsp;integrator)</code>&nbsp;</td>
 </tr>
+<tr class="rowColor">
+<td class="colFirst"><code>protected </code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#JpaConfiguration-io.micronaut.context.ApplicationContext-org.hibernate.integrator.spi.Integrator-io.micronaut.configuration.hibernate.jpa.JpaConfiguration.EntityScanConfiguration-">JpaConfiguration</a></span>(io.micronaut.context.ApplicationContext&nbsp;applicationContext,
+                <a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html?is-external=true" title="class or interface in org.hibernate.integrator.spi">Integrator</a>&nbsp;integrator,
+                <a href="../../../../../io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a>&nbsp;entityScanConfiguration)</code>&nbsp;</td>
+</tr>
 </table>
 </li>
 </ul>
@@ -195,20 +222,24 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 </td>
 </tr>
 <tr id="i3" class="rowColor">
+<td class="colFirst"><code><a href="../../../../../io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#getEntityScanConfiguration--">getEntityScanConfiguration</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#getPackagesToScan--">getPackagesToScan</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#getProperties--">getProperties</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#setPackagesToScan-java.lang.String...-">setPackagesToScan</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;packagesToScan)</code>
 <div class="block">Sets the packages to scan.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#setProperties-java.util.Map-">setProperties</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;&nbsp;jpaProperties)</code>
 <div class="block">Sets the JPA properties to be passed to the JPA implementation.</div>
@@ -260,12 +291,31 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <a name="JpaConfiguration-io.micronaut.context.ApplicationContext-org.hibernate.integrator.spi.Integrator-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>JpaConfiguration</h4>
 <pre>protected&nbsp;JpaConfiguration(io.micronaut.context.ApplicationContext&nbsp;applicationContext,
                            <a href="https://docs.oracle.com/javase/8/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
                            <a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html?is-external=true" title="class or interface in org.hibernate.integrator.spi">Integrator</a>&nbsp;integrator)</pre>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>applicationContext</code> - The application context</dd>
+<dd><code>integrator</code> - The <a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html?is-external=true" title="class or interface in org.hibernate.integrator.spi"><code>Integrator</code></a></dd>
+</dl>
+</li>
+</ul>
+<a name="JpaConfiguration-io.micronaut.context.ApplicationContext-org.hibernate.integrator.spi.Integrator-io.micronaut.configuration.hibernate.jpa.JpaConfiguration.EntityScanConfiguration-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>JpaConfiguration</h4>
+<pre><a href="https://docs.oracle.com/javaee/6/api/javax/inject/Inject.html?is-external=true" title="class or interface in javax.inject">@Inject</a>
+protected&nbsp;JpaConfiguration(io.micronaut.context.ApplicationContext&nbsp;applicationContext,
+                                   <a href="https://docs.oracle.com/javase/8/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                   <a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html?is-external=true" title="class or interface in org.hibernate.integrator.spi">Integrator</a>&nbsp;integrator,
+                                   <a href="https://docs.oracle.com/javase/8/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                   <a href="../../../../../io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a>&nbsp;entityScanConfiguration)</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>applicationContext</code> - The application context</dd>
@@ -281,6 +331,19 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a name="getEntityScanConfiguration--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getEntityScanConfiguration</h4>
+<pre>public&nbsp;<a href="../../../../../io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a>&nbsp;getEntityScanConfiguration()</pre>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>The entity scan configuration</dd>
+</dl>
+</li>
+</ul>
 <a name="buildStandardServiceRegistry-java.util.Map-">
 <!--   -->
 </a>
@@ -416,7 +479,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../../../io/micronaut/configuration/hibernate/jpa/HibernateTransactionManagerFactory.html" title="class in io.micronaut.configuration.hibernate.jpa"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li>Next&nbsp;Class</li>
+<li><a href="../../../../../io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../index.html?io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" target="_top">Frames</a></li>
@@ -440,7 +503,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
 <li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
