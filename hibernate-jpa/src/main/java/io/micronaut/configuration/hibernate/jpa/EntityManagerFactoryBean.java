@@ -40,6 +40,8 @@ import org.hibernate.boot.SessionFactoryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate5.SpringSessionContext;
 
 import javax.annotation.Nonnull;
@@ -61,6 +63,7 @@ import java.util.Map;
 @Factory
 public class EntityManagerFactoryBean {
 
+    private static final Logger LOG = LoggerFactory.getLogger(EntityManagerFactoryBean.class);
     private final JpaConfiguration jpaConfiguration;
     private final Environment environment;
     private final BeanLocator beanLocator;
@@ -182,6 +185,9 @@ public class EntityManagerFactoryBean {
     @EachBean(SessionFactory.class)
     @CurrentSession
     protected Session currentSession(@Parameter String dataSource, SessionFactory sessionFactory) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Looking up current Hibernate session for datasource: {}", dataSource);
+        }
         return sessionFactory.getCurrentSession();
     }
 
