@@ -16,10 +16,13 @@
 
 package io.micronaut.configuration.hibernate.jpa;
 
+import com.sun.el.ExpressionFactoryImpl;
+import io.micronaut.configuration.hibernate.jpa.condition.EntitiesInPackageCondition;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.env.Environment;
+import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.beans.BeanIntrospector;
 import io.micronaut.core.convert.format.MapFormat;
@@ -27,10 +30,13 @@ import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.core.util.Toggleable;
+import io.micronaut.jdbc.spring.HibernatePresenceCondition;
 import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.dialect.DB2Dialect;
+import org.hibernate.dialect.PostgreSQL95Dialect;
 import org.hibernate.integrator.spi.Integrator;
 
 import javax.annotation.Nullable;
@@ -40,6 +46,65 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
+import org.hibernate.hql.internal.ast.HqlToken;
+import org.hibernate.hql.internal.ast.tree.AggregateNode;
+import org.hibernate.hql.internal.ast.tree.AssignmentSpecification;
+import org.hibernate.hql.internal.ast.tree.BetweenOperatorNode;
+import org.hibernate.hql.internal.ast.tree.BinaryArithmeticOperatorNode;
+import org.hibernate.hql.internal.ast.tree.BinaryLogicOperatorNode;
+import org.hibernate.hql.internal.ast.tree.BooleanLiteralNode;
+import org.hibernate.hql.internal.ast.tree.CastFunctionNode;
+import org.hibernate.hql.internal.ast.tree.CollectionFunction;
+import org.hibernate.hql.internal.ast.tree.ComponentJoin;
+import org.hibernate.hql.internal.ast.tree.ConstructorNode;
+import org.hibernate.hql.internal.ast.tree.CountNode;
+import org.hibernate.hql.internal.ast.tree.DeleteStatement;
+import org.hibernate.hql.internal.ast.tree.DotNode;
+import org.hibernate.hql.internal.ast.tree.EntityJoinFromElement;
+import org.hibernate.hql.internal.ast.tree.FromClause;
+import org.hibernate.hql.internal.ast.tree.FromElement;
+import org.hibernate.hql.internal.ast.tree.FromElementFactory;
+import org.hibernate.hql.internal.ast.tree.FromReferenceNode;
+import org.hibernate.hql.internal.ast.tree.HqlSqlWalkerNode;
+import org.hibernate.hql.internal.ast.tree.IdentNode;
+import org.hibernate.hql.internal.ast.tree.ImpliedFromElement;
+import org.hibernate.hql.internal.ast.tree.InLogicOperatorNode;
+import org.hibernate.hql.internal.ast.tree.IndexNode;
+import org.hibernate.hql.internal.ast.tree.InsertStatement;
+import org.hibernate.hql.internal.ast.tree.IntoClause;
+import org.hibernate.hql.internal.ast.tree.IsNotNullLogicOperatorNode;
+import org.hibernate.hql.internal.ast.tree.IsNullLogicOperatorNode;
+import org.hibernate.hql.internal.ast.tree.JavaConstantNode;
+import org.hibernate.hql.internal.ast.tree.LiteralNode;
+import org.hibernate.hql.internal.ast.tree.MapEntryNode;
+import org.hibernate.hql.internal.ast.tree.MapKeyEntityFromElement;
+import org.hibernate.hql.internal.ast.tree.MapKeyNode;
+import org.hibernate.hql.internal.ast.tree.MapValueNode;
+import org.hibernate.hql.internal.ast.tree.MethodNode;
+import org.hibernate.hql.internal.ast.tree.Node;
+import org.hibernate.hql.internal.ast.tree.NullNode;
+import org.hibernate.hql.internal.ast.tree.OrderByClause;
+import org.hibernate.hql.internal.ast.tree.ParameterNode;
+import org.hibernate.hql.internal.ast.tree.QueryNode;
+import org.hibernate.hql.internal.ast.tree.ResultVariableRefNode;
+import org.hibernate.hql.internal.ast.tree.SearchedCaseNode;
+import org.hibernate.hql.internal.ast.tree.SelectClause;
+import org.hibernate.hql.internal.ast.tree.SelectExpressionImpl;
+import org.hibernate.hql.internal.ast.tree.SelectExpressionList;
+import org.hibernate.hql.internal.ast.tree.SimpleCaseNode;
+import org.hibernate.hql.internal.ast.tree.SqlFragment;
+import org.hibernate.hql.internal.ast.tree.SqlNode;
+import org.hibernate.hql.internal.ast.tree.UnaryArithmeticNode;
+import org.hibernate.hql.internal.ast.tree.UnaryLogicOperatorNode;
+import org.hibernate.hql.internal.ast.tree.UpdateStatement;
+import org.hibernate.id.IdentityGenerator;
+import org.hibernate.persister.collection.BasicCollectionPersister;
+import org.hibernate.persister.collection.OneToManyPersister;
+import org.hibernate.persister.entity.SingleTableEntityPersister;
+import org.hibernate.tuple.entity.EntityMetamodel;
+import org.hibernate.tuple.entity.PojoEntityTuplizer;
+import org.springframework.orm.hibernate5.SpringSessionContext;
 
 /**
  * Configuration for JPA and Hibernate.
@@ -47,6 +112,73 @@ import java.util.Map;
  * @author graemerocher
  * @since 1.0
  */
+@TypeHint(value = {
+        // Hibernate
+        HibernatePresenceCondition.class,
+        EntitiesInPackageCondition.class,
+        IdentityGenerator.class,
+        SingleTableEntityPersister.class,
+        EntityMetamodel.class,
+        PojoEntityTuplizer.class,
+        BasicCollectionPersister.class,
+        SpringSessionContext.class,
+        HqlToken.class,
+        OneToManyPersister.class,
+        // Hibernate AST
+        AggregateNode.class,
+        AssignmentSpecification.class,
+        BetweenOperatorNode.class,
+        BinaryArithmeticOperatorNode.class,
+        BinaryLogicOperatorNode.class,
+        BooleanLiteralNode.class,
+        CastFunctionNode.class,
+        CollectionFunction.class,
+        ComponentJoin.class,
+        ConstructorNode.class,
+        CountNode.class,
+        DeleteStatement.class,
+        DotNode.class,
+        EntityJoinFromElement.class,
+        FromClause.class,
+        FromElement.class,
+        FromElementFactory.class,
+        FromReferenceNode.class,
+        HqlSqlWalkerNode.class,
+        IdentNode.class,
+        ImpliedFromElement.class,
+        IndexNode.class,
+        InLogicOperatorNode.class,
+        InsertStatement.class,
+        IntoClause.class,
+        IsNotNullLogicOperatorNode.class,
+        IsNullLogicOperatorNode.class,
+        JavaConstantNode.class,
+        LiteralNode.class,
+        MapEntryNode.class,
+        MapKeyEntityFromElement.class,
+        MapKeyNode.class,
+        MapValueNode.class,
+        MethodNode.class,
+        Node.class,
+        NullNode.class,
+        OrderByClause.class,
+        ParameterNode.class,
+        QueryNode.class,
+        ResultVariableRefNode.class,
+        SearchedCaseNode.class,
+        SelectClause.class,
+        SelectExpressionImpl.class,
+        SelectExpressionList.class,
+        SimpleCaseNode.class,
+        SqlFragment.class,
+        SqlNode.class,
+        UnaryArithmeticNode.class,
+        UnaryLogicOperatorNode.class,
+        UpdateStatement.class,
+        // Others
+        ExpressionFactoryImpl.class,
+        ImplicitNamingStrategyJpaCompliantImpl.class
+}, accessType = {TypeHint.AccessType.ALL_PUBLIC})
 @EachProperty(value = JpaConfiguration.PREFIX, primary = "default")
 public class JpaConfiguration {
     public static final String PREFIX = "jpa";
