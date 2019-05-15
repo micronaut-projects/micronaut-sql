@@ -2,6 +2,10 @@ This project includes modules to support SQL Database access in Micronaut.
 
 === Release History
 
+==== 1.2.0
+
+* Improved Entity Scan support
+
 ==== 1.1.0
 
 * Support for JAsync SQL

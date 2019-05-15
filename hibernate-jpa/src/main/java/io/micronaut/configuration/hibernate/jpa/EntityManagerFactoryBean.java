@@ -26,6 +26,8 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
+import io.micronaut.core.beans.BeanIntrospection;
+import io.micronaut.core.beans.BeanIntrospector;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import org.hibernate.Interceptor;
@@ -44,6 +46,7 @@ import javax.inject.Inject;
 import javax.persistence.Entity;
 import javax.sql.DataSource;
 import javax.validation.ValidatorFactory;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -124,12 +127,8 @@ public class EntityManagerFactoryBean {
         StandardServiceRegistry standardServiceRegistry) {
 
         MetadataSources metadataSources = createMetadataSources(standardServiceRegistry);
-        String[] packagesToScan = jpaConfiguration.getPackagesToScan();
-        if (ArrayUtils.isNotEmpty(packagesToScan)) {
-            environment.scan(Entity.class, packagesToScan).forEach(metadataSources::addAnnotatedClass);
-        } else {
-            environment.scan(Entity.class).forEach(metadataSources::addAnnotatedClass);
-        }
+        JpaConfiguration.EntityScanConfiguration entityScanConfiguration = jpaConfiguration.getEntityScanConfiguration();
+        entityScanConfiguration.findEntities().forEach(metadataSources::addAnnotatedClass);
         return metadataSources;
     }
 

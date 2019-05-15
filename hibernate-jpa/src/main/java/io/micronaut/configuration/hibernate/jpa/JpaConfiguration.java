@@ -17,10 +17,16 @@
 package io.micronaut.configuration.hibernate.jpa;
 
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.EachProperty;
+import io.micronaut.context.env.Environment;
+import io.micronaut.core.beans.BeanIntrospection;
+import io.micronaut.core.beans.BeanIntrospector;
 import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.core.util.ArrayUtils;
+import io.micronaut.core.util.StringUtils;
+import io.micronaut.core.util.Toggleable;
 import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -28,6 +34,11 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.integrator.spi.Integrator;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.persistence.Entity;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -41,9 +52,10 @@ public class JpaConfiguration {
     public static final String PREFIX = "jpa";
 
     private final BootstrapServiceRegistry bootstrapServiceRegistry;
+    private final Environment environment;
 
     private Map<String, Object> jpaProperties;
-    private String[] packagesToScan;
+    private EntityScanConfiguration entityScanConfiguration;
 
     /**
      * @param applicationContext The application context
@@ -51,11 +63,31 @@ public class JpaConfiguration {
      */
     protected JpaConfiguration(ApplicationContext applicationContext,
                                @Nullable Integrator integrator) {
+        this(applicationContext, integrator, new EntityScanConfiguration(applicationContext.getEnvironment()));
+    }
+
+    /**
+     * @param applicationContext The application context
+     * @param integrator         The {@link Integrator}
+     */
+    @Inject
+    protected JpaConfiguration(ApplicationContext applicationContext,
+                               @Nullable Integrator integrator,
+                               @Nullable EntityScanConfiguration entityScanConfiguration) {
         ClassLoader classLoader = applicationContext.getClassLoader();
         BootstrapServiceRegistryBuilder bootstrapServiceRegistryBuilder =
-            createBootstrapServiceRegistryBuilder(integrator, classLoader);
+                createBootstrapServiceRegistryBuilder(integrator, classLoader);
 
         this.bootstrapServiceRegistry = bootstrapServiceRegistryBuilder.build();
+        this.entityScanConfiguration = entityScanConfiguration != null ? entityScanConfiguration : new EntityScanConfiguration(applicationContext.getEnvironment());
+        this.environment = applicationContext.getEnvironment();
+    }
+
+    /**
+     * @return The entity scan configuration
+     */
+    public EntityScanConfiguration getEntityScanConfiguration() {
+        return entityScanConfiguration;
     }
 
     /**
@@ -84,7 +116,10 @@ public class JpaConfiguration {
      */
     public void setPackagesToScan(String... packagesToScan) {
         if (ArrayUtils.isNotEmpty(packagesToScan)) {
-            this.packagesToScan = packagesToScan;
+            EntityScanConfiguration entityScanConfiguration = new EntityScanConfiguration(environment);
+            entityScanConfiguration.setClasspath(true);
+            entityScanConfiguration.setPackages(packagesToScan);
+            this.entityScanConfiguration = entityScanConfiguration;
         }
     }
 
@@ -92,7 +127,7 @@ public class JpaConfiguration {
      * @return The packages to scan
      */
     public String[] getPackagesToScan() {
-        return packagesToScan;
+        return entityScanConfiguration.getPackages();
     }
 
     /**
@@ -143,5 +178,98 @@ public class JpaConfiguration {
         return new StandardServiceRegistryBuilder(
             bootstrapServiceRegistry
         );
+    }
+
+    /**
+     * The entity scan configuration.
+     */
+    @ConfigurationProperties("entity-scan")
+    public static class EntityScanConfiguration implements Toggleable {
+
+        private boolean enabled = true;
+        private boolean classpath = false;
+        private String[] packages = StringUtils.EMPTY_STRING_ARRAY;
+
+        private final Environment environment;
+
+        /**
+         * Default constructor.
+         * @param environment The environment
+         */
+        public EntityScanConfiguration(Environment environment) {
+            this.environment = environment;
+        }
+
+        @Override
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        /**
+         * @return Whether to scan the whole classpath or just look for introspected beans compiled by this application.
+         */
+        public boolean isClasspath() {
+            return classpath;
+        }
+
+        /**
+         * Sets whether to scan the whole classpath including external JAR files using classpath scanning or just look for introspected beans compiled by this application.
+         * @param classpath True if extensive classpath scanning should be used
+         */
+        public void setClasspath(boolean classpath) {
+            this.classpath = classpath;
+        }
+
+        /**
+         * Set whether entity scan is enabled. Defaults to true.
+         * @param enabled True if it is enabled
+         */
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        /**
+         * The packages to limit the scan to.
+         * @return The packages to limit the scan to
+         */
+        public String[] getPackages() {
+            return packages;
+        }
+
+        /**
+         * @param packages The packages
+         */
+        public void setPackages(String[] packages) {
+            this.packages = packages;
+        }
+
+        /**
+         * Find entities for the current configuration.
+         * @return The entities
+         */
+        public Collection<Class<?>> findEntities() {
+            Collection<Class<?>> entities = new HashSet<>();
+            if (isClasspath()) {
+
+                if (ArrayUtils.isNotEmpty(packages)) {
+                    environment.scan(Entity.class, packages).forEach(entities::add);
+                } else {
+                    environment.scan(Entity.class).forEach(entities::add);
+                }
+            }
+
+            if (isEnabled()) {
+                Collection<BeanIntrospection<Object>> introspections;
+                if (ArrayUtils.isNotEmpty(packages)) {
+                    introspections = BeanIntrospector.SHARED.findIntrospections(Entity.class, packages);
+                } else {
+                    introspections = BeanIntrospector.SHARED.findIntrospections(Entity.class);
+                }
+                introspections
+                        .stream().map(BeanIntrospection::getBeanType)
+                        .forEach(entities::add);
+            }
+            return Collections.unmodifiableCollection(entities);
+        }
     }
 }

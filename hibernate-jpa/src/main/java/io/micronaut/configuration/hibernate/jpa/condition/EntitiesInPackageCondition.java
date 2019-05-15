@@ -24,6 +24,7 @@ import io.micronaut.context.condition.Condition;
 import io.micronaut.context.condition.ConditionContext;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.AnnotationMetadataProvider;
+import io.micronaut.core.beans.BeanIntrospector;
 import io.micronaut.core.naming.NameResolver;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.util.StringUtils;
@@ -51,14 +52,34 @@ public class EntitiesInPackageCondition implements Condition {
                 final Optional<String> name = definition instanceof NameResolver ? ((NameResolver) definition).resolveName() : Optional.empty();
                 final Qualifier<JpaConfiguration> q = Qualifiers.byName(name.orElse("default"));
                 final Optional<JpaConfiguration> jpaConfiguration = beanContext.findBean(JpaConfiguration.class, q);
-                final String[] packagesToScan = jpaConfiguration.map(JpaConfiguration::getPackagesToScan).orElse(StringUtils.EMPTY_STRING_ARRAY);
+                JpaConfiguration.EntityScanConfiguration entityScanConfig = jpaConfiguration.map(JpaConfiguration::getEntityScanConfiguration).orElse(null);
 
-                final Environment environment = ((ApplicationContext) beanContext).getEnvironment();
-                if (ArrayUtils.isNotEmpty(packagesToScan)) {
-                    return environment.scan(Entity.class, packagesToScan).findAny().isPresent();
-                } else {
-                    return environment.scan(Entity.class).findAny().isPresent();
+                if (entityScanConfig == null) {
+                    return false;
                 }
+
+                boolean isClasspathScanEnabled = entityScanConfig.isClasspath();
+                String[] packagesToScan = entityScanConfig.getPackages();
+                boolean hasEntitiesOnClassPath = false;
+                boolean hasIntrospections = false;
+                if (isClasspathScanEnabled) {
+                    final Environment environment = ((ApplicationContext) beanContext).getEnvironment();
+                    if (ArrayUtils.isNotEmpty(packagesToScan)) {
+                        hasEntitiesOnClassPath = environment.scan(Entity.class, packagesToScan).findAny().isPresent();
+                    } else {
+                        hasEntitiesOnClassPath = environment.scan(Entity.class).findAny().isPresent();
+                    }
+                } else {
+                    if (ArrayUtils.isNotEmpty(packagesToScan)) {
+                        hasIntrospections = !BeanIntrospector.SHARED
+                                .findIntrospections(Entity.class, packagesToScan).isEmpty();
+                    } else {
+                        hasIntrospections = !BeanIntrospector.SHARED
+                                .findIntrospections(Entity.class).isEmpty();
+                    }
+                }
+
+                return hasEntitiesOnClassPath || hasIntrospections;
             }
         }
         return true;
