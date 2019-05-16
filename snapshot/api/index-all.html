@@ -437,6 +437,8 @@
 <dd>
 <div class="block">Classes related to the <a href="io/micronaut/configuration/hibernate/jpa/scope/CurrentSession.html" title="annotation in io.micronaut.configuration.hibernate.jpa.scope"><code>CurrentSession</code></a> scope.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/hibernate/jpa/validation/package-summary.html">io.micronaut.configuration.hibernate.jpa.validation</a> - package io.micronaut.configuration.hibernate.jpa.validation</dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jasync/package-summary.html">io.micronaut.configuration.jasync</a> - package io.micronaut.configuration.jasync</dt>
 <dd>
 <div class="block">Reactive Postgres Client PgPoolConfiguration classes.</div>
@@ -475,9 +477,13 @@
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/postgres/reactive/health/package-summary.html">io.micronaut.configuration.postgres.reactive.health</a> - package io.micronaut.configuration.postgres.reactive.health</dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/validation/JPATraversableResolver.html#isCascadable-java.lang.Object-javax.validation.Path.Node-java.lang.Class-javax.validation.Path-java.lang.annotation.ElementType-">isCascadable(Object, Path.Node, Class&lt;?&gt;, Path, ElementType)</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.validation.<a href="io/micronaut/configuration/hibernate/jpa/validation/JPATraversableResolver.html" title="class in io.micronaut.configuration.hibernate.jpa.validation">JPATraversableResolver</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html#isClasspath--">isClasspath()</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html#isEnabled--">isEnabled()</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/validation/JPATraversableResolver.html#isReachable-java.lang.Object-javax.validation.Path.Node-java.lang.Class-javax.validation.Path-java.lang.annotation.ElementType-">isReachable(Object, Path.Node, Class&lt;?&gt;, Path, ElementType)</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.validation.<a href="io/micronaut/configuration/hibernate/jpa/validation/JPATraversableResolver.html" title="class in io.micronaut.configuration.hibernate.jpa.validation">JPATraversableResolver</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <a name="I:J">
@@ -531,6 +537,13 @@
 <dd>
 <div class="block">The entity scan configuration.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/hibernate/jpa/validation/JPATraversableResolver.html" title="class in io.micronaut.configuration.hibernate.jpa.validation"><span class="typeNameLink">JPATraversableResolver</span></a> - Class in <a href="io/micronaut/configuration/hibernate/jpa/validation/package-summary.html">io.micronaut.configuration.hibernate.jpa.validation</a></dt>
+<dd>
+<div class="block">An implementation of <code>TraversableResolver</code> which is aware of JPA 2 and utilizes <code>PersistenceUtil</code> to
+ query the reachability of a property.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/validation/JPATraversableResolver.html#JPATraversableResolver--">JPATraversableResolver()</a></span> - Constructor for class io.micronaut.configuration.hibernate.jpa.validation.<a href="io/micronaut/configuration/hibernate/jpa/validation/JPATraversableResolver.html" title="class in io.micronaut.configuration.hibernate.jpa.validation">JPATraversableResolver</a></dt>
+<dd>&nbsp;</dd>
 </dl>
 <a name="I:M">
 <!--   -->
