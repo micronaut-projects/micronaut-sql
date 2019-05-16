@@ -15,12 +15,13 @@ dependencies {
     compile "io.micronaut:micronaut-spring:$micronautVersion"
     compile "org.springframework:spring-orm:$springVersion"
     compile "io.micronaut:micronaut-runtime:$micronautVersion"
-    compile "io.micronaut.configuration:micronaut-hibernate-validator:$micronautVersion"
+    compile "io.micronaut:micronaut-validation:$micronautVersion"
     compileOnly "io.micronaut:micronaut-management"
     compileOnly "io.micronaut.configuration:micronaut-micrometer-core"
 
-
+    compile "io.micronaut:micronaut-validation:$micronautVersion"
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+    testRuntime "io.micronaut.configuration:micronaut-hibernate-validator:$micronautVersion"
     testCompile "io.micronaut:micronaut-inject-java"
     testCompile "org.hibernate:hibernate-jcache:$hibernateVersion"
     testCompile "io.micronaut:micronaut-management"

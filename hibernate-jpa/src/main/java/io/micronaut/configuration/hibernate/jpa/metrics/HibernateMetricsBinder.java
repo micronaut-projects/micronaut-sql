@@ -27,6 +27,7 @@ import io.micronaut.context.event.BeanCreatedEventListener;
 import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
+import org.hibernate.SessionFactory;
 
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -77,12 +78,15 @@ public class HibernateMetricsBinder implements BeanCreatedEventListener<EntityMa
         EntityManagerFactory entityManagerFactory = event.getBean();
         String sessionFactoryName = event.getBeanIdentifier().getName();
         MeterRegistry meterRegistry = meterRegistryProvider.get();
-        HibernateMetrics.monitor(
-                meterRegistry,
-                entityManagerFactory,
-                sessionFactoryName,
-                tags
-        );
+        if (entityManagerFactory instanceof SessionFactory) {
+
+            HibernateMetrics.monitor(
+                    meterRegistry,
+                    (SessionFactory) entityManagerFactory,
+                    sessionFactoryName,
+                    tags
+            );
+        }
 
         return entityManagerFactory;
     }

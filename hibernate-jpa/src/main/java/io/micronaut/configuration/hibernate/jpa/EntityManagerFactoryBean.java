@@ -75,9 +75,9 @@ public class EntityManagerFactoryBean {
      * @param beanLocator      The bean locator
      */
     public EntityManagerFactoryBean(
-        JpaConfiguration jpaConfiguration,
-        Environment environment,
-        BeanLocator beanLocator) {
+            JpaConfiguration jpaConfiguration,
+            Environment environment,
+            BeanLocator beanLocator) {
 
         this.jpaConfiguration = jpaConfiguration;
         this.environment = environment;
