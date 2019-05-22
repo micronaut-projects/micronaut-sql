@@ -5,6 +5,8 @@ This project includes modules to support SQL Database access in Micronaut.
 ==== 1.2.0
 
 * Improved Entity Scan support
+* GraalVM metadata
+* Integration with Micronaut 1.2 Validator
 
 ==== 1.1.0
 
