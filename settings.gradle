@@ -6,4 +6,4 @@ include 'jdbc-tomcat'
 include 'postgres-reactive'
 include 'jasync-sql'
 include 'hibernate-jpa'
-
+include 'jooq'
