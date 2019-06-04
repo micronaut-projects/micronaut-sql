@@ -16,6 +16,7 @@
 
 package io.micronaut.configuration.jdbc.dbcp;
 
+import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
@@ -38,6 +39,7 @@ import java.sql.SQLException;
  * @author James Kleeh
  * @since 1.0
  */
+@Context
 @EachProperty(value = BasicJdbcConfiguration.PREFIX, primary = "default")
 public class DatasourceConfiguration extends BasicDataSource implements BasicJdbcConfiguration {
 
