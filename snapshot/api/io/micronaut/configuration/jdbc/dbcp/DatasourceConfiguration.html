@@ -116,7 +116,8 @@ var activeTableTab = "activeTableTab";
 </dl>
 <hr>
 <br>
-<pre>@EachProperty(value="datasources",
+<pre>@Context
+ @EachProperty(value="datasources",
               primary="default")
 public class <span class="typeNameLabel">DatasourceConfiguration</span>
 extends org.apache.commons.dbcp2.BasicDataSource

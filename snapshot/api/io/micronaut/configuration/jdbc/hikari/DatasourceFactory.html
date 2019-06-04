@@ -219,7 +219,8 @@ implements <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/AutoClos
 <ul class="blockList">
 <li class="blockList">
 <h4>dataSource</h4>
-<pre>@EachBean(value=<a href="../../../../../io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration.class</a>)
+<pre>@Context
+ @EachBean(value=<a href="../../../../../io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration.class</a>)
 public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql">DataSource</a>&nbsp;dataSource(<a href="../../../../../io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration</a>&nbsp;datasourceConfiguration)</pre>
 <div class="block">Method to wire up all the HikariCP connections based on the <a href="../../../../../io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari"><code>DatasourceConfiguration</code></a>.
  If a <code>MeterRegistry</code> bean exists then the registry will be added to the datasource.</div>
