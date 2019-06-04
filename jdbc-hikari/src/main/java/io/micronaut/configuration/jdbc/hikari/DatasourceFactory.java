@@ -18,6 +18,7 @@ package io.micronaut.configuration.jdbc.hikari;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import org.slf4j.Logger;
@@ -60,6 +61,7 @@ public class DatasourceFactory implements AutoCloseable {
      * @param datasourceConfiguration A {@link DatasourceConfiguration}
      * @return A {@link HikariUrlDataSource}
      */
+    @Context
     @EachBean(DatasourceConfiguration.class)
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         HikariUrlDataSource ds = new HikariUrlDataSource(datasourceConfiguration);

@@ -18,6 +18,7 @@ package io.micronaut.configuration.jdbc.tomcat;
 
 import javax.annotation.Nullable;
 import io.micronaut.configuration.jdbc.tomcat.metadata.TomcatDataSourcePoolMetadata;
+import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
@@ -57,6 +58,7 @@ public class DatasourceFactory implements AutoCloseable {
      * @param datasourceConfiguration A {@link DatasourceConfiguration}
      * @return An Apache Tomcat {@link DataSource}
      */
+    @Context
     @EachBean(DatasourceConfiguration.class)
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource(datasourceConfiguration);
