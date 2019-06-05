@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 public class JooqConfigurationFactory {
 
     @EachBean(DataSource.class)
-    public DefaultConfiguration jooqConfiguration(
+    public Configuration jooqConfiguration(
             @Parameter String name,
             DataSource dataSource,
             ApplicationContext ctx

@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@EachProperty(value = "jooq.datasources")
+@EachProperty(value = "jooq")
 public class JooqConfigurationProperties {
 
     private SQLDialect sqlDialect;

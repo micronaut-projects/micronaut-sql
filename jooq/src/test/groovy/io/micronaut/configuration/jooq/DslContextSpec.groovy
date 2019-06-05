@@ -20,6 +20,7 @@ import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource
 import org.jooq.Configuration
 import org.jooq.DSLContext
+import org.jooq.SQLDialect
 import org.jooq.TransactionalRunnable
 import org.jooq.impl.DSL
 import spock.lang.Specification
@@ -60,10 +61,31 @@ class DslContextSpec extends Specification {
         Configuration configuration = applicationContext.getBean(DSLContext).configuration()
 
         then:
+        configuration.dialect() == SQLDialect.H2
         configuration.executeListenerProviders().any {
             provider -> JooqExceptionTranslatorProvider.isInstance(provider)
         }
         SpringTransactionProvider.isInstance(configuration.transactionProvider())
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    void "test sql dialect override"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                ['datasources.default'     : [:],
+                 'jooq.default.sql-dialect': 'POSTGRES']
+        ))
+        applicationContext.start()
+
+        when:
+        Configuration configuration = applicationContext.getBean(DSLContext).configuration()
+
+        then:
+        configuration.dialect() == SQLDialect.POSTGRES
 
         cleanup:
         applicationContext.close()
