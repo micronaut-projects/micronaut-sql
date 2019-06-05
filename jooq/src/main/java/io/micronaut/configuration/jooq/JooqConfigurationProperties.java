@@ -8,15 +8,30 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Configuration for jOOQ.
+ *
+ * @author Vladimir Kulev
+ */
 @EachProperty(value = "jooq")
 public class JooqConfigurationProperties {
 
     private SQLDialect sqlDialect;
 
+    /**
+     * SQL dialect to use. If {@code null}, will be detected automatically.
+     *
+     * @return SQL dialect
+     */
     public SQLDialect getSqlDialect() {
         return sqlDialect;
     }
 
+    /**
+     * SQL dialect to use. Will be detected automatically by default.
+     *
+     * @param sqlDialect SQL dialect
+     */
     public void setSqlDialect(SQLDialect sqlDialect) {
         this.sqlDialect = sqlDialect;
     }

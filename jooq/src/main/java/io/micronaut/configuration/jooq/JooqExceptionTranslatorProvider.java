@@ -8,6 +8,11 @@ import org.springframework.jdbc.support.SQLExceptionTranslator;
 
 import javax.sql.DataSource;
 
+/**
+ * Allows {@link SQLExceptionTranslator} to be used with JOOQ.
+ *
+ * @author Vladimir Kulev
+ */
 @Requires(classes = SQLExceptionTranslator.class)
 @EachBean(DataSource.class)
 public class JooqExceptionTranslatorProvider implements ExecuteListenerProvider {
