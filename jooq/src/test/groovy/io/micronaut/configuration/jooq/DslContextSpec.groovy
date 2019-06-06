@@ -77,7 +77,7 @@ class DslContextSpec extends Specification {
         applicationContext.environment.addPropertySource(MapPropertySource.of(
                 'test',
                 ['datasources.default'     : [:],
-                 'jooq.default.sql-dialect': 'POSTGRES']
+                 'jooq.datasources.default.sql-dialect': 'POSTGRES']
         ))
         applicationContext.start()
 

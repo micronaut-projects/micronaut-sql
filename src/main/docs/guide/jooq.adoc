@@ -27,8 +27,9 @@ If this does not work as desired, SQL dialect can be provided manually via confi
 [source,yaml]
 ----
 jooq:
-    default:
-        sql-dialect: 'POSTGRES'
+    datasources:
+        default:
+            sql-dialect: 'POSTGRES'
 ----
 
 === Configuring additional provider beans ===

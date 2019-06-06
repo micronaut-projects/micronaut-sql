@@ -30,7 +30,7 @@ import java.sql.SQLException;
  * @author Vladimir Kulev
  * @since 1.2.0
  */
-@EachProperty(value = "jooq")
+@EachProperty(value = "jooq.datasources")
 public class JooqConfigurationProperties {
 
     private SQLDialect sqlDialect;
