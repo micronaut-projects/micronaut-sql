@@ -47,6 +47,7 @@ public class JooqConfigurationFactory {
         ctx.findBean(ExecutorProvider.class, Qualifiers.byName(name)).ifPresent(configuration::setExecutorProvider);
         ctx.findBean(RecordMapperProvider.class, Qualifiers.byName(name)).ifPresent(configuration::setRecordMapperProvider);
         ctx.findBean(RecordUnmapperProvider.class, Qualifiers.byName(name)).ifPresent(configuration::setRecordUnmapperProvider);
+        ctx.findBean(MetaProvider.class, Qualifiers.byName(name)).ifPresent(configuration::setMetaProvider);
         configuration.setExecuteListenerProvider(ctx.getBeansOfType(ExecuteListenerProvider.class, Qualifiers.byName(name))
                 .toArray(new ExecuteListenerProvider[0]));
         configuration.setRecordListenerProvider(ctx.getBeansOfType(RecordListenerProvider.class, Qualifiers.byName(name))
@@ -55,6 +56,8 @@ public class JooqConfigurationFactory {
                 .toArray(new VisitListenerProvider[0]));
         configuration.setTransactionListenerProvider(ctx.getBeansOfType(TransactionListenerProvider.class, Qualifiers.byName(name))
                 .toArray(new TransactionListenerProvider[0]));
+        configuration.setDiagnosticsListenerProvider(ctx.getBeansOfType(DiagnosticsListenerProvider.class, Qualifiers.byName(name))
+                .toArray(new DiagnosticsListenerProvider[0]));
 
         return configuration;
     }
