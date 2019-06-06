@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Configuration for jOOQ integration.
+ *
+ * @author Vladimir Kulev
+ * @since 1.2.0
  */
 @Configuration
 @Requires(classes = DSLContext.class)

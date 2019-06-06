@@ -1,11 +1,11 @@
 /*
- * Copyright 2012-2017 the original author or authors.
+ * Copyright 2017-2018 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,13 +29,13 @@ import org.springframework.jdbc.support.SQLStateSQLExceptionTranslator;
 import java.sql.SQLException;
 
 /**
- * Transforms {@link SQLException} into a Spring-specific
- * {@link DataAccessException}.
+ * Transforms {@link SQLException} into a Spring-specific {@link DataAccessException}.
  *
  * @author Lukas Eder
  * @author Andreas Ahlenstorf
  * @author Phillip Webb
  * @author Stephane Nicoll
+ * @since 1.2.0
  */
 public class JooqExceptionTranslator extends DefaultExecuteListener {
 
@@ -71,9 +71,10 @@ public class JooqExceptionTranslator extends DefaultExecuteListener {
 	 * levels deep. The outermost exception is usually the least interesting one ("Call
 	 * getNextException to see the cause."). Therefore the innermost exception is
 	 * propagated and all other exceptions are logged.
-	 * @param context the execute context
-	 * @param translator the exception translator
-	 * @param exception the exception
+	 *
+	 * @param context The execute context
+	 * @param translator The exception translator
+	 * @param exception The exception
 	 */
 	private void handle(ExecuteContext context, SQLExceptionTranslator translator,
 			SQLException exception) {
