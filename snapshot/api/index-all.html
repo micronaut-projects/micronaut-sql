@@ -72,6 +72,8 @@
 </a>
 <h2 class="title">B</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/SpringTransactionProvider.html#begin-org.jooq.TransactionContext-">begin(TransactionContext)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/SpringTransactionProvider.html" title="class in io.micronaut.configuration.jooq">SpringTransactionProvider</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#buildStandardServiceRegistry-java.util.Map-">buildStandardServiceRegistry(Map&lt;String, Object&gt;)</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration</a></dt>
 <dd>
 <div class="block">Builds the standard service registry.</div>
@@ -99,6 +101,8 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/hikari/DatasourceFactory.html#close--">close()</a></span> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceFactory.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceFactory</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/DatasourceFactory.html#close--">close()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.<a href="io/micronaut/configuration/jdbc/tomcat/DatasourceFactory.html" title="class in io.micronaut.configuration.jdbc.tomcat">DatasourceFactory</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/SpringTransactionProvider.html#commit-org.jooq.TransactionContext-">commit(TransactionContext)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/SpringTransactionProvider.html" title="class in io.micronaut.configuration.jooq">SpringTransactionProvider</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#createBootstrapServiceRegistryBuilder-org.hibernate.integrator.spi.Integrator-java.lang.ClassLoader-">createBootstrapServiceRegistryBuilder(Integrator, ClassLoader)</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration</a></dt>
 <dd>
@@ -192,6 +196,14 @@
 <dd>
 <div class="block">DBCP typed <code>DataSourcePoolMetadata</code> object.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html#determineSqlDialect-javax.sql.DataSource-">determineSqlDialect(DataSource)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html" title="class in io.micronaut.configuration.jooq">JooqConfigurationProperties</a></dt>
+<dd>
+<div class="block">Resolve <a href="https://www.jooq.org/javadoc/latest/org/jooq/SQLDialect.html?is-external=true" title="class or interface in org.jooq"><code>SQLDialect</code></a> to be used for the data source.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqConfigurationFactory.html#dslContext-org.jooq.Configuration-">dslContext(Configuration)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationFactory.html" title="class in io.micronaut.configuration.jooq">JooqConfigurationFactory</a></dt>
+<dd>
+<div class="block">Created <a href="https://www.jooq.org/javadoc/latest/org/jooq/DSLContext.html?is-external=true" title="class or interface in org.jooq"><code>DSLContext</code></a> based on <a href="https://www.jooq.org/javadoc/latest/org/jooq/Configuration.html?is-external=true" title="class or interface in org.jooq"><code>Configuration</code></a></div>
+</dd>
 </dl>
 <a name="I:E">
 <!--   -->
@@ -214,6 +226,8 @@
 <dd>
 <div class="block">Default constructor.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqExceptionTranslator.html#exception-org.jooq.ExecuteContext-">exception(ExecuteContext)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqExceptionTranslator.html" title="class in io.micronaut.configuration.jooq">JooqExceptionTranslator</a></dt>
+<dd>&nbsp;</dd>
 </dl>
 <a name="I:F">
 <!--   -->
@@ -332,6 +346,10 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/postgres/reactive/health/PgPoolHealthIndicator.html#getResult--">getResult()</a></span> - Method in class io.micronaut.configuration.postgres.reactive.health.<a href="io/micronaut/configuration/postgres/reactive/health/PgPoolHealthIndicator.html" title="class in io.micronaut.configuration.postgres.reactive.health">PgPoolHealthIndicator</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html#getSqlDialect--">getSqlDialect()</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html" title="class in io.micronaut.configuration.jooq">JooqConfigurationProperties</a></dt>
+<dd>
+<div class="block">SQL dialect to use.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/postgres/reactive/PgPoolConfiguration.html#getUri--">getUri()</a></span> - Method in class io.micronaut.configuration.postgres.reactive.<a href="io/micronaut/configuration/postgres/reactive/PgPoolConfiguration.html" title="class in io.micronaut.configuration.postgres.reactive">PgPoolConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getUrl--">getUrl()</a></span> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
@@ -471,6 +489,10 @@
 <dd>
 <div class="block">Contains classes for reading JDBC metadata for Tomcat.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/jooq/package-summary.html">io.micronaut.configuration.jooq</a> - package io.micronaut.configuration.jooq</dt>
+<dd>
+<div class="block">Configuration for jOOQ integration.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/postgres/reactive/package-summary.html">io.micronaut.configuration.postgres.reactive</a> - package io.micronaut.configuration.postgres.reactive</dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/postgres/reactive/condition/package-summary.html">io.micronaut.configuration.postgres.reactive.condition</a> - package io.micronaut.configuration.postgres.reactive.condition</dt>
@@ -525,6 +547,34 @@
 <dd>
 <div class="block">Constructor.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqConfigurationFactory.html#jooqConfiguration-java.lang.String-javax.sql.DataSource-io.micronaut.context.ApplicationContext-">jooqConfiguration(String, DataSource, ApplicationContext)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationFactory.html" title="class in io.micronaut.configuration.jooq">JooqConfigurationFactory</a></dt>
+<dd>
+<div class="block">Creates jOOQ <a href="https://www.jooq.org/javadoc/latest/org/jooq/Configuration.html?is-external=true" title="class or interface in org.jooq"><code>Configuration</code></a>.</div>
+</dd>
+<dt><a href="io/micronaut/configuration/jooq/JooqConfigurationFactory.html" title="class in io.micronaut.configuration.jooq"><span class="typeNameLink">JooqConfigurationFactory</span></a> - Class in <a href="io/micronaut/configuration/jooq/package-summary.html">io.micronaut.configuration.jooq</a></dt>
+<dd>
+<div class="block">Sets up jOOQ library integration.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqConfigurationFactory.html#JooqConfigurationFactory--">JooqConfigurationFactory()</a></span> - Constructor for class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationFactory.html" title="class in io.micronaut.configuration.jooq">JooqConfigurationFactory</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html" title="class in io.micronaut.configuration.jooq"><span class="typeNameLink">JooqConfigurationProperties</span></a> - Class in <a href="io/micronaut/configuration/jooq/package-summary.html">io.micronaut.configuration.jooq</a></dt>
+<dd>
+<div class="block">Configuration for jOOQ.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html#JooqConfigurationProperties--">JooqConfigurationProperties()</a></span> - Constructor for class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html" title="class in io.micronaut.configuration.jooq">JooqConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jooq/JooqExceptionTranslator.html" title="class in io.micronaut.configuration.jooq"><span class="typeNameLink">JooqExceptionTranslator</span></a> - Class in <a href="io/micronaut/configuration/jooq/package-summary.html">io.micronaut.configuration.jooq</a></dt>
+<dd>
+<div class="block">Transforms <a href="https://docs.oracle.com/javase/8/docs/api/java/sql/SQLException.html?is-external=true" title="class or interface in java.sql"><code>SQLException</code></a> into a Spring-specific <code>DataAccessException</code>.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqExceptionTranslator.html#JooqExceptionTranslator--">JooqExceptionTranslator()</a></span> - Constructor for class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqExceptionTranslator.html" title="class in io.micronaut.configuration.jooq">JooqExceptionTranslator</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jooq/JooqExceptionTranslatorProvider.html" title="class in io.micronaut.configuration.jooq"><span class="typeNameLink">JooqExceptionTranslatorProvider</span></a> - Class in <a href="io/micronaut/configuration/jooq/package-summary.html">io.micronaut.configuration.jooq</a></dt>
+<dd>
+<div class="block">Allows <code>SQLExceptionTranslator</code> to be used with JOOQ.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqExceptionTranslatorProvider.html#JooqExceptionTranslatorProvider--">JooqExceptionTranslatorProvider()</a></span> - Constructor for class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqExceptionTranslatorProvider.html" title="class in io.micronaut.configuration.jooq">JooqExceptionTranslatorProvider</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa"><span class="typeNameLink">JpaConfiguration</span></a> - Class in <a href="io/micronaut/configuration/hibernate/jpa/package-summary.html">io.micronaut.configuration.hibernate.jpa</a></dt>
 <dd>
 <div class="block">Configuration for JPA and Hibernate.</div>
@@ -615,6 +665,8 @@
 <dd>
 <div class="block">The prefix to use for all Reactive Postgres Client settings.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqExceptionTranslatorProvider.html#provide--">provide()</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqExceptionTranslatorProvider.html" title="class in io.micronaut.configuration.jooq">JooqExceptionTranslatorProvider</a></dt>
+<dd>&nbsp;</dd>
 </dl>
 <a name="I:Q">
 <!--   -->
@@ -638,6 +690,8 @@
 <dt><a href="io/micronaut/configuration/jasync/condition/RequiresJasyncClient.html" title="annotation in io.micronaut.configuration.jasync.condition"><span class="typeNameLink">RequiresJasyncClient</span></a> - Annotation Type in <a href="io/micronaut/configuration/jasync/condition/package-summary.html">io.micronaut.configuration.jasync.condition</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/postgres/reactive/condition/RequiresReactivePgClient.html" title="annotation in io.micronaut.configuration.postgres.reactive.condition"><span class="typeNameLink">RequiresReactivePgClient</span></a> - Annotation Type in <a href="io/micronaut/configuration/postgres/reactive/condition/package-summary.html">io.micronaut.configuration.postgres.reactive.condition</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/SpringTransactionProvider.html#rollback-org.jooq.TransactionContext-">rollback(TransactionContext)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/SpringTransactionProvider.html" title="class in io.micronaut.configuration.jooq">SpringTransactionProvider</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <a name="I:S">
@@ -675,6 +729,10 @@
 <dd>
 <div class="block">Sets the JPA properties to be passed to the JPA implementation.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html#setSqlDialect-org.jooq.SQLDialect-">setSqlDialect(SQLDialect)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html" title="class in io.micronaut.configuration.jooq">JooqConfigurationProperties</a></dt>
+<dd>
+<div class="block">SQL dialect to use.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#setUrl-java.lang.String-">setUrl(String)</a></span> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration</a></dt>
 <dd>
 <div class="block">Setter.</div>
@@ -686,6 +744,14 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#setValidationQuery-java.lang.String-">setValidationQuery(String)</a></span> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration</a></dt>
 <dd>
 <div class="block">Setter.</div>
+</dd>
+<dt><a href="io/micronaut/configuration/jooq/SpringTransactionProvider.html" title="class in io.micronaut.configuration.jooq"><span class="typeNameLink">SpringTransactionProvider</span></a> - Class in <a href="io/micronaut/configuration/jooq/package-summary.html">io.micronaut.configuration.jooq</a></dt>
+<dd>
+<div class="block">Allows Spring Transaction to be used with JOOQ.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/SpringTransactionProvider.html#SpringTransactionProvider-org.springframework.transaction.PlatformTransactionManager-">SpringTransactionProvider(PlatformTransactionManager)</a></span> - Constructor for class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/SpringTransactionProvider.html" title="class in io.micronaut.configuration.jooq">SpringTransactionProvider</a></dt>
+<dd>
+<div class="block">Adapt a <code>PlatformTransactionManager</code> to jOOQ transaction provider interface.</div>
 </dd>
 </dl>
 <a name="I:T">
