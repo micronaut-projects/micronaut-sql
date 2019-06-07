@@ -3,11 +3,14 @@ dependencies {
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
     // needed because otherwise IntelliJ integration broken
     compileOnly "io.micronaut:micronaut-inject-java"
+    testCompileOnly "io.micronaut:micronaut-inject-java"
 
     compile "io.micronaut:micronaut-jdbc:$micronautVersion"
     compile "io.micronaut:micronaut-inject:$micronautVersion"
-    compile "org.apache.tomcat:tomcat-jdbc:$tomcatJdbcVersion"
+    compile "org.jooq:jooq:$jooqVersion"
+    compileOnly "org.springframework:spring-jdbc:$springVersion"
 
+    testRuntime project(":jdbc-tomcat")
     testRuntime "com.h2database:h2"
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
@@ -16,8 +19,6 @@ dependencies {
     testCompile "io.micronaut:micronaut-http-client"
     testCompile "io.micronaut:micronaut-management"
     testCompile "io.micronaut.configuration:micronaut-micrometer-core"
-    
+
     testCompile "org.springframework:spring-jdbc:$springVersion"
 }
-
-

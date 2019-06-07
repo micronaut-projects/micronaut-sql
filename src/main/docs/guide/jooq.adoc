@@ -1,0 +1,52 @@
+Micronaut supports automatically configuring http://www.jooq.org/[jOOQ] library for fluent, typesafe SQL query construction.
+
+== Configuring jOOQ ==
+
+To configure jOOQ library you should first add `jooq` module to your classpath:
+
+dependency:micronaut-jooq[groupId="io.micronaut.configuration"]
+
+You should then <<jdbc, configure one or many DataSources>>.
+For each registered `DataSource`, Micronaut will configure the following jOOQ beans using api:configuration.jooq.JooqConfigurationFactory[]:
+
+* link:{jooqapi}/org/jooq/Configuration.html[Configuration] - jOOQ `Configuration`
+* link:{jooqapi}/org/jooq/DSLContext.html[DSLContext] - jOOQ `DSLContext`
+
+If Spring transaction management is in use, it will additionally create the following beans :
+
+* api:configuration.jooq.JooqExceptionTranslatorProvider[] for each `DataSource`
+* api:configuration.jooq.SpringTransactionProvider[] for each Spring `PlatformTransactionManager`
+
+=== Configuring SQL dialect ===
+
+Micronaut will attempt to detect database link:{jooqapi}/org/jooq/SQLDialect.html[SQLDialect] automatically.
+
+If this does not work as desired, SQL dialect can be provided manually via configuration properties. The following example configures dialect for `default` datasource:
+
+.Configuring SQL dialect
+[source,yaml]
+----
+jooq:
+    datasources:
+        default:
+            sql-dialect: 'POSTGRES'
+----
+
+=== Configuring additional provider beans ===
+
+You can define additional beans which will be used when jOOQ `Configuration` is created.
+Only beans with the same name qualifier as the data source name will be used.
+
+Micronaut will look for the following bean types:
+
+* link:{jooqapi}/org/jooq/conf/Settings.html[Settings]
+* link:{jooqapi}/org/jooq/TransactionProvider.html[TransactionProvider]
+* link:{jooqapi}/org/jooq/ExecutorProvider.html[ExecutorProvider]
+* link:{jooqapi}/org/jooq/RecordMapperProvider.html[RecordMapperProvider]
+* link:{jooqapi}/org/jooq/RecordUnmapperProvider.html[RecordUnmapperProvider]
+* link:{jooqapi}/org/jooq/MetaProvider.html[MetaProvider]
+* link:{jooqapi}/org/jooq/ExecuteListenerProvider.html[ExecuteListenerProvider]
+* link:{jooqapi}/org/jooq/RecordListenerProvider.html[RecordListenerProvider]
+* link:{jooqapi}/org/jooq/VisitListenerProvider.html[VisitListenerProvider]
+* link:{jooqapi}/org/jooq/TransactionListenerProvider.html[TransactionListenerProvider]
+* link:{jooqapi}/org/jooq/DiagnosticsListenerProvider.html[DiagnosticsListenerProvider]

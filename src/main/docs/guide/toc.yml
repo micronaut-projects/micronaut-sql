@@ -3,3 +3,4 @@ jdbc: Configuring JDBC
 hibernate: Configuring Hibernate
 pgclient: Configuring Reactive Postgres
 jasync: Configuring JAsync SQL
+jooq: Configuring jOOQ
