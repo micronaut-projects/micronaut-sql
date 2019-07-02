@@ -26,6 +26,7 @@ import org.jooq.conf.Settings;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultDSLContext;
 
+import javax.annotation.Nullable;
 import javax.sql.DataSource;
 
 /**
@@ -41,15 +42,27 @@ public class JooqConfigurationFactory {
      * Creates jOOQ {@link Configuration}.
      * It will configure it with available jOOQ provider beans with the same qualifier.
      *
-     * @param name       The data source name
-     * @param dataSource The {@link DataSource}
-     * @param ctx        The {@link ApplicationContext}
+     * @param name                   The data source name
+     * @param dataSource             The {@link DataSource}
+     * @param transactionProvider    The transaction provider
+     * @param settings               The settings
+     * @param executorProvider       The executor provider
+     * @param recordMapperProvider   The record mapper provider
+     * @param recordUnmapperProvider The record unmapper provider
+     * @param metaProvider           The metadata provider
+     * @param ctx                    The {@link ApplicationContext}
      * @return A {@link Configuration}
      */
     @EachBean(DataSource.class)
     public Configuration jooqConfiguration(
             @Parameter String name,
             DataSource dataSource,
+            @Parameter @Nullable TransactionProvider transactionProvider,
+            @Parameter @Nullable Settings settings,
+            @Parameter @Nullable ExecutorProvider executorProvider,
+            @Parameter @Nullable RecordMapperProvider recordMapperProvider,
+            @Parameter @Nullable RecordUnmapperProvider recordUnmapperProvider,
+            @Parameter @Nullable MetaProvider metaProvider,
             ApplicationContext ctx
     ) {
         DefaultConfiguration configuration = new DefaultConfiguration();
@@ -59,12 +72,24 @@ public class JooqConfigurationFactory {
         configuration.setSQLDialect(properties.determineSqlDialect(dataSource));
 
         configuration.setDataSource(dataSource);
-        ctx.findBean(TransactionProvider.class, Qualifiers.byName(name)).ifPresent(configuration::setTransactionProvider);
-        ctx.findBean(Settings.class, Qualifiers.byName(name)).ifPresent(configuration::setSettings);
-        ctx.findBean(ExecutorProvider.class, Qualifiers.byName(name)).ifPresent(configuration::setExecutorProvider);
-        ctx.findBean(RecordMapperProvider.class, Qualifiers.byName(name)).ifPresent(configuration::setRecordMapperProvider);
-        ctx.findBean(RecordUnmapperProvider.class, Qualifiers.byName(name)).ifPresent(configuration::setRecordUnmapperProvider);
-        ctx.findBean(MetaProvider.class, Qualifiers.byName(name)).ifPresent(configuration::setMetaProvider);
+        if (transactionProvider != null) {
+            configuration.setTransactionProvider(transactionProvider);
+        }
+        if (settings != null) {
+            configuration.setSettings(settings);
+        }
+        if (executorProvider != null) {
+            configuration.setExecutorProvider(executorProvider);
+        }
+        if (recordMapperProvider != null) {
+            configuration.setRecordMapperProvider(recordMapperProvider);
+        }
+        if (recordUnmapperProvider != null) {
+            configuration.setRecordUnmapperProvider(recordUnmapperProvider);
+        }
+        if (metaProvider != null) {
+            configuration.setMetaProvider(metaProvider);
+        }
         configuration.setExecuteListenerProvider(ctx.getBeansOfType(ExecuteListenerProvider.class, Qualifiers.byName(name))
                 .toArray(new ExecuteListenerProvider[0]));
         configuration.setRecordListenerProvider(ctx.getBeansOfType(RecordListenerProvider.class, Qualifiers.byName(name))

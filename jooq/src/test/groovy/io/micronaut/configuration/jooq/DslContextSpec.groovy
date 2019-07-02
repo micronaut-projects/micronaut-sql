@@ -15,6 +15,8 @@
  */
 package io.micronaut.configuration.jooq
 
+import io.micronaut.configuration.jooq.spring.JooqExceptionTranslatorProvider
+import io.micronaut.configuration.jooq.spring.SpringTransactionProvider
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource

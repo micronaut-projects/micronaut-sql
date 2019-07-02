@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.micronaut.configuration.jooq;
+package io.micronaut.configuration.jooq.spring;
 
 import org.jooq.ExecuteContext;
 import org.jooq.SQLDialect;
