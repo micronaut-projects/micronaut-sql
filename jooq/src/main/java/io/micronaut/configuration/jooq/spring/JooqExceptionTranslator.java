@@ -16,6 +16,7 @@
 
 package io.micronaut.configuration.jooq.spring;
 
+import io.micronaut.core.annotation.Internal;
 import org.jooq.ExecuteContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DefaultExecuteListener;
@@ -37,7 +38,8 @@ import java.sql.SQLException;
  * @author Stephane Nicoll
  * @since 1.2.0
  */
-public class JooqExceptionTranslator extends DefaultExecuteListener {
+@Internal
+class JooqExceptionTranslator extends DefaultExecuteListener {
 
 	// Based on the jOOQ-spring-example from https://github.com/jOOQ/jOOQ
 

@@ -16,6 +16,7 @@
 
 package io.micronaut.configuration.jooq.spring;
 
+import io.micronaut.core.annotation.Internal;
 import org.jooq.Transaction;
 import org.springframework.transaction.TransactionStatus;
 
@@ -27,6 +28,7 @@ import org.springframework.transaction.TransactionStatus;
  * @author Phillip Webb
  * @since 1.2.0
  */
+@Internal
 class SpringTransaction implements Transaction {
 
 	// Based on the jOOQ-spring-example from https://github.com/jOOQ/jOOQ
