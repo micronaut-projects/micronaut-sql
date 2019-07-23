@@ -16,12 +16,10 @@
 
 package io.micronaut.configuration.hibernate.jpa;
 
-import io.micronaut.configuration.hibernate.jpa.condition.EntitiesInPackageCondition;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.env.Environment;
-import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.beans.BeanIntrospector;
 import io.micronaut.core.convert.format.MapFormat;
@@ -30,23 +28,11 @@ import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.core.util.Toggleable;
-import io.micronaut.jdbc.spring.HibernatePresenceCondition;
-import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.hql.internal.ast.HqlToken;
-import org.hibernate.hql.internal.ast.tree.*;
-import org.hibernate.id.IdentityGenerator;
 import org.hibernate.integrator.spi.Integrator;
-import org.hibernate.persister.collection.BasicCollectionPersister;
-import org.hibernate.persister.collection.OneToManyPersister;
-import org.hibernate.persister.entity.SingleTableEntityPersister;
-import org.hibernate.tuple.entity.EntityMetamodel;
-import org.hibernate.tuple.entity.PojoEntityTuplizer;
-import org.springframework.orm.hibernate5.SpringSessionContext;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -60,72 +46,6 @@ import java.util.*;
  * @author graemerocher
  * @since 1.0
  */
-@TypeHint(value = {
-        // Hibernate
-        HibernatePresenceCondition.class,
-        EntitiesInPackageCondition.class,
-        IdentityGenerator.class,
-        SingleTableEntityPersister.class,
-        EntityMetamodel.class,
-        PojoEntityTuplizer.class,
-        BasicCollectionPersister.class,
-        SpringSessionContext.class,
-        HqlToken.class,
-        OneToManyPersister.class,
-        // Hibernate AST
-        AggregateNode.class,
-        AssignmentSpecification.class,
-        BetweenOperatorNode.class,
-        BinaryArithmeticOperatorNode.class,
-        BinaryLogicOperatorNode.class,
-        BooleanLiteralNode.class,
-        CastFunctionNode.class,
-        CollectionFunction.class,
-        ComponentJoin.class,
-        ConstructorNode.class,
-        CountNode.class,
-        DeleteStatement.class,
-        DotNode.class,
-        EntityJoinFromElement.class,
-        FromClause.class,
-        FromElement.class,
-        FromElementFactory.class,
-        FromReferenceNode.class,
-        HqlSqlWalkerNode.class,
-        IdentNode.class,
-        ImpliedFromElement.class,
-        IndexNode.class,
-        InLogicOperatorNode.class,
-        InsertStatement.class,
-        IntoClause.class,
-        IsNotNullLogicOperatorNode.class,
-        IsNullLogicOperatorNode.class,
-        JavaConstantNode.class,
-        LiteralNode.class,
-        MapEntryNode.class,
-        MapKeyEntityFromElement.class,
-        MapKeyNode.class,
-        MapValueNode.class,
-        MethodNode.class,
-        Node.class,
-        NullNode.class,
-        OrderByClause.class,
-        ParameterNode.class,
-        QueryNode.class,
-        ResultVariableRefNode.class,
-        SearchedCaseNode.class,
-        SelectClause.class,
-        SelectExpressionImpl.class,
-        SelectExpressionList.class,
-        SimpleCaseNode.class,
-        SqlFragment.class,
-        SqlNode.class,
-        UnaryArithmeticNode.class,
-        UnaryLogicOperatorNode.class,
-        UpdateStatement.class,
-        // Others
-        ImplicitNamingStrategyJpaCompliantImpl.class
-}, accessType = {TypeHint.AccessType.ALL_PUBLIC})
 @EachProperty(value = JpaConfiguration.PREFIX, primary = "default")
 public class JpaConfiguration {
     public static final String PREFIX = "jpa";

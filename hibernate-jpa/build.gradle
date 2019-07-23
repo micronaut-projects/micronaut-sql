@@ -3,8 +3,8 @@ dependencies {
     annotationProcessor "io.micronaut:micronaut-graal"
     // needed because otherwise IntelliJ integration broken
     compileOnly "io.micronaut:micronaut-inject-java"
-    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"    
-
+    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
+    compileOnly "com.oracle.substratevm:svm"
     compile "org.hibernate:hibernate-core:$hibernateVersion"
     compileOnly "org.hibernate:hibernate-jcache:$hibernateVersion"
     // included for Java 11
