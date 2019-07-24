@@ -5,7 +5,9 @@ dependencies {
     compileOnly "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
     compileOnly "com.oracle.substratevm:svm"
-    compile "org.hibernate:hibernate-core:$hibernateVersion"
+    compile "org.hibernate:hibernate-core:$hibernateVersion", {
+        exclude group:'org.javassist', module:'javassist'
+    }
     compileOnly "org.hibernate:hibernate-jcache:$hibernateVersion"
     // included for Java 11
     runtime 'javax.xml.bind:jaxb-api:2.3.1'
