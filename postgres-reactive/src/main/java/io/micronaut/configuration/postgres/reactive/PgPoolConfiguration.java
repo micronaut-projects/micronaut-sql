@@ -18,7 +18,8 @@ package io.micronaut.configuration.postgres.reactive;
 
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
-import io.reactiverse.pgclient.PgPoolOptions;
+import io.vertx.pgclient.PgConnectOptions;
+import io.vertx.sqlclient.PoolOptions;
 
 /**
  * The configuration class for Reactive Postgres Client.
@@ -30,7 +31,10 @@ import io.reactiverse.pgclient.PgPoolOptions;
 public class PgPoolConfiguration {
 
     @ConfigurationBuilder
-    protected PgPoolOptions pgPoolOptions = new PgPoolOptions();
+    protected PgConnectOptions pgConnectOptions = new PgConnectOptions();
+    @ConfigurationBuilder
+    protected PoolOptions pgPoolOptions = new PoolOptions();
+
     protected String uri;
 
     /**
@@ -42,9 +46,17 @@ public class PgPoolConfiguration {
 
     /**
      *
-     * @return The options for configuring a connection pool.
+     * @return The options for configuring a pool.
      */
-    public PgPoolOptions getPgPoolOptions() {
+    public PoolOptions getPgPoolOptions() {
         return pgPoolOptions;
+    }
+
+    /**
+     *
+     * @return The options for configuring a connection.
+     */
+    public PgConnectOptions getPgConnectOptions() {
+        return pgConnectOptions;
     }
 }

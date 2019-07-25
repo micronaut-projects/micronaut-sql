@@ -34,17 +34,18 @@ class PgPoolConfigurationSpec extends Specification {
                 'postgres.reactive.client.database': 'the-db',
                 'postgres.reactive.client.user': 'user',
                 'postgres.reactive.client.password': 'secret',
-                'postgres.reactive.client.maxSize': '5'
+                'postgres.reactive.pool.maxSize': '5'
         )
 
         then:
         applicationContext.containsBean(PgPoolConfiguration)
+        applicationContext.getBean(PgPoolConfiguration).pgConnectOptions
         applicationContext.getBean(PgPoolConfiguration).pgPoolOptions
-        applicationContext.getBean(PgPoolConfiguration).pgPoolOptions.port == 5432
-        applicationContext.getBean(PgPoolConfiguration).pgPoolOptions.host == 'the-host'
-        applicationContext.getBean(PgPoolConfiguration).pgPoolOptions.database == 'the-db'
-        applicationContext.getBean(PgPoolConfiguration).pgPoolOptions.user == 'user'
-        applicationContext.getBean(PgPoolConfiguration).pgPoolOptions.password == 'secret'
+        applicationContext.getBean(PgPoolConfiguration).pgConnectOptions.port == 5432
+        applicationContext.getBean(PgPoolConfiguration).pgConnectOptions.host == 'the-host'
+        applicationContext.getBean(PgPoolConfiguration).pgConnectOptions.database == 'the-db'
+        applicationContext.getBean(PgPoolConfiguration).pgConnectOptions.user == 'user'
+        applicationContext.getBean(PgPoolConfiguration).pgConnectOptions.password == 'secret'
         applicationContext.getBean(PgPoolConfiguration).pgPoolOptions.maxSize == 5
 
 

@@ -40,7 +40,7 @@ class PgPoolHealthIndicatorSpec extends Specification {
                 'postgres.reactive.client.database': postgres.databaseName,
                 'postgres.reactive.client.user': postgres.username,
                 'postgres.reactive.client.password': postgres.password,
-                'postgres.reactive.client.maxSize': '5'
+                'postgres.reactive.client.pool': '5'
         )
 
         when:

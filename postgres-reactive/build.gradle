@@ -1,27 +1,27 @@
 dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
-    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"    
+    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
 
     compile "io.micronaut:micronaut-inject:$micronautVersion"
-    compile "io.reactiverse:reactive-pg-client:$reactivePgClientVersion"
+    compile "io.vertx:vertx-pg-client:$reactivePgClientVersion"
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"
-    
-    compile "io.vertx:vertx-rx-java2:3.6.2", {
+
+    compile "io.vertx:vertx-rx-java2:3.8.0", {
         exclude module: "vertx-core"
     }
-    compile "io.vertx:vertx-codegen:3.6.2", {
+    compile "io.vertx:vertx-codegen:3.8.0", {
         exclude module: "vertx-core"
     }
 
 
-    testCompile "io.reactiverse:reactive-pg-client:$reactivePgClientVersion"
+    testCompile "io.vertx:vertx-pg-client:$reactivePgClientVersion"
     testCompile "io.micronaut:micronaut-management:$micronautVersion"
     testCompile "org.testcontainers:spock:1.10.1"
     testCompile "org.testcontainers:postgresql:1.10.1"
-    testCompile "io.vertx:vertx-rx-java2:3.5.3", {
+    testCompile "io.vertx:vertx-rx-java2:3.8.0", {
         exclude module: "vertx-core"
     }
-    testCompile "io.vertx:vertx-codegen:3.5.3", {
+    testCompile "io.vertx:vertx-codegen:3.8.0", {
         exclude module: "vertx-core"
     }
 }

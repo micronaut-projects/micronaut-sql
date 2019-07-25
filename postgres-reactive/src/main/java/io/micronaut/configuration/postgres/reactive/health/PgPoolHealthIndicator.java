@@ -22,8 +22,8 @@ import io.micronaut.health.HealthStatus;
 import io.micronaut.management.endpoint.health.HealthEndpoint;
 import io.micronaut.management.health.indicator.HealthIndicator;
 import io.micronaut.management.health.indicator.HealthResult;
-import io.reactiverse.reactivex.pgclient.PgPool;
-import io.reactiverse.reactivex.pgclient.Row;
+import io.vertx.reactivex.pgclient.PgPool;
+import io.vertx.reactivex.sqlclient.Row;
 import org.reactivestreams.Publisher;
 
 import javax.inject.Singleton;
@@ -55,6 +55,7 @@ public class PgPoolHealthIndicator implements HealthIndicator {
 
     @Override
     public Publisher<HealthResult> getResult() {
+
         return client.rxQuery(QUERY)
                 .map(pgRowSet -> {
                     HealthResult.Builder status = HealthResult.builder(NAME, HealthStatus.UP);

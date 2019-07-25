@@ -19,9 +19,10 @@ package io.micronaut.configuration.postgres.reactive;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.core.util.StringUtils;
-import io.reactiverse.reactivex.pgclient.PgClient;
-import io.reactiverse.reactivex.pgclient.PgPool;
+import io.vertx.pgclient.PgConnectOptions;
+import io.vertx.pgclient.PgPool;
 import io.vertx.reactivex.core.Vertx;
+import io.vertx.sqlclient.PoolOptions;
 
 import javax.annotation.Nullable;
 import javax.inject.Singleton;
@@ -77,9 +78,11 @@ public class PgPoolClientFactory {
 
         String connectionUri = configuration.getUri();
         if (StringUtils.isNotEmpty(connectionUri)) {
-            return PgClient.pool(connectionUri);
+            return PgPool.pool(connectionUri);
         } else {
-            return PgClient.pool(configuration.pgPoolOptions);
+            PgConnectOptions connectOptions = new PgConnectOptions(configuration.pgConnectOptions);
+            PoolOptions poolOptions = new PoolOptions();
+            return PgPool.pool(connectOptions,poolOptions);
         }
     }
 
@@ -94,9 +97,11 @@ public class PgPoolClientFactory {
 
         String connectionUri = configuration.getUri();
         if (StringUtils.isNotEmpty(connectionUri)) {
-            return PgClient.pool(vertx, connectionUri);
+            return PgPool.pool(connectionUri);
         } else {
-            return PgClient.pool(vertx, configuration.pgPoolOptions);
+            PgConnectOptions connectOptions = new PgConnectOptions(configuration.pgConnectOptions);
+            PoolOptions poolOptions = new PoolOptions();
+            return PgPool.pool(vertx.getDelegate(),connectOptions,poolOptions);
         }
     }
 }

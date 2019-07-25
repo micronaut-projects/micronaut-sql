@@ -18,7 +18,8 @@ package io.micronaut.configuration.postgres.reactive.condition;
 
 import io.micronaut.configuration.postgres.reactive.PgPoolClientSettings;
 import io.micronaut.context.annotation.Requires;
-import io.reactiverse.pgclient.PgPoolOptions;
+import io.vertx.pgclient.PgConnectOptions;
+import io.vertx.sqlclient.PoolOptions;
 
 import java.lang.annotation.*;
 
@@ -30,6 +31,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PACKAGE, ElementType.TYPE})
 @Requires(property = PgPoolClientSettings.PREFIX)
-@Requires(classes = {PgPoolOptions.class})
+@Requires(classes = {PgConnectOptions.class, PoolOptions.class})
 public @interface RequiresReactivePgClient {
 }

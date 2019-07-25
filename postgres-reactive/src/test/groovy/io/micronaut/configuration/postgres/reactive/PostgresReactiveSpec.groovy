@@ -19,9 +19,10 @@ package io.micronaut.configuration.postgres.reactive
 //tag::appcontext-import[]
 import io.micronaut.context.ApplicationContext
 //end::appcontext-import[]
-import io.reactiverse.reactivex.pgclient.PgIterator
-import io.reactiverse.reactivex.pgclient.PgPool
-import io.reactiverse.reactivex.pgclient.PgRowSet
+import io.vertx.reactivex.pgclient.PgPool
+import io.vertx.reactivex.sqlclient.RowIterator
+import io.vertx.reactivex.sqlclient.RowSet
+
 //tag::pg-testcontainer-import[]
 import org.testcontainers.containers.PostgreSQLContainer
 //end::pg-testcontainer-import[]
@@ -52,7 +53,7 @@ class PostgresReactiveSpec extends Specification {
                 'postgres.reactive.client.database': postgres.databaseName,
                 'postgres.reactive.client.user': postgres.username,
                 'postgres.reactive.client.password': postgres.password,
-                'postgres.reactive.client.maxSize': '5'
+                'postgres.reactive.pool.maxSize': '5'
         )
 
         //end::pg-client-conf[]
@@ -65,9 +66,9 @@ class PostgresReactiveSpec extends Specification {
         // end::pgPool-bean[]
 
         // tag::query[]
-        result = client.rxQuery('SELECT * FROM pg_stat_database').map({ PgRowSet pgRowSet -> // <1>
+        result = client.rxQuery('SELECT * FROM pg_stat_database').map({ RowSet pgRowSet -> // <1>
             int size = 0
-            PgIterator iterator = pgRowSet.iterator()
+            RowIterator iterator = pgRowSet.iterator()
             while (iterator.hasNext()) {
                 iterator.next()
                 size++
