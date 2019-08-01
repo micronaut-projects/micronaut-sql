@@ -4,7 +4,7 @@ dependencies {
 
     compile "io.micronaut:micronaut-jdbc:$micronautVersion"
     compile "io.micronaut:micronaut-inject:$micronautVersion"    
-    compile "com.zaxxer:HikariCP:$hikariVersion"
+    compile "com.zaxxer:HikariCP:3.3.1"
 
     compileOnly "io.micronaut.configuration:micronaut-micrometer-core"
 

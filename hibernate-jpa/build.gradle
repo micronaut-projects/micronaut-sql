@@ -5,10 +5,10 @@ dependencies {
     compileOnly "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
     compileOnly "com.oracle.substratevm:svm"
-    compile "org.hibernate:hibernate-core:$hibernateVersion", {
+    compile "org.hibernate:hibernate-core:5.4.3.Final", {
         exclude group:'org.javassist', module:'javassist'
     }
-    compileOnly "org.hibernate:hibernate-jcache:$hibernateVersion"
+    compileOnly "org.hibernate:hibernate-jcache:5.4.3.Final"
     // included for Java 11
     runtime 'javax.xml.bind:jaxb-api:2.3.1'
 
@@ -25,7 +25,7 @@ dependencies {
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testRuntime "io.micronaut.configuration:micronaut-hibernate-validator:$micronautVersion"
     testCompile "io.micronaut:micronaut-inject-java"
-    testCompile "org.hibernate:hibernate-jcache:$hibernateVersion"
+    testCompile "org.hibernate:hibernate-jcache:5.4.3.Final"
     testCompile "io.micronaut:micronaut-management"
     testCompile "io.micronaut:micronaut-inject-groovy"
     testCompile "io.micronaut:micronaut-function-web"

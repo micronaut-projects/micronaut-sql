@@ -5,7 +5,7 @@ dependencies {
     compile "io.micronaut:micronaut-jdbc:$micronautVersion"
     compile "io.micronaut:micronaut-inject:$micronautVersion"
 
-    compile "org.apache.commons:commons-dbcp2:$commonsDbcpVersion"
+    compile "org.apache.commons:commons-dbcp2:2.6.0"
 
     testRuntime "org.apache.tomcat:tomcat-jdbc"
     testRuntime "com.h2database:h2"

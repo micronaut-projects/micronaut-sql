@@ -5,14 +5,14 @@ dependencies {
     compileOnly "io.micronaut:micronaut-inject-java" // needed only for IntelliJ
 
     compile "io.micronaut:micronaut-inject:$micronautVersion"
-    compileOnly "com.github.jasync-sql:jasync-mysql:$jasyncClientVersion"
-    compileOnly "com.github.jasync-sql:jasync-postgresql:$jasyncClientVersion"
+    compileOnly "com.github.jasync-sql:jasync-mysql:0.9.51"
+    compileOnly "com.github.jasync-sql:jasync-postgresql:0.9.51"
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"
 
     testCompile "io.micronaut:micronaut-management:$micronautVersion"
     testCompile "org.testcontainers:spock:1.12.0"
     testCompile "org.testcontainers:postgresql:1.12.0"
-    testCompile "com.github.jasync-sql:jasync-postgresql:$jasyncClientVersion"
+    testCompile "com.github.jasync-sql:jasync-postgresql:0.9.51"
     testCompile "io.micronaut:micronaut-management:$micronautVersion"
 
 
