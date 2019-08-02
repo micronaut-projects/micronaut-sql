@@ -3,7 +3,7 @@ dependencies {
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"    
 
     compile "io.micronaut:micronaut-inject:$micronautVersion"
-    compile "io.reactiverse:reactive-pg-client:0.11.3"
+    compile "io.reactiverse:reactive-pg-client:0.11.4"
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"
     
     compile "io.vertx:vertx-rx-java2:3.8.0", {
