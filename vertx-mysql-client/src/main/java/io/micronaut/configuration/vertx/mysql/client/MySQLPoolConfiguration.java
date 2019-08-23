@@ -18,29 +18,21 @@ package io.micronaut.configuration.vertx.mysql.client;
 
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
-import io.vertx.mysqlclient.MySQLConnectOptions;
+import io.vertx.sqlclient.PoolOptions;
 
 /**
- * The configuration class for Vertx Mysql Client PoolOptions.
+ * The configuration class for Vertx MySQL Client PoolOptions.
  *
  */
-@ConfigurationProperties(MysqlConnectionSettings.PREFIX)
-public class MysqlConnectionConfiguration {
+@ConfigurationProperties(MySQLPoolSettings.PREFIX)
+public class MySQLPoolConfiguration {
 
     @ConfigurationBuilder
-    protected MySQLConnectOptions connectOptions = new MySQLConnectOptions();
-    protected String uri;
-
-    /**
-     * @return The Mysql connection URI.
-     */
-    public String getUri() {
-        return uri;
-    }
+    protected PoolOptions poolOptions = new PoolOptions();
 
     /**
      *
-     * @return The options for configuring a connection.
+     * @return The options for configuring a connection pool.
      */
-    public MySQLConnectOptions getConnectOptions() { return connectOptions; }
+    public PoolOptions getPoolOptions() { return poolOptions; }
 }

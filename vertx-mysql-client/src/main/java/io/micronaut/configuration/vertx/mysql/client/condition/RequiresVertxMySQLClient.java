@@ -14,25 +14,20 @@
  * limitations under the License.
  */
 
-package io.micronaut.configuration.vertx.mysql.client;
 
-import io.micronaut.context.annotation.ConfigurationBuilder;
-import io.micronaut.context.annotation.ConfigurationProperties;
+package io.micronaut.configuration.vertx.mysql.client.condition;
+
+import io.micronaut.configuration.vertx.mysql.client.MySQLConnectionSettings;
+import io.micronaut.context.annotation.Requires;
+import io.vertx.mysqlclient.MySQLConnectOptions;
 import io.vertx.sqlclient.PoolOptions;
 
-/**
- * The configuration class for Vertx Mysql Client PoolOptions.
- *
- */
-@ConfigurationProperties(MysqlPoolSettings.PREFIX)
-public class MysqlPoolConfiguration {
+import java.lang.annotation.*;
 
-    @ConfigurationBuilder
-    protected PoolOptions poolOptions = new PoolOptions();
-
-    /**
-     *
-     * @return The options for configuring a connection pool.
-     */
-    public PoolOptions getPoolOptions() { return poolOptions; }
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.PACKAGE, ElementType.TYPE})
+@Requires(property = MySQLConnectionSettings.PREFIX)
+@Requires(classes = {MySQLConnectOptions.class, PoolOptions.class})
+public @interface RequiresVertxMySQLClient {
 }

@@ -31,7 +31,7 @@ import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
-class MysqlClientSpec extends Specification{
+class MySQLClientSpec extends Specification{
     // tag::mysql-testcontainer[]
     @Shared @AutoCleanup MySQLContainer mysql = new MySQLContainer()
 

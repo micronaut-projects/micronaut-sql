@@ -23,7 +23,7 @@ import io.reactivex.Flowable
 import org.testcontainers.containers.MySQLContainer
 import spock.lang.Specification
 
-class MysqlPoolHealthIndicatorSpec extends Specification{
+class MySQLPoolHealthIndicatorSpec extends Specification{
     void "test vertx-mysql-client health indicator"() {
         given:
         MySQLContainer mysql = new MySQLContainer()
@@ -38,7 +38,7 @@ class MysqlPoolHealthIndicatorSpec extends Specification{
         )
 
         when:
-        MysqlHealthIndicator indicator = applicationContext.getBean(MysqlHealthIndicator)
+        MySQLHealthIndicator indicator = applicationContext.getBean(MySQLHealthIndicator)
         HealthResult result = Flowable.fromPublisher(indicator.getResult()).blockingFirst()
 
         then:

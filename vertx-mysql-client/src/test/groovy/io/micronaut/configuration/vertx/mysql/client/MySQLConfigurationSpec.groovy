@@ -19,8 +19,8 @@ package io.micronaut.configuration.vertx.mysql.client
 import io.micronaut.context.ApplicationContext
 import spock.lang.Specification
 
-class MysqlConfigurationSpec extends Specification{
-    void "test reactive-pg-client configuration"() {
+class MySQLConfigurationSpec extends Specification{
+    void "test vertx-mysql-client configuration"() {
         when:
         ApplicationContext applicationContext = ApplicationContext.run(
                 'vertx.mysql.client.port': '3306',
@@ -32,14 +32,14 @@ class MysqlConfigurationSpec extends Specification{
         )
 
         then:
-        applicationContext.containsBean(MysqlConnectionConfiguration)
-        applicationContext.getBean(MysqlConnectionConfiguration).connectOptions
-        applicationContext.getBean(MysqlConnectionConfiguration).connectOptions.port == 3306
-        applicationContext.getBean(MysqlConnectionConfiguration).connectOptions.host == 'the-host'
-        applicationContext.getBean(MysqlConnectionConfiguration).connectOptions.database == 'the-db'
-        applicationContext.getBean(MysqlConnectionConfiguration).connectOptions.user == 'user'
-        applicationContext.getBean(MysqlConnectionConfiguration).connectOptions.password == 'secret'
-        applicationContext.getBean(MysqlPoolConfiguration).poolOptions.maxSize == 5
+        applicationContext.containsBean(MySQLConnectionConfiguration)
+        applicationContext.getBean(MySQLConnectionConfiguration).connectOptions
+        applicationContext.getBean(MySQLConnectionConfiguration).connectOptions.port == 3306
+        applicationContext.getBean(MySQLConnectionConfiguration).connectOptions.host == 'the-host'
+        applicationContext.getBean(MySQLConnectionConfiguration).connectOptions.database == 'the-db'
+        applicationContext.getBean(MySQLConnectionConfiguration).connectOptions.user == 'user'
+        applicationContext.getBean(MySQLConnectionConfiguration).connectOptions.password == 'secret'
+        applicationContext.getBean(MySQLPoolConfiguration).poolOptions.maxSize == 5
 
 
         cleanup:

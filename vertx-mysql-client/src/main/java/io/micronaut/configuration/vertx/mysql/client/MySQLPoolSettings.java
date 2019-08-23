@@ -16,7 +16,7 @@
 package io.micronaut.configuration.vertx.mysql.client;
 
 
-public interface MysqlPoolSettings {
+public interface MySQLPoolSettings {
     /**
      * The prefix to use for all Vertx Mysql Client Pool settings.
      */

@@ -17,9 +17,9 @@
 package io.micronaut.configuration.vertx.mysql.client;
 
 
-public interface MysqlConnectionSettings {
+public interface MySQLConnectionSettings {
     /**
-     * The prefix to use for all Vertx Mysql Client ConnectOptions settings.
+     * The prefix to use for all Vertx MySQL Client ConnectOptions settings.
      */
     String PREFIX = "vertx.mysql.client";
 }

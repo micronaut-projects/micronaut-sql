@@ -30,13 +30,13 @@ import javax.inject.Singleton;
 import java.util.Collections;
 
 /**
- * A  {@link HealthIndicator} for Vertx Mysql client.
+ * A  {@link HealthIndicator} for Vertx MySQL client.
  *
  */
 @Requires(beans = HealthEndpoint.class)
 @Requires(property = HealthEndpoint.PREFIX + ".vertx.mysql.client.enabled", notEquals = StringUtils.FALSE)
 @Singleton
-public class MysqlHealthIndicator implements HealthIndicator{
+public class MySQLHealthIndicator implements HealthIndicator{
     public static final String NAME = "vertx-mysql-client";
     public static final String QUERY = "SELECT version();";
     private final MySQLPool client;
@@ -46,16 +46,16 @@ public class MysqlHealthIndicator implements HealthIndicator{
      *
      * @param client A pool of connections.
      */
-    public MysqlHealthIndicator(MySQLPool client) {
+    public MySQLHealthIndicator(MySQLPool client) {
         this.client = client;
     }
 
     @Override
     public Publisher<HealthResult> getResult() {
         return client.rxQuery(QUERY)
-                .map(pgRowSet -> {
+                .map(rowSet -> {
                     HealthResult.Builder status = HealthResult.builder(NAME, HealthStatus.UP);
-                    Row row = pgRowSet.iterator().next();
+                    Row row = rowSet.iterator().next();
                     status.details(Collections.singletonMap("version", row.getString(0)));
                     return status.build();
                 })
