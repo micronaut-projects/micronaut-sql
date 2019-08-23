@@ -27,6 +27,7 @@ vertx:
             database: the-db
             user: test
             password: test
+        pool:
             maxSize: 5
 ----
 
