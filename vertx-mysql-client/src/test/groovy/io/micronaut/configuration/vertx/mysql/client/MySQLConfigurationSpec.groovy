@@ -28,7 +28,7 @@ class MySQLConfigurationSpec extends Specification{
                 'vertx.mysql.client.database': 'the-db',
                 'vertx.mysql.client.user': 'user',
                 'vertx.mysql.client.password': 'secret',
-                'vertx.mysql.client.pool.maxSize': '5'
+                'vertx.mysql.client.maxSize': '5'
         )
 
         then:
@@ -39,7 +39,7 @@ class MySQLConfigurationSpec extends Specification{
         applicationContext.getBean(MySQLConnectionConfiguration).connectOptions.database == 'the-db'
         applicationContext.getBean(MySQLConnectionConfiguration).connectOptions.user == 'user'
         applicationContext.getBean(MySQLConnectionConfiguration).connectOptions.password == 'secret'
-        applicationContext.getBean(MySQLPoolConfiguration).poolOptions.maxSize == 5
+        applicationContext.getBean(MySQLConnectionConfiguration).poolOptions.maxSize == 5
 
 
         cleanup:

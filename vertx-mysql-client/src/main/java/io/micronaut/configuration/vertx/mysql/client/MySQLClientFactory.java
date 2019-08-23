@@ -33,8 +33,6 @@ import javax.inject.Singleton;
 public class MySQLClientFactory {
     private final MySQLConnectionConfiguration connectionConfiguration;
 
-    private final MySQLPoolConfiguration poolConfiguration;
-
     /**
      * The Vertx instance if you are running with Vert.x.
      */
@@ -44,12 +42,9 @@ public class MySQLClientFactory {
      * Create the factory with given MySQL Client configuration and
      *
      * @param connectionConfiguration The  MySQL ClientOption configurations
-     * @param poolConfiguration The MySQL Pool configurations
      */
-    public MySQLClientFactory(MySQLConnectionConfiguration connectionConfiguration,
-                              MySQLPoolConfiguration poolConfiguration, @Nullable Vertx vertx) {
+    public MySQLClientFactory(MySQLConnectionConfiguration connectionConfiguration, @Nullable Vertx vertx) {
         this.connectionConfiguration = connectionConfiguration;
-        this.poolConfiguration = poolConfiguration;
         this.vertx = vertx;
     }
 
@@ -68,33 +63,31 @@ public class MySQLClientFactory {
 
     /**
      * Create a connection pool to the database configured with the
-     * {@link MySQLConnectionConfiguration}.{@link MySQLPoolConfiguration}
+     * {@link MySQLConnectionConfiguration}.
      * @return A pool of connections.
      */
     private MySQLPool createClient() {
         MySQLConnectionConfiguration configuration = this.connectionConfiguration;
-        MySQLPoolConfiguration poolConfiguration = this.poolConfiguration;
         String connectionUri = configuration.getUri();
         if (StringUtils.isNotEmpty(connectionUri)) {
-            return MySQLPool.pool(connectionUri,poolConfiguration.poolOptions);
+            return MySQLPool.pool(connectionUri,configuration.poolOptions);
         } else {
-            return MySQLPool.pool(configuration.connectOptions,poolConfiguration.poolOptions);
+            return MySQLPool.pool(configuration.connectOptions,configuration.poolOptions);
         }
     }
 
     /**
-     * Create a connection pool to the database configured with the {@link MySQLConnectionConfiguration },{@link MySQLPoolConfiguration}.
+     * Create a connection pool to the database configured with the {@link MySQLConnectionConfiguration }.
      * @param vertx The Vertx instance.
      * @return A pool of connections.
      */
     private MySQLPool createClient(Vertx vertx) {
         MySQLConnectionConfiguration configuration = this.connectionConfiguration;
-        MySQLPoolConfiguration poolConfiguration = this.poolConfiguration;
         String connectionUri = configuration.getUri();
         if (StringUtils.isNotEmpty(connectionUri)) {
-            return MySQLPool.pool(vertx,connectionUri,poolConfiguration.poolOptions);
+            return MySQLPool.pool(vertx,connectionUri,configuration.poolOptions);
         } else {
-            return MySQLPool.pool(vertx,configuration.connectOptions,poolConfiguration.poolOptions);
+            return MySQLPool.pool(vertx,configuration.connectOptions,configuration.poolOptions);
         }
     }
 }
