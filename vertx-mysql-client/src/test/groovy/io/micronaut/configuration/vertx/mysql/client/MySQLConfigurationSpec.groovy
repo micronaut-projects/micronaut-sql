@@ -32,14 +32,14 @@ class MySQLConfigurationSpec extends Specification{
         )
 
         then:
-        applicationContext.containsBean(MySQLConnectionConfiguration)
-        applicationContext.getBean(MySQLConnectionConfiguration).connectOptions
-        applicationContext.getBean(MySQLConnectionConfiguration).connectOptions.port == 3306
-        applicationContext.getBean(MySQLConnectionConfiguration).connectOptions.host == 'the-host'
-        applicationContext.getBean(MySQLConnectionConfiguration).connectOptions.database == 'the-db'
-        applicationContext.getBean(MySQLConnectionConfiguration).connectOptions.user == 'user'
-        applicationContext.getBean(MySQLConnectionConfiguration).connectOptions.password == 'secret'
-        applicationContext.getBean(MySQLConnectionConfiguration).poolOptions.maxSize == 5
+        applicationContext.containsBean(MySQLClientConfiguration)
+        applicationContext.getBean(MySQLClientConfiguration).connectOptions
+        applicationContext.getBean(MySQLClientConfiguration).connectOptions.port == 3306
+        applicationContext.getBean(MySQLClientConfiguration).connectOptions.host == 'the-host'
+        applicationContext.getBean(MySQLClientConfiguration).connectOptions.database == 'the-db'
+        applicationContext.getBean(MySQLClientConfiguration).connectOptions.user == 'user'
+        applicationContext.getBean(MySQLClientConfiguration).connectOptions.password == 'secret'
+        applicationContext.getBean(MySQLClientConfiguration).poolOptions.maxSize == 5
 
 
         cleanup:

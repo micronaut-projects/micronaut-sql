@@ -25,8 +25,8 @@ import io.vertx.sqlclient.PoolOptions;
  * The configuration class for Vertx MySQL Client PoolOptions.
  *
  */
-@ConfigurationProperties(MySQLConnectionSettings.PREFIX)
-public class MySQLConnectionConfiguration {
+@ConfigurationProperties(MySQLClientSettings.PREFIX)
+public class MySQLClientConfiguration {
 
     @ConfigurationBuilder
     protected MySQLConnectOptions connectOptions = new MySQLConnectOptions();

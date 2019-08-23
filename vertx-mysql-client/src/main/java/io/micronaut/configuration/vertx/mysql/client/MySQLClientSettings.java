@@ -17,7 +17,7 @@
 package io.micronaut.configuration.vertx.mysql.client;
 
 
-public interface MySQLConnectionSettings {
+public interface MySQLClientSettings {
     /**
      * The prefix to use for all Vertx MySQL Client ConnectOptions settings.
      */

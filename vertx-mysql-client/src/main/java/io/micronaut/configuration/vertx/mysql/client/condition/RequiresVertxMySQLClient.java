@@ -17,7 +17,7 @@
 
 package io.micronaut.configuration.vertx.mysql.client.condition;
 
-import io.micronaut.configuration.vertx.mysql.client.MySQLConnectionSettings;
+import io.micronaut.configuration.vertx.mysql.client.MySQLClientSettings;
 import io.micronaut.context.annotation.Requires;
 import io.vertx.mysqlclient.MySQLConnectOptions;
 import io.vertx.sqlclient.PoolOptions;
@@ -27,7 +27,7 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PACKAGE, ElementType.TYPE})
-@Requires(property = MySQLConnectionSettings.PREFIX)
+@Requires(property = MySQLClientSettings.PREFIX)
 @Requires(classes = {MySQLConnectOptions.class, PoolOptions.class})
 public @interface RequiresVertxMySQLClient {
 }

@@ -31,7 +31,7 @@ import javax.inject.Singleton;
  */
 @Factory
 public class MySQLClientFactory {
-    private final MySQLConnectionConfiguration connectionConfiguration;
+    private final MySQLClientConfiguration connectionConfiguration;
 
     /**
      * The Vertx instance if you are running with Vert.x.
@@ -43,7 +43,7 @@ public class MySQLClientFactory {
      *
      * @param connectionConfiguration The  MySQL ClientOption configurations
      */
-    public MySQLClientFactory(MySQLConnectionConfiguration connectionConfiguration, @Nullable Vertx vertx) {
+    public MySQLClientFactory(MySQLClientConfiguration connectionConfiguration, @Nullable Vertx vertx) {
         this.connectionConfiguration = connectionConfiguration;
         this.vertx = vertx;
     }
@@ -63,11 +63,11 @@ public class MySQLClientFactory {
 
     /**
      * Create a connection pool to the database configured with the
-     * {@link MySQLConnectionConfiguration}.
+     * {@link MySQLClientConfiguration}.
      * @return A pool of connections.
      */
     private MySQLPool createClient() {
-        MySQLConnectionConfiguration configuration = this.connectionConfiguration;
+        MySQLClientConfiguration configuration = this.connectionConfiguration;
         String connectionUri = configuration.getUri();
         if (StringUtils.isNotEmpty(connectionUri)) {
             return MySQLPool.pool(connectionUri,configuration.poolOptions);
@@ -77,12 +77,12 @@ public class MySQLClientFactory {
     }
 
     /**
-     * Create a connection pool to the database configured with the {@link MySQLConnectionConfiguration }.
+     * Create a connection pool to the database configured with the {@link MySQLClientConfiguration }.
      * @param vertx The Vertx instance.
      * @return A pool of connections.
      */
     private MySQLPool createClient(Vertx vertx) {
-        MySQLConnectionConfiguration configuration = this.connectionConfiguration;
+        MySQLClientConfiguration configuration = this.connectionConfiguration;
         String connectionUri = configuration.getUri();
         if (StringUtils.isNotEmpty(connectionUri)) {
             return MySQLPool.pool(vertx,connectionUri,configuration.poolOptions);
