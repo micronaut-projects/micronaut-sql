@@ -1,4 +1,4 @@
-Micronaut supports reactive and non-blocking client to connect to Mysql using https://github.com/eclipse-vertx/vertx-sql-client[vertx-mysql-client], allowing  to handle many database connections with a single thread.
+Micronaut supports reactive and non-blocking client to connect to MySQL using https://github.com/eclipse-vertx/vertx-sql-client[vertx-mysql-client], allowing  to handle many database connections with a single thread.
 
 == Configuring the MySQL Vertx Client
 [TIP]
@@ -37,7 +37,7 @@ Once you have the above configuration in place then you can inject the `io.vertx
 
 [source,groovy]
 ----
-include::vertx-mysql-client/src/test/groovy/io/micronaut/configuration/vertx/mysql/client/MysqlClientSpec.groovy[tags=query,indent=0]
+include::vertx-mysql-client/src/test/groovy/io/micronaut/configuration/vertx/mysql/client/MySQLClientSpec.groovy[tags=query,indent=0]
 ----
 
 <1> `client` is an instance of the `io.vertx.reactivex.mysqlclient.MySQLPool` bean.
