@@ -17,11 +17,11 @@ dependencies {
     compile "io.micronaut:micronaut-inject:$micronautVersion"
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"
 
-    compile "io.vertx:vertx-mysql-client:3.8.0"
-    compile "io.vertx:vertx-rx-java2:3.8.0", {
+    compile "io.vertx:vertx-mysql-client:3.8.1"
+    compile "io.vertx:vertx-rx-java2:3.8.1", {
         exclude module: "vertx-core"
     }
-    compile "io.vertx:vertx-codegen:3.8.0", {
+    compile "io.vertx:vertx-codegen:3.8.1", {
         exclude module: "vertx-core"
     }
 
@@ -31,11 +31,11 @@ dependencies {
     testCompile "org.testcontainers:spock:1.12.0"
     testCompile "org.testcontainers:mysql:1.12.0"
     testCompile "mysql:mysql-connector-java:8.0.17"
-    testCompile "io.vertx:vertx-rx-java2:3.8.0", {
+    testCompile "io.vertx:vertx-rx-java2:3.8.1", {
         exclude module: "vertx-core"
     }
-    testCompile "io.vertx:vertx-codegen:3.8.0", {
+    testCompile "io.vertx:vertx-codegen:3.8.1", {
         exclude module: "vertx-core"
     }
-    testCompile "io.vertx:vertx-mysql-client:3.8.0"
+    testCompile "io.vertx:vertx-mysql-client:3.8.1"
 }

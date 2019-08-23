@@ -92,7 +92,7 @@ public class MySQLClientFactory {
         MySQLPoolConfiguration poolConfiguration = this.poolConfiguration;
         String connectionUri = configuration.getUri();
         if (StringUtils.isNotEmpty(connectionUri)) {
-            return MySQLPool.pool(vertx,connectionUri,poolConfiguration.poolOptions);
+            return MySQLPool.pool(vertx,connectionUri);
         } else {
             return MySQLPool.pool(vertx,configuration.connectOptions,poolConfiguration.poolOptions);
         }

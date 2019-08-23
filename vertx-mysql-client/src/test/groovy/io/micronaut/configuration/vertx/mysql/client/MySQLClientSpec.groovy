@@ -66,8 +66,8 @@ class MySQLClientSpec extends Specification{
         client.rxQuery("INSERT INTO foo(id) VALUES (0);").blockingGet()
 
         // tag::query[]
-        result = client.rxQuery('SELECT * FROM foo').map({ RowSet mysqlRowSet -> // <1>
-            RowIterator iterator = mysqlRowSet.iterator()
+        result = client.rxQuery('SELECT * FROM foo').map({ RowSet rowSet -> // <1>
+            RowIterator iterator = rowSet.iterator()
             int id = iterator.next().getInteger("id")
             return "id: ${id}"
         }).blockingGet()
