@@ -6,13 +6,13 @@ dependencies {
 
     compile "io.micronaut:micronaut-inject:$micronautVersion"
     compileOnly "com.github.jasync-sql:jasync-mysql:1.0.6"
-    compileOnly "com.github.jasync-sql:jasync-postgresql:1.0.5"
+    compileOnly "com.github.jasync-sql:jasync-postgresql:1.0.6"
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"
 
     testCompile "io.micronaut:micronaut-management:$micronautVersion"
     testCompile "org.testcontainers:spock:1.12.0"
     testCompile "org.testcontainers:postgresql:1.12.0"
-    testCompile "com.github.jasync-sql:jasync-postgresql:0.9.51"
+    testCompile "com.github.jasync-sql:jasync-postgresql:1.0.6"
     testCompile "io.micronaut:micronaut-management:$micronautVersion"
 
 
