@@ -153,23 +153,23 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code><a href="https://www.jooq.org/javadoc/latest/org/jooq/DSLContext.html?is-external=true" title="class or interface in org.jooq">DSLContext</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/configuration/jooq/JooqConfigurationFactory.html#dslContext-org.jooq.Configuration-">dslContext</a></span>(<a href="https://www.jooq.org/javadoc/latest/org/jooq/Configuration.html?is-external=true" title="class or interface in org.jooq">Configuration</a>&nbsp;configuration)</code>
-<div class="block">Created <a href="https://www.jooq.org/javadoc/latest/org/jooq/DSLContext.html?is-external=true" title="class or interface in org.jooq"><code>DSLContext</code></a> based on <a href="https://www.jooq.org/javadoc/latest/org/jooq/Configuration.html?is-external=true" title="class or interface in org.jooq"><code>Configuration</code></a></div>
+<td class="colFirst"><code>org.jooq.DSLContext</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/configuration/jooq/JooqConfigurationFactory.html#dslContext-org.jooq.Configuration-">dslContext</a></span>(org.jooq.Configuration&nbsp;configuration)</code>
+<div class="block">Created <code>DSLContext</code> based on <code>Configuration</code></div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code><a href="https://www.jooq.org/javadoc/latest/org/jooq/Configuration.html?is-external=true" title="class or interface in org.jooq">Configuration</a></code></td>
+<td class="colFirst"><code>org.jooq.Configuration</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/configuration/jooq/JooqConfigurationFactory.html#jooqConfiguration-java.lang.String-javax.sql.DataSource-org.jooq.TransactionProvider-org.jooq.conf.Settings-org.jooq.ExecutorProvider-org.jooq.RecordMapperProvider-org.jooq.RecordUnmapperProvider-org.jooq.MetaProvider-io.micronaut.context.ApplicationContext-">jooqConfiguration</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name,
                  <a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql">DataSource</a>&nbsp;dataSource,
-                 <a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionProvider.html?is-external=true" title="class or interface in org.jooq">TransactionProvider</a>&nbsp;transactionProvider,
-                 <a href="https://www.jooq.org/javadoc/latest/org/jooq/conf/Settings.html?is-external=true" title="class or interface in org.jooq.conf">Settings</a>&nbsp;settings,
-                 <a href="https://www.jooq.org/javadoc/latest/org/jooq/ExecutorProvider.html?is-external=true" title="class or interface in org.jooq">ExecutorProvider</a>&nbsp;executorProvider,
-                 <a href="https://www.jooq.org/javadoc/latest/org/jooq/RecordMapperProvider.html?is-external=true" title="class or interface in org.jooq">RecordMapperProvider</a>&nbsp;recordMapperProvider,
-                 <a href="https://www.jooq.org/javadoc/latest/org/jooq/RecordUnmapperProvider.html?is-external=true" title="class or interface in org.jooq">RecordUnmapperProvider</a>&nbsp;recordUnmapperProvider,
-                 <a href="https://www.jooq.org/javadoc/latest/org/jooq/MetaProvider.html?is-external=true" title="class or interface in org.jooq">MetaProvider</a>&nbsp;metaProvider,
+                 org.jooq.TransactionProvider&nbsp;transactionProvider,
+                 org.jooq.conf.Settings&nbsp;settings,
+                 org.jooq.ExecutorProvider&nbsp;executorProvider,
+                 org.jooq.RecordMapperProvider&nbsp;recordMapperProvider,
+                 org.jooq.RecordUnmapperProvider&nbsp;recordUnmapperProvider,
+                 org.jooq.MetaProvider&nbsp;metaProvider,
                  io.micronaut.context.ApplicationContext&nbsp;ctx)</code>
-<div class="block">Creates jOOQ <a href="https://www.jooq.org/javadoc/latest/org/jooq/Configuration.html?is-external=true" title="class or interface in org.jooq"><code>Configuration</code></a>.</div>
+<div class="block">Creates jOOQ <code>Configuration</code>.</div>
 </td>
 </tr>
 </table>
@@ -218,23 +218,23 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <li class="blockList">
 <h4>jooqConfiguration</h4>
 <pre>@EachBean(value=<a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql">javax.sql.DataSource.class</a>)
-public&nbsp;<a href="https://www.jooq.org/javadoc/latest/org/jooq/Configuration.html?is-external=true" title="class or interface in org.jooq">Configuration</a>&nbsp;jooqConfiguration(@Parameter
-                                                                                   <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name,
-                                                                                   <a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql">DataSource</a>&nbsp;dataSource,
-                                                                                   @Parameter <a href="https://docs.oracle.com/javase/8/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                                                                   <a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionProvider.html?is-external=true" title="class or interface in org.jooq">TransactionProvider</a>&nbsp;transactionProvider,
-                                                                                   @Parameter <a href="https://docs.oracle.com/javase/8/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                                                                   <a href="https://www.jooq.org/javadoc/latest/org/jooq/conf/Settings.html?is-external=true" title="class or interface in org.jooq.conf">Settings</a>&nbsp;settings,
-                                                                                   @Parameter <a href="https://docs.oracle.com/javase/8/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                                                                   <a href="https://www.jooq.org/javadoc/latest/org/jooq/ExecutorProvider.html?is-external=true" title="class or interface in org.jooq">ExecutorProvider</a>&nbsp;executorProvider,
-                                                                                   @Parameter <a href="https://docs.oracle.com/javase/8/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                                                                   <a href="https://www.jooq.org/javadoc/latest/org/jooq/RecordMapperProvider.html?is-external=true" title="class or interface in org.jooq">RecordMapperProvider</a>&nbsp;recordMapperProvider,
-                                                                                   @Parameter <a href="https://docs.oracle.com/javase/8/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                                                                   <a href="https://www.jooq.org/javadoc/latest/org/jooq/RecordUnmapperProvider.html?is-external=true" title="class or interface in org.jooq">RecordUnmapperProvider</a>&nbsp;recordUnmapperProvider,
-                                                                                   @Parameter <a href="https://docs.oracle.com/javase/8/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                                                                   <a href="https://www.jooq.org/javadoc/latest/org/jooq/MetaProvider.html?is-external=true" title="class or interface in org.jooq">MetaProvider</a>&nbsp;metaProvider,
-                                                                                   io.micronaut.context.ApplicationContext&nbsp;ctx)</pre>
-<div class="block">Creates jOOQ <a href="https://www.jooq.org/javadoc/latest/org/jooq/Configuration.html?is-external=true" title="class or interface in org.jooq"><code>Configuration</code></a>.
+public&nbsp;org.jooq.Configuration&nbsp;jooqConfiguration(@Parameter
+                                                                                            <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name,
+                                                                                            <a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql">DataSource</a>&nbsp;dataSource,
+                                                                                            @Parameter <a href="https://docs.oracle.com/javase/8/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                                                            org.jooq.TransactionProvider&nbsp;transactionProvider,
+                                                                                            @Parameter <a href="https://docs.oracle.com/javase/8/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                                                            org.jooq.conf.Settings&nbsp;settings,
+                                                                                            @Parameter <a href="https://docs.oracle.com/javase/8/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                                                            org.jooq.ExecutorProvider&nbsp;executorProvider,
+                                                                                            @Parameter <a href="https://docs.oracle.com/javase/8/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                                                            org.jooq.RecordMapperProvider&nbsp;recordMapperProvider,
+                                                                                            @Parameter <a href="https://docs.oracle.com/javase/8/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                                                            org.jooq.RecordUnmapperProvider&nbsp;recordUnmapperProvider,
+                                                                                            @Parameter <a href="https://docs.oracle.com/javase/8/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                                                            org.jooq.MetaProvider&nbsp;metaProvider,
+                                                                                            io.micronaut.context.ApplicationContext&nbsp;ctx)</pre>
+<div class="block">Creates jOOQ <code>Configuration</code>.
  It will configure it with available jOOQ provider beans with the same qualifier.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -248,7 +248,7 @@ public&nbsp;<a href="https://www.jooq.org/javadoc/latest/org/jooq/Configuration.
 <dd><code>metaProvider</code> - The metadata provider</dd>
 <dd><code>ctx</code> - The <code>ApplicationContext</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>A <a href="https://www.jooq.org/javadoc/latest/org/jooq/Configuration.html?is-external=true" title="class or interface in org.jooq"><code>Configuration</code></a></dd>
+<dd>A <code>Configuration</code></dd>
 </dl>
 </li>
 </ul>
@@ -258,14 +258,14 @@ public&nbsp;<a href="https://www.jooq.org/javadoc/latest/org/jooq/Configuration.
 <ul class="blockListLast">
 <li class="blockList">
 <h4>dslContext</h4>
-<pre>@EachBean(value=<a href="https://www.jooq.org/javadoc/latest/org/jooq/Configuration.html?is-external=true" title="class or interface in org.jooq">org.jooq.Configuration.class</a>)
-public&nbsp;<a href="https://www.jooq.org/javadoc/latest/org/jooq/DSLContext.html?is-external=true" title="class or interface in org.jooq">DSLContext</a>&nbsp;dslContext(<a href="https://www.jooq.org/javadoc/latest/org/jooq/Configuration.html?is-external=true" title="class or interface in org.jooq">Configuration</a>&nbsp;configuration)</pre>
-<div class="block">Created <a href="https://www.jooq.org/javadoc/latest/org/jooq/DSLContext.html?is-external=true" title="class or interface in org.jooq"><code>DSLContext</code></a> based on <a href="https://www.jooq.org/javadoc/latest/org/jooq/Configuration.html?is-external=true" title="class or interface in org.jooq"><code>Configuration</code></a></div>
+<pre>@EachBean(value=org.jooq.Configuration.class)
+public&nbsp;org.jooq.DSLContext&nbsp;dslContext(org.jooq.Configuration&nbsp;configuration)</pre>
+<div class="block">Created <code>DSLContext</code> based on <code>Configuration</code></div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>configuration</code> - The <a href="https://www.jooq.org/javadoc/latest/org/jooq/Configuration.html?is-external=true" title="class or interface in org.jooq"><code>Configuration</code></a></dd>
+<dd><code>configuration</code> - The <code>Configuration</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>A <a href="https://www.jooq.org/javadoc/latest/org/jooq/DSLContext.html?is-external=true" title="class or interface in org.jooq"><code>DSLContext</code></a></dd>
+<dd>A <code>DSLContext</code></dd>
 </dl>
 </li>
 </ul>

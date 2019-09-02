@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>6 Configuring jOOQ 1.2.1.BUILD-SNAPSHOT</title>
+    <title>7 Configuring Vert.x MySQL Client 1.2.1.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -68,18 +68,16 @@ function addJsClass() {
             <div id="main" class="corner-all">
 
                 
-                    <div class="toc-item prev-left"><a href="../guide/jasync.html">&lt;&lt; <strong>5</strong><span>Configuring JAsync SQL</span></a></div>
+                    <div class="toc-item prev-left"><a href="../guide/jooq.html">&lt;&lt; <strong>6</strong><span>Configuring jOOQ</span></a></div>
                 
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
                 
-                    <div class="toc-item next-right"><a href="../guide/vertxmysqlclient.html"><strong>7</strong><span>Configuring Vert.x MySQL Client</span> >></a></div>
-                
 
 
                 <div class="project">
-                    <h1>6 Configuring jOOQ</h1>
+                    <h1>7 Configuring Vert.x MySQL Client</h1>
 
                     <p><strong>Version:</strong> 1.2.1.BUILD-SNAPSHOT</p>
                 </div>
@@ -88,131 +86,125 @@ function addJsClass() {
 
                 
 
-<h1 id="jooq">6 Configuring jOOQ</h1>
+<h1 id="vertxmysqlclient">7 Configuring Vert.x MySQL Client</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/jooq.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/vertxmysqlclient.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>Micronaut supports automatically configuring <a href="http://www.jooq.org/">jOOQ</a> library for fluent, typesafe SQL query construction.</p>
+<p>Micronaut supports reactive and non-blocking client to connect to MySQL using <a href="https://github.com/eclipse-vertx/vertx-sql-client">vertx-mysql-client</a>, allowing  to handle many database connections with a single thread.</p>
 </div>
 <div class="sect1">
-<h2 id="_configuring_jooq">Configuring jOOQ</h2>
+<h2 id="_configuring_the_mysql_vertx_client">Configuring the MySQL Vertx Client</h2>
 <div class="sectionbody">
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="title">Using the CLI</div>
 <div class="paragraph">
-<p>To configure jOOQ library you should first add <code>jooq</code> module to your classpath:</p>
+<p>If you are creating your project using the Micronaut CLI, supply the <code>vertx-mysql-client</code> feature to configure the MySQL Vertx client in your project:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ mn create-app my-app --features vertx-mysql-client</pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To configure the MySQL Vertx client you should first add <code>vertx-mysql-client</code> module to your classpath:</p>
 </div>
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut.configuration:micronaut-jooq'</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut.configuration:micronaut-vertx-mysql-client'</span></code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
     &lt;groupId&gt;io.micronaut.configuration&lt;/groupId&gt;
-    &lt;artifactId&gt;micronaut-jooq&lt;/artifactId&gt;
+    &lt;artifactId&gt;micronaut-vertx-mysql-client&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
 </p>
 </div>
 <div class="paragraph">
-<p>You should then <a href="#jdbc">configure one or many DataSources</a>.
-For each registered <code>DataSource</code>, Micronaut will configure the following jOOQ beans using <a href="../api/io/micronaut/configuration/jooq/JooqConfigurationFactory.html">JooqConfigurationFactory</a>:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://www.jooq.org/javadoc/latest/org/jooq/Configuration.html">Configuration</a> - jOOQ <code>Configuration</code></p>
-</li>
-<li>
-<p><a href="https://www.jooq.org/javadoc/latest/org/jooq/DSLContext.html">DSLContext</a> - jOOQ <code>DSLContext</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>If Spring transaction management is in use, it will additionally create the following beans :</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="../api/io/micronaut/configuration/jooq/JooqExceptionTranslatorProvider.html">JooqExceptionTranslatorProvider</a> for each <code>DataSource</code></p>
-</li>
-<li>
-<p><a href="../api/io/micronaut/configuration/jooq/SpringTransactionProvider.html">SpringTransactionProvider</a> for each Spring <code>PlatformTransactionManager</code></p>
-</li>
-</ul>
-</div>
-<div class="sect2">
-<h3 id="_configuring_sql_dialect">Configuring SQL dialect</h3>
-<div class="paragraph">
-<p>Micronaut will attempt to detect database <a href="https://www.jooq.org/javadoc/latest/org/jooq/SQLDialect.html">SQLDialect</a> automatically.</p>
-</div>
-<div class="paragraph">
-<p>If this does not work as desired, SQL dialect can be provided manually via configuration properties. The following example configures dialect for <code>default</code> datasource:</p>
+<p>You should then configure the URI or <a href="https://vertx.io/docs/vertx-mysql-client/java/"><code>MySQLConnectOptions</code>,<code>PoolOptions</code></a> of the MySQL server you wish to communicate with in <code>application.yml</code>:</p>
 </div>
 <div class="listingblock">
-<div class="title">Configuring SQL dialect</div>
+<div class="title">application.yml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">jooq:
-    datasources:
-        default:
-            sql-dialect: 'POSTGRES'</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">vertx:
+	mysql:
+	    client:
+            port: 3306
+            host: the-host
+            database: the-db
+            user: test
+            password: test
+            maxSize: 5</code></pre>
 </div>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+You can also connect to MySQL using <code>uri</code> instead of the other properties.
+</td>
+</tr>
+</table>
 </div>
-<div class="sect2">
-<h3 id="_configuring_additional_provider_beans">Configuring additional provider beans</h3>
 <div class="paragraph">
-<p>You can define additional beans which will be used when jOOQ <code>Configuration</code> is created.
-Only beans with the same name qualifier as the data source name will be used.</p>
+<p>Once you have the above configuration in place then you can inject the <code>io.vertx.reactivex.mysqlclient.MySQLPool</code> bean. The following is the simplest way to connect:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">result = client.rxQuery('SELECT * FROM foo').map({ RowSet rowSet -&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+    RowIterator iterator = rowSet.iterator()
+    int id = iterator.next().getInteger("id")
+    return "id: ${id}"
+}).blockingGet()</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td><code>client</code> is an instance of the <code>io.vertx.reactivex.mysqlclient.MySQLPool</code> bean.</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>Micronaut will look for the following bean types:</p>
+<p>For more information on running queries on MySQL using the reactive client please read the "Running queries" section in the documentation of <a href="https://vertx.io/docs/vertx-mysql-client/java/">vertx-mysql-client</a>.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://www.jooq.org/javadoc/latest/org/jooq/conf/Settings.html">Settings</a></p>
-</li>
-<li>
-<p><a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionProvider.html">TransactionProvider</a></p>
-</li>
-<li>
-<p><a href="https://www.jooq.org/javadoc/latest/org/jooq/ExecutorProvider.html">ExecutorProvider</a></p>
-</li>
-<li>
-<p><a href="https://www.jooq.org/javadoc/latest/org/jooq/RecordMapperProvider.html">RecordMapperProvider</a></p>
-</li>
-<li>
-<p><a href="https://www.jooq.org/javadoc/latest/org/jooq/RecordUnmapperProvider.html">RecordUnmapperProvider</a></p>
-</li>
-<li>
-<p><a href="https://www.jooq.org/javadoc/latest/org/jooq/MetaProvider.html">MetaProvider</a></p>
-</li>
-<li>
-<p><a href="https://www.jooq.org/javadoc/latest/org/jooq/ExecuteListenerProvider.html">ExecuteListenerProvider</a></p>
-</li>
-<li>
-<p><a href="https://www.jooq.org/javadoc/latest/org/jooq/RecordListenerProvider.html">RecordListenerProvider</a></p>
-</li>
-<li>
-<p><a href="https://www.jooq.org/javadoc/latest/org/jooq/VisitListenerProvider.html">VisitListenerProvider</a></p>
-</li>
-<li>
-<p><a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionListenerProvider.html">TransactionListenerProvider</a></p>
-</li>
-<li>
-<p><a href="https://www.jooq.org/javadoc/latest/org/jooq/DiagnosticsListenerProvider.html">DiagnosticsListenerProvider</a></p>
-</li>
-</ul>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_mysql_health_checks">MySQL Health Checks</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When the <code>vertx-mysql-client</code> module is activated a <a href="../api/io/micronaut/configuration/vertx/mysql/client/health/MySQLClientPoolHealthIndicator.html">MySQLClientPoolHealthIndicator</a> is activated resulting in the <code>/health</code> endpoint and <a href="../api/io/micronaut/health/CurrentHealthStatus.html">CurrentHealthStatus</a> interface resolving the health of the MySQL connection.</p>
+</div>
+<div class="paragraph">
+<p>The only configuration option supported is to enable or disable the indicator by the <code>endpoints.health.vertx.mysql.client.enabled</code> key.</p>
+</div>
+<div class="paragraph">
+<p>See the section on the &lt;<a href="https://docs.micronaut.io/latest/guide/index.html#healthEndpoint">Health Endpoint</a> for more information.</p>
 </div>
 </div>
 </div>
@@ -220,9 +212,7 @@ Only beans with the same name qualifier as the data source name will be used.</p
 
                 <div style="clear:both;margin-top:15px;"></div>
                 
-                    <div class="toc-item prev-left"><a href="../guide/jasync.html">&lt;&lt; <strong>5</strong><span>Configuring JAsync SQL</span></a></div>
-                
-                    <div class="toc-item next-right"><a href="../guide/vertxmysqlclient.html"><strong>7</strong><span>Configuring Vert.x MySQL Client</span> >></a></div>
+                    <div class="toc-item prev-left"><a href="../guide/jooq.html">&lt;&lt; <strong>6</strong><span>Configuring jOOQ</span></a></div>
                 
                 <div style="clear:both"></div>
             </div>

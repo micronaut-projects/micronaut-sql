@@ -107,7 +107,7 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionProvider.html?is-external=true" title="class or interface in org.jooq">TransactionProvider</a></dd>
+<dd>org.jooq.TransactionProvider</dd>
 </dl>
 <hr>
 <br>
@@ -115,7 +115,7 @@ var activeTableTab = "activeTableTab";
  @EachBean(value=org.springframework.transaction.PlatformTransactionManager.class)
 public class <span class="typeNameLabel">SpringTransactionProvider</span>
 extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>
-implements <a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionProvider.html?is-external=true" title="class or interface in org.jooq">TransactionProvider</a></pre>
+implements org.jooq.TransactionProvider</pre>
 <div class="block">Allows Spring Transaction to be used with JOOQ.</div>
 <dl>
 <dt><span class="simpleTagLabel">Since:</span></dt>
@@ -162,15 +162,15 @@ implements <a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionProv
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/jooq/spring/SpringTransactionProvider.html#begin-org.jooq.TransactionContext-">begin</a></span>(<a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionContext.html?is-external=true" title="class or interface in org.jooq">TransactionContext</a>&nbsp;context)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/jooq/spring/SpringTransactionProvider.html#begin-org.jooq.TransactionContext-">begin</a></span>(org.jooq.TransactionContext&nbsp;context)</code>&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/jooq/spring/SpringTransactionProvider.html#commit-org.jooq.TransactionContext-">commit</a></span>(<a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionContext.html?is-external=true" title="class or interface in org.jooq">TransactionContext</a>&nbsp;ctx)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/jooq/spring/SpringTransactionProvider.html#commit-org.jooq.TransactionContext-">commit</a></span>(org.jooq.TransactionContext&nbsp;ctx)</code>&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/jooq/spring/SpringTransactionProvider.html#rollback-org.jooq.TransactionContext-">rollback</a></span>(<a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionContext.html?is-external=true" title="class or interface in org.jooq">TransactionContext</a>&nbsp;ctx)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/jooq/spring/SpringTransactionProvider.html#rollback-org.jooq.TransactionContext-">rollback</a></span>(org.jooq.TransactionContext&nbsp;ctx)</code>&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -222,10 +222,10 @@ implements <a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionProv
 <ul class="blockList">
 <li class="blockList">
 <h4>begin</h4>
-<pre>public&nbsp;void&nbsp;begin(<a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionContext.html?is-external=true" title="class or interface in org.jooq">TransactionContext</a>&nbsp;context)</pre>
+<pre>public&nbsp;void&nbsp;begin(org.jooq.TransactionContext&nbsp;context)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionProvider.html?is-external=true#begin-org.jooq.TransactionContext-" title="class or interface in org.jooq">begin</a></code>&nbsp;in interface&nbsp;<code><a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionProvider.html?is-external=true" title="class or interface in org.jooq">TransactionProvider</a></code></dd>
+<dd><code>begin</code>&nbsp;in interface&nbsp;<code>org.jooq.TransactionProvider</code></dd>
 </dl>
 </li>
 </ul>
@@ -235,10 +235,10 @@ implements <a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionProv
 <ul class="blockList">
 <li class="blockList">
 <h4>commit</h4>
-<pre>public&nbsp;void&nbsp;commit(<a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionContext.html?is-external=true" title="class or interface in org.jooq">TransactionContext</a>&nbsp;ctx)</pre>
+<pre>public&nbsp;void&nbsp;commit(org.jooq.TransactionContext&nbsp;ctx)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionProvider.html?is-external=true#commit-org.jooq.TransactionContext-" title="class or interface in org.jooq">commit</a></code>&nbsp;in interface&nbsp;<code><a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionProvider.html?is-external=true" title="class or interface in org.jooq">TransactionProvider</a></code></dd>
+<dd><code>commit</code>&nbsp;in interface&nbsp;<code>org.jooq.TransactionProvider</code></dd>
 </dl>
 </li>
 </ul>
@@ -248,10 +248,10 @@ implements <a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionProv
 <ul class="blockListLast">
 <li class="blockList">
 <h4>rollback</h4>
-<pre>public&nbsp;void&nbsp;rollback(<a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionContext.html?is-external=true" title="class or interface in org.jooq">TransactionContext</a>&nbsp;ctx)</pre>
+<pre>public&nbsp;void&nbsp;rollback(org.jooq.TransactionContext&nbsp;ctx)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionProvider.html?is-external=true#rollback-org.jooq.TransactionContext-" title="class or interface in org.jooq">rollback</a></code>&nbsp;in interface&nbsp;<code><a href="https://www.jooq.org/javadoc/latest/org/jooq/TransactionProvider.html?is-external=true" title="class or interface in org.jooq">TransactionProvider</a></code></dd>
+<dd><code>rollback</code>&nbsp;in interface&nbsp;<code>org.jooq.TransactionProvider</code></dd>
 </dl>
 </li>
 </ul>
