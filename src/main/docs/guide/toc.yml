@@ -5,3 +5,4 @@ pgclient: Configuring Reactive Postgres
 jasync: Configuring JAsync SQL
 jooq: Configuring jOOQ
 vertxmysqlclient: Configuring Vert.x MySQL Client
+vertxpgclient: Configuring Vert.x Postgres Client

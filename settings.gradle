@@ -8,4 +8,5 @@ include 'jasync-sql'
 include 'hibernate-jpa'
 include 'jooq'
 include 'vertx-mysql-client'
+include 'vertx-pg-client'
 
