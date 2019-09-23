@@ -1,0 +1,1 @@
+package io.micronaut.configuration.vertx.pg.client.health;
