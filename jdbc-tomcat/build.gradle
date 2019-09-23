@@ -6,7 +6,7 @@ dependencies {
 
     compile "io.micronaut:micronaut-jdbc:$micronautVersion"
     compile "io.micronaut:micronaut-inject:$micronautVersion"
-    compile "org.apache.tomcat:tomcat-jdbc:9.0.24"
+    compile "org.apache.tomcat:tomcat-jdbc:9.0.26"
 
     testRuntime "com.h2database:h2"
 
