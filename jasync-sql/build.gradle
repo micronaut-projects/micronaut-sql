@@ -5,7 +5,7 @@ dependencies {
     compileOnly "io.micronaut:micronaut-inject-java" // needed only for IntelliJ
 
     compile "io.micronaut:micronaut-inject:$micronautVersion"
-    compileOnly "com.github.jasync-sql:jasync-mysql:1.0.6"
+    compileOnly "com.github.jasync-sql:jasync-mysql:1.0.7"
     compileOnly "com.github.jasync-sql:jasync-postgresql:1.0.7"
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"
 
