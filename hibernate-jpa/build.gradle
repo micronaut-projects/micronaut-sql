@@ -8,7 +8,7 @@ dependencies {
     compile "org.hibernate:hibernate-core:5.4.5.Final", {
         exclude group:'org.javassist', module:'javassist'
     }
-    compileOnly "org.hibernate:hibernate-jcache:5.4.5.Final"
+    compileOnly "org.hibernate:hibernate-jcache:5.4.6.Final"
     // included for Java 11
     runtime 'javax.xml.bind:jaxb-api:2.3.1'
 
