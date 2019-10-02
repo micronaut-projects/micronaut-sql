@@ -99,7 +99,7 @@ if [[ $EXIT_STATUS -eq 0 ]]; then
 
       if [[ -n $TRAVIS_TAG ]]; then
           if [[ $EXIT_STATUS -eq 0 ]]; then
-            ./gradlew synchronizeWithMavenCentral --no-daemon
+            ./gradlew synchronizeWithMavenCentral -x hibernate-jpa-spring:synchronizeWithMavenCentral --no-daemon
           fi
       fi
    fi
