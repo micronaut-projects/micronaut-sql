@@ -19,17 +19,8 @@ package io.micronaut.configuration.hibernate.jpa;
 import io.micronaut.configuration.hibernate.jpa.condition.RequiresHibernateEntities;
 import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession;
 import io.micronaut.context.BeanLocator;
-import io.micronaut.context.annotation.Bean;
-import io.micronaut.context.annotation.Context;
-import io.micronaut.context.annotation.EachBean;
-import io.micronaut.context.annotation.Factory;
-import io.micronaut.context.annotation.Parameter;
-import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.annotation.*;
 import io.micronaut.context.env.Environment;
-import io.micronaut.core.annotation.TypeHint;
-import io.micronaut.core.beans.BeanIntrospection;
-import io.micronaut.core.beans.BeanIntrospector;
-import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import org.hibernate.Interceptor;
 import org.hibernate.Session;
@@ -39,18 +30,14 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.SessionFactoryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.dialect.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.orm.hibernate5.SpringSessionContext;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import javax.persistence.Entity;
 import javax.sql.DataSource;
 import javax.validation.ValidatorFactory;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -108,7 +95,9 @@ public class EntityManagerFactoryBean {
 
         Map<String, Object> additionalSettings = new LinkedHashMap<>();
         additionalSettings.put(AvailableSettings.DATASOURCE, dataSource);
-        additionalSettings.put(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, SpringSessionContext.class.getName());
+        additionalSettings.put(
+                AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS,
+                "org.springframework.orm.hibernate5.SpringSessionContext");
         additionalSettings.put(AvailableSettings.SESSION_FACTORY_NAME, dataSourceName);
         additionalSettings.put(AvailableSettings.SESSION_FACTORY_NAME_IS_JNDI, false);
         JpaConfiguration jpaConfiguration = beanLocator.findBean(JpaConfiguration.class, Qualifiers.byName(dataSourceName))

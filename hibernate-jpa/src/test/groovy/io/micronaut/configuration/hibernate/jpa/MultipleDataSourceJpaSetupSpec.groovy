@@ -23,9 +23,6 @@ import io.micronaut.spring.tx.annotation.Transactional
 import org.hibernate.Session
 import org.hibernate.SessionFactory
 import org.springframework.orm.hibernate5.HibernateTransactionManager
-import org.springframework.transaction.TransactionStatus
-import org.springframework.transaction.interceptor.TransactionAspectSupport
-import org.springframework.transaction.support.TransactionSynchronizationManager
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
@@ -62,8 +59,8 @@ class MultipleDataSourceJpaSetupSpec extends Specification{
         defaultSessionFactory != otherSessionFactory
         defaultSessionFactory.getMetamodel().entity(Book)
         otherSessionFactory.getMetamodel().entity(Author)
-        defaultTxManager.dataSource == applicationContext.getBean(DataSource)
-        otherTxManager.dataSource == applicationContext.getBean(DataSource, Qualifiers.byName('other'))
+        defaultTxManager.dataSource == applicationContext.getBean(DataSource).targetDataSource
+        otherTxManager.dataSource == applicationContext.getBean(DataSource, Qualifiers.byName('other')).targetDataSource
         defaultTxManager.sessionFactory == defaultSessionFactory
         otherTxManager.sessionFactory == otherSessionFactory
         defaultSessionFactory.jdbcServices.jdbcEnvironment.currentCatalog.toString() == "MYDB"

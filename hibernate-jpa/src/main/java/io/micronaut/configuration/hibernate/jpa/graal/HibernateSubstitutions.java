@@ -70,7 +70,6 @@ import org.hibernate.type.EnumType;
 
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.annotation.TypeHint.AccessType;
-import org.springframework.orm.hibernate5.SpringSessionContext;
 
 // Additional classes
 @TypeHint(
@@ -93,7 +92,6 @@ final class Loggers {
         EntityMetamodel.class,
         PojoEntityTuplizer.class,
         BasicCollectionPersister.class,
-        SpringSessionContext.class,
         HqlToken.class,
         OneToManyPersister.class,
         // Hibernate AST
