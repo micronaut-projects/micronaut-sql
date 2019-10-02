@@ -43,6 +43,7 @@ import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.hibernate.bytecode.spi.BytecodeProvider;
+import org.hibernate.event.spi.AutoFlushEventListener;
 import org.hibernate.event.spi.EventType;
 import org.hibernate.hql.internal.ast.HqlToken;
 import org.hibernate.hql.internal.ast.tree.*;
@@ -147,7 +148,44 @@ final class Loggers {
         UpdateStatement.class,
         // Others
         ImplicitNamingStrategyJpaCompliantImpl.class
-}, accessType = {TypeHint.AccessType.ALL_PUBLIC})
+}, typeNames = {
+        "org.hibernate.event.spi.AutoFlushEventListener[]",
+        "org.hibernate.event.spi.PersistEventListener[]",
+        "org.hibernate.event.spi.ClearEventListener[]",
+        "org.hibernate.event.spi.DeleteEventListener[]",
+        "org.hibernate.event.spi.DirtyCheckEventListener[]",
+        "org.hibernate.event.spi.EvictEventListener[]",
+        "org.hibernate.event.spi.FlushEntityEventListener[]",
+        "org.hibernate.event.spi.FlushEventListener[]",
+        "org.hibernate.event.spi.InitializeCollectionEventListener[]",
+        "org.hibernate.event.spi.LockEventListener[]",
+        "org.hibernate.event.spi.MergeEventListener[]",
+        "org.hibernate.event.spi.PersistEventListener[]",
+        "org.hibernate.event.spi.PostActionEventListener[]",
+        "org.hibernate.event.spi.PostCollectionRecreateEventListener[]",
+        "org.hibernate.event.spi.PostCollectionRemoveEventListener[]",
+        "org.hibernate.event.spi.PostCollectionUpdateEventListener[]",
+        "org.hibernate.event.spi.PostCommitDeleteEventListener[]",
+        "org.hibernate.event.spi.PostCommitInsertEventListener[]",
+        "org.hibernate.event.spi.PostCommitUpdateEventListener[]",
+        "org.hibernate.event.spi.PostDeleteEventListener[]",
+        "org.hibernate.event.spi.PostInsertEventListener[]",
+        "org.hibernate.event.spi.PostLoadEventListener[]",
+        "org.hibernate.event.spi.PostUpdateEventListener[]",
+        "org.hibernate.event.spi.PreCollectionRecreateEventListener[]",
+        "org.hibernate.event.spi.PreCollectionRemoveEventListener[]",
+        "org.hibernate.event.spi.PreCollectionUpdateEventListener[]",
+        "org.hibernate.event.spi.PreDeleteEventListener[]",
+        "org.hibernate.event.spi.PreInsertEventListener[]",
+        "org.hibernate.event.spi.PreLoadEventListener[]",
+        "org.hibernate.event.spi.PreUpdateEventListener[]",
+        "org.hibernate.event.spi.RefreshEventListener[]",
+        "org.hibernate.event.spi.ReplicateEventListener[]",
+        "org.hibernate.event.spi.ResolveNaturalIdEventListener[]",
+        "org.hibernate.event.spi.SaveOrUpdateEventListener[]",
+        "org.hibernate.event.spi.LoadEventListener[]"
+},
+   accessType = {TypeHint.AccessType.ALL_PUBLIC})
 final class Hql {}
 
 // ID Generators
