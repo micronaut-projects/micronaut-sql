@@ -24,6 +24,7 @@ import io.micronaut.context.condition.Condition;
 import io.micronaut.context.condition.ConditionContext;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.AnnotationMetadataProvider;
+import io.micronaut.core.annotation.Introspected;
 import io.micronaut.core.beans.BeanIntrospector;
 import io.micronaut.core.naming.NameResolver;
 import io.micronaut.core.util.ArrayUtils;
@@ -40,6 +41,7 @@ import java.util.Optional;
  * @author graemerocher
  * @since 1.0
  */
+@Introspected
 public class EntitiesInPackageCondition implements Condition {
     @Override
     public boolean matches(ConditionContext context) {
