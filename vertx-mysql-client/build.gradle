@@ -17,7 +17,7 @@ dependencies {
     compile "io.micronaut:micronaut-inject:$micronautVersion"
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"
 
-    compile "io.vertx:vertx-mysql-client:3.8.1"
+    compile "io.vertx:vertx-mysql-client:3.8.2"
     compile "io.vertx:vertx-rx-java2:3.8.1", {
         exclude module: "vertx-core"
     }
