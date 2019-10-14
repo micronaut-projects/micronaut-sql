@@ -1,0 +1,11 @@
+[
+  {
+    "name":"com.zaxxer.hikari.HikariConfig",
+    "allDeclaredFields":true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name":"java.sql.Statement[]",
+    "allDeclaredConstructors":true
+  }
+]
