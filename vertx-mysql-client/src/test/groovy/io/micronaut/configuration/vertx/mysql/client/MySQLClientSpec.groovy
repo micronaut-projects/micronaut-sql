@@ -21,6 +21,7 @@ import io.micronaut.context.ApplicationContext
 //end::appcontext-import[]
 
 import io.vertx.reactivex.mysqlclient.MySQLPool
+import io.vertx.reactivex.sqlclient.Row
 import io.vertx.reactivex.sqlclient.RowIterator
 import io.vertx.reactivex.sqlclient.RowSet
 
@@ -66,8 +67,8 @@ class MySQLClientSpec extends Specification{
         client.rxQuery("INSERT INTO foo(id) VALUES (0);").blockingGet()
 
         // tag::query[]
-        result = client.rxQuery('SELECT * FROM foo').map({ RowSet rowSet -> // <1>
-            RowIterator iterator = rowSet.iterator()
+        result = client.rxQuery('SELECT * FROM foo').map({ RowSet<Row> rowSet -> // <1>
+            RowIterator<Row> iterator = rowSet.iterator()
             int id = iterator.next().getInteger("id")
             return "id: ${id}"
         }).blockingGet()
