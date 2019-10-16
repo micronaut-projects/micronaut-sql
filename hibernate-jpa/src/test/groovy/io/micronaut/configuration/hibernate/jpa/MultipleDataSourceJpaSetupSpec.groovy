@@ -83,6 +83,14 @@ class MultipleDataSourceJpaSetupSpec extends Specification{
         javaService.testCurrentFromField()
     }
 
+    void "test that the connection pool is not exhaused and connections are closed"() {
+        given:
+        MultipleDataSourceService service = applicationContext.getBean(MultipleDataSourceService)
+        expect:
+        200.times { service.testOther() }
+        200.times { service.testCurrent() }
+    }
+
     @Singleton
     static class MultipleDataSourceService {
         @Inject

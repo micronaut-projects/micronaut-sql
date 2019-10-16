@@ -22,6 +22,7 @@ import io.micronaut.context.BeanLocator;
 import io.micronaut.context.annotation.*;
 import io.micronaut.context.env.Environment;
 import io.micronaut.inject.qualifiers.Qualifiers;
+import io.micronaut.jdbc.DataSourceResolver;
 import org.hibernate.Interceptor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -92,6 +93,11 @@ public class EntityManagerFactoryBean {
     protected StandardServiceRegistry hibernateStandardServiceRegistry(
         @Parameter String dataSourceName,
         DataSource dataSource) {
+
+        final DataSourceResolver dataSourceResolver = beanLocator.findBean(DataSourceResolver.class).orElse(null);
+        if (dataSourceResolver != null) {
+            dataSource = dataSourceResolver.resolve(dataSource);
+        }
 
         Map<String, Object> additionalSettings = new LinkedHashMap<>();
         additionalSettings.put(AvailableSettings.DATASOURCE, dataSource);
