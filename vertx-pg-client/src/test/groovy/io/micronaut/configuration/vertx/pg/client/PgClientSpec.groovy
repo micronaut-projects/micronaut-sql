@@ -23,6 +23,7 @@ import io.micronaut.context.ApplicationContext
 //end::appcontext-import[]
 
 import io.vertx.reactivex.pgclient.PgPool
+import io.vertx.reactivex.sqlclient.Row
 import io.vertx.reactivex.sqlclient.RowIterator
 import io.vertx.reactivex.sqlclient.RowSet
 import org.testcontainers.containers.PostgreSQLContainer
@@ -69,9 +70,9 @@ class PgClientSpec extends Specification {
         // end::pgPool-bean[]
 
         // tag::query[]
-        result = client.rxQuery('SELECT * FROM pg_stat_database').map({ RowSet rowSet -> // <1>
+        result = client.rxQuery('SELECT * FROM pg_stat_database').map({ RowSet<Row> rowSet -> // <1>
             int size = 0
-            RowIterator iterator = rowSet.iterator()
+            RowIterator<Row> iterator = rowSet.iterator()
             while (iterator.hasNext()) {
                 iterator.next()
                 size++
