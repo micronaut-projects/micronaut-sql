@@ -6,7 +6,7 @@ dependencies {
     compile "io.reactiverse:reactive-pg-client:0.11.4"
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"
     
-    compile "io.vertx:vertx-rx-java2:3.8.1", {
+    compile "io.vertx:vertx-rx-java2:3.8.2", {
         exclude module: "vertx-core"
     }
     compile "io.vertx:vertx-codegen:3.8.1", {
@@ -18,7 +18,7 @@ dependencies {
     testCompile "io.micronaut:micronaut-management:$micronautVersion"
     testCompile "org.testcontainers:spock:1.12.2"
     testCompile "org.testcontainers:postgresql:1.12.2"
-    testCompile "io.vertx:vertx-rx-java2:3.8.0", {
+    testCompile "io.vertx:vertx-rx-java2:3.8.2", {
         exclude module: "vertx-core"
     }
     testCompile "io.vertx:vertx-codegen:3.8.0", {
