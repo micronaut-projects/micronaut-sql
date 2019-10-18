@@ -137,7 +137,7 @@ public class JpaConfiguration {
      * @param jpaProperties The JPA properties
      */
     public final void setProperties(
-        @MapFormat(transformation = MapFormat.MapTransformation.FLAT, keyFormat = StringConvention.UNDER_SCORE_SEPARATED_LOWER_CASE)
+        @MapFormat(transformation = MapFormat.MapTransformation.FLAT, keyFormat = StringConvention.RAW)
             Map<String, Object> jpaProperties) {
         this.jpaProperties = jpaProperties;
     }
