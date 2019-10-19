@@ -1,5 +1,5 @@
 ext{
-    vertxVersion = '3.8.2'
+    vertxVersion = '3.8.3'
 }
 
 dependencies {
