@@ -1,13 +1,5 @@
-plugins {
-    id 'java'
-}
-
-version '1.2.1.BUILD-SNAPSHOT'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
+ext{
+    vertxVersion = '3.8.3'
 }
 
 dependencies {
@@ -17,13 +9,9 @@ dependencies {
     compile "io.micronaut:micronaut-inject:$micronautVersion"
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"
 
-    compile "io.vertx:vertx-mysql-client:3.8.2"
-    compile "io.vertx:vertx-rx-java2:3.8.2", {
-        exclude module: "vertx-core"
-    }
-    compile "io.vertx:vertx-codegen:3.8.2", {
-        exclude module: "vertx-core"
-    }
+    compile "io.vertx:vertx-mysql-client:$vertxVersion"
+    compile "io.vertx:vertx-rx-java2:$vertxVersion"
+    compile "io.vertx:vertx-codegen:$vertxVersion"
 
 
 
@@ -31,11 +19,7 @@ dependencies {
     testCompile "org.testcontainers:spock:1.12.2"
     testCompile "org.testcontainers:mysql:1.12.2"
     testCompile "mysql:mysql-connector-java:8.0.18"
-    testCompile "io.vertx:vertx-rx-java2:3.8.2", {
-        exclude module: "vertx-core"
-    }
-    testCompile "io.vertx:vertx-codegen:3.8.2", {
-        exclude module: "vertx-core"
-    }
-    testCompile "io.vertx:vertx-mysql-client:3.8.2"
+    testCompile "io.vertx:vertx-rx-java2:$vertxVersion"
+    testCompile "io.vertx:vertx-codegen:$vertxVersion"
+    testCompile "io.vertx:vertx-mysql-client:$vertxVersion"
 }

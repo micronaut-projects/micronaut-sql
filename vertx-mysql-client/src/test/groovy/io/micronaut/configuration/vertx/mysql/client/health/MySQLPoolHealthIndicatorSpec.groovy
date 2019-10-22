@@ -34,7 +34,7 @@ class MySQLPoolHealthIndicatorSpec extends Specification{
                 'vertx.mysql.client.database': mysql.databaseName,
                 'vertx.mysql.client.user': mysql.username,
                 'vertx.mysql.client.password': mysql.password,
-                'vertx.mysql.client.pool.maxSize': '5'
+                'vertx.mysql.client.maxSize': '5'
         )
 
         when:

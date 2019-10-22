@@ -1,8 +1,6 @@
-plugins {
-    id 'java'
+ext{
+    vertxVersion = '3.8.3'
 }
-
-sourceCompatibility = 1.8
 
 dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
@@ -11,24 +9,16 @@ dependencies {
     compile "io.micronaut:micronaut-inject:$micronautVersion"
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"
 
-    compile "io.vertx:vertx-pg-client:3.8.2"
-    compile "io.vertx:vertx-rx-java2:3.8.2", {
-        exclude module: "vertx-core"
-    }
-    compile "io.vertx:vertx-codegen:3.8.2", {
-        exclude module: "vertx-core"
-    }
+    compile "io.vertx:vertx-pg-client:$vertxVersion"
+    compile "io.vertx:vertx-rx-java2:$vertxVersion"
+    compile "io.vertx:vertx-codegen:$vertxVersion"
 
 
 
     testCompile "io.micronaut:micronaut-management:$micronautVersion"
     testCompile "org.testcontainers:spock:1.12.2"
     testCompile "org.testcontainers:postgresql:1.12.2"
-    testCompile "io.vertx:vertx-rx-java2:3.8.2", {
-        exclude module: "vertx-core"
-    }
-    testCompile "io.vertx:vertx-codegen:3.8.2", {
-        exclude module: "vertx-core"
-    }
-    testCompile "io.vertx:vertx-pg-client:3.8.2"
+    testCompile "io.vertx:vertx-rx-java2:$vertxVersion"
+    testCompile "io.vertx:vertx-codegen:$vertxVersion"
+    testCompile "io.vertx:vertx-pg-client:$vertxVersion"
 }
