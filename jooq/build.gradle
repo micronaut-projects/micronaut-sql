@@ -7,7 +7,7 @@ dependencies {
 
     compile "io.micronaut:micronaut-jdbc:$micronautVersion"
     compile "io.micronaut:micronaut-inject:$micronautVersion"
-    compile "org.jooq:jooq:3.12.1"
+    compile "org.jooq:jooq:3.12.2"
     compileOnly "org.springframework:spring-jdbc:$springVersion"
 
     testRuntime project(":jdbc-tomcat")
