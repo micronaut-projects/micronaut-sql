@@ -16,7 +16,7 @@ dependencies {
 
     testCompile "io.reactiverse:reactive-pg-client:0.11.3"
     testCompile "io.micronaut:micronaut-management:$micronautVersion"
-    testCompile "org.testcontainers:spock:1.12.2"
+    testCompile "org.testcontainers:spock:1.12.3"
     testCompile "org.testcontainers:postgresql:1.12.2"
     testCompile "io.vertx:vertx-rx-java2:3.8.0", {
         exclude module: "vertx-core"
