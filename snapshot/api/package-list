@@ -18,3 +18,9 @@ io.micronaut.configuration.jooq.spring
 io.micronaut.configuration.postgres.reactive
 io.micronaut.configuration.postgres.reactive.condition
 io.micronaut.configuration.postgres.reactive.health
+io.micronaut.configuration.vertx.mysql.client
+io.micronaut.configuration.vertx.mysql.client.condition
+io.micronaut.configuration.vertx.mysql.client.health
+io.micronaut.configuration.vertx.pg.client
+io.micronaut.configuration.vertx.pg.client.condition
+io.micronaut.configuration.vertx.pg.client.health

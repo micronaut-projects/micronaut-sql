@@ -2,6 +2,15 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script src="/cdn-cgi/apps/head/3cOPSgo5Omz84ycX7CvigfX4cpw.js"></script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-82213539-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-82213539-2');
+    </script>
     <title>7 Configuring Vert.x MySQL Client 1.3.0.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
@@ -179,8 +188,8 @@ You can also connect to MySQL using <code>uri</code> instead of the other proper
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">result = client.rxQuery('SELECT * FROM foo').map({ RowSet rowSet -&gt; <i class="conum" data-value="1"></i><b>(1)</b>
-    RowIterator iterator = rowSet.iterator()
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">result = client.rxQuery('SELECT * FROM foo').map({ RowSet&lt;Row&gt; rowSet -&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+    RowIterator&lt;Row&gt; iterator = rowSet.iterator()
     int id = iterator.next().getInteger("id")
     return "id: ${id}"
 }).blockingGet()</code></pre>
