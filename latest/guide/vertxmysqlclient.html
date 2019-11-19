@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script src="/cdn-cgi/apps/head/3cOPSgo5Omz84ycX7CvigfX4cpw.js"></script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-82213539-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-82213539-2');
+    </script>
+    <title>7 Configuring Vert.x MySQL Client 1.3.0.RC1</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navTitle">
+        
+        Micronaut SQL Libraries
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/jdbc.html"><strong>2</strong><span>Configuring JDBC</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/hibernate.html"><strong>3</strong><span>Configuring Hibernate</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/pgclient.html"><strong>4</strong><span>Configuring Reactive Postgres</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/jasync.html"><strong>5</strong><span>Configuring JAsync SQL</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/jooq.html"><strong>6</strong><span>Configuring jOOQ</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxmysqlclient.html"><strong>7</strong><span>Configuring Vert.x MySQL Client</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxpgclient.html"><strong>8</strong><span>Configuring Vert.x Postgres Client</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/jooq.html">&lt;&lt; <strong>6</strong><span>Configuring jOOQ</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/vertxpgclient.html"><strong>8</strong><span>Configuring Vert.x Postgres Client</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>7 Configuring Vert.x MySQL Client</h1>
+
+                    <p><strong>Version:</strong> 1.3.0.RC1</p>
+                </div>
+
+                
+
+                
+
+<h1 id="vertxmysqlclient">7 Configuring Vert.x MySQL Client</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/vertxmysqlclient.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Micronaut supports reactive and non-blocking client to connect to MySQL using <a href="https://github.com/eclipse-vertx/vertx-sql-client">vertx-mysql-client</a>, allowing  to handle many database connections with a single thread.</p>
+</div>
+<div class="sect1">
+<h2 id="_configuring_the_mysql_vertx_client">Configuring the MySQL Vertx Client</h2>
+<div class="sectionbody">
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="title">Using the CLI</div>
+<div class="paragraph">
+<p>If you are creating your project using the Micronaut CLI, supply the <code>vertx-mysql-client</code> feature to configure the MySQL Vertx client in your project:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ mn create-app my-app --features vertx-mysql-client</pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To configure the MySQL Vertx client you should first add <code>vertx-mysql-client</code> module to your classpath:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut.configuration:micronaut-vertx-mysql-client'</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.configuration&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-vertx-mysql-client&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>You should then configure the URI or <a href="https://vertx.io/docs/vertx-mysql-client/java/"><code>MySQLConnectOptions</code>,<code>PoolOptions</code></a> of the MySQL server you wish to communicate with in <code>application.yml</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">application.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">vertx:
+	mysql:
+	    client:
+            port: 3306
+            host: the-host
+            database: the-db
+            user: test
+            password: test
+            maxSize: 5</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+You can also connect to MySQL using <code>uri</code> instead of the other properties.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Once you have the above configuration in place then you can inject the <code>io.vertx.reactivex.mysqlclient.MySQLPool</code> bean. The following is the simplest way to connect:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">result = client.rxQuery('SELECT * FROM foo').map({ RowSet&lt;Row&gt; rowSet -&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+    RowIterator&lt;Row&gt; iterator = rowSet.iterator()
+    int id = iterator.next().getInteger("id")
+    return "id: ${id}"
+}).blockingGet()</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td><code>client</code> is an instance of the <code>io.vertx.reactivex.mysqlclient.MySQLPool</code> bean.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For more information on running queries on MySQL using the reactive client please read the "Running queries" section in the documentation of <a href="https://vertx.io/docs/vertx-mysql-client/java/">vertx-mysql-client</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mysql_health_checks">MySQL Health Checks</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When the <code>vertx-mysql-client</code> module is activated a <a href="../api/io/micronaut/configuration/vertx/mysql/client/health/MySQLClientPoolHealthIndicator.html">MySQLClientPoolHealthIndicator</a> is activated resulting in the <code>/health</code> endpoint and <a href="../api/io/micronaut/health/CurrentHealthStatus.html">CurrentHealthStatus</a> interface resolving the health of the MySQL connection.</p>
+</div>
+<div class="paragraph">
+<p>The only configuration option supported is to enable or disable the indicator by the <code>endpoints.health.vertx.mysql.client.enabled</code> key.</p>
+</div>
+<div class="paragraph">
+<p>See the section on the &lt;<a href="https://docs.micronaut.io/latest/guide/index.html#healthEndpoint">Health Endpoint</a> for more information.</p>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/jooq.html">&lt;&lt; <strong>6</strong><span>Configuring jOOQ</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/vertxpgclient.html"><strong>8</strong><span>Configuring Vert.x Postgres Client</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>
