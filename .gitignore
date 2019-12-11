@@ -16,4 +16,12 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 build
 *.iml
+
+src/main/docs/resources/css/highlight/*.css
+src/main/docs/resources/css/highlight/*.png
+src/main/docs/resources/css/highlight/*.jpg
+src/main/docs/resources/css/*.css
+src/main/docs/resources/img/*.svg
+src/main/docs/resources/js/*.js
+src/main/docs/resources/style/*.html
 .DS_Store
