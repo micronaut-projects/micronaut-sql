@@ -16,3 +16,4 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 build
 *.iml
+.DS_Store
