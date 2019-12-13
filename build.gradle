@@ -45,8 +45,8 @@ subprojects { Project subproject ->
         isBuildSnapshot = version.toString().endsWith("-SNAPSHOT")
     }
 
-    
     repositories {
+        jcenter()
         maven { url "https://repo.grails.org/grails/core" }
         // maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
