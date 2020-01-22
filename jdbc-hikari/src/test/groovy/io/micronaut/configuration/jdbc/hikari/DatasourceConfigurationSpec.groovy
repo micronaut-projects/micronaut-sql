@@ -251,4 +251,30 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.stop()
     }
 
+    void "test data source properties"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                ['datasources.default.data-source-properties' : ['reWriteBatchInserts' : true, 'anotherOne' : 'value']]
+        ))
+        applicationContext.start()
+
+        expect:
+        applicationContext.containsBean(DataSource)
+        applicationContext.containsBean(DatasourceConfiguration)
+
+        when:
+        HikariDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+
+        then:
+        !dataSource.dataSourceProperties.isEmpty()
+        dataSource.dataSourceProperties.size() == 2
+        dataSource.dataSourceProperties.get('reWriteBatchInserts') == true
+        dataSource.dataSourceProperties.get('anotherOne') == 'value'
+
+        cleanup:
+        applicationContext.close()
+    }
+
 }
