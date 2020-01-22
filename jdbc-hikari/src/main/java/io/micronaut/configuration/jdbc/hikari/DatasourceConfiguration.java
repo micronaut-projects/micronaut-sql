@@ -19,8 +19,13 @@ package io.micronaut.configuration.jdbc.hikari;
 import com.zaxxer.hikari.HikariConfig;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
+import io.micronaut.core.convert.format.MapFormat;
+import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
+
+import java.util.Map;
+import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 
@@ -163,5 +168,14 @@ public class DatasourceConfiguration extends HikariConfig implements BasicJdbcCo
      */
     public void setJndiName(String jndiName) {
         setDataSourceJNDI(jndiName);
+    }
+
+    public void setDataSourceProperties(@MapFormat(transformation = MapFormat.MapTransformation.FLAT, keyFormat = StringConvention.RAW) Map<String, ?> dsProperties) {
+        super.getDataSourceProperties().putAll(dsProperties);
+    }
+
+    @Override
+    public void setDataSourceProperties(Properties dsProperties) {
+        // otherwise properties will be added twice
     }
 }
