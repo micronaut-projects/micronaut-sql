@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -238,17 +238,25 @@ implements io.micronaut.jdbc.BasicJdbcConfiguration</pre>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#setDataSourceProperties-java.util.Map-">setDataSourceProperties</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,?&gt;&nbsp;dsProperties)</code>&nbsp;</td>
+</tr>
+<tr id="i13" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#setDataSourceProperties-java.util.Properties-">setDataSourceProperties</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</a>&nbsp;dsProperties)</code>&nbsp;</td>
+</tr>
+<tr id="i14" class="altColor">
+<td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#setJndiName-java.lang.String-">setJndiName</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;jndiName)</code>
 <div class="block">Setter.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#setUrl-java.lang.String-">setUrl</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;url)</code>
 <div class="block">Setter.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#setValidationQuery-java.lang.String-">setValidationQuery</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;validationQuery)</code>
 <div class="block">Setter.</div>
@@ -260,7 +268,7 @@ implements io.micronaut.jdbc.BasicJdbcConfiguration</pre>
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;com.zaxxer.hikari.HikariConfig</h3>
-<code>addDataSourceProperty, addHealthCheckProperty, copyStateTo, getCatalog, getConnectionInitSql, getConnectionTestQuery, getConnectionTimeout, getDataSource, getDataSourceClassName, getDataSourceJNDI, getDataSourceProperties, getHealthCheckProperties, getHealthCheckRegistry, getIdleTimeout, getInitializationFailTimeout, getJdbcUrl, getLeakDetectionThreshold, getMaximumPoolSize, getMaxLifetime, getMetricRegistry, getMetricsTrackerFactory, getMinimumIdle, getPoolName, getScheduledExecutor, getSchema, getThreadFactory, getTransactionIsolation, getValidationTimeout, isAllowPoolSuspension, isAutoCommit, isIsolateInternalQueries, isReadOnly, isRegisterMbeans, setAllowPoolSuspension, setAutoCommit, setCatalog, setConnectionInitSql, setConnectionTestQuery, setConnectionTimeout, setDataSource, setDataSourceClassName, setDataSourceJNDI, setDataSourceProperties, setDriverClassName, setHealthCheckProperties, setHealthCheckRegistry, setIdleTimeout, setInitializationFailTimeout, setIsolateInternalQueries, setJdbcUrl, setLeakDetectionThreshold, setMaximumPoolSize, setMaxLifetime, setMetricRegistry, setMetricsTrackerFactory, setMinimumIdle, setPassword, setPoolName, setReadOnly, setRegisterMbeans, setScheduledExecutor, setSchema, setThreadFactory, setTransactionIsolation, setUsername, setValidationTimeout, validate</code></li>
+<code>addDataSourceProperty, addHealthCheckProperty, copyStateTo, getCatalog, getConnectionInitSql, getConnectionTestQuery, getConnectionTimeout, getDataSource, getDataSourceClassName, getDataSourceJNDI, getDataSourceProperties, getHealthCheckProperties, getHealthCheckRegistry, getIdleTimeout, getInitializationFailTimeout, getJdbcUrl, getLeakDetectionThreshold, getMaximumPoolSize, getMaxLifetime, getMetricRegistry, getMetricsTrackerFactory, getMinimumIdle, getPoolName, getScheduledExecutor, getSchema, getThreadFactory, getTransactionIsolation, getValidationTimeout, isAllowPoolSuspension, isAutoCommit, isIsolateInternalQueries, isReadOnly, isRegisterMbeans, setAllowPoolSuspension, setAutoCommit, setCatalog, setConnectionInitSql, setConnectionTestQuery, setConnectionTimeout, setDataSource, setDataSourceClassName, setDataSourceJNDI, setDriverClassName, setHealthCheckProperties, setHealthCheckRegistry, setIdleTimeout, setInitializationFailTimeout, setIsolateInternalQueries, setJdbcUrl, setLeakDetectionThreshold, setMaximumPoolSize, setMaxLifetime, setMetricRegistry, setMetricsTrackerFactory, setMinimumIdle, setPassword, setPoolName, setReadOnly, setRegisterMbeans, setScheduledExecutor, setSchema, setThreadFactory, setTransactionIsolation, setUsername, setValidationTimeout, validate</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -500,7 +508,7 @@ implements io.micronaut.jdbc.BasicJdbcConfiguration</pre>
 <a name="setJndiName-java.lang.String-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>setJndiName</h4>
 <pre>public&nbsp;void&nbsp;setJndiName(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;jndiName)</pre>
@@ -508,6 +516,29 @@ implements io.micronaut.jdbc.BasicJdbcConfiguration</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>jndiName</code> - jndi name</dd>
+</dl>
+</li>
+</ul>
+<a name="setDataSourceProperties-java.util.Map-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setDataSourceProperties</h4>
+<pre>public&nbsp;void&nbsp;setDataSourceProperties(@MapFormat(transformation=FLAT,keyFormat=RAW)
+                                    <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,?&gt;&nbsp;dsProperties)</pre>
+</li>
+</ul>
+<a name="setDataSourceProperties-java.util.Properties-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>setDataSourceProperties</h4>
+<pre>public&nbsp;void&nbsp;setDataSourceProperties(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</a>&nbsp;dsProperties)</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code>setDataSourceProperties</code>&nbsp;in class&nbsp;<code>com.zaxxer.hikari.HikariConfig</code></dd>
 </dl>
 </li>
 </ul>
