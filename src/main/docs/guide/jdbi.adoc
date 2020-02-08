@@ -1,0 +1,27 @@
+Micronaut supports automatically configuring https://jdbi.org/[Jdbi] library for convenient, idiomatic access to relational data.
+
+== Configuring Jdbi ==
+
+To configure the Jdbi library you should first add the `jdbi` module to your classpath:
+
+dependency:micronaut-jdbi[groupId="io.micronaut.configuration"]
+
+You should then <<jdbc, configure one or many DataSources>>.
+For each registered `DataSource`, Micronaut will configure the following Jdbi beans using api:configuration.jdbi.JdbiFactory[]:
+
+* link:{jdbiapi}/org/jdbi/v3/core/Jdbi.html[Jdbi] - the `Jdbi` instance
+
+If Spring transaction management is in use, it will additionally create the following beans :
+
+* api:configuration.jdbi.spring.SpringTransactionHandler[SpringTransactionHandler] for each Spring `PlatformTransactionManager`
+
+=== Configuring additional provider beans ===
+
+You can define additional beans which will be used when the `Jdbi` object is created.
+Only beans with a `Named` qualifier name with the same name as the data source name will be used.
+
+Micronaut will look for the following bean types:
+
+* link:{jdbiapi}/org/jdbi/v3/core/transaction/TransactionHandler.html[TransactionHandler]
+* link:{jdbiapi}/org/jdbi/v3/core/statement/StatementBuilderFactory.html[StatementBuilderFactory]
+* api:configuration.jdbi.JdbiCustomizer[JdbiCustomizer]

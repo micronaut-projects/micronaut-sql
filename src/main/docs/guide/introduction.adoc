@@ -2,6 +2,10 @@ This project includes modules to support SQL Database access in Micronaut.
 
 === Release History
 
+==== 1.3.1
+
+* Support for Jdbi
+
 ==== 1.3.0
 
 * Support for Vertx MySQL and Postgres
