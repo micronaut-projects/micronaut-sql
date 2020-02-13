@@ -10,12 +10,10 @@ dependencies {
     compile "org.jdbi:jdbi3-core:3.12.0"
     compileOnly "com.h2database:h2"
     compileOnly "org.springframework:spring-jdbc:$springVersion"
-    compileOnly "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
 
     testRuntime project(":jdbc-hikari")
     testRuntime "com.h2database:h2"
-//    testRuntime "org.springframework:spring-jdbc:$springVersion"
-    testRuntime "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
+    testRuntime "org.springframework:spring-jdbc:$springVersion"
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testCompile "io.micronaut:micronaut-spring"
