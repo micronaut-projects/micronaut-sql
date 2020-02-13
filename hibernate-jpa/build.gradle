@@ -25,7 +25,7 @@ dependencies {
 
     compile "io.micronaut:micronaut-validation:$micronautVersion"
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    testRuntime "io.micronaut.configuration:micronaut-hibernate-validator:$micronautVersion"
+    testRuntime "io.micronaut.configuration:micronaut-hibernate-validator:$micronautHibernateValidator"
     testCompile "org.springframework:spring-orm:$springVersion"
     testCompile "io.micronaut:micronaut-spring:$micronautVersion"
     testCompile "io.micronaut:micronaut-inject-java"

@@ -20,4 +20,4 @@
  * @author Dan Maas
  * @since 1.3.1
  */
-package io.micronaut.configuration.jdbi.spring;
+package io.micronaut.configuration.jdbi.transaction.spring;

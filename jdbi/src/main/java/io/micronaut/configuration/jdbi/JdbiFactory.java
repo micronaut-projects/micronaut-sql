@@ -42,12 +42,14 @@ public class JdbiFactory {
     /**
      * Creates a Jdbi {@link Jdbi} instance.
      * It will configure it with available Jdbi provider beans with the same qualifier.
-     *
+     * <p>
      * Plugins will be installed automatically from the classpath using the {@link ServiceLoader} mechanism
      *
      * @param dataSource              The {@link DataSource}
      * @param transactionHandler      The {@link TransactionHandler}
-     * @return A {@link Jdbi}
+     * @param statementBuilderFactory The {@link StatementBuilderFactory}
+     * @param jdbiCustomizer          The {@link JdbiCustomizer}
+     * @return The {@link Jdbi} instance
      */
     @EachBean(DataSource.class)
     public Jdbi jdbi(

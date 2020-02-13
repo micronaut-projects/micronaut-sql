@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package io.micronaut.configuration.jdbi.spring;
+package io.micronaut.configuration.jdbi.transaction.spring;
 
+import io.micronaut.configuration.jdbi.transaction.AbstractTransactionHandler;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Requires;
 import org.jdbi.v3.core.Handle;
-import org.jdbi.v3.core.HandleCallback;
-import org.jdbi.v3.core.transaction.TransactionHandler;
-import org.jdbi.v3.core.transaction.TransactionIsolationLevel;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -40,15 +38,14 @@ import java.util.function.Consumer;
  */
 @Requires(classes = PlatformTransactionManager.class)
 @EachBean(PlatformTransactionManager.class)
-public class SpringTransactionHandler implements TransactionHandler {
+public class SpringTransactionHandler extends AbstractTransactionHandler {
 
-    private final ConcurrentHashMap<Handle, LocalStuff> localStuff = new ConcurrentHashMap<>();
-    private final ThreadLocal<Boolean> didTxnRollback = ThreadLocal.withInitial(() -> false);
+	private final ConcurrentHashMap<Handle, LocalStuff> localStuff = new ConcurrentHashMap<>();
 
     private final PlatformTransactionManager transactionManager;
 
     /**
-     * Adapt a {@link PlatformTransactionManager} to jOOQ transaction provider interface.
+     * Adapt a {@link PlatformTransactionManager} to Jdbi transaction provider interface.
      *
      * @param transactionManager The transaction manager
      */
@@ -76,6 +73,7 @@ public class SpringTransactionHandler implements TransactionHandler {
 
     @Override
     public void rollback(Handle handle) {
+		didTxnRollback.set(true);
 		withLocalStuff(handle, (localStuff) -> {
 			try {
 				this.transactionManager.rollback(localStuff.getTransactionStatus());
@@ -119,44 +117,10 @@ public class SpringTransactionHandler implements TransactionHandler {
 		});
     }
 
-	@Override
-	public <R, X extends Exception> R inTransaction(Handle handle, HandleCallback<R, X> callback) throws X {
-		if (isInTransaction(handle)) {
-			throw new IllegalStateException("Already in transaction");
-		}
-		didTxnRollback.set(false);
-		final R returnValue;
-		try {
-			handle.begin();
-			returnValue = callback.withHandle(handle);
-			if (!didTxnRollback.get()) {
-				handle.commit();
-			}
-		} catch (Throwable e) {
-			try {
-				handle.rollback();
-			} catch (Exception rollback) {
-				e.addSuppressed(rollback);
-			}
-			throw e;
-		}
-
-		didTxnRollback.remove();
-		return returnValue;
-	}
-
-	@Override
-	public <R, X extends Exception> R inTransaction(Handle handle,
-													TransactionIsolationLevel level,
-													HandleCallback<R, X> callback) throws X {
-		final TransactionIsolationLevel initial = handle.getTransactionIsolationLevel();
-		try {
-			handle.setTransactionIsolation(level);
-			return inTransaction(handle, callback);
-		} finally {
-			handle.setTransactionIsolation(initial);
-		}
-	}
+    private TransactionStatus getTransactionStatus(Handle handle) {
+        LocalStuff localStuff = this.localStuff.get(handle);
+        return localStuff != null ? localStuff.getTransactionStatus() : null;
+    }
 
 	private void withLocalStuff(Handle handle, Consumer<LocalStuff> consumer) {
 		LocalStuff localStuff = this.localStuff.get(handle);
@@ -165,41 +129,36 @@ public class SpringTransactionHandler implements TransactionHandler {
 		}
 	}
 
-    private TransactionStatus getTransactionStatus(Handle handle) {
-        LocalStuff localStuff = this.localStuff.get(handle);
-        return localStuff != null ? localStuff.getTransactionStatus() : null;
-    }
+	private void restore(final Handle handle) {
+		try {
+			final LocalStuff stuff = this.localStuff.remove(handle);
+			if (stuff != null) {
+				stuff.getSavepoints().clear();
+			}
+		} finally {
+			// prevent memory leak if rollback throws an exception
+			this.localStuff.remove(handle);
+		}
+	}
 
-    private void restore(final Handle handle) {
-        try {
-            final LocalStuff stuff = localStuff.remove(handle);
-            if (stuff != null) {
-                stuff.getSavepoints().clear();
-            }
-        } finally {
-            // prevent memory leak if rollback throws an exception
-            localStuff.remove(handle);
-        }
-    }
+	private static class LocalStuff {
 
-    private static class LocalStuff {
+		private final Map<String, Object> savepoints = new HashMap<>();
 
-        private final Map<String, Object> savepoints = new HashMap<>();
+		private final TransactionStatus transactionStatus;
 
-        private final TransactionStatus transactionStatus;
+		LocalStuff(TransactionStatus transactionStatus) {
+			this.transactionStatus = transactionStatus;
+		}
 
-        LocalStuff(TransactionStatus transactionStatus) {
-            this.transactionStatus = transactionStatus;
-        }
+		Map<String, Object> getSavepoints() {
+			return savepoints;
+		}
 
-        Map<String, Object> getSavepoints() {
-            return savepoints;
-        }
+		TransactionStatus getTransactionStatus() {
+			return transactionStatus;
+		}
 
-        TransactionStatus getTransactionStatus() {
-            return transactionStatus;
-        }
-
-    }
+	}
 
 }
