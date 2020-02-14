@@ -11,7 +11,7 @@ dependencies {
         exclude group:'org.jboss:jandex', module:'jar'
     }
     compile 'jakarta.transaction:jakarta.transaction-api:1.3.3'
-    compileOnly "org.hibernate:hibernate-jcache:5.4.11.Final"
+    compileOnly "org.hibernate:hibernate-jcache:5.4.12.Final"
     // included for Java 11
     runtime 'javax.xml.bind:jaxb-api:2.3.1'
 
