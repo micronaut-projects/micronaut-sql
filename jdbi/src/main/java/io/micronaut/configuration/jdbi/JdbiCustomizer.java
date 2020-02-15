@@ -24,7 +24,7 @@ import org.jdbi.v3.core.Jdbi;
  * corresponding to the jdbi datasource to be customized.
  *
  * @author Dan Maas
- * @since 1.3.1
+ * @since 1.4.0
  */
 public interface JdbiCustomizer {
 

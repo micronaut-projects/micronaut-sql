@@ -34,7 +34,7 @@ import java.util.ServiceLoader;
  * Sets up Jdbi library integration.
  *
  * @author Dan Maas
- * @since 1.3.1
+ * @since 1.4.0
  */
 @Factory
 public class JdbiFactory {

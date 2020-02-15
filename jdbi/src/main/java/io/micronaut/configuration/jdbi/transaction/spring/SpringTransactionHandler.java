@@ -34,7 +34,7 @@ import java.util.function.Consumer;
  * Allows Spring Transaction to be used with Jdbi.
  *
  * @author Dan Maas
- * @since 1.3.1
+ * @since 1.4.0
  */
 @Requires(classes = PlatformTransactionManager.class)
 @EachBean(PlatformTransactionManager.class)

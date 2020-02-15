@@ -15,9 +15,9 @@
  */
 
 /**
- * Classes specific to combining JOOQ with Spring JdbcTemplate.
+ * Classes specific to combining Jdbi with transaction management.
  *
  * @author Dan Maas
- * @since 1.3.1
+ * @since 1.4.0
  */
 package io.micronaut.configuration.jdbi.transaction;
