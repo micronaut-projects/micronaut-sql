@@ -109,9 +109,12 @@ class MultipleDataSourceJpaSetupSpec extends Specification{
         @Named("other")
         SessionFactory sessionFactory
 
+        @Inject
         @PersistenceContext
         Session contextSession
 
+        @Inject
+        @Named("other")
         @PersistenceContext(name = "other")
         Session contextOther
 

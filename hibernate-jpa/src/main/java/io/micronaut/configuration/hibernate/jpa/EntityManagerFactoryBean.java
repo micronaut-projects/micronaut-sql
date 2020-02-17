@@ -171,7 +171,7 @@ public class EntityManagerFactoryBean {
     }
 
     /**
-     * Obtains the current session for teh given session factory.
+     * Obtains the current session for the given session factory.
      *
      * @param sessionFactory The session factory
      * @param dataSource The name of the data source.

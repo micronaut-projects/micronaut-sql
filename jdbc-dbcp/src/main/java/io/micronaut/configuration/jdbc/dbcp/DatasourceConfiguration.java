@@ -22,10 +22,11 @@ import io.micronaut.context.annotation.Parameter;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.sql.SQLException;
 
 /**
  * Allows the configuration of Apache DBCP JDBC data sources. All properties on
@@ -43,6 +44,7 @@ import java.sql.SQLException;
 @EachProperty(value = BasicJdbcConfiguration.PREFIX, primary = "default")
 public class DatasourceConfiguration extends BasicDataSource implements BasicJdbcConfiguration {
 
+    private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
     private final CalculatedSettings calculatedSettings;
     private final String name;
 
@@ -82,11 +84,16 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
 
     /**
      * Before this bean is destroyed close the connection.
-     * @throws SQLException exception
      */
     @PreDestroy
-    void preDestroy() throws SQLException {
-        this.close();
+    void preDestroy() {
+        try {
+            this.close();
+        } catch (Exception e) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Error closing data source [" + this + "]: " + e.getMessage(), e);
+            }
+        }
     }
 
     /**
