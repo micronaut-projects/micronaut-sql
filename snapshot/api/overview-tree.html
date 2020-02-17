@@ -86,6 +86,9 @@
 <li><a href="io/micronaut/configuration/jdbc/hikari/package-tree.html">io.micronaut.configuration.jdbc.hikari</a>, </li>
 <li><a href="io/micronaut/configuration/jdbc/tomcat/package-tree.html">io.micronaut.configuration.jdbc.tomcat</a>, </li>
 <li><a href="io/micronaut/configuration/jdbc/tomcat/metadata/package-tree.html">io.micronaut.configuration.jdbc.tomcat.metadata</a>, </li>
+<li><a href="io/micronaut/configuration/jdbi/package-tree.html">io.micronaut.configuration.jdbi</a>, </li>
+<li><a href="io/micronaut/configuration/jdbi/transaction/package-tree.html">io.micronaut.configuration.jdbi.transaction</a>, </li>
+<li><a href="io/micronaut/configuration/jdbi/transaction/spring/package-tree.html">io.micronaut.configuration.jdbi.transaction.spring</a>, </li>
 <li><a href="io/micronaut/configuration/jooq/package-tree.html">io.micronaut.configuration.jooq</a>, </li>
 <li><a href="io/micronaut/configuration/jooq/spring/package-tree.html">io.micronaut.configuration.jooq.spring</a>, </li>
 <li><a href="io/micronaut/configuration/postgres/reactive/package-tree.html">io.micronaut.configuration.postgres.reactive</a>, </li>
@@ -108,6 +111,11 @@
 <ul>
 <li type="circle">io.micronaut.configuration.jdbc.dbcp.metadata.<a href="io/micronaut/configuration/jdbc/dbcp/metadata/DbcpDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.dbcp.metadata"><span class="typeNameLink">DbcpDataSourcePoolMetadata</span></a></li>
 <li type="circle">io.micronaut.configuration.jdbc.tomcat.metadata.<a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.tomcat.metadata"><span class="typeNameLink">TomcatDataSourcePoolMetadata</span></a></li>
+</ul>
+</li>
+<li type="circle">io.micronaut.configuration.jdbi.transaction.<a href="io/micronaut/configuration/jdbi/transaction/AbstractTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction"><span class="typeNameLink">AbstractTransactionHandler</span></a> (implements org.jdbi.v3.core.transaction.<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html?is-external=true" title="class or interface in org.jdbi.v3.core.transaction">TransactionHandler</a>)
+<ul>
+<li type="circle">io.micronaut.configuration.jdbi.transaction.spring.<a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.spring"><span class="typeNameLink">SpringTransactionHandler</span></a></li>
 </ul>
 </li>
 <li type="circle">org.apache.commons.dbcp2.BasicDataSource (implements java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html?is-external=true" title="class or interface in java.lang">AutoCloseable</a>, org.apache.commons.dbcp2.BasicDataSourceMXBean, javax.sql.<a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql">DataSource</a>, javax.management.<a href="https://docs.oracle.com/javase/8/docs/api/javax/management/MBeanRegistration.html?is-external=true" title="class or interface in javax.management">MBeanRegistration</a>)
@@ -137,6 +145,7 @@
 <li type="circle">io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html" title="class in io.micronaut.configuration.jasync"><span class="typeNameLink">JasyncPoolConfiguration</span></a></li>
 <li type="circle">io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPostgreSQLClientFactory.html" title="class in io.micronaut.configuration.jasync"><span class="typeNameLink">JasyncPostgreSQLClientFactory</span></a> (implements java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html?is-external=true" title="class or interface in java.lang">AutoCloseable</a>)</li>
 <li type="circle">io.micronaut.configuration.jasync.health.<a href="io/micronaut/configuration/jasync/health/JaysncHealthIndicator.html" title="class in io.micronaut.configuration.jasync.health"><span class="typeNameLink">JaysncHealthIndicator</span></a> (implements io.micronaut.management.health.indicator.HealthIndicator)</li>
+<li type="circle">io.micronaut.configuration.jdbi.<a href="io/micronaut/configuration/jdbi/JdbiFactory.html" title="class in io.micronaut.configuration.jdbi"><span class="typeNameLink">JdbiFactory</span></a></li>
 <li type="circle">io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationFactory.html" title="class in io.micronaut.configuration.jooq"><span class="typeNameLink">JooqConfigurationFactory</span></a></li>
 <li type="circle">io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html" title="class in io.micronaut.configuration.jooq"><span class="typeNameLink">JooqConfigurationProperties</span></a></li>
 <li type="circle">io.micronaut.configuration.jooq.spring.<a href="io/micronaut/configuration/jooq/spring/JooqExceptionTranslatorProvider.html" title="class in io.micronaut.configuration.jooq.spring"><span class="typeNameLink">JooqExceptionTranslatorProvider</span></a> (implements org.jooq.ExecuteListenerProvider)</li>
@@ -164,6 +173,7 @@
 <h2 title="Interface Hierarchy">Interface Hierarchy</h2>
 <ul>
 <li type="circle">io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncClientSettings.html" title="interface in io.micronaut.configuration.jasync"><span class="typeNameLink">JasyncClientSettings</span></a></li>
+<li type="circle">io.micronaut.configuration.jdbi.<a href="io/micronaut/configuration/jdbi/JdbiCustomizer.html" title="interface in io.micronaut.configuration.jdbi"><span class="typeNameLink">JdbiCustomizer</span></a></li>
 <li type="circle">io.micronaut.configuration.vertx.mysql.client.<a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientSettings.html" title="interface in io.micronaut.configuration.vertx.mysql.client"><span class="typeNameLink">MySQLClientSettings</span></a></li>
 <li type="circle">io.micronaut.configuration.vertx.pg.client.<a href="io/micronaut/configuration/vertx/pg/client/PgClientSettings.html" title="interface in io.micronaut.configuration.vertx.pg.client"><span class="typeNameLink">PgClientSettings</span></a></li>
 <li type="circle">io.micronaut.configuration.postgres.reactive.<a href="io/micronaut/configuration/postgres/reactive/PgPoolClientSettings.html" title="interface in io.micronaut.configuration.postgres.reactive"><span class="typeNameLink">PgPoolClientSettings</span></a></li>

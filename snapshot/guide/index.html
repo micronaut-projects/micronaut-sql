@@ -55,11 +55,13 @@
                                 
                                 <div class="toc-item" style="margin-left:0"><a href="#jooq"><strong>6</strong><span>Configuring jOOQ</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#vertxmysqlclient"><strong>7</strong><span>Configuring Vert.x MySQL Client</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#jdbi"><strong>7</strong><span>Configuring Jdbi</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#vertxpgclient"><strong>8</strong><span>Configuring Vert.x Postgres Client</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#vertxmysqlclient"><strong>8</strong><span>Configuring Vert.x MySQL Client</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#repository"><strong>9</strong><span>Repository</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#vertxpgclient"><strong>9</strong><span>Configuring Vert.x Postgres Client</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="#repository"><strong>10</strong><span>Repository</span></a></div>
                                 
                             </div>
                         </div>
@@ -102,11 +104,13 @@
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-jooq"><a href="#jooq"><strong>6</strong><span>Configuring jOOQ</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-vertxmysqlclient"><a href="#vertxmysqlclient"><strong>7</strong><span>Configuring Vert.x MySQL Client</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-jdbi"><a href="#jdbi"><strong>7</strong><span>Configuring Jdbi</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-vertxpgclient"><a href="#vertxpgclient"><strong>8</strong><span>Configuring Vert.x Postgres Client</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-vertxmysqlclient"><a href="#vertxmysqlclient"><strong>8</strong><span>Configuring Vert.x MySQL Client</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>9</strong><span>Repository</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-vertxpgclient"><a href="#vertxpgclient"><strong>9</strong><span>Configuring Vert.x Postgres Client</span></a></div>
+        
+        <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>10</strong><span>Repository</span></a></div>
         
         </div>
     </div>
@@ -133,6 +137,16 @@
 </div>
 <div class="sect2">
 <h3 id="_release_history">Release History</h3>
+<div class="sect3">
+<h4 id="_1_4_0">1.4.0</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Support for Jdbi</p>
+</li>
+</ul>
+</div>
+</div>
 <div class="sect3">
 <h4 id="_1_3_0">1.3.0</h4>
 <div class="ulist">
@@ -542,16 +556,16 @@
 <div class="ulist">
 <ul>
 <li>
-<p><a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/registry/StandardServiceRegistry.html">StandardServiceRegistry</a> - The Hibernate <code>StandardServiceRegistry</code></p>
+<p><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/registry/StandardServiceRegistry.html">StandardServiceRegistry</a> - The Hibernate <code>StandardServiceRegistry</code></p>
 </li>
 <li>
-<p><a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/MetadataSources.html">MetadataSources</a> - The Hibernate <code>MetadataSources</code></p>
+<p><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/MetadataSources.html">MetadataSources</a> - The Hibernate <code>MetadataSources</code></p>
 </li>
 <li>
-<p><a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/SessionFactoryBuilder.html">SessionFactoryBuilder</a> - The Hibernate <code>SessionFactoryBuilder</code></p>
+<p><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/SessionFactoryBuilder.html">SessionFactoryBuilder</a> - The Hibernate <code>SessionFactoryBuilder</code></p>
 </li>
 <li>
-<p><a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/SessionFactory.html">SessionFactory</a> - The Hibernate <code>SessionFactory</code> bean which also implements the JPA <code>EntityManagerFactory</code> interface.</p>
+<p><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/SessionFactory.html">SessionFactory</a> - The Hibernate <code>SessionFactory</code> bean which also implements the JPA <code>EntityManagerFactory</code> interface.</p>
 </li>
 </ul>
 </div>
@@ -620,10 +634,10 @@ jpa:
 <p>The above example configures the packages to be scanned and sets properties to be passed to Hibernate. As you can see these are done on a per <code>DataSource</code> basis. Refer to the <a href="../api/io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html">JpaConfiguration</a> configuration class for the possible options.</p>
 </div>
 <div class="paragraph">
-<p>If you need even further control over how the <code>SessionFactory</code> is built then you can register <a href="../api/io/micronaut/context/event/BeanCreatedEventListener.html">BeanCreatedEventListener</a> beans that listen for the creation of the <a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/SessionFactoryBuilder.html">SessionFactoryBuilder</a>, <a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/MetadataSources.html">MetadataSources</a> etc. and apply your custom configuration in the listener.</p>
+<p>If you need even further control over how the <code>SessionFactory</code> is built then you can register <a href="../api/io/micronaut/context/event/BeanCreatedEventListener.html">BeanCreatedEventListener</a> beans that listen for the creation of the <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/SessionFactoryBuilder.html">SessionFactoryBuilder</a>, <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/MetadataSources.html">MetadataSources</a> etc. and apply your custom configuration in the listener.</p>
 </div>
 <div class="paragraph">
-<p>You may also optionally create beans of type <a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html">Integrator</a> and <a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/Interceptor.html">Interceptor</a> and these will be picked up and injected automatically.</p>
+<p>You may also optionally create beans of type <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html">Integrator</a> and <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/Interceptor.html">Interceptor</a> and these will be picked up and injected automatically.</p>
 </div>
 </div>
 <div class="sect3">
@@ -1076,7 +1090,88 @@ Only beans with the same name qualifier as the data source name will be used.</p
 </div>
 </div>
 
-<h1 id="vertxmysqlclient"><a class="anchor" href="#vertxmysqlclient"></a>7 Configuring Vert.x MySQL Client</h1>
+<h1 id="jdbi"><a class="anchor" href="#jdbi"></a>7 Configuring Jdbi</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/jdbi.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Micronaut supports automatically configuring <a href="https://jdbi.org/">Jdbi</a> library for convenient, idiomatic access to relational data.</p>
+</div>
+<div class="sect1">
+<h2 id="_configuring_jdbi">Configuring Jdbi</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To configure the Jdbi library you should first add the <code>jdbi</code> module to your classpath:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut.configuration:micronaut-jdbi'</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.configuration&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-jdbi&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>You should then <a href="#jdbc">configure one or many DataSources</a>.
+For each registered <code>DataSource</code>, Micronaut will configure the following Jdbi beans using <a href="../api/io/micronaut/configuration/jdbi/JdbiFactory.html">JdbiFactory</a>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Jdbi.html">Jdbi</a> - the <code>Jdbi</code> instance</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If Spring transaction management is in use, it will additionally create the following beans :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="../api/io/micronaut/configuration/jdbi/spring/SpringTransactionHandler.html">SpringTransactionHandler</a> for each Spring <code>PlatformTransactionManager</code></p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_configuring_additional_provider_beans">Configuring additional provider beans</h3>
+<div class="paragraph">
+<p>You can define additional beans which will be used when the <code>Jdbi</code> object is created.
+Only beans with a <code>Named</code> qualifier name with the same name as the data source name will be used.</p>
+</div>
+<div class="paragraph">
+<p>Micronaut will look for the following bean types:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html">TransactionHandler</a></p>
+</li>
+<li>
+<p><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/statement/StatementBuilderFactory.html">StatementBuilderFactory</a></p>
+</li>
+<li>
+<p><a href="../api/io/micronaut/configuration/jdbi/JdbiCustomizer.html">JdbiCustomizer</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<h1 id="vertxmysqlclient"><a class="anchor" href="#vertxmysqlclient"></a>8 Configuring Vert.x MySQL Client</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/vertxmysqlclient.adoc"'>
@@ -1199,7 +1294,7 @@ You can also connect to MySQL using <code>uri</code> instead of the other proper
 </div>
 </div>
 
-<h1 id="vertxpgclient"><a class="anchor" href="#vertxpgclient"></a>8 Configuring Vert.x Postgres Client</h1>
+<h1 id="vertxpgclient"><a class="anchor" href="#vertxpgclient"></a>9 Configuring Vert.x Postgres Client</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/vertxpgclient.adoc"'>
@@ -1326,7 +1421,7 @@ You can also connect to Postgres using <code>uri</code> instead of the other pro
 </div>
 </div>
 
-<h1 id="repository"><a class="anchor" href="#repository"></a>9 Repository</h1>
+<h1 id="repository"><a class="anchor" href="#repository"></a>10 Repository</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/repository.adoc"'>

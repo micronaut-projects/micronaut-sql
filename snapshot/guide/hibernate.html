@@ -56,13 +56,16 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../guide/jooq.html"><strong>6</strong><span>Configuring jOOQ</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxmysqlclient.html"><strong>7</strong><span>Configuring Vert.x MySQL Client</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/jdbi.html"><strong>7</strong><span>Configuring Jdbi</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxpgclient.html"><strong>8</strong><span>Configuring Vert.x Postgres Client</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxmysqlclient.html"><strong>8</strong><span>Configuring Vert.x MySQL Client</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/repository.html"><strong>9</strong><span>Repository</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxpgclient.html"><strong>9</strong><span>Configuring Vert.x Postgres Client</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/repository.html"><strong>10</strong><span>Repository</span></a>
                         </div>
                         
                     </div>
@@ -161,16 +164,16 @@ function addJsClass() {
 <div class="ulist">
 <ul>
 <li>
-<p><a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/registry/StandardServiceRegistry.html">StandardServiceRegistry</a> - The Hibernate <code>StandardServiceRegistry</code></p>
+<p><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/registry/StandardServiceRegistry.html">StandardServiceRegistry</a> - The Hibernate <code>StandardServiceRegistry</code></p>
 </li>
 <li>
-<p><a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/MetadataSources.html">MetadataSources</a> - The Hibernate <code>MetadataSources</code></p>
+<p><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/MetadataSources.html">MetadataSources</a> - The Hibernate <code>MetadataSources</code></p>
 </li>
 <li>
-<p><a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/SessionFactoryBuilder.html">SessionFactoryBuilder</a> - The Hibernate <code>SessionFactoryBuilder</code></p>
+<p><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/SessionFactoryBuilder.html">SessionFactoryBuilder</a> - The Hibernate <code>SessionFactoryBuilder</code></p>
 </li>
 <li>
-<p><a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/SessionFactory.html">SessionFactory</a> - The Hibernate <code>SessionFactory</code> bean which also implements the JPA <code>EntityManagerFactory</code> interface.</p>
+<p><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/SessionFactory.html">SessionFactory</a> - The Hibernate <code>SessionFactory</code> bean which also implements the JPA <code>EntityManagerFactory</code> interface.</p>
 </li>
 </ul>
 </div>
@@ -239,10 +242,10 @@ jpa:
 <p>The above example configures the packages to be scanned and sets properties to be passed to Hibernate. As you can see these are done on a per <code>DataSource</code> basis. Refer to the <a href="../api/io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html">JpaConfiguration</a> configuration class for the possible options.</p>
 </div>
 <div class="paragraph">
-<p>If you need even further control over how the <code>SessionFactory</code> is built then you can register <a href="../api/io/micronaut/context/event/BeanCreatedEventListener.html">BeanCreatedEventListener</a> beans that listen for the creation of the <a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/SessionFactoryBuilder.html">SessionFactoryBuilder</a>, <a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/MetadataSources.html">MetadataSources</a> etc. and apply your custom configuration in the listener.</p>
+<p>If you need even further control over how the <code>SessionFactory</code> is built then you can register <a href="../api/io/micronaut/context/event/BeanCreatedEventListener.html">BeanCreatedEventListener</a> beans that listen for the creation of the <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/SessionFactoryBuilder.html">SessionFactoryBuilder</a>, <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/MetadataSources.html">MetadataSources</a> etc. and apply your custom configuration in the listener.</p>
 </div>
 <div class="paragraph">
-<p>You may also optionally create beans of type <a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html">Integrator</a> and <a href="http://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/Interceptor.html">Interceptor</a> and these will be picked up and injected automatically.</p>
+<p>You may also optionally create beans of type <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html">Integrator</a> and <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/Interceptor.html">Interceptor</a> and these will be picked up and injected automatically.</p>
 </div>
 </div>
 <div class="sect3">
