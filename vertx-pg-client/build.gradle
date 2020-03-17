@@ -16,7 +16,7 @@ dependencies {
 
 
     testCompile "io.micronaut:micronaut-management:$micronautVersion"
-    testCompile "org.testcontainers:spock:1.12.4"
+    testCompile "org.testcontainers:spock:1.13.0"
     testCompile "org.testcontainers:postgresql:1.13.0"
     testCompile "io.vertx:vertx-rx-java2:$vertxVersion"
     testCompile "io.vertx:vertx-codegen:$vertxVersion"
