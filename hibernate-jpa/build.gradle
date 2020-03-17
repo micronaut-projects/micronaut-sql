@@ -4,7 +4,7 @@ dependencies {
     // needed because otherwise IntelliJ integration broken
     compileOnly "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
-    compileOnly "com.oracle.substratevm:svm"
+    compileOnly "org.graalvm.nativeimage:svm:20.0.0"
     compile "org.hibernate:hibernate-core:5.4.10.Final", {
         exclude group:'org.jboss.spec.javax.transaction', module:'jboss-transaction-api_1.2_spec'
         exclude group:'org.javassist', module:'javassist'
