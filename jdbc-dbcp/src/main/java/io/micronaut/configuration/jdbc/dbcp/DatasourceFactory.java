@@ -22,8 +22,9 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.metadata.DataSourcePoolMetadata;
 import org.apache.commons.dbcp2.BasicDataSource;
-import javax.sql.DataSource;
+
 import javax.annotation.Nullable;
+import javax.sql.DataSource;
 
 /**
  * Creates a dbcp data source for each configuration bean.
@@ -48,10 +49,10 @@ public class DatasourceFactory {
      * Method to create a metadata object that allows pool value lookup for each datasource object.
      *
      * @param dataSource The actual datasource
-     * @return a {@link io.micronaut.jdbc.metadata.DataSourcePoolMetadataProvider}
+     * @return a {@link io.micronaut.jdbc.metadata.DataSourcePoolMetadata}
      */
     @EachBean(DataSource.class)
-    public DataSourcePoolMetadata dbcpDataSourcePoolMetadata(
+    public DataSourcePoolMetadata<BasicDataSource> dbcpDataSourcePoolMetadata(
             DataSource dataSource) {
         DbcpDataSourcePoolMetadata dbcpDataSourcePoolMetadata = null;
         DataSource resolved = dataSourceResolver.resolve(dataSource);

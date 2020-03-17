@@ -10,4 +10,5 @@ include 'hibernate-jpa-spring'
 include 'jooq'
 include 'vertx-mysql-client'
 include 'vertx-pg-client'
+include 'jdbi'
 

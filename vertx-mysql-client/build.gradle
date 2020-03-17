@@ -1,5 +1,5 @@
 ext{
-    vertxVersion = '3.8.4'
+    vertxVersion = '3.8.5'
 }
 
 dependencies {
@@ -16,9 +16,9 @@ dependencies {
 
 
     testCompile "io.micronaut:micronaut-management:$micronautVersion"
-    testCompile "org.testcontainers:spock:1.12.4"
-    testCompile "org.testcontainers:mysql:1.12.4"
-    testCompile "mysql:mysql-connector-java:8.0.18"
+    testCompile "org.testcontainers:spock:1.13.0"
+    testCompile "org.testcontainers:mysql:1.13.0"
+    testCompile "mysql:mysql-connector-java:8.0.19"
     testCompile "io.vertx:vertx-rx-java2:$vertxVersion"
     testCompile "io.vertx:vertx-codegen:$vertxVersion"
     testCompile "io.vertx:vertx-mysql-client:$vertxVersion"

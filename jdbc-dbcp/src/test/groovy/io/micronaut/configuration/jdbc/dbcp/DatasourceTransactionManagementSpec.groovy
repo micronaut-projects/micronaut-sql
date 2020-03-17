@@ -16,9 +16,10 @@
 
 package io.micronaut.configuration.jdbc.dbcp
 
-import io.micronaut.configuration.jdbc.dbcp.metadata.DbcpDataSourcePoolMetadata
+
 import io.micronaut.context.ApplicationContext
 import io.micronaut.inject.qualifiers.Qualifiers
+import io.micronaut.jdbc.metadata.DataSourcePoolMetadata
 import spock.lang.Specification
 
 class DatasourceTransactionManagementSpec extends Specification {
@@ -31,8 +32,8 @@ class DatasourceTransactionManagementSpec extends Specification {
                 'datasources.secondary.defaultAutoCommit': false,
                 'datasources.secondary.enableAutoCommitOnReturn': false
         )
-        DbcpDataSourcePoolMetadata poolMetadata = ctx.getBean(DbcpDataSourcePoolMetadata, Qualifiers.byName("default"))
-        DbcpDataSourcePoolMetadata poolMetadataSecondary = ctx.getBean(DbcpDataSourcePoolMetadata, Qualifiers.byName("secondary"))
+        DataSourcePoolMetadata poolMetadata = ctx.getBean(DataSourcePoolMetadata, Qualifiers.byName("default"))
+        DataSourcePoolMetadata poolMetadataSecondary = ctx.getBean(DataSourcePoolMetadata, Qualifiers.byName("secondary"))
         BookService bookService = ctx.getBean(BookService)
 
         expect:

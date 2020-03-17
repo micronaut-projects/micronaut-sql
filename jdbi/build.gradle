@@ -7,11 +7,13 @@ dependencies {
 
     compile "io.micronaut:micronaut-jdbc:$micronautVersion"
     compile "io.micronaut:micronaut-inject:$micronautVersion"
-    compile "org.jooq:jooq:3.13.0"
+    compile "org.jdbi:jdbi3-core:3.12.2"
+    compileOnly "com.h2database:h2"
     compileOnly "org.springframework:spring-jdbc:$springVersion"
 
-    testRuntime project(":jdbc-tomcat")
+    testRuntime project(":jdbc-hikari")
     testRuntime "com.h2database:h2"
+    testRuntime "org.springframework:spring-jdbc:$springVersion"
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testCompile "io.micronaut:micronaut-spring"
@@ -19,6 +21,5 @@ dependencies {
     testCompile "io.micronaut:micronaut-http-client"
     testCompile "io.micronaut:micronaut-management"
     testCompile "io.micronaut.configuration:micronaut-micrometer-core"
-
-    testCompile "org.springframework:spring-jdbc:$springVersion"
+    testCompile "org.jdbi:jdbi3-sqlobject:3.12.2"
 }
