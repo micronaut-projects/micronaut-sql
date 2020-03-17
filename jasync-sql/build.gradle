@@ -2,18 +2,16 @@ dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
 
-    compileOnly "io.micronaut:micronaut-inject-java" // needed only for IntelliJ
-
-    compile "io.micronaut:micronaut-inject:$micronautVersion"
+    api "io.micronaut:micronaut-inject:$micronautVersion"
     compileOnly "com.github.jasync-sql:jasync-mysql:1.0.7"
     compileOnly "com.github.jasync-sql:jasync-postgresql:1.0.7"
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"
 
-    testCompile "io.micronaut:micronaut-management:$micronautVersion"
-    testCompile "org.testcontainers:spock:1.13.0"
-    testCompile "org.testcontainers:postgresql:1.13.0"
-    testCompile "com.github.jasync-sql:jasync-postgresql:1.0.6"
-    testCompile "io.micronaut:micronaut-management:$micronautVersion"
+    testImplementation "io.micronaut:micronaut-management:$micronautVersion"
+    testImplementation "org.testcontainers:spock:1.13.0"
+    testImplementation "org.testcontainers:postgresql:1.13.0"
+    testImplementation "com.github.jasync-sql:jasync-postgresql:1.0.6"
+    testImplementation "io.micronaut:micronaut-management:$micronautVersion"
 
 
 }

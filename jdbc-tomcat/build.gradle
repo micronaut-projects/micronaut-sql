@@ -1,23 +1,21 @@
 dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
-    // needed because otherwise IntelliJ integration broken
-    compileOnly "io.micronaut:micronaut-inject-java"
 
-    compile "io.micronaut:micronaut-jdbc:$micronautVersion"
-    compile "io.micronaut:micronaut-inject:$micronautVersion"
-    compile "org.apache.tomcat:tomcat-jdbc:9.0.31"
+    api "io.micronaut:micronaut-jdbc:$micronautVersion"
+    api "io.micronaut:micronaut-inject:$micronautVersion"
+    api "org.apache.tomcat:tomcat-jdbc:9.0.31"
 
-    testRuntime "com.h2database:h2"
+    testRuntimeOnly "com.h2database:h2"
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    testCompile "io.micronaut:micronaut-spring"
-    testCompile "io.micronaut:micronaut-http-server-netty"
-    testCompile "io.micronaut:micronaut-http-client"
-    testCompile "io.micronaut:micronaut-management"
-    testCompile "io.micronaut.configuration:micronaut-micrometer-core"
+    testImplementation "io.micronaut:micronaut-spring"
+    testImplementation "io.micronaut:micronaut-http-server-netty"
+    testImplementation "io.micronaut:micronaut-http-client"
+    testImplementation "io.micronaut:micronaut-management"
+    testImplementation "io.micronaut.configuration:micronaut-micrometer-core"
     
-    testCompile "org.springframework:spring-jdbc:$springVersion"
+    testImplementation "org.springframework:spring-jdbc:$springVersion"
 }
 
 

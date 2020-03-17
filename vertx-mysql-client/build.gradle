@@ -6,20 +6,17 @@ dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
 
-    compile "io.micronaut:micronaut-inject:$micronautVersion"
+    api "io.micronaut:micronaut-inject:$micronautVersion"
+    api "io.vertx:vertx-mysql-client:$vertxVersion"
+    api "io.vertx:vertx-rx-java2:$vertxVersion"
+    implementation "io.vertx:vertx-codegen:$vertxVersion"
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"
 
-    compile "io.vertx:vertx-mysql-client:$vertxVersion"
-    compile "io.vertx:vertx-rx-java2:$vertxVersion"
-    compile "io.vertx:vertx-codegen:$vertxVersion"
-
-
-
-    testCompile "io.micronaut:micronaut-management:$micronautVersion"
-    testCompile "org.testcontainers:spock:1.13.0"
-    testCompile "org.testcontainers:mysql:1.13.0"
-    testCompile "mysql:mysql-connector-java:8.0.19"
-    testCompile "io.vertx:vertx-rx-java2:$vertxVersion"
-    testCompile "io.vertx:vertx-codegen:$vertxVersion"
-    testCompile "io.vertx:vertx-mysql-client:$vertxVersion"
+    testImplementation "io.micronaut:micronaut-management:$micronautVersion"
+    testImplementation "org.testcontainers:spock:1.13.0"
+    testImplementation "org.testcontainers:mysql:1.13.0"
+    testImplementation "mysql:mysql-connector-java:8.0.19"
+    testImplementation "io.vertx:vertx-rx-java2:$vertxVersion"
+    testImplementation "io.vertx:vertx-codegen:$vertxVersion"
+    testImplementation "io.vertx:vertx-mysql-client:$vertxVersion"
 }
