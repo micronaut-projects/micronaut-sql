@@ -119,6 +119,20 @@ subprojects { Project subproject ->
     }
 
     task allDeps(type: DependencyReportTask) {}
+
+    apply from: rootProject.file('gradle/license.gradle')
+
+    checkstyle {
+        toolVersion = 8.16
+        configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+
+        // Per submodule
+        maxErrors = 1
+        maxWarnings = 10
+
+        showViolations = true
+    }
+    checkstyleTest.enabled = false
 }
 
 apply from:"https://raw.githubusercontent.com/micronaut-projects/micronaut-docs/v${micronautDocsVersion}/gradle/docs.gradle"
