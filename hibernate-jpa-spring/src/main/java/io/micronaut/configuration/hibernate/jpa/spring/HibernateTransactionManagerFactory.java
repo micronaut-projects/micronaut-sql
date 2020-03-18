@@ -33,7 +33,7 @@ import javax.sql.DataSource;
 @Factory
 @Requires(classes = HibernateTransactionManager.class)
 @Replaces(factory = DataSourceTransactionManagerFactory.class)
-@TypeHint(SpringSessionContext.class)
+@TypeHint({SpringSessionContext.class, HibernateTransactionManager.class})
 public class HibernateTransactionManagerFactory {
 
     /**
