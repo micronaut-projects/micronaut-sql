@@ -93,15 +93,13 @@ class MultipleDataSourceJpaSetupSpec extends Specification{
     @Singleton
     static class MultipleDataSourceService {
         @Inject
-        @CurrentSession
         Session session
 
         @Inject
-        @CurrentSession
         EntityManager em
 
         @Inject
-        @CurrentSession("other")
+        @Named("other")
         Session otherSession
 
         @Inject
