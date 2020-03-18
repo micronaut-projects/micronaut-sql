@@ -20,6 +20,7 @@ import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.inject.qualifiers.Qualifiers;
+import io.micronaut.jdbc.DataSourceResolver;
 import org.jooq.*;
 import org.jooq.conf.Settings;
 import org.jooq.impl.DefaultConfiguration;
@@ -68,7 +69,8 @@ public class JooqConfigurationFactory {
 
         JooqConfigurationProperties properties = ctx.findBean(JooqConfigurationProperties.class, Qualifiers.byName(name))
                 .orElseGet(JooqConfigurationProperties::new);
-        configuration.setSQLDialect(properties.determineSqlDialect(dataSource));
+        DataSourceResolver dataSourceResolver = ctx.findBean(DataSourceResolver.class).orElse(DataSourceResolver.DEFAULT);
+        configuration.setSQLDialect(properties.determineSqlDialect(dataSourceResolver.resolve(dataSource)));
 
         configuration.setDataSource(dataSource);
         if (transactionProvider != null) {
