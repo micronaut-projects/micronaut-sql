@@ -20,6 +20,8 @@ jobs:
       - name: Create Release
         id: create_release
         uses:  micronaut-projects/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.release_notes.outputs.next_version }}
           release_name: Micronaut SQL ${{ steps.release_notes.outputs.next_version }}
