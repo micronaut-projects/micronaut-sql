@@ -2,8 +2,9 @@ This project includes modules to support SQL Database access in Micronaut.
 
 === Release History
 
-==== 1.4.0
+==== 2.0.0
 
+* Micronaut Transaction Management by default
 * Support for Jdbi
 
 ==== 1.3.0
