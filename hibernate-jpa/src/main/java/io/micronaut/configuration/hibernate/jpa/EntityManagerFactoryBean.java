@@ -16,7 +16,6 @@
 package io.micronaut.configuration.hibernate.jpa;
 
 import io.micronaut.configuration.hibernate.jpa.condition.RequiresHibernateEntities;
-import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession;
 import io.micronaut.context.BeanLocator;
 import io.micronaut.context.annotation.*;
 import io.micronaut.context.env.Environment;
@@ -25,7 +24,6 @@ import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.transaction.hibernate5.MicronautSessionContext;
 import org.hibernate.Interceptor;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
