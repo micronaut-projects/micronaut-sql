@@ -15,7 +15,7 @@
  */
 package io.micronaut.configuration.jasync
 
-
+import com.github.jasync.sql.db.SSLConfiguration
 import io.micronaut.context.ApplicationContext
 import spock.lang.Specification
 
@@ -29,18 +29,23 @@ class JasyncConfigurationSpec extends Specification {
                 'jasync.client.database': 'the-db',
                 'jasync.client.username': 'user',
                 'jasync.client.password': 'secret',
-                'jasync.client.maxActiveConnections': '5'
+                'jasync.client.maxActiveConnections': '5',
+                'jasync.client.ssl.mode': 'Prefer',
+                'jasync.client.ssl.rootCert': 'some.cert'
         )
 
         then:
         applicationContext.containsBean(JasyncPoolConfiguration)
-        applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions
-        applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions.port == 5433
-        applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions.database == 'the-db'
-        applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions.username == 'user'
-        applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions.password == 'secret'
-        applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions.maxActiveConnections == 5
-        applicationContext.getBean(JasyncPoolConfiguration).jasyncOptions.host == 'the-host'
+        def config = applicationContext.getBean(JasyncPoolConfiguration)
+        config.jasyncOptions
+        config.jasyncOptions.port == 5433
+        config.jasyncOptions.database == 'the-db'
+        config.jasyncOptions.username == 'user'
+        config.jasyncOptions.password == 'secret'
+        config.jasyncOptions.maxActiveConnections == 5
+        config.jasyncOptions.host == 'the-host'
+        config.jasyncOptions.ssl.mode == SSLConfiguration.Mode.Prefer
+        config.jasyncOptions.ssl.rootCert == new File("some.cert")
 
 
         cleanup:

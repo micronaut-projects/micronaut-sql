@@ -17,8 +17,17 @@ package io.micronaut.configuration.jasync;
 
 import com.github.jasync.sql.db.ConnectionPoolConfiguration;
 import com.github.jasync.sql.db.ConnectionPoolConfigurationBuilder;
+import com.github.jasync.sql.db.SSLConfiguration;
 import io.micronaut.context.annotation.ConfigurationBuilder;
+import io.micronaut.context.annotation.ConfigurationInject;
 import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.bind.annotation.Bindable;
+
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import java.io.File;
+import java.util.Optional;
 
 /**
  * The configuration class for Jasync Client.
@@ -33,10 +42,65 @@ public class JasyncPoolConfiguration {
     protected ConnectionPoolConfigurationBuilder jasyncOptions = new ConnectionPoolConfigurationBuilder();
 
     /**
+     * Default constructor.
+     */
+    public JasyncPoolConfiguration() {
+    }
+
+    /**
+     * Injected constructor.
+     * @param sslConfiguration The SSL config
+     */
+    @Inject
+    protected JasyncPoolConfiguration(@Nullable JasyncSslConfiguration sslConfiguration) {
+        if (sslConfiguration != null) {
+            jasyncOptions.setSsl(new SSLConfiguration(sslConfiguration.getMode(), sslConfiguration.getRootCert().orElse(null)));
+        }
+    }
+
+    /**
      *
      * @return The options for configuring a connection pool.
      */
     public ConnectionPoolConfiguration getJasyncOptions() {
         return jasyncOptions.build();
+    }
+
+    /**
+     * Configuration for JAsync SSL.
+     */
+    @ConfigurationProperties("ssl")
+    @Requires(property = JasyncClientSettings.PREFIX + ".ssl")
+    public static class JasyncSslConfiguration {
+        private final SSLConfiguration.Mode mode;
+        private final File rootCert;
+
+        /**
+         * Default constructor.
+         * @param mode The mode
+         * @param rootCert The cert
+         */
+        @ConfigurationInject
+        public JasyncSslConfiguration(
+                @Bindable(defaultValue = "Disable")
+                SSLConfiguration.Mode mode,
+                @Nullable String rootCert) {
+            this.mode = mode;
+            this.rootCert = rootCert != null ? new File(rootCert) : null;
+        }
+
+        /**
+         * @return The mode
+         */
+        public SSLConfiguration.Mode getMode() {
+            return mode;
+        }
+
+        /**
+         * @return The root cert
+         */
+        public Optional<File> getRootCert() {
+            return Optional.ofNullable(rootCert);
+        }
     }
 }
