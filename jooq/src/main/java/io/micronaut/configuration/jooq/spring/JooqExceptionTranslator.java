@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-2018 original authors
+ * Copyright 2017-2020 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.micronaut.configuration.jooq.spring;
 
 import io.micronaut.core.annotation.Internal;
@@ -41,57 +40,55 @@ import java.sql.SQLException;
 @Internal
 class JooqExceptionTranslator extends DefaultExecuteListener {
 
-	// Based on the jOOQ-spring-example from https://github.com/jOOQ/jOOQ
+    // Based on the jOOQ-spring-example from https://github.com/jOOQ/jOOQ
+    private static final Logger LOG = LoggerFactory.getLogger(JooqExceptionTranslator.class);
 
-	private static final Logger LOG = LoggerFactory.getLogger(JooqExceptionTranslator.class);
+    @Override
+    public void exception(ExecuteContext context) {
+        SQLExceptionTranslator translator = getTranslator(context);
+        // The exception() callback is not only triggered for SQL exceptions but also for
+        // "normal" exceptions. In those cases sqlException() returns null.
+        SQLException exception = context.sqlException();
+        while (exception != null) {
+            handle(context, translator, exception);
+            exception = exception.getNextException();
+        }
+    }
 
-	@Override
-	public void exception(ExecuteContext context) {
-		SQLExceptionTranslator translator = getTranslator(context);
-		// The exception() callback is not only triggered for SQL exceptions but also for
-		// "normal" exceptions. In those cases sqlException() returns null.
-		SQLException exception = context.sqlException();
-		while (exception != null) {
-			handle(context, translator, exception);
-			exception = exception.getNextException();
-		}
-	}
+    private SQLExceptionTranslator getTranslator(ExecuteContext context) {
+        SQLDialect dialect = context.configuration().dialect();
+        if (dialect != null && dialect.thirdParty() != null) {
+            String dbName = dialect.thirdParty().springDbName();
+            if (dbName != null) {
+                return new SQLErrorCodeSQLExceptionTranslator(dbName);
+            }
+        }
+        return new SQLStateSQLExceptionTranslator();
+    }
 
-	private SQLExceptionTranslator getTranslator(ExecuteContext context) {
-		SQLDialect dialect = context.configuration().dialect();
-		if (dialect != null && dialect.thirdParty() != null) {
-			String dbName = dialect.thirdParty().springDbName();
-			if (dbName != null) {
-				return new SQLErrorCodeSQLExceptionTranslator(dbName);
-			}
-		}
-		return new SQLStateSQLExceptionTranslator();
-	}
+    /**
+     * Handle a single exception in the chain. SQLExceptions might be nested multiple
+     * levels deep. The outermost exception is usually the least interesting one ("Call
+     * getNextException to see the cause."). Therefore the innermost exception is
+     * propagated and all other exceptions are logged.
+     *
+     * @param context The execute context
+     * @param translator The exception translator
+     * @param exception The exception
+     */
+    private void handle(ExecuteContext context, SQLExceptionTranslator translator,
+            SQLException exception) {
+        DataAccessException translated = translate(context, translator, exception);
+        if (exception.getNextException() == null) {
+            context.exception(translated);
+        } else {
+            LOG.error("Execution of SQL statement failed.", translated);
+        }
+    }
 
-	/**
-	 * Handle a single exception in the chain. SQLExceptions might be nested multiple
-	 * levels deep. The outermost exception is usually the least interesting one ("Call
-	 * getNextException to see the cause."). Therefore the innermost exception is
-	 * propagated and all other exceptions are logged.
-	 *
-	 * @param context The execute context
-	 * @param translator The exception translator
-	 * @param exception The exception
-	 */
-	private void handle(ExecuteContext context, SQLExceptionTranslator translator,
-			SQLException exception) {
-		DataAccessException translated = translate(context, translator, exception);
-		if (exception.getNextException() == null) {
-			context.exception(translated);
-		}
-		else {
-			LOG.error("Execution of SQL statement failed.", translated);
-		}
-	}
-
-	private DataAccessException translate(ExecuteContext context,
-			SQLExceptionTranslator translator, SQLException exception) {
-		return translator.translate("jOOQ", context.sql(), exception);
-	}
+    private DataAccessException translate(ExecuteContext context,
+            SQLExceptionTranslator translator, SQLException exception) {
+        return translator.translate("jOOQ", context.sql(), exception);
+    }
 
 }

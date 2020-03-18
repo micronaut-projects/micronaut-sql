@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-2018 original authors
+ * Copyright 2017-2020 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.micronaut.configuration.hibernate.jpa;
 
 import io.micronaut.context.ApplicationContext;
@@ -66,8 +65,9 @@ public class JpaConfiguration {
     }
 
     /**
-     * @param applicationContext The application context
-     * @param integrator         The {@link Integrator}
+     * @param applicationContext      The application context
+     * @param integrator              The {@link Integrator}
+     * @param entityScanConfiguration The entity scan configuration
      */
     @Inject
     protected JpaConfiguration(ApplicationContext applicationContext,
@@ -137,8 +137,8 @@ public class JpaConfiguration {
      * @param jpaProperties The JPA properties
      */
     public final void setProperties(
-        @MapFormat(transformation = MapFormat.MapTransformation.FLAT, keyFormat = StringConvention.RAW)
-            Map<String, Object> jpaProperties) {
+            @MapFormat(transformation = MapFormat.MapTransformation.FLAT, keyFormat = StringConvention.RAW)
+                    Map<String, Object> jpaProperties) {
         this.jpaProperties = jpaProperties;
     }
 
@@ -168,8 +168,8 @@ public class JpaConfiguration {
      */
     @SuppressWarnings("WeakerAccess")
     protected BootstrapServiceRegistryBuilder createBootstrapServiceRegistryBuilder(
-        @Nullable Integrator integrator,
-        ClassLoader classLoader) {
+            @Nullable Integrator integrator,
+            ClassLoader classLoader) {
         BootstrapServiceRegistryBuilder bootstrapServiceRegistryBuilder = new BootstrapServiceRegistryBuilder();
         bootstrapServiceRegistryBuilder.applyClassLoader(classLoader);
         if (integrator != null) {
@@ -187,7 +187,7 @@ public class JpaConfiguration {
     @SuppressWarnings("WeakerAccess")
     protected StandardServiceRegistryBuilder createStandServiceRegistryBuilder(BootstrapServiceRegistry bootstrapServiceRegistry) {
         return new StandardServiceRegistryBuilder(
-            bootstrapServiceRegistry
+                bootstrapServiceRegistry
         );
     }
 
@@ -205,6 +205,7 @@ public class JpaConfiguration {
 
         /**
          * Default constructor.
+         *
          * @param environment The environment
          */
         public EntityScanConfiguration(Environment environment) {
@@ -225,6 +226,7 @@ public class JpaConfiguration {
 
         /**
          * Sets whether to scan the whole classpath including external JAR files using classpath scanning or just look for introspected beans compiled by this application.
+         *
          * @param classpath True if extensive classpath scanning should be used
          */
         public void setClasspath(boolean classpath) {
@@ -233,6 +235,7 @@ public class JpaConfiguration {
 
         /**
          * Set whether entity scan is enabled. Defaults to true.
+         *
          * @param enabled True if it is enabled
          */
         public void setEnabled(boolean enabled) {
@@ -241,6 +244,7 @@ public class JpaConfiguration {
 
         /**
          * The packages to limit the scan to.
+         *
          * @return The packages to limit the scan to
          */
         public String[] getPackages() {
@@ -256,6 +260,7 @@ public class JpaConfiguration {
 
         /**
          * Find entities for the current configuration.
+         *
          * @return The entities
          */
         public Collection<Class<?>> findEntities() {

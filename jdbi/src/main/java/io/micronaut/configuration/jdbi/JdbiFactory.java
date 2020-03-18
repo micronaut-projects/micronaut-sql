@@ -1,11 +1,11 @@
 /*
- * Copyright 2020 original authors
+ * Copyright 2017-2020 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.micronaut.configuration.jdbi;
 
-import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
@@ -28,7 +26,6 @@ import org.jdbi.v3.core.transaction.TransactionHandler;
 
 import javax.annotation.Nullable;
 import javax.sql.DataSource;
-import java.util.ServiceLoader;
 
 /**
  * Sets up Jdbi library integration.
@@ -43,7 +40,7 @@ public class JdbiFactory {
      * Creates a Jdbi {@link Jdbi} instance.
      * It will configure it with available Jdbi provider beans with the same qualifier.
      * <p>
-     * Plugins will be installed automatically from the classpath using the {@link ServiceLoader} mechanism
+     * Plugins will be installed automatically from the classpath using the {@link java.util.ServiceLoader} mechanism
      *
      * @param dataSource              The {@link DataSource}
      * @param transactionHandler      The {@link TransactionHandler}
@@ -74,7 +71,7 @@ public class JdbiFactory {
         }
 
         // customizer - allows users to create customized configurations as defined in
-        // http://jdbi.org/apidocs/index.html?org/jdbi/v3/core/config/Configurable.html
+        // https://jdbi.org/apidocs/index.html?org/jdbi/v3/core/config/Configurable.html
         if (jdbiCustomizer != null) {
             jdbiCustomizer.customize(jdbi);
         }

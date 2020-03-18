@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-2018 original authors
+ * Copyright 2017-2020 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.micronaut.configuration.vertx.pg.client;
 
 import io.micronaut.context.annotation.Bean;
@@ -39,9 +38,10 @@ public class PgClientFactory {
     private final Vertx vertx;
 
     /**
-     * Create the factory with given Pg Client configuration and
+     * Create the factory with given Pg Client configuration.
      *
      * @param connectionConfiguration The  Pg ClientOption configurations
+     * @param vertx  The vertx instance
      */
     public PgClientFactory(PgClientConfiguration connectionConfiguration, @Nullable Vertx vertx) {
         this.connectionConfiguration = connectionConfiguration;
@@ -70,9 +70,9 @@ public class PgClientFactory {
         PgClientConfiguration configuration = this.connectionConfiguration;
         String connectionUri = configuration.getUri();
         if (StringUtils.isNotEmpty(connectionUri)) {
-            return PgPool.pool(connectionUri,configuration.poolOptions);
+            return PgPool.pool(connectionUri, configuration.poolOptions);
         } else {
-            return PgPool.pool(configuration.connectOptions,configuration.poolOptions);
+            return PgPool.pool(configuration.connectOptions, configuration.poolOptions);
         }
     }
 
@@ -85,9 +85,9 @@ public class PgClientFactory {
         PgClientConfiguration configuration = this.connectionConfiguration;
         String connectionUri = configuration.getUri();
         if (StringUtils.isNotEmpty(connectionUri)) {
-            return PgPool.pool(vertx,connectionUri,configuration.poolOptions);
+            return PgPool.pool(vertx, connectionUri, configuration.poolOptions);
         } else {
-            return PgPool.pool(vertx,configuration.connectOptions,configuration.poolOptions);
+            return PgPool.pool(vertx, configuration.connectOptions, configuration.poolOptions);
         }
     }
 }
