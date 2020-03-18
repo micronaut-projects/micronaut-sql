@@ -19,7 +19,7 @@ jobs:
         id: release_notes
       - name: Create Release
         id: create_release
-        uses:  micronaut-projects/create-release@latest
+        uses:  micronaut-projects/create-release@master
         with:
           tag_name: v${{ steps.release_notes.outputs.next_version }}
           release_name: Micronaut SQL ${{ steps.release_notes.outputs.next_version }}
