@@ -138,13 +138,11 @@
 <dd>
 <div class="block">Creates the standard service registry builder.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/EntityManagerFactoryBean.html#currentSession-java.lang.String-org.hibernate.SessionFactory-">currentSession(String, SessionFactory)</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/EntityManagerFactoryBean.html" title="class in io.micronaut.configuration.hibernate.jpa">EntityManagerFactoryBean</a></dt>
-<dd>
-<div class="block">Obtains the current session for the given session factory.</div>
-</dd>
 <dt><a href="io/micronaut/configuration/hibernate/jpa/scope/CurrentSession.html" title="annotation in io.micronaut.configuration.hibernate.jpa.scope"><span class="typeNameLink">CurrentSession</span></a> - Annotation Type in <a href="io/micronaut/configuration/hibernate/jpa/scope/package-summary.html">io.micronaut.configuration.hibernate.jpa.scope</a></dt>
 <dd>
-<div class="block">Allows injecting the current session using a scoped proxy.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>
+<div class="block"><span class="deprecationComment">It is no longer necessary to specify <code>CurrentSession</code> to obtain an entity manager</span></div>
+</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/JdbiCustomizer.html#customize-org.jdbi.v3.core.Jdbi-">customize(Jdbi)</a></span> - Method in interface io.micronaut.configuration.jdbi.<a href="io/micronaut/configuration/jdbi/JdbiCustomizer.html" title="interface in io.micronaut.configuration.jdbi">JdbiCustomizer</a></dt>
 <dd>
@@ -345,6 +343,8 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html#getMin--">getMin()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.metadata.<a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.tomcat.metadata">TomcatDataSourcePoolMetadata</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html#getMode--">getMode()</a></span> - Method in class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html" title="class in io.micronaut.configuration.jasync">JasyncPoolConfiguration.JasyncSslConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getName--">getName()</a></span> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
 <dd>
 <div class="block">Get the name of the bean.</div>
@@ -379,6 +379,8 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/vertx/mysql/client/health/MySQLHealthIndicator.html#getResult--">getResult()</a></span> - Method in class io.micronaut.configuration.vertx.mysql.client.health.<a href="io/micronaut/configuration/vertx/mysql/client/health/MySQLHealthIndicator.html" title="class in io.micronaut.configuration.vertx.mysql.client.health">MySQLHealthIndicator</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/vertx/pg/client/health/PgHealthIndicator.html#getResult--">getResult()</a></span> - Method in class io.micronaut.configuration.vertx.pg.client.health.<a href="io/micronaut/configuration/vertx/pg/client/health/PgHealthIndicator.html" title="class in io.micronaut.configuration.vertx.pg.client.health">PgHealthIndicator</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html#getRootCert--">getRootCert()</a></span> - Method in class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html" title="class in io.micronaut.configuration.jasync">JasyncPoolConfiguration.JasyncSslConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html#getSqlDialect--">getSqlDialect()</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html" title="class in io.micronaut.configuration.jooq">JooqConfigurationProperties</a></dt>
 <dd>
@@ -606,7 +608,17 @@
 <div class="block">The configuration class for Jasync Client.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html#JasyncPoolConfiguration--">JasyncPoolConfiguration()</a></span> - Constructor for class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html" title="class in io.micronaut.configuration.jasync">JasyncPoolConfiguration</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Default constructor.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html#JasyncPoolConfiguration-io.micronaut.configuration.jasync.JasyncPoolConfiguration.JasyncSslConfiguration-">JasyncPoolConfiguration(JasyncPoolConfiguration.JasyncSslConfiguration)</a></span> - Constructor for class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html" title="class in io.micronaut.configuration.jasync">JasyncPoolConfiguration</a></dt>
+<dd>
+<div class="block">Injected constructor.</div>
+</dd>
+<dt><a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html" title="class in io.micronaut.configuration.jasync"><span class="typeNameLink">JasyncPoolConfiguration.JasyncSslConfiguration</span></a> - Class in <a href="io/micronaut/configuration/jasync/package-summary.html">io.micronaut.configuration.jasync</a></dt>
+<dd>
+<div class="block">Configuration for JAsync SSL.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/jasync/JasyncPostgreSQLClientFactory.html" title="class in io.micronaut.configuration.jasync"><span class="typeNameLink">JasyncPostgreSQLClientFactory</span></a> - Class in <a href="io/micronaut/configuration/jasync/package-summary.html">io.micronaut.configuration.jasync</a></dt>
 <dd>
 <div class="block">The Factory for creating Reactive Postgres client.</div>
@@ -614,6 +626,10 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncPostgreSQLClientFactory.html#JasyncPostgreSQLClientFactory-io.micronaut.configuration.jasync.JasyncPoolConfiguration-">JasyncPostgreSQLClientFactory(JasyncPoolConfiguration)</a></span> - Constructor for class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPostgreSQLClientFactory.html" title="class in io.micronaut.configuration.jasync">JasyncPostgreSQLClientFactory</a></dt>
 <dd>
 <div class="block">Create the factory with given Pool configuration.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html#JasyncSslConfiguration-com.github.jasync.sql.db.SSLConfiguration.Mode-java.lang.String-">JasyncSslConfiguration(SSLConfiguration.Mode, String)</a></span> - Constructor for class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html" title="class in io.micronaut.configuration.jasync">JasyncPoolConfiguration.JasyncSslConfiguration</a></dt>
+<dd>
+<div class="block">Default constructor.</div>
 </dd>
 <dt><a href="io/micronaut/configuration/jasync/health/JaysncHealthIndicator.html" title="class in io.micronaut.configuration.jasync.health"><span class="typeNameLink">JaysncHealthIndicator</span></a> - Class in <a href="io/micronaut/configuration/jasync/health/package-summary.html">io.micronaut.configuration.jasync.health</a></dt>
 <dd>
@@ -919,6 +935,10 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/DatasourceFactory.html#tomcatPoolDataSourceMetadataProvider-javax.sql.DataSource-">tomcatPoolDataSourceMetadataProvider(DataSource)</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.<a href="io/micronaut/configuration/jdbc/tomcat/DatasourceFactory.html" title="class in io.micronaut.configuration.jdbc.tomcat">DatasourceFactory</a></dt>
 <dd>
 <div class="block">Method to create a metadata object that allows pool value lookup for each datasource object.</div>
+</dd>
+<dt><a href="io/micronaut/configuration/hibernate/jpa/TransactionalSession.html" title="interface in io.micronaut.configuration.hibernate.jpa"><span class="typeNameLink">TransactionalSession</span></a> - Interface in <a href="io/micronaut/configuration/hibernate/jpa/package-summary.html">io.micronaut.configuration.hibernate.jpa</a></dt>
+<dd>
+<div class="block">Represents a transaction aware session that can be dependency injected.</div>
 </dd>
 </dl>
 <a name="I:U">
