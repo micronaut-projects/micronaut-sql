@@ -35,7 +35,7 @@ dependencies {
 
     txTestRuntime project(":jdbc-tomcat")
     txTestRuntime "com.h2database:h2"
-    txTestAnnotationProcessor "io.micronaut:micronaut-inject-java"
+    txTestAnnotationProcessor "io.micronaut:micronaut-inject-java:$micronautVersion"
     txTestAnnotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
     txTestImplementation "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
     txTestImplementation("io.micronaut:micronaut-inject-groovy")
@@ -49,3 +49,4 @@ task txTest(type: Test) {
     shouldRunAfter test
 }
 check.dependsOn txTest
+checkstyleTxTest.enabled = false
