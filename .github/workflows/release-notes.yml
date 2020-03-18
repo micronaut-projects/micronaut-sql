@@ -19,7 +19,7 @@ jobs:
         id: release_notes
       - name: Create Release
         id: create_release
-        uses:  micronaut-projects/create-release@master
+        uses:  micronaut-projects/create-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
