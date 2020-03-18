@@ -5,12 +5,6 @@ sourceSets {
     }
 }
 
-repositories {
-    maven {
-        url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'
-    }
-}
-
 configurations {
     txTestImplementation.extendsFrom implementation
     txTestRuntimeOnly.extendsFrom runtimeOnly
@@ -27,7 +21,7 @@ dependencies {
     api "io.micronaut:micronaut-inject:$micronautVersion"
     api "org.jooq:jooq:3.13.0"
     compileOnly "org.springframework:spring-jdbc:$springVersion"
-    compileOnly "io.micronaut.data:micronaut-data-tx:1.0.1.BUILD-SNAPSHOT"
+    compileOnly "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
 
     testRuntime project(":jdbc-tomcat")
     testRuntime "com.h2database:h2"
@@ -42,8 +36,8 @@ dependencies {
     txTestRuntime project(":jdbc-tomcat")
     txTestRuntime "com.h2database:h2"
     txTestAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    txTestAnnotationProcessor "io.micronaut.data:micronaut-data-processor:1.0.1.BUILD-SNAPSHOT"
-    txTestImplementation "io.micronaut.data:micronaut-data-tx:1.0.1.BUILD-SNAPSHOT"
+    txTestAnnotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
+    txTestImplementation "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
     txTestImplementation("io.micronaut:micronaut-inject-groovy")
     txTestImplementation("org.spockframework:spock-core:${spockVersion}")
     txTestRuntime "ch.qos.logback:logback-classic:1.2.3"
