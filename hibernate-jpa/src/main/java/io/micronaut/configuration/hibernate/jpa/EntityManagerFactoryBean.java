@@ -20,8 +20,10 @@ import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession;
 import io.micronaut.context.BeanLocator;
 import io.micronaut.context.annotation.*;
 import io.micronaut.context.env.Environment;
+import io.micronaut.core.reflect.ClassUtils;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.jdbc.DataSourceResolver;
+import io.micronaut.transaction.hibernate5.MicronautSessionContext;
 import org.hibernate.Interceptor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -100,9 +102,10 @@ public class EntityManagerFactoryBean {
 
         Map<String, Object> additionalSettings = new LinkedHashMap<>();
         additionalSettings.put(AvailableSettings.DATASOURCE, dataSource);
+        Class sessionContextClass = ClassUtils.forName("org.springframework.orm.hibernate5.SpringSessionContext", EntityManagerFactoryBean.class.getClassLoader())
+                .orElse(MicronautSessionContext.class);
         additionalSettings.put(
-                AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS,
-                "org.springframework.orm.hibernate5.SpringSessionContext");
+                AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, sessionContextClass.getName());
         additionalSettings.put(AvailableSettings.SESSION_FACTORY_NAME, dataSourceName);
         additionalSettings.put(AvailableSettings.SESSION_FACTORY_NAME_IS_JNDI, false);
         JpaConfiguration jpaConfiguration = beanLocator.findBean(JpaConfiguration.class, Qualifiers.byName(dataSourceName))
@@ -168,23 +171,6 @@ public class EntityManagerFactoryBean {
     protected SessionFactory hibernateSessionFactory(SessionFactoryBuilder sessionFactoryBuilder) {
         return sessionFactoryBuilder.build();
     }
-
-    /**
-     * Obtains the current session for the given session factory.
-     *
-     * @param sessionFactory The session factory
-     * @param dataSource The name of the data source.
-     * @return The current session
-     */
-    @EachBean(SessionFactory.class)
-    @CurrentSession
-    protected Session currentSession(@Parameter String dataSource, SessionFactory sessionFactory) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Looking up current Hibernate session for datasource: {}", dataSource);
-        }
-        return sessionFactory.getCurrentSession();
-    }
-
 
     /**
      * Creates the {@link MetadataSources} for the given registry.

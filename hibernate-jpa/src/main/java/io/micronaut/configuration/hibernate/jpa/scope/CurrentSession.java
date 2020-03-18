@@ -32,12 +32,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * @author graemerocher
  * @since 1.0
+ * @deprecated It is no longer necessary to specify {@code CurrentSession} to obtain an entity manager
  */
 @ScopedProxy
 @Documented
 @Retention(RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 @Bean
+@Deprecated
 public @interface CurrentSession {
 
     /**

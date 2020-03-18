@@ -15,8 +15,7 @@
  */
 package io.micronaut.configuration.hibernate.jpa;
 
-import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession;
-import io.micronaut.spring.tx.annotation.Transactional;
+import io.micronaut.transaction.annotation.TransactionalAdvice;
 
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
@@ -32,30 +31,30 @@ public class JavaBookService {
     private EntityManager entityManager;
 
     @PersistenceContext
-    public void setEntityManager(@CurrentSession EntityManager entityManager) {
+    public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    @Transactional
+    @TransactionalAdvice
     public boolean testFieldInject() {
         entityManagerField.clear();
         return true;
     }
 
-    @Transactional
+    @TransactionalAdvice
     public boolean testMethodInject() {
         entityManager.clear();
         return true;
     }
 
-    @Transactional
+    @TransactionalAdvice
     public boolean testNativeQuery() {
         // just testing the method can be invoked
         entityManager.createNativeQuery("select * from book", Book.class).getResultList();
         return true;
     }
 
-    @Transactional
+    @TransactionalAdvice
     public boolean testClose() throws Exception {
         // just testing the method can be invoked
         ((AutoCloseable)entityManager).close();

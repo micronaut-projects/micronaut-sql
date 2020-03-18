@@ -15,8 +15,7 @@
  */
 package io.micronaut.configuration.hibernate.jpa;
 
-import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession;
-import io.micronaut.spring.tx.annotation.Transactional;
+import io.micronaut.transaction.annotation.TransactionalAdvice;
 import org.hibernate.Session;
 
 import javax.inject.Inject;
@@ -28,22 +27,22 @@ public class MutipleDataSourceJavaService {
     private Session sessionField;
     private final Session session;
 
-    public MutipleDataSourceJavaService(@CurrentSession Session session) {
+    public MutipleDataSourceJavaService(Session session) {
         this.session = session;
     }
 
     @Inject
-    public void setSessionField(@CurrentSession Session sessionField) {
+    public void setSessionField(Session sessionField) {
         this.sessionField = sessionField;
     }
 
-    @Transactional
+    @TransactionalAdvice
     public boolean testCurrent() {
         session.clear();
         return true;
     }
 
-    @Transactional
+    @TransactionalAdvice
     public boolean testCurrentFromField() {
         sessionField.clear();
         return true;

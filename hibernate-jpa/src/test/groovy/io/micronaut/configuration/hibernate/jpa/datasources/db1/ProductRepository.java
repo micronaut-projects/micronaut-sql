@@ -16,7 +16,7 @@
 package io.micronaut.configuration.hibernate.jpa.datasources.db1;
 
 import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession;
-import io.micronaut.spring.tx.annotation.Transactional;
+import io.micronaut.transaction.annotation.TransactionalAdvice;
 
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
@@ -24,7 +24,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
-@Transactional
+@TransactionalAdvice
 @Singleton
 public class ProductRepository {
 
@@ -40,7 +40,7 @@ public class ProductRepository {
         return book;
     }
 
-    @Transactional(readOnly = true) // <3>
+    @TransactionalAdvice(readOnly = true) // <3>
     public Optional<Product> findById(@NotNull Long id) {
         return Optional.ofNullable(entityManager.find(Product.class, id));
     }

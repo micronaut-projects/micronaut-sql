@@ -133,9 +133,13 @@ Note that this approach has the following disadvantages:
 
 ==== Using Spring Transaction Management
 
-Micronaut's Hibernate integration will also automatically provide a Spring `HibernateTransactionManager` bean so you can use Spring-based transaction management.
+Since 2.0, by default Micronaut-based transaction management is enabled. Thus on any service you can use the `io.micronaut.transaction.annotation.TransactionalAdvice` annotation (or the `javax.transaction.Transactional` annotation if you include the `micronaut-data-processor` dependency in your annotation processor configuration).
 
-You should use Micronaut's https://docs.micronaut.io/latest/api/io/micronaut/spring/tx/annotation/Transactional.html[@Transactional] annotation to ensure low-overhead, compile-time transaction management is applied to your classes.
+If you wish to use instead replace this with Spring-based transaction management you should add the following dependency:
+
+dependency:micronaut-hibernate-jpa-spring[groupId="io.micronaut.configuration"]
+
+Which will enable configuration of the Spring transaction management instead.
 
 ==== Understanding LazyInitializationException
 

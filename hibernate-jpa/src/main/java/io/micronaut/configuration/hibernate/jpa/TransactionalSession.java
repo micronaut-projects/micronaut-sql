@@ -15,25 +15,19 @@
  */
 package io.micronaut.configuration.hibernate.jpa;
 
+import io.micronaut.context.annotation.EachBean;
+import io.micronaut.core.annotation.Internal;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
-import io.micronaut.transaction.annotation.TransactionalAdvice;
-
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-
-@Transactional
-@TransactionalAdvice(readOnly = true)
-public class JavaReadOnlyBookService {
-
-    private final EntityManager entityManager;
-
-    public JavaReadOnlyBookService(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-
-    public boolean testNativeQuery() {
-        // just testing the method can be invoked
-        entityManager.createNativeQuery("select * from book", Book.class).getResultList();
-        return true;
-    }
+/**
+ * Represents a transaction aware session that can be dependency injected.
+ *
+ * @author graemerocher
+ * @since 2.0
+ */
+@EachBean(SessionFactory.class)
+@TransactionalSessionAdvice
+@Internal
+public interface TransactionalSession extends Session {
 }

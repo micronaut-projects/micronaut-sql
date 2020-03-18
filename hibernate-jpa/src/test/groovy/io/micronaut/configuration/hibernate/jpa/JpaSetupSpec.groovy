@@ -15,36 +15,19 @@
  */
 package io.micronaut.configuration.hibernate.jpa
 
-import io.micrometer.core.instrument.Counter
-import io.micrometer.core.instrument.FunctionCounter
-import io.micrometer.core.instrument.MeterRegistry
-import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession
+
 import io.micronaut.context.ApplicationContext
-import io.micronaut.context.exceptions.BeanContextException
-import io.micronaut.core.util.CollectionUtils
-import io.micronaut.http.exceptions.ConnectionClosedException
 import io.micronaut.http.exceptions.HttpException
-import io.micronaut.inject.BeanDefinition
-import io.micronaut.inject.ExecutableMethod
-import io.micronaut.spring.tx.annotation.BindableRuleBasedTransactionAttribute
-import io.micronaut.spring.tx.annotation.TransactionInterceptor
-import io.micronaut.spring.tx.annotation.Transactional
+import io.micronaut.transaction.TransactionDefinition
+import io.micronaut.transaction.annotation.TransactionalAdvice
 import org.hibernate.Session
-import org.hibernate.SessionFactory
-import org.springframework.transaction.TransactionDefinition
-import org.springframework.transaction.annotation.Isolation
-import org.springframework.transaction.annotation.Propagation
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
 import javax.inject.Inject
 import javax.inject.Singleton
-import javax.persistence.Entity
-import javax.persistence.EntityManager
-import javax.persistence.EntityManagerFactory
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
+import javax.persistence.*
 import javax.validation.ConstraintViolationException
 import javax.validation.constraints.NotBlank
 
@@ -60,32 +43,6 @@ class JpaSetupSpec extends Specification {
 //            'jpa.default.properties.hibernate.generate_statistics':true,
             'micronaut.metrics.binders.hibernate.tags.some':'bar'
     )
-
-    void "test configure @Transactional attribute"() {
-        given:
-        BeanDefinition<BookService> beanDefinition = applicationContext.getBeanDefinition(BookService)
-        TransactionInterceptor interceptor = applicationContext.getBean(TransactionInterceptor)
-        ExecutableMethod method = beanDefinition.findMethod("testMethod").get()
-
-        when:
-        BindableRuleBasedTransactionAttribute attribute = interceptor.resolveTransactionAttribute(
-                method,
-                method.getAnnotationMetadata(),
-                "test"
-        )
-
-        then:
-        attribute != null
-        attribute.readOnly
-        attribute.timeout == 1000
-        attribute.qualifier == 'test'
-        attribute.propagationBehavior == TransactionDefinition.PROPAGATION_MANDATORY
-        attribute.isolationLevel == TransactionDefinition.ISOLATION_REPEATABLE_READ
-        attribute.rollbackFor == CollectionUtils.setOf(BeanContextException)
-        attribute.noRollbackFor == CollectionUtils.setOf(HttpException)
-        !attribute.rollbackOn(new ConnectionClosedException(""))
-        attribute.rollbackOn(new BeanContextException(""))
-    }
 
     void "test setup entity manager with validation"() {
         when:
@@ -136,7 +93,7 @@ class JpaSetupSpec extends Specification {
         tx.rollback()
     }
 
-    void "test spring based transaction management"() {
+    void "test transaction management"() {
         given:
         BookService bookService = applicationContext.getBean(BookService)
 
@@ -193,40 +150,38 @@ class Book {
 class BookService {
 
     @Inject
-    @CurrentSession
     Session session
 
-    @Transactional(
+    @TransactionalAdvice(
             readOnly = true,
-            propagation = Propagation.MANDATORY,
-            isolation = Isolation.REPEATABLE_READ,
+            propagation = TransactionDefinition.Propagation.MANDATORY,
+            isolation = TransactionDefinition.Isolation.REPEATABLE_READ,
             transactionManager = "foo",
             timeout = 1000,
-            rollbackFor = BeanContextException,
             noRollbackFor = HttpException
     )
     void testMethod() {
 
     }
 
-    @Transactional(readOnly = true)
+    @TransactionalAdvice(readOnly = true)
     List<Book> listBooks() {
         session.createCriteria(Book).list()
     }
 
-    @Transactional(readOnly = true)
+    @TransactionalAdvice(readOnly = true)
     List<Book> saveReadOnly() {
         session.persist(new Book(title: "the stand"))
         session.createCriteria(Book).list()
     }
 
-    @Transactional()
+    @TransactionalAdvice
     List<Book> saveError() {
         session.persist(new Book(title: "the stand"))
         throw new Exception("bad things happened")
     }
 
-    @Transactional()
+    @TransactionalAdvice
     List<Book> saveSuccess() {
         session.persist(new Book(title: "the stand"))
         session.createCriteria(Book).list()
