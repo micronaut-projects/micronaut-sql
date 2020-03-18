@@ -86,6 +86,8 @@
 <dl>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html#begin-org.jdbi.v3.core.Handle-">begin(Handle)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.spring.<a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.spring">SpringTransactionHandler</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html#begin-org.jooq.TransactionContext-">begin(TransactionContext)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html" title="class in io.micronaut.configuration.jooq">MicronautTransactionProvider</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/spring/SpringTransactionProvider.html#begin-org.jooq.TransactionContext-">begin(TransactionContext)</a></span> - Method in class io.micronaut.configuration.jooq.spring.<a href="io/micronaut/configuration/jooq/spring/SpringTransactionProvider.html" title="class in io.micronaut.configuration.jooq.spring">SpringTransactionProvider</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#buildStandardServiceRegistry-java.util.Map-">buildStandardServiceRegistry(Map&lt;String, Object&gt;)</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration</a></dt>
@@ -119,6 +121,8 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/DatasourceFactory.html#close--">close()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.<a href="io/micronaut/configuration/jdbc/tomcat/DatasourceFactory.html" title="class in io.micronaut.configuration.jdbc.tomcat">DatasourceFactory</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html#commit-org.jdbi.v3.core.Handle-">commit(Handle)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.spring.<a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.spring">SpringTransactionHandler</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html#commit-org.jooq.TransactionContext-">commit(TransactionContext)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html" title="class in io.micronaut.configuration.jooq">MicronautTransactionProvider</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/spring/SpringTransactionProvider.html#commit-org.jooq.TransactionContext-">commit(TransactionContext)</a></span> - Method in class io.micronaut.configuration.jooq.spring.<a href="io/micronaut/configuration/jooq/spring/SpringTransactionProvider.html" title="class in io.micronaut.configuration.jooq.spring">SpringTransactionProvider</a></dt>
 <dd>&nbsp;</dd>
@@ -702,6 +706,14 @@
 <dl>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/condition/EntitiesInPackageCondition.html#matches-io.micronaut.context.condition.ConditionContext-">matches(ConditionContext)</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.condition.<a href="io/micronaut/configuration/hibernate/jpa/condition/EntitiesInPackageCondition.html" title="class in io.micronaut.configuration.hibernate.jpa.condition">EntitiesInPackageCondition</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html" title="class in io.micronaut.configuration.jooq"><span class="typeNameLink">MicronautTransactionProvider</span></a> - Class in <a href="io/micronaut/configuration/jooq/package-summary.html">io.micronaut.configuration.jooq</a></dt>
+<dd>
+<div class="block">Allows Micronaut Transaction to be used with JOOQ.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html#MicronautTransactionProvider-io.micronaut.transaction.jdbc.DataSourceTransactionManager-">MicronautTransactionProvider(DataSourceTransactionManager)</a></span> - Constructor for class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html" title="class in io.micronaut.configuration.jooq">MicronautTransactionProvider</a></dt>
+<dd>
+<div class="block">Adapt a <code>DataSourceTransactionManager</code> to jOOQ transaction provider interface.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html" title="class in io.micronaut.configuration.vertx.mysql.client"><span class="typeNameLink">MySQLClientConfiguration</span></a> - Class in <a href="io/micronaut/configuration/vertx/mysql/client/package-summary.html">io.micronaut.configuration.vertx.mysql.client</a></dt>
 <dd>
 <div class="block">The configuration class for Vertx MySQL Client PoolOptions.</div>
@@ -837,6 +849,8 @@
 <div class="block">Custom condition to indicate a bean requires the vertx pg client.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html#rollback-org.jdbi.v3.core.Handle-">rollback(Handle)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.spring.<a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.spring">SpringTransactionHandler</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html#rollback-org.jooq.TransactionContext-">rollback(TransactionContext)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html" title="class in io.micronaut.configuration.jooq">MicronautTransactionProvider</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/spring/SpringTransactionProvider.html#rollback-org.jooq.TransactionContext-">rollback(TransactionContext)</a></span> - Method in class io.micronaut.configuration.jooq.spring.<a href="io/micronaut/configuration/jooq/spring/SpringTransactionProvider.html" title="class in io.micronaut.configuration.jooq.spring">SpringTransactionProvider</a></dt>
 <dd>&nbsp;</dd>
