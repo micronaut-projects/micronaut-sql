@@ -141,6 +141,9 @@ public class SpringTransactionHandler extends AbstractTransactionHandler {
         }
     }
 
+    /**
+     * Local Stuff.
+     */
     private static class LocalStuff {
 
         private final Map<String, Object> savepoints = new HashMap<>();
