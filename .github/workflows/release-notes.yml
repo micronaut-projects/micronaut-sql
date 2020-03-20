@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - master
+      - 1.3.x
   issues:
     types: [closed,reopened]
 
@@ -17,9 +17,9 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
-          commit: master
+          commit: 1.3.x
           draft: true
-          name: Micronaut Micrometer ${{ steps.release_notes.outputs.next_version }}
+          name: Micronaut SQL ${{ steps.release_notes.outputs.next_version }}
           tag: v${{ steps.release_notes.outputs.next_version }}
           bodyFile: CHANGELOG.md
           token: ${{ secrets.GITHUB_TOKEN }}
