@@ -19,7 +19,7 @@ dependencies {
 
     api "io.micronaut:micronaut-jdbc:$micronautVersion"
     api "io.micronaut:micronaut-inject:$micronautVersion"
-    api "org.jooq:jooq:3.13.0"
+    api "org.jooq:jooq:3.13.1"
     compileOnly "org.springframework:spring-jdbc:$springVersion"
     compileOnly "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
 
