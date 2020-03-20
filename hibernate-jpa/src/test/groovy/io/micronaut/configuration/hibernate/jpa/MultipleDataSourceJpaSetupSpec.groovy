@@ -20,6 +20,7 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.inject.qualifiers.Qualifiers
 import io.micronaut.transaction.annotation.TransactionalAdvice
 import io.micronaut.transaction.hibernate5.HibernateTransactionManager
+import io.micronaut.transaction.jdbc.DelegatingDataSource
 import org.hibernate.Session
 import org.hibernate.SessionFactory
 import spock.lang.AutoCleanup
@@ -58,8 +59,8 @@ class MultipleDataSourceJpaSetupSpec extends Specification{
         defaultSessionFactory != otherSessionFactory
         defaultSessionFactory.getMetamodel().entity(Book)
         otherSessionFactory.getMetamodel().entity(Author)
-        defaultTxManager.dataSource == applicationContext.getBean(DataSource)
-        otherTxManager.dataSource == applicationContext.getBean(DataSource, Qualifiers.byName('other'))
+        defaultTxManager.dataSource == DelegatingDataSource.unwrapDataSource(applicationContext.getBean(DataSource))
+        otherTxManager.dataSource == DelegatingDataSource.unwrapDataSource(applicationContext.getBean(DataSource, Qualifiers.byName('other')))
         defaultTxManager.sessionFactory == defaultSessionFactory
         otherTxManager.sessionFactory == otherSessionFactory
         defaultSessionFactory.jdbcServices.jdbcEnvironment.currentCatalog.toString() == "MYDB"
