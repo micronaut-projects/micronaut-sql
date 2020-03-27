@@ -5,7 +5,7 @@ dependencies {
     // needed because otherwise IntelliJ integration broken
     compileOnly "io.micronaut:micronaut-inject-java"
     compileOnly "org.graalvm.nativeimage:svm:20.0.0"
-    api "org.hibernate:hibernate-core:5.4.12.Final", {
+    api "org.hibernate:hibernate-core:5.4.13.Final", {
         exclude group:'org.javassist', module:'javassist'
     }
 
