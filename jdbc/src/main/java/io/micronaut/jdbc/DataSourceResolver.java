@@ -13,25 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.hibernate.jpa;
+package io.micronaut.jdbc;
 
-import io.micronaut.aop.Introduction;
-import io.micronaut.context.annotation.Type;
-import io.micronaut.core.annotation.Internal;
-import java.lang.annotation.Retention;
-
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import javax.sql.DataSource;
 
 /**
- * An introduction advice annotation used to create a transaction aware session.
- * Considered internal and not for explicit usage.
+ * Resolves the underlying target data source.
  *
- * @see TransactionalSessionInterceptor
- * @see TransactionalSession
+ * @author graemerocher
+ * @since 1.0
  */
-@Retention(RUNTIME)
-@Introduction
-@Type(TransactionalSessionInterceptor.class)
-@Internal
-@interface TransactionalSessionAdvice {
+public interface DataSourceResolver {
+    /**
+     * The default implementation.
+     */
+    DataSourceResolver DEFAULT = new DataSourceResolver() {
+    };
+
+    /**
+     * Resolves the underlying target data source in the case it has been wrapped by proxying / instrumentation logic.
+     *
+     * @param dataSource The data source
+     * @return The unwrapped datasource
+     */
+    default DataSource resolve(DataSource dataSource) {
+        return dataSource;
+    }
 }

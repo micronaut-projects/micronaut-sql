@@ -13,25 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.hibernate.jpa;
-
-import io.micronaut.aop.Introduction;
-import io.micronaut.context.annotation.Type;
-import io.micronaut.core.annotation.Internal;
-import java.lang.annotation.Retention;
-
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+package io.micronaut.jdbc.metadata;
 
 /**
- * An introduction advice annotation used to create a transaction aware session.
- * Considered internal and not for explicit usage.
+ * Provide a {@link DataSourcePoolMetadata} based on a {@link javax.sql.DataSource}.
  *
- * @see TransactionalSessionInterceptor
- * @see TransactionalSession
+ * @author Stephane Nicoll
+ * @author Christian Oestreich
+ * @since 2.0.0
  */
-@Retention(RUNTIME)
-@Introduction
-@Type(TransactionalSessionInterceptor.class)
-@Internal
-@interface TransactionalSessionAdvice {
+@FunctionalInterface
+public interface DataSourcePoolMetadataProvider {
+
+    /**
+     * Return the {@link DataSourcePoolMetadata} instance able to manage the specified
+     * {@link javax.sql.DataSource} or {@code null} if the given data source could not be handled.
+     *
+     * @return the data source pool metadata
+     */
+    DataSourcePoolMetadata getDataSourcePoolMetadata();
 }

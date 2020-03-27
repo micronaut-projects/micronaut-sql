@@ -13,25 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.hibernate.jpa;
-
-import io.micronaut.aop.Introduction;
-import io.micronaut.context.annotation.Type;
-import io.micronaut.core.annotation.Internal;
-import java.lang.annotation.Retention;
-
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 /**
- * An introduction advice annotation used to create a transaction aware session.
- * Considered internal and not for explicit usage.
+ * Classes for configuring transaction management via Spring for data sources.
  *
- * @see TransactionalSessionInterceptor
- * @see TransactionalSession
+ * @author graemerocher
+ * @since 1.0
  */
-@Retention(RUNTIME)
-@Introduction
-@Type(TransactionalSessionInterceptor.class)
-@Internal
-@interface TransactionalSessionAdvice {
-}
+package io.micronaut.jdbc.spring;

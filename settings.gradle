@@ -1,5 +1,6 @@
 rootProject.name = 'sql'
 
+include 'jdbc'
 include 'jdbc-dbcp'
 include 'jdbc-hikari'
 include 'jdbc-tomcat'

@@ -1,0 +1,11 @@
+group "io.micronaut"
+dependencies {
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"    
+
+    api "io.micronaut:micronaut-inject:$micronautVersion"
+
+    compileOnly "io.micronaut:micronaut-spring"
+    compileOnly "org.springframework:spring-jdbc"
+    compileOnly "org.springframework:spring-tx"
+}

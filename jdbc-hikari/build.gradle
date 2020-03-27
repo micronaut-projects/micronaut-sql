@@ -2,7 +2,7 @@ dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"    
 
-    api "io.micronaut:micronaut-jdbc:$micronautVersion"
+    api project(":jdbc")
     api "io.micronaut:micronaut-inject:$micronautVersion"
     api "com.zaxxer:HikariCP:3.4.2"
 
