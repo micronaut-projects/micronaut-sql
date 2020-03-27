@@ -72,6 +72,14 @@
 </a>
 <h2 class="title">A</h2>
 <dl>
+<dt><a href="io/micronaut/jdbc/metadata/AbstractDataSourcePoolMetadata.html" title="class in io.micronaut.jdbc.metadata"><span class="typeNameLink">AbstractDataSourcePoolMetadata</span></a>&lt;<a href="io/micronaut/jdbc/metadata/AbstractDataSourcePoolMetadata.html" title="type parameter in AbstractDataSourcePoolMetadata">T</a> extends <a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql">DataSource</a>&gt; - Class in <a href="io/micronaut/jdbc/metadata/package-summary.html">io.micronaut.jdbc.metadata</a></dt>
+<dd>
+<div class="block">A base <a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata"><code>DataSourcePoolMetadata</code></a> implementation.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/metadata/AbstractDataSourcePoolMetadata.html#AbstractDataSourcePoolMetadata-T-">AbstractDataSourcePoolMetadata(T)</a></span> - Constructor for class io.micronaut.jdbc.metadata.<a href="io/micronaut/jdbc/metadata/AbstractDataSourcePoolMetadata.html" title="class in io.micronaut.jdbc.metadata">AbstractDataSourcePoolMetadata</a></dt>
+<dd>
+<div class="block">Create an instance with the data source to use.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/jdbi/transaction/AbstractTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction"><span class="typeNameLink">AbstractTransactionHandler</span></a> - Class in <a href="io/micronaut/configuration/jdbi/transaction/package-summary.html">io.micronaut.configuration.jdbi.transaction</a></dt>
 <dd>
 <div class="block">Base class for using transaction management with Jdbi.</div>
@@ -84,6 +92,11 @@
 </a>
 <h2 class="title">B</h2>
 <dl>
+<dt><a href="io/micronaut/jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc"><span class="typeNameLink">BasicJdbcConfiguration</span></a> - Interface in <a href="io/micronaut/jdbc/package-summary.html">io.micronaut.jdbc</a></dt>
+<dd>
+<div class="block">A contract for data source configuration classes to implement that allows for the calculation of several
+ properties based on other properties.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html#begin-org.jdbi.v3.core.Handle-">begin(Handle)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.spring.<a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.spring">SpringTransactionHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html#begin-org.jooq.TransactionContext-">begin(TransactionContext)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html" title="class in io.micronaut.configuration.jooq">MicronautTransactionProvider</a></dt>
@@ -100,6 +113,15 @@
 </a>
 <h2 class="title">C</h2>
 <dl>
+<dt><a href="io/micronaut/jdbc/CalculatedSettings.html" title="class in io.micronaut.jdbc"><span class="typeNameLink">CalculatedSettings</span></a> - Class in <a href="io/micronaut/jdbc/package-summary.html">io.micronaut.jdbc</a></dt>
+<dd>
+<div class="block">A class used to fill in the missing gaps of information needed
+ to successfully configure a data source.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/CalculatedSettings.html#CalculatedSettings-io.micronaut.jdbc.BasicJdbcConfiguration-">CalculatedSettings(BasicJdbcConfiguration)</a></span> - Constructor for class io.micronaut.jdbc.<a href="io/micronaut/jdbc/CalculatedSettings.html" title="class in io.micronaut.jdbc">CalculatedSettings</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/CalculatedSettings.html#CalculatedSettings-io.micronaut.jdbc.BasicJdbcConfiguration-java.lang.ClassLoader-">CalculatedSettings(BasicJdbcConfiguration, ClassLoader)</a></span> - Constructor for class io.micronaut.jdbc.<a href="io/micronaut/jdbc/CalculatedSettings.html" title="class in io.micronaut.jdbc">CalculatedSettings</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncMySQLClientFactory.html#client--">client()</a></span> - Method in class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncMySQLClientFactory.html" title="class in io.micronaut.configuration.jasync">JasyncMySQLClientFactory</a></dt>
 <dd>
 <div class="block">Create a connection pool to the database configured with the <a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html" title="class in io.micronaut.configuration.jasync"><code>JasyncPoolConfiguration</code></a>.</div>
@@ -129,6 +151,8 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html#connectOptions">connectOptions</a></span> - Variable in class io.micronaut.configuration.vertx.mysql.client.<a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html" title="class in io.micronaut.configuration.vertx.mysql.client">MySQLClientConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/vertx/pg/client/PgClientConfiguration.html#connectOptions">connectOptions</a></span> - Variable in class io.micronaut.configuration.vertx.pg.client.<a href="io/micronaut/configuration/vertx/pg/client/PgClientConfiguration.html" title="class in io.micronaut.configuration.vertx.pg.client">PgClientConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/JdbcDatabaseManager.JdbcDatabase.html#containsPrefix-java.lang.String-">containsPrefix(String)</a></span> - Method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/JdbcDatabaseManager.JdbcDatabase.html" title="class in io.micronaut.jdbc">JdbcDatabaseManager.JdbcDatabase</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#createBootstrapServiceRegistryBuilder-org.hibernate.integrator.spi.Integrator-java.lang.ClassLoader-">createBootstrapServiceRegistryBuilder(Integrator, ClassLoader)</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration</a></dt>
 <dd>
@@ -212,17 +236,40 @@
 <dd>
 <div class="block">Default constructor.</div>
 </dd>
+<dt><a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata"><span class="typeNameLink">DataSourcePoolMetadata</span></a>&lt;<a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="type parameter in DataSourcePoolMetadata">T</a> extends <a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql">DataSource</a>&gt; - Interface in <a href="io/micronaut/jdbc/metadata/package-summary.html">io.micronaut.jdbc.metadata</a></dt>
+<dd>
+<div class="block">Provides access meta-data that is commonly available from most pooled
+ <a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql"><code>DataSource</code></a> implementations.</div>
+</dd>
+<dt><a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadataProvider.html" title="interface in io.micronaut.jdbc.metadata"><span class="typeNameLink">DataSourcePoolMetadataProvider</span></a> - Interface in <a href="io/micronaut/jdbc/metadata/package-summary.html">io.micronaut.jdbc.metadata</a></dt>
+<dd>
+<div class="block">Provide a <a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata"><code>DataSourcePoolMetadata</code></a> based on a <a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql"><code>DataSource</code></a>.</div>
+</dd>
+<dt><a href="io/micronaut/jdbc/DataSourceResolver.html" title="interface in io.micronaut.jdbc"><span class="typeNameLink">DataSourceResolver</span></a> - Interface in <a href="io/micronaut/jdbc/package-summary.html">io.micronaut.jdbc</a></dt>
+<dd>
+<div class="block">Resolves the underlying target data source.</div>
+</dd>
+<dt><a href="io/micronaut/jdbc/spring/DataSourceTransactionManagerFactory.html" title="class in io.micronaut.jdbc.spring"><span class="typeNameLink">DataSourceTransactionManagerFactory</span></a> - Class in <a href="io/micronaut/jdbc/spring/package-summary.html">io.micronaut.jdbc.spring</a></dt>
+<dd>
+<div class="block">Configures a <code>DataSourceTransactionManager</code> for each configured JDBC <a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql"><code>DataSource</code></a>.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/spring/DataSourceTransactionManagerFactory.html#DataSourceTransactionManagerFactory--">DataSourceTransactionManagerFactory()</a></span> - Constructor for class io.micronaut.jdbc.spring.<a href="io/micronaut/jdbc/spring/DataSourceTransactionManagerFactory.html" title="class in io.micronaut.jdbc.spring">DataSourceTransactionManagerFactory</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceFactory.html#dbcpDataSourcePoolMetadata-javax.sql.DataSource-">dbcpDataSourcePoolMetadata(DataSource)</a></span> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceFactory.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceFactory</a></dt>
 <dd>
 <div class="block">Method to create a metadata object that allows pool value lookup for each datasource object.</div>
 </dd>
 <dt><a href="io/micronaut/configuration/jdbc/dbcp/metadata/DbcpDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.dbcp.metadata"><span class="typeNameLink">DbcpDataSourcePoolMetadata</span></a> - Class in <a href="io/micronaut/configuration/jdbc/dbcp/metadata/package-summary.html">io.micronaut.configuration.jdbc.dbcp.metadata</a></dt>
 <dd>
-<div class="block"><code>DataSourcePoolMetadata</code> for a DBCP <code>BasicDataSource</code>.</div>
+<div class="block"><a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata"><code>DataSourcePoolMetadata</code></a> for a DBCP <code>BasicDataSource</code>.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/dbcp/metadata/DbcpDataSourcePoolMetadata.html#DbcpDataSourcePoolMetadata-org.apache.commons.dbcp2.BasicDataSource-">DbcpDataSourcePoolMetadata(BasicDataSource)</a></span> - Constructor for class io.micronaut.configuration.jdbc.dbcp.metadata.<a href="io/micronaut/configuration/jdbc/dbcp/metadata/DbcpDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.dbcp.metadata">DbcpDataSourcePoolMetadata</a></dt>
 <dd>
-<div class="block">DBCP typed <code>DataSourcePoolMetadata</code> object.</div>
+<div class="block">DBCP typed <a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata"><code>DataSourcePoolMetadata</code></a> object.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/DataSourceResolver.html#DEFAULT">DEFAULT</a></span> - Static variable in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/DataSourceResolver.html" title="interface in io.micronaut.jdbc">DataSourceResolver</a></dt>
+<dd>
+<div class="block">The default implementation.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html#determineSqlDialect-javax.sql.DataSource-">determineSqlDialect(DataSource)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html" title="class in io.micronaut.configuration.jooq">JooqConfigurationProperties</a></dt>
 <dd>
@@ -262,6 +309,10 @@
 </a>
 <h2 class="title">F</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/JdbcDatabaseManager.html#findDatabase-java.lang.String-">findDatabase(String)</a></span> - Static method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/JdbcDatabaseManager.html" title="class in io.micronaut.jdbc">JdbcDatabaseManager</a></dt>
+<dd>
+<div class="block">Searches defined database where the URL prefix matches one of the prefixes defined in a <a href="io/micronaut/jdbc/JdbcDatabaseManager.JdbcDatabase.html" title="class in io.micronaut.jdbc"><code>JdbcDatabaseManager.JdbcDatabase</code></a>.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html#findEntities--">findEntities()</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a></dt>
 <dd>
 <div class="block">Find entities for the current configuration.</div>
@@ -272,10 +323,19 @@
 </a>
 <h2 class="title">G</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/JdbcDatabaseManager.html#get-java.lang.ClassLoader-">get(ClassLoader)</a></span> - Static method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/JdbcDatabaseManager.html" title="class in io.micronaut.jdbc">JdbcDatabaseManager</a></dt>
+<dd>
+<div class="block">Searches the provided classloader for an embedded database driver.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/dbcp/metadata/DbcpDataSourcePoolMetadata.html#getActive--">getActive()</a></span> - Method in class io.micronaut.configuration.jdbc.dbcp.metadata.<a href="io/micronaut/configuration/jdbc/dbcp/metadata/DbcpDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.dbcp.metadata">DbcpDataSourcePoolMetadata</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html#getActive--">getActive()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.metadata.<a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.tomcat.metadata">TomcatDataSourcePoolMetadata</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html#getActive--">getActive()</a></span> - Method in interface io.micronaut.jdbc.metadata.<a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata">DataSourcePoolMetadata</a></dt>
+<dd>
+<div class="block">Return the current number of active connections that have been allocated from the
+ data source or <code>null</code> if that information is not available.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html#getBorrowed--">getBorrowed()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.metadata.<a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.tomcat.metadata">TomcatDataSourcePoolMetadata</a></dt>
 <dd>
 <div class="block">Return the number of connections that have been borrowed from the
@@ -287,11 +347,15 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html#getConfiguredDriverClassName--">getConfiguredDriverClassName()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.<a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.tomcat">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/BasicJdbcConfiguration.html#getConfiguredDriverClassName--">getConfiguredDriverClassName()</a></span> - Method in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getConfiguredPassword--">getConfiguredPassword()</a></span> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#getConfiguredPassword--">getConfiguredPassword()</a></span> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html#getConfiguredPassword--">getConfiguredPassword()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.<a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.tomcat">DatasourceConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/BasicJdbcConfiguration.html#getConfiguredPassword--">getConfiguredPassword()</a></span> - Method in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getConfiguredUrl--">getConfiguredUrl()</a></span> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
@@ -299,11 +363,15 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html#getConfiguredUrl--">getConfiguredUrl()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.<a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.tomcat">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/BasicJdbcConfiguration.html#getConfiguredUrl--">getConfiguredUrl()</a></span> - Method in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getConfiguredUsername--">getConfiguredUsername()</a></span> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#getConfiguredUsername--">getConfiguredUsername()</a></span> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html#getConfiguredUsername--">getConfiguredUsername()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.<a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.tomcat">DatasourceConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/BasicJdbcConfiguration.html#getConfiguredUsername--">getConfiguredUsername()</a></span> - Method in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getConfiguredValidationQuery--">getConfiguredValidationQuery()</a></span> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
@@ -311,19 +379,46 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html#getConfiguredValidationQuery--">getConfiguredValidationQuery()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.<a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.tomcat">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/BasicJdbcConfiguration.html#getConfiguredValidationQuery--">getConfiguredValidationQuery()</a></span> - Method in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html#getConnectOptions--">getConnectOptions()</a></span> - Method in class io.micronaut.configuration.vertx.mysql.client.<a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html" title="class in io.micronaut.configuration.vertx.mysql.client">MySQLClientConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/vertx/pg/client/PgClientConfiguration.html#getConnectOptions--">getConnectOptions()</a></span> - Method in class io.micronaut.configuration.vertx.pg.client.<a href="io/micronaut/configuration/vertx/pg/client/PgClientConfiguration.html" title="class in io.micronaut.configuration.vertx.pg.client">PgClientConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/metadata/AbstractDataSourcePoolMetadata.html#getDataSource--">getDataSource()</a></span> - Method in class io.micronaut.jdbc.metadata.<a href="io/micronaut/jdbc/metadata/AbstractDataSourcePoolMetadata.html" title="class in io.micronaut.jdbc.metadata">AbstractDataSourcePoolMetadata</a></dt>
+<dd>
+<div class="block">Allow implementations to get the datasource for usage in metrics, etc.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html#getDataSource--">getDataSource()</a></span> - Method in interface io.micronaut.jdbc.metadata.<a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata">DataSourcePoolMetadata</a></dt>
+<dd>
+<div class="block">Allow implementations to get the datasource for usage in metrics, etc.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadataProvider.html#getDataSourcePoolMetadata--">getDataSourcePoolMetadata()</a></span> - Method in interface io.micronaut.jdbc.metadata.<a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadataProvider.html" title="interface in io.micronaut.jdbc.metadata">DataSourcePoolMetadataProvider</a></dt>
+<dd>
+<div class="block">Return the <a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata"><code>DataSourcePoolMetadata</code></a> instance able to manage the specified
+ <a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql"><code>DataSource</code></a> or <code>null</code> if the given data source could not be handled.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/dbcp/metadata/DbcpDataSourcePoolMetadata.html#getDefaultAutoCommit--">getDefaultAutoCommit()</a></span> - Method in class io.micronaut.configuration.jdbc.dbcp.metadata.<a href="io/micronaut/configuration/jdbc/dbcp/metadata/DbcpDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.dbcp.metadata">DbcpDataSourcePoolMetadata</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html#getDefaultAutoCommit--">getDefaultAutoCommit()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.metadata.<a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.tomcat.metadata">TomcatDataSourcePoolMetadata</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html#getDefaultAutoCommit--">getDefaultAutoCommit()</a></span> - Method in interface io.micronaut.jdbc.metadata.<a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata">DataSourcePoolMetadata</a></dt>
+<dd>
+<div class="block">The default auto-commit state of connections created by this pool.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getDriverClassName--">getDriverClassName()</a></span> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#getDriverClassName--">getDriverClassName()</a></span> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html#getDriverClassName--">getDriverClassName()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.<a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.tomcat">DatasourceConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/BasicJdbcConfiguration.html#getDriverClassName--">getDriverClassName()</a></span> - Method in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/CalculatedSettings.html#getDriverClassName--">getDriverClassName()</a></span> - Method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/CalculatedSettings.html" title="class in io.micronaut.jdbc">CalculatedSettings</a></dt>
+<dd>
+<div class="block">Determines the driver class name based on the configured value.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/JdbcDatabaseManager.JdbcDatabase.html#getDriverClassName--">getDriverClassName()</a></span> - Method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/JdbcDatabaseManager.JdbcDatabase.html" title="class in io.micronaut.jdbc">JdbcDatabaseManager.JdbcDatabase</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#getEntityScanConfiguration--">getEntityScanConfiguration()</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration</a></dt>
 <dd>&nbsp;</dd>
@@ -331,6 +426,10 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html#getIdle--">getIdle()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.metadata.<a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.tomcat.metadata">TomcatDataSourcePoolMetadata</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html#getIdle--">getIdle()</a></span> - Method in interface io.micronaut.jdbc.metadata.<a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata">DataSourcePoolMetadata</a></dt>
+<dd>
+<div class="block">Return the number of idle connections in the pool.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html#getJasyncOptions--">getJasyncOptions()</a></span> - Method in class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.html" title="class in io.micronaut.configuration.jasync">JasyncPoolConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#getJndiName--">getJndiName()</a></span> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration</a></dt>
@@ -343,10 +442,20 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html#getMax--">getMax()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.metadata.<a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.tomcat.metadata">TomcatDataSourcePoolMetadata</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html#getMax--">getMax()</a></span> - Method in interface io.micronaut.jdbc.metadata.<a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata">DataSourcePoolMetadata</a></dt>
+<dd>
+<div class="block">Return the maximum number of active connections that can be allocated at the same
+ time or <code>-1</code> if there is no limit.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/dbcp/metadata/DbcpDataSourcePoolMetadata.html#getMin--">getMin()</a></span> - Method in class io.micronaut.configuration.jdbc.dbcp.metadata.<a href="io/micronaut/configuration/jdbc/dbcp/metadata/DbcpDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.dbcp.metadata">DbcpDataSourcePoolMetadata</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html#getMin--">getMin()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.metadata.<a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.tomcat.metadata">TomcatDataSourcePoolMetadata</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html#getMin--">getMin()</a></span> - Method in interface io.micronaut.jdbc.metadata.<a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata">DataSourcePoolMetadata</a></dt>
+<dd>
+<div class="block">Return the minimum number of idle connections in the pool or <code>null</code> if that
+ information is not available.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html#getMode--">getMode()</a></span> - Method in class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html" title="class in io.micronaut.configuration.jasync">JasyncPoolConfiguration.JasyncSslConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getName--">getName()</a></span> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
@@ -354,6 +463,8 @@
 <div class="block">Get the name of the bean.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#getName--">getName()</a></span> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/BasicJdbcConfiguration.html#getName--">getName()</a></span> - Method in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html#getPackages--">getPackages()</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a></dt>
 <dd>
@@ -367,6 +478,12 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html#getPassword--">getPassword()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.<a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.tomcat">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/BasicJdbcConfiguration.html#getPassword--">getPassword()</a></span> - Method in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/CalculatedSettings.html#getPassword--">getPassword()</a></span> - Method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/CalculatedSettings.html" title="class in io.micronaut.jdbc">CalculatedSettings</a></dt>
+<dd>
+<div class="block">Determines the password based on the configured value.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html#getPoolOptions--">getPoolOptions()</a></span> - Method in class io.micronaut.configuration.vertx.mysql.client.<a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html" title="class in io.micronaut.configuration.vertx.mysql.client">MySQLClientConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/vertx/pg/client/PgClientConfiguration.html#getPoolOptions--">getPoolOptions()</a></span> - Method in class io.micronaut.configuration.vertx.pg.client.<a href="io/micronaut/configuration/vertx/pg/client/PgClientConfiguration.html" title="class in io.micronaut.configuration.vertx.pg.client">PgClientConfiguration</a></dt>
@@ -404,12 +521,35 @@
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html#getUrl--">getUrl()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.<a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.tomcat">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/BasicJdbcConfiguration.html#getUrl--">getUrl()</a></span> - Method in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/CalculatedSettings.html#getUrl--">getUrl()</a></span> - Method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/CalculatedSettings.html" title="class in io.micronaut.jdbc">CalculatedSettings</a></dt>
+<dd>
+<div class="block">Determines the URL based on the configured value.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/JdbcDatabaseManager.EmbeddedJdbcDatabase.html#getUrl-java.lang.String-">getUrl(String)</a></span> - Method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/JdbcDatabaseManager.EmbeddedJdbcDatabase.html" title="class in io.micronaut.jdbc">JdbcDatabaseManager.EmbeddedJdbcDatabase</a></dt>
+<dd>
+<div class="block">Obtain an embedded database URL for the given database name.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/metadata/AbstractDataSourcePoolMetadata.html#getUsage--">getUsage()</a></span> - Method in class io.micronaut.jdbc.metadata.<a href="io/micronaut/jdbc/metadata/AbstractDataSourcePoolMetadata.html" title="class in io.micronaut.jdbc.metadata">AbstractDataSourcePoolMetadata</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html#getUsage--">getUsage()</a></span> - Method in interface io.micronaut.jdbc.metadata.<a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata">DataSourcePoolMetadata</a></dt>
+<dd>
+<div class="block">Return the usage of the pool as value between 0 and 1 (or -1 if the pool is not
+ limited).</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getUsername--">getUsername()</a></span> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#getUsername--">getUsername()</a></span> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html#getUsername--">getUsername()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.<a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.tomcat">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/BasicJdbcConfiguration.html#getUsername--">getUsername()</a></span> - Method in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/CalculatedSettings.html#getUsername--">getUsername()</a></span> - Method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/CalculatedSettings.html" title="class in io.micronaut.jdbc">CalculatedSettings</a></dt>
+<dd>
+<div class="block">Determines the username based on the configured value.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getValidationQuery--">getValidationQuery()</a></span> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/dbcp/metadata/DbcpDataSourcePoolMetadata.html#getValidationQuery--">getValidationQuery()</a></span> - Method in class io.micronaut.configuration.jdbc.dbcp.metadata.<a href="io/micronaut/configuration/jdbc/dbcp/metadata/DbcpDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.dbcp.metadata">DbcpDataSourcePoolMetadata</a></dt>
@@ -420,6 +560,19 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html#getValidationQuery--">getValidationQuery()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.metadata.<a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.tomcat.metadata">TomcatDataSourcePoolMetadata</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/BasicJdbcConfiguration.html#getValidationQuery--">getValidationQuery()</a></span> - Method in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/CalculatedSettings.html#getValidationQuery--">getValidationQuery()</a></span> - Method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/CalculatedSettings.html" title="class in io.micronaut.jdbc">CalculatedSettings</a></dt>
+<dd>
+<div class="block">Determines the validation query based on the configured value.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/JdbcDatabaseManager.JdbcDatabase.html#getValidationQuery--">getValidationQuery()</a></span> - Method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/JdbcDatabaseManager.JdbcDatabase.html" title="class in io.micronaut.jdbc">JdbcDatabaseManager.JdbcDatabase</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html#getValidationQuery--">getValidationQuery()</a></span> - Method in interface io.micronaut.jdbc.metadata.<a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata">DataSourcePoolMetadata</a></dt>
+<dd>
+<div class="block">Return the query to use to validate that a connection is valid or <code>null</code> if
+ that information is not available.</div>
+</dd>
 </dl>
 <a name="I:H">
 <!--   -->
@@ -446,6 +599,12 @@
 <dd>
 <div class="block">Default constructor.</div>
 </dd>
+<dt><a href="io/micronaut/jdbc/spring/HibernatePresenceCondition.html" title="class in io.micronaut.jdbc.spring"><span class="typeNameLink">HibernatePresenceCondition</span></a> - Class in <a href="io/micronaut/jdbc/spring/package-summary.html">io.micronaut.jdbc.spring</a></dt>
+<dd>
+<div class="block">Disables the datasource configuration if Hibernate is present.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/spring/HibernatePresenceCondition.html#HibernatePresenceCondition--">HibernatePresenceCondition()</a></span> - Constructor for class io.micronaut.jdbc.spring.<a href="io/micronaut/jdbc/spring/HibernatePresenceCondition.html" title="class in io.micronaut.jdbc.spring">HibernatePresenceCondition</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/EntityManagerFactoryBean.html#hibernateSessionFactory-org.hibernate.boot.SessionFactoryBuilder-">hibernateSessionFactory(SessionFactoryBuilder)</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/EntityManagerFactoryBean.html" title="class in io.micronaut.configuration.hibernate.jpa">EntityManagerFactoryBean</a></dt>
 <dd>
 <div class="block">Builds the actual <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/SessionFactory.html?is-external=true" title="class or interface in org.hibernate"><code>SessionFactory</code></a> from the builder.</div>
@@ -577,9 +736,29 @@
 <dd>
 <div class="block">PgClient health checking.</div>
 </dd>
+<dt><a href="io/micronaut/jdbc/package-summary.html">io.micronaut.jdbc</a> - package io.micronaut.jdbc</dt>
+<dd>
+<div class="block">JDBC configuration for Micronaut.</div>
+</dd>
+<dt><a href="io/micronaut/jdbc/metadata/package-summary.html">io.micronaut.jdbc.metadata</a> - package io.micronaut.jdbc.metadata</dt>
+<dd>
+<div class="block">Support classes for reading JDBC metadata.</div>
+</dd>
+<dt><a href="io/micronaut/jdbc/spring/package-summary.html">io.micronaut.jdbc.spring</a> - package io.micronaut.jdbc.spring</dt>
+<dd>
+<div class="block">Classes for configuring transaction management via Spring for data sources.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/validation/JPATraversableResolver.html#isCascadable-java.lang.Object-javax.validation.Path.Node-java.lang.Class-javax.validation.Path-java.lang.annotation.ElementType-">isCascadable(Object, Path.Node, Class&lt;?&gt;, Path, ElementType)</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.validation.<a href="io/micronaut/configuration/hibernate/jpa/validation/JPATraversableResolver.html" title="class in io.micronaut.configuration.hibernate.jpa.validation">JPATraversableResolver</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html#isClasspath--">isClasspath()</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/JdbcDatabaseManager.EmbeddedJdbcDatabase.html#isEmbedded--">isEmbedded()</a></span> - Method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/JdbcDatabaseManager.EmbeddedJdbcDatabase.html" title="class in io.micronaut.jdbc">JdbcDatabaseManager.EmbeddedJdbcDatabase</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/JdbcDatabaseManager.html#isEmbedded-java.lang.String-">isEmbedded(String)</a></span> - Static method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/JdbcDatabaseManager.html" title="class in io.micronaut.jdbc">JdbcDatabaseManager</a></dt>
+<dd>
+<div class="block">Searches embedded databases where the driver matches the argument.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/JdbcDatabaseManager.JdbcDatabase.html#isEmbedded--">isEmbedded()</a></span> - Method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/JdbcDatabaseManager.JdbcDatabase.html" title="class in io.micronaut.jdbc">JdbcDatabaseManager.JdbcDatabase</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html#isEnabled--">isEnabled()</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a></dt>
 <dd>&nbsp;</dd>
@@ -643,6 +822,21 @@
 <dd>
 <div class="block">Constructor.</div>
 </dd>
+<dt><a href="io/micronaut/jdbc/JdbcDatabaseManager.html" title="class in io.micronaut.jdbc"><span class="typeNameLink">JdbcDatabaseManager</span></a> - Class in <a href="io/micronaut/jdbc/package-summary.html">io.micronaut.jdbc</a></dt>
+<dd>
+<div class="block">Stores information on popular JDBC drivers.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/JdbcDatabaseManager.html#JdbcDatabaseManager--">JdbcDatabaseManager()</a></span> - Constructor for class io.micronaut.jdbc.<a href="io/micronaut/jdbc/JdbcDatabaseManager.html" title="class in io.micronaut.jdbc">JdbcDatabaseManager</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/jdbc/JdbcDatabaseManager.EmbeddedJdbcDatabase.html" title="class in io.micronaut.jdbc"><span class="typeNameLink">JdbcDatabaseManager.EmbeddedJdbcDatabase</span></a> - Class in <a href="io/micronaut/jdbc/package-summary.html">io.micronaut.jdbc</a></dt>
+<dd>
+<div class="block">Extends <a href="io/micronaut/jdbc/JdbcDatabaseManager.JdbcDatabase.html" title="class in io.micronaut.jdbc"><code>JdbcDatabaseManager.JdbcDatabase</code></a> with additional defaults for the use of embedded databases such as H2.</div>
+</dd>
+<dt><a href="io/micronaut/jdbc/JdbcDatabaseManager.JdbcDatabase.html" title="class in io.micronaut.jdbc"><span class="typeNameLink">JdbcDatabaseManager.JdbcDatabase</span></a> - Class in <a href="io/micronaut/jdbc/package-summary.html">io.micronaut.jdbc</a></dt>
+<dd>
+<div class="block">Provides the required information in order to connect toa JDBC database, including the necessary driver and
+ validation query.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/JdbiFactory.html#jdbi-javax.sql.DataSource-org.jdbi.v3.core.transaction.TransactionHandler-org.jdbi.v3.core.statement.StatementBuilderFactory-io.micronaut.configuration.jdbi.JdbiCustomizer-">jdbi(DataSource, TransactionHandler, StatementBuilderFactory, JdbiCustomizer)</a></span> - Method in class io.micronaut.configuration.jdbi.<a href="io/micronaut/configuration/jdbi/JdbiFactory.html" title="class in io.micronaut.configuration.jdbi">JdbiFactory</a></dt>
 <dd>
 <div class="block">Creates a Jdbi <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Jdbi.html?is-external=true" title="class or interface in org.jdbi.v3.core"><code>Jdbi</code></a> instance.</div>
@@ -705,6 +899,8 @@
 <h2 class="title">M</h2>
 <dl>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/condition/EntitiesInPackageCondition.html#matches-io.micronaut.context.condition.ConditionContext-">matches(ConditionContext)</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.condition.<a href="io/micronaut/configuration/hibernate/jpa/condition/EntitiesInPackageCondition.html" title="class in io.micronaut.configuration.hibernate.jpa.condition">EntitiesInPackageCondition</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/spring/HibernatePresenceCondition.html#matches-io.micronaut.context.condition.ConditionContext-">matches(ConditionContext)</a></span> - Method in class io.micronaut.jdbc.spring.<a href="io/micronaut/jdbc/spring/HibernatePresenceCondition.html" title="class in io.micronaut.jdbc.spring">HibernatePresenceCondition</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html" title="class in io.micronaut.configuration.jooq"><span class="typeNameLink">MicronautTransactionProvider</span></a> - Class in <a href="io/micronaut/configuration/jooq/package-summary.html">io.micronaut.configuration.jooq</a></dt>
 <dd>
@@ -812,6 +1008,10 @@
 <dd>
 <div class="block">The prefix to use for all Vertx Pg Client ConnectOptions settings.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/BasicJdbcConfiguration.html#PREFIX">PREFIX</a></span> - Static variable in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></dt>
+<dd>
+<div class="block">The prefix used for data source configuration.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/spring/JooqExceptionTranslatorProvider.html#provide--">provide()</a></span> - Method in class io.micronaut.configuration.jooq.spring.<a href="io/micronaut/configuration/jooq/spring/JooqExceptionTranslatorProvider.html" title="class in io.micronaut.configuration.jooq.spring">JooqExceptionTranslatorProvider</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -848,6 +1048,12 @@
 <dd>
 <div class="block">Custom condition to indicate a bean requires the vertx pg client.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/DataSourceResolver.html#resolve-javax.sql.DataSource-">resolve(DataSource)</a></span> - Method in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/DataSourceResolver.html" title="interface in io.micronaut.jdbc">DataSourceResolver</a></dt>
+<dd>
+<div class="block">Resolves the underlying target data source in the case it has been wrapped by proxying / instrumentation logic.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/spring/SpringDataSourceResolver.html#resolve-javax.sql.DataSource-">resolve(DataSource)</a></span> - Method in class io.micronaut.jdbc.spring.<a href="io/micronaut/jdbc/spring/SpringDataSourceResolver.html" title="class in io.micronaut.jdbc.spring">SpringDataSourceResolver</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html#rollback-org.jdbi.v3.core.Handle-">rollback(Handle)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.spring.<a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.spring">SpringTransactionHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html#rollback-org.jooq.TransactionContext-">rollback(TransactionContext)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html" title="class in io.micronaut.configuration.jooq">MicronautTransactionProvider</a></dt>
@@ -916,6 +1122,12 @@
 <dd>
 <div class="block">Setter.</div>
 </dd>
+<dt><a href="io/micronaut/jdbc/spring/SpringDataSourceResolver.html" title="class in io.micronaut.jdbc.spring"><span class="typeNameLink">SpringDataSourceResolver</span></a> - Class in <a href="io/micronaut/jdbc/spring/package-summary.html">io.micronaut.jdbc.spring</a></dt>
+<dd>
+<div class="block">Unwraps spring data source proxies.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/jdbc/spring/SpringDataSourceResolver.html#SpringDataSourceResolver--">SpringDataSourceResolver()</a></span> - Constructor for class io.micronaut.jdbc.spring.<a href="io/micronaut/jdbc/spring/SpringDataSourceResolver.html" title="class in io.micronaut.jdbc.spring">SpringDataSourceResolver</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.spring"><span class="typeNameLink">SpringTransactionHandler</span></a> - Class in <a href="io/micronaut/configuration/jdbi/transaction/spring/package-summary.html">io.micronaut.configuration.jdbi.transaction.spring</a></dt>
 <dd>
 <div class="block">Allows Spring Transaction to be used with Jdbi.</div>
@@ -940,11 +1152,11 @@
 <dl>
 <dt><a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.tomcat.metadata"><span class="typeNameLink">TomcatDataSourcePoolMetadata</span></a> - Class in <a href="io/micronaut/configuration/jdbc/tomcat/metadata/package-summary.html">io.micronaut.configuration.jdbc.tomcat.metadata</a></dt>
 <dd>
-<div class="block"><code>DataSourcePoolMetadata</code> for a Tomcat <code>DataSource</code>.</div>
+<div class="block"><a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata"><code>DataSourcePoolMetadata</code></a> for a Tomcat <code>DataSource</code>.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html#TomcatDataSourcePoolMetadata-org.apache.tomcat.jdbc.pool.DataSource-">TomcatDataSourcePoolMetadata(DataSource)</a></span> - Constructor for class io.micronaut.configuration.jdbc.tomcat.metadata.<a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.tomcat.metadata">TomcatDataSourcePoolMetadata</a></dt>
 <dd>
-<div class="block">Tomcat typed <code>DataSourcePoolMetadata</code> object.</div>
+<div class="block">Tomcat typed <a href="io/micronaut/jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata"><code>DataSourcePoolMetadata</code></a> object.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/DatasourceFactory.html#tomcatPoolDataSourceMetadataProvider-javax.sql.DataSource-">tomcatPoolDataSourceMetadataProvider(DataSource)</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.<a href="io/micronaut/configuration/jdbc/tomcat/DatasourceFactory.html" title="class in io.micronaut.configuration.jdbc.tomcat">DatasourceFactory</a></dt>
 <dd>
