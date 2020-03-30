@@ -97,6 +97,8 @@
 <div class="block">A contract for data source configuration classes to implement that allows for the calculation of several
  properties based on other properties.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html#begin-org.jdbi.v3.core.Handle-">begin(Handle)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.micronaut.<a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.micronaut">MicronautDataTransactionHandler</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html#begin-org.jdbi.v3.core.Handle-">begin(Handle)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.spring.<a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.spring">SpringTransactionHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html#begin-org.jooq.TransactionContext-">begin(TransactionContext)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html" title="class in io.micronaut.configuration.jooq">MicronautTransactionProvider</a></dt>
@@ -141,6 +143,8 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/hikari/DatasourceFactory.html#close--">close()</a></span> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceFactory.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceFactory</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/tomcat/DatasourceFactory.html#close--">close()</a></span> - Method in class io.micronaut.configuration.jdbc.tomcat.<a href="io/micronaut/configuration/jdbc/tomcat/DatasourceFactory.html" title="class in io.micronaut.configuration.jdbc.tomcat">DatasourceFactory</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html#commit-org.jdbi.v3.core.Handle-">commit(Handle)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.micronaut.<a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.micronaut">MicronautDataTransactionHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html#commit-org.jdbi.v3.core.Handle-">commit(Handle)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.spring.<a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.spring">SpringTransactionHandler</a></dt>
 <dd>&nbsp;</dd>
@@ -704,6 +708,8 @@
 <dd>
 <div class="block">Classes specific to combining Jdbi with transaction management.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/jdbi/transaction/micronaut/package-summary.html">io.micronaut.configuration.jdbi.transaction.micronaut</a> - package io.micronaut.configuration.jdbi.transaction.micronaut</dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbi/transaction/spring/package-summary.html">io.micronaut.configuration.jdbi.transaction.spring</a> - package io.micronaut.configuration.jdbi.transaction.spring</dt>
 <dd>
 <div class="block">Classes specific to combining Jdbi with Spring Jdbc.</div>
@@ -761,6 +767,8 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/jdbc/JdbcDatabaseManager.JdbcDatabase.html#isEmbedded--">isEmbedded()</a></span> - Method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/JdbcDatabaseManager.JdbcDatabase.html" title="class in io.micronaut.jdbc">JdbcDatabaseManager.JdbcDatabase</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html#isEnabled--">isEnabled()</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html#isInTransaction-org.jdbi.v3.core.Handle-">isInTransaction(Handle)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.micronaut.<a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.micronaut">MicronautDataTransactionHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html#isInTransaction-org.jdbi.v3.core.Handle-">isInTransaction(Handle)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.spring.<a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.spring">SpringTransactionHandler</a></dt>
 <dd>&nbsp;</dd>
@@ -902,6 +910,14 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/jdbc/spring/HibernatePresenceCondition.html#matches-io.micronaut.context.condition.ConditionContext-">matches(ConditionContext)</a></span> - Method in class io.micronaut.jdbc.spring.<a href="io/micronaut/jdbc/spring/HibernatePresenceCondition.html" title="class in io.micronaut.jdbc.spring">HibernatePresenceCondition</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.micronaut"><span class="typeNameLink">MicronautDataTransactionHandler</span></a> - Class in <a href="io/micronaut/configuration/jdbi/transaction/micronaut/package-summary.html">io.micronaut.configuration.jdbi.transaction.micronaut</a></dt>
+<dd>
+<div class="block">Allows Micronaut data Transaction to be used with Jdbi.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html#MicronautDataTransactionHandler-io.micronaut.transaction.jdbc.DataSourceTransactionManager-">MicronautDataTransactionHandler(DataSourceTransactionManager)</a></span> - Constructor for class io.micronaut.configuration.jdbi.transaction.micronaut.<a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.micronaut">MicronautDataTransactionHandler</a></dt>
+<dd>
+<div class="block">Adapt a <code>DataSourceTransactionManager</code> to Jdbi transaction provider interface.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html" title="class in io.micronaut.configuration.jooq"><span class="typeNameLink">MicronautTransactionProvider</span></a> - Class in <a href="io/micronaut/configuration/jooq/package-summary.html">io.micronaut.configuration.jooq</a></dt>
 <dd>
 <div class="block">Allows Micronaut Transaction to be used with JOOQ.</div>
@@ -1032,6 +1048,8 @@
 </a>
 <h2 class="title">R</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html#releaseSavepoint-org.jdbi.v3.core.Handle-java.lang.String-">releaseSavepoint(Handle, String)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.micronaut.<a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.micronaut">MicronautDataTransactionHandler</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html#releaseSavepoint-org.jdbi.v3.core.Handle-java.lang.String-">releaseSavepoint(Handle, String)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.spring.<a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.spring">SpringTransactionHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/hibernate/jpa/condition/RequiresHibernateEntities.html" title="annotation in io.micronaut.configuration.hibernate.jpa.condition"><span class="typeNameLink">RequiresHibernateEntities</span></a> - Annotation Type in <a href="io/micronaut/configuration/hibernate/jpa/condition/package-summary.html">io.micronaut.configuration.hibernate.jpa.condition</a></dt>
@@ -1054,11 +1072,15 @@
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/jdbc/spring/SpringDataSourceResolver.html#resolve-javax.sql.DataSource-">resolve(DataSource)</a></span> - Method in class io.micronaut.jdbc.spring.<a href="io/micronaut/jdbc/spring/SpringDataSourceResolver.html" title="class in io.micronaut.jdbc.spring">SpringDataSourceResolver</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html#rollback-org.jdbi.v3.core.Handle-">rollback(Handle)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.micronaut.<a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.micronaut">MicronautDataTransactionHandler</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html#rollback-org.jdbi.v3.core.Handle-">rollback(Handle)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.spring.<a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.spring">SpringTransactionHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html#rollback-org.jooq.TransactionContext-">rollback(TransactionContext)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html" title="class in io.micronaut.configuration.jooq">MicronautTransactionProvider</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/spring/SpringTransactionProvider.html#rollback-org.jooq.TransactionContext-">rollback(TransactionContext)</a></span> - Method in class io.micronaut.configuration.jooq.spring.<a href="io/micronaut/configuration/jooq/spring/SpringTransactionProvider.html" title="class in io.micronaut.configuration.jooq.spring">SpringTransactionProvider</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html#rollbackToSavepoint-org.jdbi.v3.core.Handle-java.lang.String-">rollbackToSavepoint(Handle, String)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.micronaut.<a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.micronaut">MicronautDataTransactionHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html#rollbackToSavepoint-org.jdbi.v3.core.Handle-java.lang.String-">rollbackToSavepoint(Handle, String)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.spring.<a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.spring">SpringTransactionHandler</a></dt>
 <dd>&nbsp;</dd>
@@ -1068,6 +1090,8 @@
 </a>
 <h2 class="title">S</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html#savepoint-org.jdbi.v3.core.Handle-java.lang.String-">savepoint(Handle, String)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.micronaut.<a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.micronaut">MicronautDataTransactionHandler</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html#savepoint-org.jdbi.v3.core.Handle-java.lang.String-">savepoint(Handle, String)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.spring.<a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.spring">SpringTransactionHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html#setClasspath-boolean-">setClasspath(boolean)</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a></dt>

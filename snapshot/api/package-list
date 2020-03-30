@@ -15,6 +15,7 @@ io.micronaut.configuration.jdbc.tomcat
 io.micronaut.configuration.jdbc.tomcat.metadata
 io.micronaut.configuration.jdbi
 io.micronaut.configuration.jdbi.transaction
+io.micronaut.configuration.jdbi.transaction.micronaut
 io.micronaut.configuration.jdbi.transaction.spring
 io.micronaut.configuration.jooq
 io.micronaut.configuration.jooq.spring
