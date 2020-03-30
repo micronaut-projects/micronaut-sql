@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2020 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * https://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,50 +14,51 @@
  * limitations under the License.
  */
 
-package io.micronaut.configuration.jdbi.transaction.spring;
+package io.micronaut.configuration.jdbi.transaction.micronaut;
 
 import io.micronaut.configuration.jdbi.transaction.AbstractTransactionHandler;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.transaction.TransactionDefinition;
+import io.micronaut.transaction.TransactionStatus;
+import io.micronaut.transaction.jdbc.DataSourceTransactionManager;
+import io.micronaut.transaction.support.DefaultTransactionDefinition;
 import org.jdbi.v3.core.Handle;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
- * Allows Spring Transaction to be used with Jdbi.
+ * Allows Micronaut data Transaction to be used with Jdbi.
  *
  * @author Dan Maas
  * @since 1.4.0
  */
-@Requires(classes = PlatformTransactionManager.class)
-@EachBean(PlatformTransactionManager.class)
-public class SpringTransactionHandler extends AbstractTransactionHandler {
+@Requires(classes = DataSourceTransactionManager.class)
+@EachBean(DataSourceTransactionManager.class)
+public class MicronautDataTransactionHandler extends AbstractTransactionHandler {
 
-    private final ConcurrentHashMap<Handle, LocalStuff> localStuff = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Handle, LocalStuff> localTransactions = new ConcurrentHashMap<>();
 
-    private final PlatformTransactionManager transactionManager;
+    private final DataSourceTransactionManager transactionManager;
 
     /**
-     * Adapt a {@link PlatformTransactionManager} to Jdbi transaction provider interface.
+     * Adapt a {@link DataSourceTransactionManager} to Jdbi transaction provider interface.
      *
      * @param transactionManager The transaction manager
      */
-    public SpringTransactionHandler(PlatformTransactionManager transactionManager) {
+    public MicronautDataTransactionHandler(DataSourceTransactionManager transactionManager) {
         this.transactionManager = transactionManager;
     }
 
     @Override
     public void begin(Handle handle) {
-        TransactionDefinition definition = new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_NESTED);
-        TransactionStatus status = this.transactionManager.getTransaction(definition);
-        this.localStuff.putIfAbsent(handle, new LocalStuff(status));
+        TransactionDefinition definition = new DefaultTransactionDefinition(TransactionDefinition.Propagation.NESTED);
+        TransactionStatus<Connection> status = this.transactionManager.getTransaction(definition);
+        this.localTransactions.putIfAbsent(handle, new LocalStuff(status));
     }
 
     @Override
@@ -85,7 +86,7 @@ public class SpringTransactionHandler extends AbstractTransactionHandler {
 
     @Override
     public boolean isInTransaction(Handle handle) {
-        TransactionStatus status = getTransactionStatus(handle);
+        TransactionStatus<Connection> status = getTransactionStatus(handle);
         return status != null && !status.isCompleted();
     }
 
@@ -117,13 +118,13 @@ public class SpringTransactionHandler extends AbstractTransactionHandler {
         });
     }
 
-    private TransactionStatus getTransactionStatus(Handle handle) {
-        LocalStuff localStuff = this.localStuff.get(handle);
+    private TransactionStatus<Connection> getTransactionStatus(Handle handle) {
+        LocalStuff localStuff = this.localTransactions.get(handle);
         return localStuff != null ? localStuff.getTransactionStatus() : null;
     }
 
     private void withLocalStuff(Handle handle, Consumer<LocalStuff> consumer) {
-        LocalStuff localStuff = this.localStuff.get(handle);
+        LocalStuff localStuff = this.localTransactions.get(handle);
         if (localStuff != null) {
             consumer.accept(localStuff);
         }
@@ -131,13 +132,13 @@ public class SpringTransactionHandler extends AbstractTransactionHandler {
 
     private void restore(final Handle handle) {
         try {
-            final LocalStuff stuff = this.localStuff.remove(handle);
+            final LocalStuff stuff = this.localTransactions.remove(handle);
             if (stuff != null) {
                 stuff.getSavepoints().clear();
             }
         } finally {
             // prevent memory leak if rollback throws an exception
-            this.localStuff.remove(handle);
+            this.localTransactions.remove(handle);
         }
     }
 
@@ -148,9 +149,9 @@ public class SpringTransactionHandler extends AbstractTransactionHandler {
 
         private final Map<String, Object> savepoints = new HashMap<>();
 
-        private final TransactionStatus transactionStatus;
+        private final TransactionStatus<Connection> transactionStatus;
 
-        LocalStuff(TransactionStatus transactionStatus) {
+        LocalStuff(TransactionStatus<Connection> transactionStatus) {
             this.transactionStatus = transactionStatus;
         }
 
@@ -158,7 +159,7 @@ public class SpringTransactionHandler extends AbstractTransactionHandler {
             return savepoints;
         }
 
-        TransactionStatus getTransactionStatus() {
+        TransactionStatus<Connection> getTransactionStatus() {
             return transactionStatus;
         }
 
