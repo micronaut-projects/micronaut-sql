@@ -16,15 +16,14 @@
 package io.micronaut.configuration.jasync.health
 
 import io.micronaut.context.ApplicationContext
-import io.micronaut.health.HealthStatus
-
+import io.micronaut.http.HttpStatus
+import io.micronaut.http.client.RxHttpClient
+import io.micronaut.http.client.exceptions.HttpClientResponseException
+import io.micronaut.management.endpoint.health.HealthEndpoint
 import io.micronaut.management.health.indicator.HealthResult
-import io.reactivex.Flowable
+import io.micronaut.runtime.server.EmbeddedServer
 import org.testcontainers.containers.PostgreSQLContainer
 import spock.lang.Specification
-
-import java.util.concurrent.TimeUnit
-
 
 class JasyncHealthIndicatorSpec extends Specification {
 
@@ -32,32 +31,43 @@ class JasyncHealthIndicatorSpec extends Specification {
         given:
         PostgreSQLContainer postgres = new PostgreSQLContainer()
         postgres.start()
-        ApplicationContext applicationContext = ApplicationContext.run(
-                'jasync.client.port': postgres.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT),
-                'jasync.client.host': postgres.getContainerIpAddress(),
-                'jasync.client.database': postgres.databaseName,
-                'jasync.client.username': postgres.username,
-                'jasync.client.password': postgres.password
+        EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer, [
+                'jasync.client.port'                        : postgres.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT),
+                'jasync.client.host'                        : postgres.getContainerIpAddress(),
+                'jasync.client.database'                    : postgres.databaseName,
+                'jasync.client.username'                    : postgres.username,
+                'jasync.client.password'                    : postgres.password,
+                (HealthEndpoint.PREFIX + '.enabled')        : true,
+                (HealthEndpoint.PREFIX + '.jasync.enabled') : true,
+                (HealthEndpoint.PREFIX + '.sensitive')      : false,
+                (HealthEndpoint.PREFIX + '.url.enabled')    : true,
+                (HealthEndpoint.PREFIX + '.details-visible'): 'ANONYMOUS',
+        ]
         )
+        embeddedServer.start()
+
+        URL server = embeddedServer.getURL()
+        RxHttpClient rxClient = embeddedServer.applicationContext.createBean(RxHttpClient, server)
 
         when:
-        JaysncHealthIndicator indicator = applicationContext.getBean(JaysncHealthIndicator)
-        HealthResult result = Flowable.fromPublisher(indicator.getResult()).timeout(10, TimeUnit.SECONDS).blockingFirst()
+        def response = rxClient.toBlocking().exchange('/health', HealthResult.class)
 
         then:
-        result.status == HealthStatus.UP
-        result.details.version.startsWith("PostgreSQL ${postgres.DEFAULT_TAG}".toString())
+        response.code() == HttpStatus.OK.code
+        response.body().status.name == "UP"
+        response.body().details.toString().contains("PostgreSQL ${postgres.DEFAULT_TAG}")
 
         when:
         postgres.stop()
-        result = Flowable.fromPublisher(indicator.getResult()).timeout(10, TimeUnit.SECONDS).blockingFirst()
+        rxClient.toBlocking().exchange('/health')
 
         then:
-        result.status == HealthStatus.DOWN
-
+        def t = thrown(HttpClientResponseException)
+        t.status == HttpStatus.SERVICE_UNAVAILABLE
 
         cleanup:
-        applicationContext?.stop()
+        embeddedServer?.stop()
+        postgres?.stop()
     }
 
 }

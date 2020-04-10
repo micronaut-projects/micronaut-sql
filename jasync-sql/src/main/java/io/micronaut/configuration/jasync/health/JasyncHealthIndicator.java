@@ -22,10 +22,13 @@ import io.micronaut.health.HealthStatus;
 import io.micronaut.management.endpoint.health.HealthEndpoint;
 import io.micronaut.management.health.indicator.HealthIndicator;
 import io.micronaut.management.health.indicator.HealthResult;
+import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
 
 import javax.inject.Singleton;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A  {@link HealthIndicator} for reactive Postgres client.
@@ -36,7 +39,7 @@ import java.util.Collections;
 @Requires(beans = HealthEndpoint.class)
 @Requires(property = HealthEndpoint.PREFIX + ".jasync.enabled", notEquals = StringUtils.FALSE)
 @Singleton
-public class JaysncHealthIndicator implements HealthIndicator {
+public class JasyncHealthIndicator implements HealthIndicator {
 
     public static final String NAME = "postgres-reactive";
     public static final String QUERY = "SELECT version();";
@@ -47,23 +50,19 @@ public class JaysncHealthIndicator implements HealthIndicator {
      *
      * @param client A pool of connections.
      */
-    public JaysncHealthIndicator(Connection client) {
+    public JasyncHealthIndicator(Connection client) {
         this.client = client;
     }
 
     @Override
     public Publisher<HealthResult> getResult() {
-        return s -> client.sendQuery(QUERY)
-                .whenComplete((result, error) -> {
-                    if (error != null) {
-                        HealthResult health = HealthResult.builder(NAME, HealthStatus.DOWN).exception(error).build();
-                        s.onNext(health);
-                    } else {
-                        HealthResult.Builder status = HealthResult.builder(NAME, HealthStatus.UP);
-                        status.details(Collections.singletonMap("version", result.getRows().get(0).get(0)));
-                        s.onNext(status.build());
-                    }
-                });
+        return Flowable.fromFuture(client.sendQuery(QUERY))
+                .map(queryResult -> {
+                    Map<String, String> error = new HashMap<>(1);
+                    error.put("version", String.valueOf(queryResult.getRows().get(0).get(0)));
+                    return HealthResult.builder(NAME, HealthStatus.UP).details(error).build();
+                })
+                .onErrorReturn(error -> HealthResult.builder(NAME, HealthStatus.DOWN).exception(error).build());
     }
 
 }
