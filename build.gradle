@@ -46,7 +46,7 @@ subprojects { Project subproject ->
     repositories {
         jcenter()
     }
-    
+
     apply plugin:"groovy"
     apply plugin:"java-library"
     apply plugin: "io.spring.nohttp"
@@ -54,7 +54,7 @@ subprojects { Project subproject ->
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
     apply from:"https://raw.githubusercontent.com/micronaut-projects/micronaut-build/v${micronautBuildVersion}/publishing.gradle"
-        
+
 
     jar {
         manifest {
@@ -101,13 +101,13 @@ subprojects { Project subproject ->
         documentation "org.codehaus.groovy:groovy-templates:$groovyVersion"
         documentation "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
 
-        testCompile platform("io.micronaut:micronaut-bom:$micronautVersion")
-        testCompile "io.micronaut:micronaut-http-client"
-        testCompile "io.micronaut:micronaut-runtime"
-        testCompile "io.micronaut:micronaut-http-server-netty"
+        testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+        testImplementation "io.micronaut:micronaut-http-client"
+        testImplementation "io.micronaut:micronaut-runtime"
+        testImplementation "io.micronaut:micronaut-http-server-netty"
 
-        testCompile "cglib:cglib-nodep:3.3.0"
-        testCompile "org.objenesis:objenesis:3.1"
+        testImplementation "cglib:cglib-nodep:3.3.0"
+        testImplementation "org.objenesis:objenesis:3.1"
 
         testImplementation("org.spockframework:spock-core:${spockVersion}") {
             exclude module:'groovy-all'
