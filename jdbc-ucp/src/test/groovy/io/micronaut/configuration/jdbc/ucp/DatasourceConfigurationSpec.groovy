@@ -18,14 +18,11 @@ package io.micronaut.configuration.jdbc.ucp
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource
-import io.micronaut.context.exceptions.NoSuchBeanException
 import io.micronaut.inject.qualifiers.Qualifiers
 import oracle.ucp.jdbc.PoolDataSource
-import spock.lang.Ignore
 import spock.lang.Specification
 
 import javax.sql.DataSource
-import java.sql.ResultSet
 
 class DatasourceConfigurationSpec extends Specification {
 
@@ -61,38 +58,10 @@ class DatasourceConfigurationSpec extends Specification {
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.url == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
         dataSource.username == 'sa'
-        dataSource.poolProperties.password == ''
+        dataSource.password == ''
         dataSource.name == 'default'
         dataSource.driverClassName == 'org.h2.Driver'
-        dataSource.abandonWhenPercentageFull == 0
-        dataSource.accessToUnderlyingConnectionAllowed
 
-
-        cleanup:
-        applicationContext.close()
-    }
-
-    void "test operations with a blank connection"() {
-        given:
-        ApplicationContext applicationContext = new DefaultApplicationContext("test")
-        applicationContext.environment.addPropertySource(MapPropertySource.of(
-                'test',
-                ['datasources.default': [:]]
-        ))
-        applicationContext.start()
-
-        expect:
-        applicationContext.containsBean(DataSource)
-        applicationContext.containsBean(DatasourceConfiguration)
-
-        when:
-        DataSource dataSource = applicationContext.getBean(DataSource)
-        ResultSet resultSet = dataSource.getConnection().prepareStatement("SELECT H2VERSION() FROM DUAL").executeQuery()
-        resultSet.next()
-        String version = resultSet.getString(1)
-
-        then:
-        version == '1.4.199'
 
         cleanup:
         applicationContext.close()
@@ -105,13 +74,13 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.environment.addPropertySource(MapPropertySource.of(
                 'test',
                 [
-                    'datasources.default.initialPoolSize'                    : 5,
-                    'datasources.default.minPoolSize'                        : 5,
-                    'datasources.default.maxPoolSize'                        : 20,
-                    'datasources.default.timeoutCheckInterval'               : 5,
-                    'datasources.default.inactiveConnectionTimeout'          : 10,
-                    'datasources.default.connectionWaitTimeout'              : 10,
-                    'datasources.default.loginTimeout'                       : 20,
+                        'datasources.default.initialPoolSize'          : 5,
+                        'datasources.default.minPoolSize'              : 5,
+                        'datasources.default.maxPoolSize'              : 20,
+                        'datasources.default.timeoutCheckInterval'     : 5,
+                        'datasources.default.inactiveConnectionTimeout': 10,
+                        'datasources.default.connectionWaitTimeout'    : 10,
+                        'datasources.default.loginTimeout'             : 20,
                 ]
         ))
         applicationContext.start()
@@ -131,7 +100,6 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.inactiveConnectionTimeout == 10
         dataSource.connectionWaitTimeout == 10
         dataSource.loginTimeout == 20
-        dataSource.getPool()
 
         cleanup:
         applicationContext.close()
@@ -158,7 +126,7 @@ class DatasourceConfigurationSpec extends Specification {
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.url == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
         dataSource.username == 'sa'
-        dataSource.poolProperties.password == ''
+        dataSource.password == ''
         dataSource.name == 'default'
         dataSource.driverClassName == 'org.h2.Driver'
 
@@ -168,7 +136,7 @@ class DatasourceConfigurationSpec extends Specification {
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.url == 'jdbc:h2:mem:foo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
         dataSource.username == 'sa'
-        dataSource.poolProperties.password == ''
+        dataSource.password == ''
         dataSource.name == 'foo'
         dataSource.driverClassName == 'org.h2.Driver'
 
@@ -185,21 +153,21 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.environment.addPropertySource(MapPropertySource.of(
                 context,
                 [
-                        'datasources.default.initialPoolSize'                    : 5,
-                        'datasources.default.minPoolSize'                        : 5,
-                        'datasources.default.maxPoolSize'                        : 20,
-                        'datasources.default.timeoutCheckInterval'               : 5,
-                        'datasources.default.inactiveConnectionTimeout'          : 10,
-                        'datasources.default.connectionWaitTimeout'              : 10,
-                        'datasources.default.loginTimeout'                       : 20,
+                        'datasources.default.initialPoolSize'          : 5,
+                        'datasources.default.minPoolSize'              : 5,
+                        'datasources.default.maxPoolSize'              : 20,
+                        'datasources.default.timeoutCheckInterval'     : 5,
+                        'datasources.default.inactiveConnectionTimeout': 10,
+                        'datasources.default.connectionWaitTimeout'    : 10,
+                        'datasources.default.loginTimeout'             : 20,
 
-                        'datasources.person.initialPoolSize'                    : 5,
-                        'datasources.person.minPoolSize'                        : 5,
-                        'datasources.person.maxPoolSize'                        : 20,
-                        'datasources.person.timeoutCheckInterval'               : 5,
-                        'datasources.person.inactiveConnectionTimeout'          : 10,
-                        'datasources.person.connectionWaitTimeout'              : 10,
-                        'datasources.person.loginTimeout'                       : 20,
+                        'datasources.person.initialPoolSize'           : 5,
+                        'datasources.person.minPoolSize'               : 5,
+                        'datasources.person.maxPoolSize'               : 20,
+                        'datasources.person.timeoutCheckInterval'      : 5,
+                        'datasources.person.inactiveConnectionTimeout' : 10,
+                        'datasources.person.connectionWaitTimeout'     : 10,
+                        'datasources.person.loginTimeout'              : 20,
                 ]
         ))
         applicationContext.start()
@@ -243,21 +211,21 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.environment.addPropertySource(MapPropertySource.of(
                 context,
                 [
-                        'datasources.default.initialPoolSize'                    : 5,
-                        'datasources.default.minPoolSize'                        : 5,
-                        'datasources.default.maxPoolSize'                        : 20,
-                        'datasources.default.timeoutCheckInterval'               : 5,
-                        'datasources.default.inactiveConnectionTimeout'          : 10,
-                        'datasources.default.connectionWaitTimeout'              : 10,
-                        'datasources.default.loginTimeout'                       : 20,
+                        'datasources.default.initialPoolSize'          : 5,
+                        'datasources.default.minPoolSize'              : 5,
+                        'datasources.default.maxPoolSize'              : 20,
+                        'datasources.default.timeoutCheckInterval'     : 5,
+                        'datasources.default.inactiveConnectionTimeout': 10,
+                        'datasources.default.connectionWaitTimeout'    : 10,
+                        'datasources.default.loginTimeout'             : 20,
 
-                        'datasources.person.initialPoolSize'                    : 5,
-                        'datasources.person.minPoolSize'                        : 5,
-                        'datasources.person.maxPoolSize'                        : 20,
-                        'datasources.person.timeoutCheckInterval'               : 5,
-                        'datasources.person.inactiveConnectionTimeout'          : 10,
-                        'datasources.person.connectionWaitTimeout'              : 10,
-                        'datasources.person.loginTimeout'                       : 20,
+                        'datasources.person.initialPoolSize'           : 5,
+                        'datasources.person.minPoolSize'               : 5,
+                        'datasources.person.maxPoolSize'               : 20,
+                        'datasources.person.timeoutCheckInterval'      : 5,
+                        'datasources.person.inactiveConnectionTimeout' : 10,
+                        'datasources.person.connectionWaitTimeout'     : 10,
+                        'datasources.person.loginTimeout'              : 20,
                 ]
         ))
         applicationContext.start()
@@ -266,7 +234,7 @@ class DatasourceConfigurationSpec extends Specification {
         PoolDataSource dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("person")).targetDataSource
 
         then:
-        dataSource.getPool()
+        dataSource
     }
 
     void "test pool is created"() {
@@ -276,29 +244,29 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.environment.addPropertySource(MapPropertySource.of(
                 context,
                 [
-                        'datasources.default.initialPoolSize'                    : 5,
-                        'datasources.default.minPoolSize'                        : 5,
-                        'datasources.default.maxPoolSize'                        : 20,
-                        'datasources.default.timeoutCheckInterval'               : 5,
-                        'datasources.default.inactiveConnectionTimeout'          : 10,
-                        'datasources.default.connectionWaitTimeout'              : 10,
-                        'datasources.default.loginTimeout'                       : 20,
+                        'datasources.default.initialPoolSize'          : 5,
+                        'datasources.default.minPoolSize'              : 5,
+                        'datasources.default.maxPoolSize'              : 20,
+                        'datasources.default.timeoutCheckInterval'     : 5,
+                        'datasources.default.inactiveConnectionTimeout': 10,
+                        'datasources.default.connectionWaitTimeout'    : 10,
+                        'datasources.default.loginTimeout'             : 20,
 
-                        'datasources.person.initialPoolSize'                    : 5,
-                        'datasources.person.minPoolSize'                        : 5,
-                        'datasources.person.maxPoolSize'                        : 20,
-                        'datasources.person.timeoutCheckInterval'               : 5,
-                        'datasources.person.inactiveConnectionTimeout'          : 10,
-                        'datasources.person.connectionWaitTimeout'              : 10,
-                        'datasources.person.loginTimeout'                       : 20,
+                        'datasources.person.initialPoolSize'           : 5,
+                        'datasources.person.minPoolSize'               : 5,
+                        'datasources.person.maxPoolSize'               : 20,
+                        'datasources.person.timeoutCheckInterval'      : 5,
+                        'datasources.person.inactiveConnectionTimeout' : 10,
+                        'datasources.person.connectionWaitTimeout'     : 10,
+                        'datasources.person.loginTimeout'              : 20,
                 ]
         ))
         applicationContext.start()
 
         when:
-        org.apache.tomcat.jdbc.pool.DataSource dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("person")).targetDataSource
+        PoolDataSource dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("person")).targetDataSource
 
         then:
-        dataSource.getPool()
+        dataSource
     }
 }

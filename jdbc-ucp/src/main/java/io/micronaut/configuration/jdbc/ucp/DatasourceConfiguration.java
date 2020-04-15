@@ -20,8 +20,8 @@ import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
+import oracle.jdbc.OracleShardingKeyBuilder;
 import oracle.ucp.admin.UniversalConnectionPoolManagerImpl;
-import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolDataSourceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ import java.sql.SQLException;
 
 /**
  * Allows the configuration of UCP JDBC data sources. All properties on
- * {@link PoolDataSource} are available to be configured.
+ * {@link PoolDataSourceImpl} are available to be configured.
  *
  * If the url, driver class, username, or password are missing, sensible defaults
  * will be provided when possible. If no configuration beyond the datasource name
@@ -45,7 +45,7 @@ import java.sql.SQLException;
 @Context
 public class DatasourceConfiguration extends PoolDataSourceImpl implements BasicJdbcConfiguration, AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
-    public CalculatedSettings calculatedSettings;
+    private CalculatedSettings calculatedSettings;
     private String name;
 
     /**
@@ -73,18 +73,14 @@ public class DatasourceConfiguration extends PoolDataSourceImpl implements Basic
         }
     }
 
-    public CalculatedSettings getCalculatedSettings() {
-        return calculatedSettings;
-    }
-
-    public void setCalculatedSettings(CalculatedSettings calculatedSettings) {
-        this.calculatedSettings = calculatedSettings;
-    }
-
     @Override
     public String getName() {
         return name;
     }
+
+    /**
+     * @param name the name of the datasource
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -114,6 +110,10 @@ public class DatasourceConfiguration extends PoolDataSourceImpl implements Basic
         return calculatedSettings.getUsername();
     }
 
+    /**
+     * @param username the username
+     * @throws SQLException
+     */
     public void setUsername(String username) throws SQLException {
         super.setUser(username);
     }
@@ -126,6 +126,11 @@ public class DatasourceConfiguration extends PoolDataSourceImpl implements Basic
     @Override
     public String getPassword() {
         return calculatedSettings.getPassword();
+    }
+
+    @Override
+    public OracleShardingKeyBuilder createShardingKeyBuilder() {
+        return null;
     }
 
     @Override

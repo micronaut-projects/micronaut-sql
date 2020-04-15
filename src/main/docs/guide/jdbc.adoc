@@ -5,7 +5,7 @@ Java data sources can be configured for one of three currently provided implemen
 [TIP]
 .Using the CLI
 ====
-If you are creating your project using the Micronaut CLI, supply one of the `jdbc-tomcat`, `jdbc-hikari`, or `jdbc-dbcp` features to preconfigure a simple JDBC connection in your project, along with a default H2 database driver:
+If you are creating your project using the Micronaut CLI, supply one of the `jdbc-tomcat`, `jdbc-hikari`, `jdbc-dbcp`, or `jdbc-ucp` features to preconfigure a simple JDBC connection in your project, along with a default H2 database driver:
 ----
 $ mn create-app my-app --features jdbc-tomcat
 ----
@@ -18,6 +18,8 @@ dependency:micronaut-jdbc-tomcat[groupId="io.micronaut.configuration", scope="ru
 dependency:micronaut-jdbc-hikari[groupId="io.micronaut.configuration", scope="runtime"]
 
 dependency:micronaut-jdbc-dbcp[groupId="io.micronaut.configuration", scope="runtime"]
+
+dependency:micronaut-jdbc-ucp[groupId="io.micronaut.configuration", scope="runtime"]
 
 You also need to add a JDBC driver dependency to your classpath. For example to add the http://www.h2database.com[H2 In-Memory Database]:
 
@@ -63,6 +65,21 @@ datasources:
         driverClassName: org.h2.Driver
 ----
 
+To use Oracle UCP, provide a configuration similar to the following:
+
+[source,yaml]
+.application.yaml
+----
+datasources:
+  default:
+    url:
+    connectionFactoryClassName: oracle.jdbc.pool.OracleDataSource
+    username:
+    password:
+    minPoolSize: 1
+    maxPoolSize: 10
+----
+
 For a list of other properties able to be configured, simply refer to the implementation that is being used. All setter methods are candidates for configuration.
 
 [cols="20%,80%"]
@@ -70,6 +87,7 @@ For a list of other properties able to be configured, simply refer to the implem
 |Tomcat |link:https://tomcat.apache.org/tomcat-9.0-doc/api/org/apache/tomcat/jdbc/pool/PoolProperties.html[PoolProperties]
 |Hikari |link:http://static.javadoc.io/com.zaxxer/HikariCP/2.7.1/com/zaxxer/hikari/HikariConfig.html[HikariConfig]
 |Apache DBCP |link:http://commons.apache.org/proper/commons-dbcp/api-2.1.1/org/apache/commons/dbcp2/BasicDataSource.html[BasicDataSource]
+|Oracle UCP|link:https://docs.oracle.com/en/database/oracle/oracle-database/18/jjuar/oracle/ucp/jdbc/PoolDataSource.html[PoolDataSource]
 |=======
 
 == Configuring Multiple Data Sources
