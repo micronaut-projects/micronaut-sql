@@ -47,7 +47,6 @@ public class DatasourceConfiguration extends PoolDataSourceImpl implements Basic
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
     public CalculatedSettings calculatedSettings;
     private String name;
-    private String username;
 
     /**
      * Constructor.
