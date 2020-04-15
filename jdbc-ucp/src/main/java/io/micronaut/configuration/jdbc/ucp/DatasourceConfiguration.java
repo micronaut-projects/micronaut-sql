@@ -21,9 +21,6 @@ import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
 import oracle.ucp.jdbc.PoolDataSource;
 
-import javax.annotation.PostConstruct;
-import java.sql.SQLException;
-
 /**
  * Allows the configuration of UCP JDBC data sources. All properties on
  * {@link PoolDataSource} are available to be configured.
