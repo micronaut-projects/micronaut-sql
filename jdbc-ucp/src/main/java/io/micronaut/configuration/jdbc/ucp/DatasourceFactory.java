@@ -49,24 +49,41 @@ public class DatasourceFactory implements AutoCloseable {
     @EachBean(DatasourceConfiguration.class)
     public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration) throws SQLException {
         PoolDataSource ds = PoolDataSourceFactory.getPoolDataSource();
-        ds.setConnectionFactoryClassName(datasourceConfiguration.connectionFactoryClassName);
-        ds.setURL(datasourceConfiguration.url);
-        ds.setUser(datasourceConfiguration.username);
-        ds.setPassword(datasourceConfiguration.password);
-        ds.setConnectionPoolName(datasourceConfiguration.connectionPoolName);
-        ds.setInitialPoolSize(datasourceConfiguration.initialPoolSize);
-        ds.setMinPoolSize(datasourceConfiguration.minPoolSize);
-        ds.setMaxPoolSize(datasourceConfiguration.maxPoolSize);
-        ds.setTimeoutCheckInterval(datasourceConfiguration.timeoutCheckInterval);
-        ds.setInactiveConnectionTimeout(datasourceConfiguration.inactiveConnectionTimeout);
+        ds.setConnectionFactoryClassName(datasourceConfiguration.getConnectionFactoryClassName());
+        ds.setURL(datasourceConfiguration.getUrl());
+        ds.setUser(datasourceConfiguration.getUsername());
+        ds.setPassword(datasourceConfiguration.getPassword());
+        ds.setConnectionPoolName(datasourceConfiguration.getConnectionPoolName());
+        ds.setInitialPoolSize(datasourceConfiguration.getInitialPoolSize());
+        ds.setMinPoolSize(datasourceConfiguration.getMinPoolSize());
+        ds.setMaxPoolSize(datasourceConfiguration.getMaxPoolSize());
+        ds.setTimeoutCheckInterval(datasourceConfiguration.getTimeoutCheckInterval());
+        ds.setInactiveConnectionTimeout(datasourceConfiguration.getInactiveConnectionTimeout());
         Properties props = new Properties();
-        props.setProperty("fixedString", String.valueOf(datasourceConfiguration.fixedString));
-        props.setProperty("remarksReporting", String.valueOf(datasourceConfiguration.remarksReporting));
-        props.setProperty("restrictGetTables", String.valueOf(datasourceConfiguration.restrictGetTables));
-        props.setProperty("includeSynonyms", String.valueOf(datasourceConfiguration.includeSynonyms));
-        props.setProperty("defaultNChar", String.valueOf(datasourceConfiguration.defaultNChar));
-        props.setProperty("AccumulateBatchResult", String.valueOf(datasourceConfiguration.accumulateBatchResult));
+        props.setProperty("fixedString", String.valueOf(datasourceConfiguration.isFixedString()));
+        props.setProperty("remarksReporting", String.valueOf(datasourceConfiguration.isRemarksReporting()));
+        props.setProperty("restrictGetTables", String.valueOf(datasourceConfiguration.isRestrictGetTables()));
+        props.setProperty("includeSynonyms", String.valueOf(datasourceConfiguration.isIncludeSynonyms()));
+        props.setProperty("defaultNChar", String.valueOf(datasourceConfiguration.isDefaultNChar()));
+        props.setProperty("AccumulateBatchResult", String.valueOf(datasourceConfiguration.isAccumulateBatchResult()));
         ds.setConnectionProperties(props);
+
+        if (datasourceConfiguration.getConnectionWaitTimeout() != null) ds.setConnectionWaitTimeout(datasourceConfiguration.getConnectionWaitTimeout());
+        if (datasourceConfiguration.getLoginTimeout() != null) ds.setLoginTimeout(datasourceConfiguration.getLoginTimeout());
+        if (datasourceConfiguration.getMaxConnectionReuseCount() != null) ds.setMaxConnectionReuseCount(datasourceConfiguration.getMaxConnectionReuseCount());
+        if (datasourceConfiguration.getMaxConnectionReuseTime() != null) ds.setMaxConnectionReuseTime(datasourceConfiguration.getMaxConnectionReuseTime());
+        if (datasourceConfiguration.getMaxIdleTime() != null) ds.setMaxIdleTime(datasourceConfiguration.getMaxIdleTime());
+        if (datasourceConfiguration.getMaxStatements() != null) ds.setMaxStatements(datasourceConfiguration.getMaxStatements());
+        if (datasourceConfiguration.getNetworkProtocol() != null) ds.setNetworkProtocol(datasourceConfiguration.getNetworkProtocol());
+        if (datasourceConfiguration.getOnsConfiguration() != null) ds.setONSConfiguration(datasourceConfiguration.getOnsConfiguration());
+        if (datasourceConfiguration.getPortNumber() != null) ds.setPortNumber(datasourceConfiguration.getPortNumber());
+        if (datasourceConfiguration.getPropertyCycle() != null) ds.setPropertyCycle(datasourceConfiguration.getPropertyCycle());
+        if (datasourceConfiguration.getRoleName() != null) ds.setRoleName(datasourceConfiguration.getRoleName());
+        if (datasourceConfiguration.getServerName() != null) ds.setServerName(datasourceConfiguration.getServerName());
+        if (datasourceConfiguration.getSqlForValidateConnection() != null) ds.setSQLForValidateConnection(datasourceConfiguration.getSqlForValidateConnection());
+        if (datasourceConfiguration.isFastConnectionFailoverEnabled() != null) ds.setFastConnectionFailoverEnabled(datasourceConfiguration.isFastConnectionFailoverEnabled());
+        if (datasourceConfiguration.isValidateConnectionOnBorrow() != null) ds.setValidateConnectionOnBorrow(datasourceConfiguration.isValidateConnectionOnBorrow());
+
         dataSources.add(ds);
         return ds;
     }
