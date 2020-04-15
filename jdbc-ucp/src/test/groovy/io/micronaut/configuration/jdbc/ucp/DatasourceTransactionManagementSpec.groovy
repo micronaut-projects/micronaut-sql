@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.jdbc.tomcat
+package io.micronaut.configuration.jdbc.ucp
 
 import io.micronaut.configuration.jdbc.tomcat.metadata.TomcatDataSourcePoolMetadata
 import io.micronaut.context.ApplicationContext

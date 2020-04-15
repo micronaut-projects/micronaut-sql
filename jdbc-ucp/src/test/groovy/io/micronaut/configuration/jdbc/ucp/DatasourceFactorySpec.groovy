@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.jdbc.tomcat
+package io.micronaut.configuration.jdbc.ucp
 
 import io.micronaut.jdbc.spring.SpringDataSourceResolver
+import oracle.ucp.jdbc.PoolDataSource
 import org.apache.tomcat.jdbc.pool.DataSource
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy
 import spock.lang.Specification
@@ -30,7 +31,7 @@ class DatasourceFactorySpec extends Specification {
 
     def "create basic datasource"() {
         given:
-        def dataSource = new DataSource(validationQuery: "SELECT 1")
+        def dataSource = new PoolDataSource(validationQuery: "SELECT 1 from dual") {}
 
         when:
         def metadata = datasourceFactory.tomcatPoolDataSourceMetadataProvider(dataSource)
