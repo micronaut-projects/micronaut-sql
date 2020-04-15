@@ -15,12 +15,18 @@
  */
 package io.micronaut.configuration.jdbc.ucp;
 
+import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
+import oracle.ucp.admin.UniversalConnectionPoolManagerImpl;
 import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolDataSourceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.PreDestroy;
 
 /**
  * Allows the configuration of UCP JDBC data sources. All properties on
@@ -35,8 +41,9 @@ import oracle.ucp.jdbc.PoolDataSourceImpl;
  * @since 2.0.1
  */
 @EachProperty(value = BasicJdbcConfiguration.PREFIX, primary = "default")
-public class DatasourceConfiguration extends PoolDataSourceImpl implements BasicJdbcConfiguration {
-
+@Context
+public class DatasourceConfiguration extends PoolDataSourceImpl implements BasicJdbcConfiguration, AutoCloseable {
+    private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
     public CalculatedSettings calculatedSettings;
     private String name;
 
@@ -45,8 +52,24 @@ public class DatasourceConfiguration extends PoolDataSourceImpl implements Basic
      * @param name name that comes from properties
      */
     public DatasourceConfiguration(@Parameter String name) {
+        super();
         this.name = name;
         this.calculatedSettings = new CalculatedSettings(this);
+    }
+
+    @Override
+    @PreDestroy
+    public void close() {
+        try {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Closing connection pool named: {}", this.getConnectionPoolName());
+            }
+            UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager().destroyConnectionPool(this.getConnectionPoolName());
+        } catch (Exception e) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Error closing data source [" + this + "]: " + e.getMessage(), e);
+            }
+        }
     }
 
     public CalculatedSettings getCalculatedSettings() {
