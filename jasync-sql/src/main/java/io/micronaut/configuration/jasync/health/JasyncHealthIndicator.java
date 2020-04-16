@@ -26,7 +26,6 @@ import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
 
 import javax.inject.Singleton;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 

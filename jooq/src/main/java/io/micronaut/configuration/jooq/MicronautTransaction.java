@@ -31,24 +31,24 @@ import java.sql.Connection;
  */
 class MicronautTransaction implements Transaction {
 
-	private final TransactionStatus<Connection> transactionStatus;
+    private final TransactionStatus<Connection> transactionStatus;
 
-	/**
-	 * Wrap existing {@link TransactionStatus} object with jOOQ transaction.
-	 *
-	 * @param transactionStatus The transaction status object
-	 */
-	MicronautTransaction(TransactionStatus<Connection> transactionStatus) {
-		this.transactionStatus = transactionStatus;
-	}
+    /**
+     * Wrap existing {@link TransactionStatus} object with jOOQ transaction.
+     *
+     * @param transactionStatus The transaction status object
+     */
+    MicronautTransaction(TransactionStatus<Connection> transactionStatus) {
+        this.transactionStatus = transactionStatus;
+    }
 
-	/**
-	 * Get underlying transaction status.
-	 *
-	 * @return The transaction status object
-	 */
-	public TransactionStatus<Connection> getTxStatus() {
-		return this.transactionStatus;
-	}
+    /**
+     * Get underlying transaction status.
+     *
+     * @return The transaction status object
+     */
+    public TransactionStatus<Connection> getTxStatus() {
+        return this.transactionStatus;
+    }
 
 }
