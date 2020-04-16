@@ -20,7 +20,6 @@ import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
-import oracle.jdbc.OracleShardingKeyBuilder;
 import oracle.ucp.admin.UniversalConnectionPoolManagerImpl;
 import oracle.ucp.jdbc.PoolDataSourceImpl;
 import org.slf4j.Logger;
@@ -126,11 +125,6 @@ public class DatasourceConfiguration extends PoolDataSourceImpl implements Basic
     @Override
     public String getPassword() {
         return calculatedSettings.getPassword();
-    }
-
-    @Override
-    public OracleShardingKeyBuilder createShardingKeyBuilder() {
-        return null;
     }
 
     @Override
