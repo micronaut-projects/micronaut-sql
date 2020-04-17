@@ -10,10 +10,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PreDestroy;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Creates a tomcat data source for each configuration bean.
+ *
+ * @author toddsharp
+ * @since 2.0.1
+ */
 @Factory
 public class DatasourceFactory implements AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);

@@ -32,7 +32,7 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.start()
 
         expect: "No beans are created"
-        !applicationContext.containsBean(DataSource)
+        !applicationContext.containsBean(PoolDataSource)
         !applicationContext.containsBean(DatasourceConfiguration)
 
         cleanup:
@@ -44,24 +44,25 @@ class DatasourceConfigurationSpec extends Specification {
         ApplicationContext applicationContext = new DefaultApplicationContext("test")
         applicationContext.environment.addPropertySource(MapPropertySource.of(
                 'test',
-                ['datasources.default': [:]]
+                [
+                        "datasources.default.url": "jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE",
+                        "datasources.default.username": "sa",
+                        "datasources.default.password": "",
+                ]
         ))
         applicationContext.start()
 
         expect:
-        applicationContext.containsBean(DataSource)
+        applicationContext.containsBean(PoolDataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        DataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        PoolDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
 
         then: //The default configuration is supplied because H2 is on the classpath
-        dataSource.url == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
-        dataSource.username == 'sa'
-        dataSource.password == ''
-        dataSource.name == 'default'
-        dataSource.driverClassName == 'org.h2.Driver'
-
+        dataSource.getURL() == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
+        dataSource.getUser() == 'sa'
+        dataSource.getPassword() == ''
 
         cleanup:
         applicationContext.close()
@@ -86,20 +87,20 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.start()
 
         expect:
-        applicationContext.containsBean(DataSource)
+        applicationContext.containsBean(PoolDataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        DataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        PoolDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
 
         then:
-        dataSource.initialPoolSize == 5
-        dataSource.minPoolSize == 5
-        dataSource.maxPoolSize == 20
-        dataSource.timeoutCheckInterval == 5
-        dataSource.inactiveConnectionTimeout == 10
-        dataSource.connectionWaitTimeout == 10
-        dataSource.loginTimeout == 20
+        dataSource.getInitialPoolSize() == 5
+        dataSource.getMinPoolSize() == 5
+        dataSource.getMaxPoolSize() == 20
+        dataSource.getTimeoutCheckInterval() == 5
+        dataSource.getInactiveConnectionTimeout() == 10
+        dataSource.getConnectionWaitTimeout() == 10
+        dataSource.getLoginTimeout() == 20
 
         cleanup:
         applicationContext.close()
@@ -111,8 +112,14 @@ class DatasourceConfigurationSpec extends Specification {
         ApplicationContext applicationContext = new DefaultApplicationContext(context)
         applicationContext.environment.addPropertySource(MapPropertySource.of(
                 context,
-                ['datasources.default': [:],
-                 'datasources.foo'    : [:]]
+                [
+                    "datasources.default.url": "jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE",
+                    "datasources.default.username": "sa",
+                    "datasources.default.password": "",
+                    "datasources.foo.url": "jdbc:h2:mem:foo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE",
+                    "datasources.foo.username": "sa",
+                    "datasources.foo.password": "",
+                ]
         ))
         applicationContext.start()
 
@@ -121,24 +128,20 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        DataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        PoolDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
 
         then: //The default configuration is supplied because H2 is on the classpath
-        dataSource.url == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
-        dataSource.username == 'sa'
-        dataSource.password == ''
-        dataSource.name == 'default'
-        dataSource.driverClassName == 'org.h2.Driver'
+        dataSource.getURL() == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
+        dataSource.getUser() == 'sa'
+        dataSource.getPassword() == ''
 
         when:
         dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("foo")).targetDataSource
 
         then: //The default configuration is supplied because H2 is on the classpath
-        dataSource.url == 'jdbc:h2:mem:foo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
-        dataSource.username == 'sa'
-        dataSource.password == ''
-        dataSource.name == 'foo'
-        dataSource.driverClassName == 'org.h2.Driver'
+        dataSource.getURL() == 'jdbc:h2:mem:foo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
+        dataSource.getUser() == 'sa'
+        dataSource.getPassword() == ''
 
         cleanup:
         applicationContext.close()
@@ -147,7 +150,7 @@ class DatasourceConfigurationSpec extends Specification {
 
     void "test multiple datasources are all wired"() {
         given:
-        DataSource dataSource
+        PoolDataSource dataSource
         String context = UUID.randomUUID().toString()
         ApplicationContext applicationContext = new DefaultApplicationContext(context)
         applicationContext.environment.addPropertySource(MapPropertySource.of(
@@ -180,25 +183,25 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("default")).targetDataSource
 
         then:
-        dataSource.initialPoolSize == 5
-        dataSource.minPoolSize == 5
-        dataSource.maxPoolSize == 20
-        dataSource.timeoutCheckInterval == 5
-        dataSource.inactiveConnectionTimeout == 10
-        dataSource.connectionWaitTimeout == 10
-        dataSource.loginTimeout == 20
+        dataSource.getInitialPoolSize() == 5
+        dataSource.getMinPoolSize() == 5
+        dataSource.getMaxPoolSize() == 20
+        dataSource.getTimeoutCheckInterval() == 5
+        dataSource.getInactiveConnectionTimeout() == 10
+        dataSource.getConnectionWaitTimeout() == 10
+        dataSource.getLoginTimeout() == 20
 
         when:
         dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("person")).targetDataSource
 
         then:
-        dataSource.initialPoolSize == 5
-        dataSource.minPoolSize == 5
-        dataSource.maxPoolSize == 20
-        dataSource.timeoutCheckInterval == 5
-        dataSource.inactiveConnectionTimeout == 10
-        dataSource.connectionWaitTimeout == 10
-        dataSource.loginTimeout == 20
+        dataSource.getInitialPoolSize() == 5
+        dataSource.getMinPoolSize() == 5
+        dataSource.getMaxPoolSize() == 20
+        dataSource.getTimeoutCheckInterval() == 5
+        dataSource.getInactiveConnectionTimeout() == 10
+        dataSource.getConnectionWaitTimeout() == 10
+        dataSource.getLoginTimeout() == 20
 
         cleanup:
         applicationContext.close()
@@ -231,7 +234,7 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.start()
 
         when:
-        PoolDataSource dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("person")).targetDataSource
+            PoolDataSource dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("person")).targetDataSource
 
         then:
         dataSource
