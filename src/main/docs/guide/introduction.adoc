@@ -2,6 +2,10 @@ This project includes modules to support SQL Database access in Micronaut.
 
 === Release History
 
+==== 2.0.1
+
+* Support for Oracle UCP
+
 ==== 2.0.0
 
 * Micronaut Transaction Management by default
