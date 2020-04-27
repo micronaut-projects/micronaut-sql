@@ -2,6 +2,11 @@ This project includes modules to support SQL Database access in Micronaut.
 
 === Release History
 
+==== 2.1.0
+
+* Support for https://docs.oracle.com/cd/E11882_01/java.112/e12265/intro.htm[Oracle UCP]
+* Support for Hibernate `BeanContainer` and attribute converters defined as Micronaut beans
+
 ==== 2.0.1
 
 * Support for Oracle UCP

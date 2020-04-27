@@ -30,8 +30,9 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.SessionFactoryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.cfg.AvailableSettings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.hibernate.resource.beans.container.spi.BeanContainer;
+import org.hibernate.resource.beans.container.spi.ContainedBean;
+import org.hibernate.resource.beans.spi.BeanInstanceProducer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -50,7 +51,6 @@ import java.util.Map;
 @Factory
 public class EntityManagerFactoryBean {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EntityManagerFactoryBean.class);
     private final JpaConfiguration jpaConfiguration;
     private final Environment environment;
     private final BeanLocator beanLocator;
@@ -106,6 +106,30 @@ public class EntityManagerFactoryBean {
                 AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, sessionContextClass.getName());
         additionalSettings.put(AvailableSettings.SESSION_FACTORY_NAME, dataSourceName);
         additionalSettings.put(AvailableSettings.SESSION_FACTORY_NAME_IS_JNDI, false);
+        additionalSettings.put(AvailableSettings.BEAN_CONTAINER, new BeanContainer() {
+            @Override
+            public <B> ContainedBean<B> getBean(Class<B> beanType, LifecycleOptions lifecycleOptions, BeanInstanceProducer fallbackProducer) {
+                B bean = beanLocator.findBean(beanType)
+                        .orElseGet(() -> fallbackProducer.produceBeanInstance(beanType));
+                return () -> bean;
+            }
+
+            @Override
+            public <B> ContainedBean<B> getBean(
+                    String name,
+                    Class<B> beanType,
+                    LifecycleOptions lifecycleOptions,
+                    BeanInstanceProducer fallbackProducer) {
+                B bean = beanLocator.findBean(beanType, Qualifiers.byName(name))
+                        .orElseGet(() -> fallbackProducer.produceBeanInstance(name, beanType));
+                return () -> bean;
+            }
+
+            @Override
+            public void stop() {
+                // no-op, managed externally
+            }
+        });
         JpaConfiguration jpaConfiguration = beanLocator.findBean(JpaConfiguration.class, Qualifiers.byName(dataSourceName))
             .orElse(this.jpaConfiguration);
         return jpaConfiguration.buildStandardServiceRegistry(

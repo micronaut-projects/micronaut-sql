@@ -17,6 +17,7 @@ package io.micronaut.configuration.hibernate.jpa
 
 
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.env.Environment
 import io.micronaut.http.exceptions.HttpException
 import io.micronaut.transaction.TransactionDefinition
 import io.micronaut.transaction.annotation.TransactionalAdvice
@@ -28,6 +29,7 @@ import spock.lang.Specification
 import javax.inject.Inject
 import javax.inject.Singleton
 import javax.persistence.*
+import javax.persistence.metamodel.Attribute
 import javax.validation.ConstraintViolationException
 import javax.validation.constraints.NotBlank
 
@@ -120,6 +122,7 @@ class JpaSetupSpec extends Specification {
 
         then:
         books.size() == 1
+        books[0].title == 'THE STAND'
     }
 
     void "test inject java persistence context"() {
@@ -143,7 +146,28 @@ class Book {
     Long id
 
     @NotBlank
+    @Convert(converter = UppercaseConverter.class)
     String title
+}
+
+@Singleton
+class UppercaseConverter implements AttributeConverter<String, String> {
+
+    private final Environment environment
+
+    UppercaseConverter(Environment environment) {
+        this.environment = environment
+    }
+
+    @Override
+    String convertToDatabaseColumn(String attribute) {
+        return attribute.toUpperCase(Locale.ENGLISH)
+    }
+
+    @Override
+    String convertToEntityAttribute(String dbData) {
+        return dbData
+    }
 }
 
 @Singleton
