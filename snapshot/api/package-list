@@ -13,6 +13,7 @@ io.micronaut.configuration.jdbc.dbcp.metadata
 io.micronaut.configuration.jdbc.hikari
 io.micronaut.configuration.jdbc.tomcat
 io.micronaut.configuration.jdbc.tomcat.metadata
+io.micronaut.configuration.jdbc.ucp
 io.micronaut.configuration.jdbi
 io.micronaut.configuration.jdbi.transaction
 io.micronaut.configuration.jdbi.transaction.micronaut

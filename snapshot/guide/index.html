@@ -138,6 +138,16 @@
 <div class="sect2">
 <h3 id="_release_history">Release History</h3>
 <div class="sect3">
+<h4 id="_2_0_1">2.0.1</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Support for Oracle UCP</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
 <h4 id="_2_0_0">2.0.0</h4>
 <div class="ulist">
 <ul>
@@ -233,7 +243,7 @@
 <td class="content">
 <div class="title">Using the CLI</div>
 <div class="paragraph">
-<p>If you are creating your project using the Micronaut CLI, supply one of the <code>jdbc-tomcat</code>, <code>jdbc-hikari</code>, or <code>jdbc-dbcp</code> features to preconfigure a simple JDBC connection in your project, along with a default H2 database driver:</p>
+<p>If you are creating your project using the Micronaut CLI, supply one of the <code>jdbc-tomcat</code>, <code>jdbc-hikari</code>, <code>jdbc-dbcp</code>, or <code>jdbc-ucp</code> features to preconfigure a simple JDBC connection in your project, along with a default H2 database driver:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -295,6 +305,24 @@
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
     &lt;groupId&gt;io.micronaut.configuration&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-jdbc-dbcp&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">runtime(<span class="hljs-string">"io.micronaut.configuration:micronaut-jdbc-ucp")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.configuration&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-jdbc-ucp&lt;/artifactId&gt;
     &lt;scope&gt;runtime&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -394,6 +422,22 @@
 </div>
 </div>
 <div class="paragraph">
+<p>To use Oracle UCP, provide a configuration similar to the following:</p>
+</div>
+<div class="listingblock">
+<div class="title">application.yaml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">datasources:
+  default:
+    url:
+    connectionFactoryClassName: oracle.jdbc.pool.OracleDataSource
+    username:
+    password:
+    minPoolSize: 1
+    maxPoolSize: 10</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>For a list of other properties able to be configured, simply refer to the implementation that is being used. All setter methods are candidates for configuration.</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
@@ -413,6 +457,10 @@
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Apache DBCP</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="http://commons.apache.org/proper/commons-dbcp/api-2.1.1/org/apache/commons/dbcp2/BasicDataSource.html">BasicDataSource</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Oracle UCP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.oracle.com/en/database/oracle/oracle-database/18/jjuar/oracle/ucp/jdbc/PoolDataSource.html">PoolDataSource</a></p></td>
 </tr>
 </tbody>
 </table>
