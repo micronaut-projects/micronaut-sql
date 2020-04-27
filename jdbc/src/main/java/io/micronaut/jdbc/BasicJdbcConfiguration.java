@@ -15,11 +15,14 @@
  */
 package io.micronaut.jdbc;
 
+import java.util.Map;
+
 /**
  * A contract for data source configuration classes to implement that allows for the calculation of several
  * properties based on other properties.
  *
  * @author James Kleeh
+ * @author graemerocher
  * @since 1.0
  */
 public interface BasicJdbcConfiguration {
@@ -45,6 +48,12 @@ public interface BasicJdbcConfiguration {
     String getUrl();
 
     /**
+     * @param url Sets the url
+     * @since 2.1
+     */
+    void setUrl(String url);
+
+    /**
      * @return The driver class name supplied via configuration
      */
     String getConfiguredDriverClassName();
@@ -53,6 +62,12 @@ public interface BasicJdbcConfiguration {
      * @return The driver class name to be used by the data source
      */
     String getDriverClassName();
+
+    /**
+     * @param driverClassName Sets the driver class name
+     * @since 2.1
+     */
+    void setDriverClassName(String driverClassName);
 
     /**
      * @return The username supplied via configuration
@@ -65,6 +80,12 @@ public interface BasicJdbcConfiguration {
     String getUsername();
 
     /**
+     * @param username Sets the username
+     * @since 2.1
+     */
+    void setUsername(String username);
+
+    /**
      * @return The password supplied via configuration
      */
     String getConfiguredPassword();
@@ -75,6 +96,11 @@ public interface BasicJdbcConfiguration {
     String getPassword();
 
     /**
+     * @param password Sets the password
+     */
+    void setPassword(String password);
+
+    /**
      * @return The validation query supplied via configuration
      */
     String getConfiguredValidationQuery();
@@ -83,4 +109,12 @@ public interface BasicJdbcConfiguration {
      * @return The validation query to be used by the data source
      */
     String getValidationQuery();
+
+    /**
+     * Sets the datasource properties.
+     * @param dsProperties The properties
+     * @since 2.1
+     */
+    void setDataSourceProperties(Map<String, ?> dsProperties);
+
 }

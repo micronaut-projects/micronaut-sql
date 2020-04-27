@@ -18,6 +18,8 @@ package io.micronaut.configuration.jdbc.dbcp;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
+import io.micronaut.core.convert.format.MapFormat;
+import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -26,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.Map;
 
 /**
  * Allows the configuration of Apache DBCP JDBC data sources. All properties on
@@ -146,6 +149,17 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     @Override
     public String getValidationQuery() {
         return calculatedSettings.getValidationQuery();
+    }
+
+    @Override
+    public void setDataSourceProperties(@MapFormat(transformation = MapFormat.MapTransformation.FLAT, keyFormat = StringConvention.RAW)  Map<String, ?> dsProperties) {
+        if (dsProperties != null) {
+            dsProperties.forEach((s, o) -> {
+                if (o != null) {
+                    addConnectionProperty(s, o.toString());
+                }
+            });
+        }
     }
 
     @Override

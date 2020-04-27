@@ -19,14 +19,15 @@ import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
+import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
 import oracle.ucp.jdbc.PoolDataSourceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Allows the configuration of UCP JDBC data sources. All properties on
@@ -43,7 +44,6 @@ import java.sql.SQLException;
 @EachProperty(value = BasicJdbcConfiguration.PREFIX, primary = "default")
 @Context
 public class DatasourceConfiguration implements BasicJdbcConfiguration {
-    private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
     @ConfigurationBuilder(allowZeroArgs = true, excludes = {"connectionFactoryProperties"})
     PoolDataSourceImpl delegate = (PoolDataSourceImpl) PoolDataSourceFactory.getPoolDataSource();
     private CalculatedSettings calculatedSettings;
@@ -81,6 +81,15 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     }
 
     @Override
+    public void setDriverClassName(String driverClassName) {
+        try {
+            this.delegate.setConnectionFactoryClassName(driverClassName);
+        } catch (SQLException e) {
+            throw new ConfigurationException("Unable to set driver class name: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
     public String getConfiguredDriverClassName() {
         return delegate.getConnectionFactoryClassName();
     }
@@ -96,17 +105,29 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     }
 
     @Override
+    public void setUrl(String url) {
+        try {
+            this.delegate.setURL(url);
+        } catch (SQLException e) {
+            throw new ConfigurationException("Unable to set datasource URL: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
     public String getUsername() {
         return this.username;
     }
 
     /**
      * @param username the username
-     * @throws SQLException an sql exception
      */
-    public void setUsername(String username) throws SQLException {
+    public void setUsername(String username) {
         this.username = username;
-        this.delegate.setUser(username);
+        try {
+            this.delegate.setUser(username);
+        } catch (SQLException e) {
+            throw new ConfigurationException("Unable to set datasource username: " + e.getMessage(), e);
+        }
     }
 
     @Override
@@ -120,6 +141,16 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     }
 
     @Override
+    public void setPassword(String password) {
+        try {
+            this.delegate.setPassword(password);
+        } catch (SQLException e) {
+            throw new ConfigurationException("Unable to set datasource password: " + e.getMessage(), e);
+        }
+
+    }
+
+    @Override
     public String getConfiguredPassword() {
         return delegate.getPassword();
     }
@@ -127,6 +158,19 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     @Override
     public String getValidationQuery() {
         return calculatedSettings.getValidationQuery();
+    }
+
+    @Override
+    public void setDataSourceProperties(Map<String, ?> dsProperties) {
+        if (dsProperties != null) {
+            Properties properties = new Properties();
+            properties.putAll(dsProperties);
+            try {
+                this.delegate.setConnectionProperties(properties);
+            } catch (SQLException e) {
+                throw new ConfigurationException("Unable to set datasource properties: " + e.getMessage(), e);
+            }
+        }
     }
 
     @Override

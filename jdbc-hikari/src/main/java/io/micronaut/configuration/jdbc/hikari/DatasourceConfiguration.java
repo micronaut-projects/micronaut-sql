@@ -173,6 +173,7 @@ public class DatasourceConfiguration extends HikariConfig implements BasicJdbcCo
      * Sets the data source properties.
      * @param dsProperties The datasource properties
      */
+    @Override
     public void setDataSourceProperties(@MapFormat(transformation = MapFormat.MapTransformation.FLAT, keyFormat = StringConvention.RAW) Map<String, ?> dsProperties) {
         super.getDataSourceProperties().putAll(dsProperties);
     }

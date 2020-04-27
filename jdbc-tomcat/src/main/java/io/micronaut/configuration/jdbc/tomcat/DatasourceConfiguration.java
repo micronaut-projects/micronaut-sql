@@ -24,6 +24,7 @@ import io.micronaut.jdbc.CalculatedSettings;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 import javax.annotation.PostConstruct;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -140,6 +141,15 @@ public class DatasourceConfiguration extends PoolProperties implements BasicJdbc
     @Override
     public String getValidationQuery() {
         return calculatedSettings.getValidationQuery();
+    }
+
+    @Override
+    public void setDataSourceProperties(@MapFormat(transformation = MapFormat.MapTransformation.FLAT, keyFormat = StringConvention.RAW) Map<String, ?> dsProperties) {
+        if (dsProperties != null) {
+            Properties properties = new Properties();
+            properties.putAll(dsProperties);
+            setDbProperties(properties);
+        }
     }
 
     /**
