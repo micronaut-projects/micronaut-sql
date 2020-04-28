@@ -1,10 +1,9 @@
 introduction: Introduction
 jdbc: Configuring JDBC
 hibernate: Configuring Hibernate
-pgclient: Configuring Reactive Postgres
 jasync: Configuring JAsync SQL
 jooq: Configuring jOOQ
 jdbi: Configuring Jdbi
-vertxmysqlclient: Configuring Vert.x MySQL Client
-vertxpgclient: Configuring Vert.x Postgres Client
+vertxmysqlclient: Configuring Reactive MySQL Client
+vertxpgclient: Configuring Reactive Postgres Client
 repository: Repository
