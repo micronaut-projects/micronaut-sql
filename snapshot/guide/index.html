@@ -49,19 +49,17 @@
                                 
                                 <div class="toc-item" style="margin-left:0"><a href="#hibernate"><strong>3</strong><span>Configuring Hibernate</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#pgclient"><strong>4</strong><span>Configuring Reactive Postgres</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#jasync"><strong>4</strong><span>Configuring JAsync SQL</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#jasync"><strong>5</strong><span>Configuring JAsync SQL</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#jooq"><strong>5</strong><span>Configuring jOOQ</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#jooq"><strong>6</strong><span>Configuring jOOQ</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#jdbi"><strong>6</strong><span>Configuring Jdbi</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#jdbi"><strong>7</strong><span>Configuring Jdbi</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#vertxmysqlclient"><strong>7</strong><span>Configuring Reactive MySQL Client</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#vertxmysqlclient"><strong>8</strong><span>Configuring Vert.x MySQL Client</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#vertxpgclient"><strong>8</strong><span>Configuring Reactive Postgres Client</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#vertxpgclient"><strong>9</strong><span>Configuring Vert.x Postgres Client</span></a></div>
-                                
-                                <div class="toc-item" style="margin-left:0"><a href="#repository"><strong>10</strong><span>Repository</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#repository"><strong>9</strong><span>Repository</span></a></div>
                                 
                             </div>
                         </div>
@@ -98,19 +96,17 @@
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-hibernate"><a href="#hibernate"><strong>3</strong><span>Configuring Hibernate</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-pgclient"><a href="#pgclient"><strong>4</strong><span>Configuring Reactive Postgres</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-jasync"><a href="#jasync"><strong>4</strong><span>Configuring JAsync SQL</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-jasync"><a href="#jasync"><strong>5</strong><span>Configuring JAsync SQL</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-jooq"><a href="#jooq"><strong>5</strong><span>Configuring jOOQ</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-jooq"><a href="#jooq"><strong>6</strong><span>Configuring jOOQ</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-jdbi"><a href="#jdbi"><strong>6</strong><span>Configuring Jdbi</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-jdbi"><a href="#jdbi"><strong>7</strong><span>Configuring Jdbi</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-vertxmysqlclient"><a href="#vertxmysqlclient"><strong>7</strong><span>Configuring Reactive MySQL Client</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-vertxmysqlclient"><a href="#vertxmysqlclient"><strong>8</strong><span>Configuring Vert.x MySQL Client</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-vertxpgclient"><a href="#vertxpgclient"><strong>8</strong><span>Configuring Reactive Postgres Client</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-vertxpgclient"><a href="#vertxpgclient"><strong>9</strong><span>Configuring Vert.x Postgres Client</span></a></div>
-        
-        <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>10</strong><span>Repository</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>9</strong><span>Repository</span></a></div>
         
         </div>
     </div>
@@ -120,7 +116,7 @@
         <h1>Micronaut SQL Libraries</h1>
         <p></p>
         <p>Projects to support SQL Database access in Micronaut</p>
-        <p><strong>Version:</strong> <select style='max-width: 200px' onChange='window.document.location.href=this.options[this.selectedIndex].value;'><option selected='selected' value='https://micronaut-projects.github.io/micronaut-sql/snapshot/guide/index.html'>2.1.0.BUILD-SNAPSHOT</option><option value='https://micronaut-projects.github.io/micronaut-sql/2.0.0/guide/index.html'>2.0.0</option><option value='https://micronaut-projects.github.io/micronaut-sql/2.0.0.RC1/guide/index.html'>2.0.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-sql/2.0.0.M1/guide/index.html'>2.0.0.M1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.4.0/guide/index.html'>1.4.0</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.3.0/guide/index.html'>1.3.0</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.3.0.RC1/guide/index.html'>1.3.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.2.3/guide/index.html'>1.2.3</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.2.2/guide/index.html'>1.2.2</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.2.1/guide/index.html'>1.2.1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.2.0/guide/index.html'>1.2.0</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.2.0.RC2/guide/index.html'>1.2.0.RC2</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.2.0.RC1/guide/index.html'>1.2.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.2.0.M1/guide/index.html'>1.2.0.M1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.1.1/guide/index.html'>1.1.1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.1.0/guide/index.html'>1.1.0</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.1.0.RC3/guide/index.html'>1.1.0.RC3</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.1.0.RC2/guide/index.html'>1.1.0.RC2</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.1.0.RC1/guide/index.html'>1.1.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.4/guide/index.html'>1.0.4</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.3/guide/index.html'>1.0.3</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.2/guide/index.html'>1.0.2</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.1/guide/index.html'>1.0.1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.0/guide/index.html'>1.0.0</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.0.RC3/guide/index.html'>1.0.0.RC3</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.0.RC2/guide/index.html'>1.0.0.RC2</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.0.RC1/guide/index.html'>1.0.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.0.M4/guide/index.html'>1.0.0.M4</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.0.M3/guide/index.html'>1.0.0.M3</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.0.M2/guide/index.html'>1.0.0.M2</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.0.M1/guide/index.html'>1.0.0.M1</option></select></p>
+        <p><strong>Version:</strong> <select style='max-width: 200px' onChange='window.document.location.href=this.options[this.selectedIndex].value;'><option selected='selected' value='https://micronaut-projects.github.io/micronaut-sql/snapshot/guide/index.html'>2.1.1.BUILD-SNAPSHOT</option><option value='https://micronaut-projects.github.io/micronaut-sql/2.1.0/guide/index.html'>2.1.0</option><option value='https://micronaut-projects.github.io/micronaut-sql/2.0.0/guide/index.html'>2.0.0</option><option value='https://micronaut-projects.github.io/micronaut-sql/2.0.0.RC1/guide/index.html'>2.0.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-sql/2.0.0.M1/guide/index.html'>2.0.0.M1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.4.0/guide/index.html'>1.4.0</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.3.0/guide/index.html'>1.3.0</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.3.0.RC1/guide/index.html'>1.3.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.2.3/guide/index.html'>1.2.3</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.2.2/guide/index.html'>1.2.2</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.2.1/guide/index.html'>1.2.1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.2.0/guide/index.html'>1.2.0</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.2.0.RC2/guide/index.html'>1.2.0.RC2</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.2.0.RC1/guide/index.html'>1.2.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.2.0.M1/guide/index.html'>1.2.0.M1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.1.1/guide/index.html'>1.1.1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.1.0/guide/index.html'>1.1.0</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.1.0.RC3/guide/index.html'>1.1.0.RC3</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.1.0.RC2/guide/index.html'>1.1.0.RC2</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.1.0.RC1/guide/index.html'>1.1.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.4/guide/index.html'>1.0.4</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.3/guide/index.html'>1.0.3</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.2/guide/index.html'>1.0.2</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.1/guide/index.html'>1.0.1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.0/guide/index.html'>1.0.0</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.0.RC3/guide/index.html'>1.0.0.RC3</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.0.RC2/guide/index.html'>1.0.0.RC2</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.0.RC1/guide/index.html'>1.0.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.0.M4/guide/index.html'>1.0.0.M4</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.0.M3/guide/index.html'>1.0.0.M3</option><option value='https://micronaut-projects.github.io/micronaut-sql/1.0.0.M2/guide/index.html'>1.0.0.M2</option></select></p>
     </div>
     
 <h1 id="introduction"><a class="anchor" href="#introduction"></a>1 Introduction</h1>
@@ -817,127 +813,7 @@ jpa:
 </div>
 </div>
 
-<h1 id="pgclient"><a class="anchor" href="#pgclient"></a>4 Configuring Reactive Postgres</h1>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/pgclient.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
-<div class="paragraph">
-<p>Micronaut supports reactive and non-blocking client to connect to Postgres using <a href="https://github.com/reactiverse/reactive-pg-client">reactive-pg-client</a>, allowing  to handle many database connections with a single thread.</p>
-</div>
-<div class="sect1">
-<h2 id="_configuring_the_reactive_postgres_client">Configuring the Reactive Postgres Client</h2>
-<div class="sectionbody">
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-<div class="title">Using the CLI</div>
-<div class="paragraph">
-<p>If you are creating your project using the Micronaut CLI, supply the <code>postgres-reactive</code> feature to configure the Reactive Postgres client in your project:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ mn create-app my-app --features postgres-reactive</pre>
-</div>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>To configure the Reactive Postgres client you should first add <code>postgres-reactive</code> module to your classpath:</p>
-</div>
-<div class="paragraph">
-<p>        <div class="listingblock multi-language-sample">
-<div class="title"></div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.configuration:micronaut-postgres-reactive")</span></code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
-    &lt;groupId&gt;io.micronaut.configuration&lt;/groupId&gt;
-    &lt;artifactId&gt;micronaut-postgres-reactive&lt;/artifactId&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div>
-</p>
-</div>
-<div class="paragraph">
-<p>You should then configure the URI or <a href="https://reactiverse.io/reactive-pg-client/apidocs/index.html"><code>PoolOptions</code></a> of the Postgres server you wish to communicate with in <code>application.yml</code>:</p>
-</div>
-<div class="listingblock">
-<div class="title">application.yml</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">postgres:
-	reactive:
-	    client:
-            port: 5432
-            host: the-host
-            database: the-db
-            user: test
-            password: test
-            maxSize: 5</code></pre>
-</div>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-You can also connect to Postgres using <code>uri</code> instead of the other properties.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Once you have the above configuration in place then you can inject the <code>io.reactiverse.reactivex.pgclient.PgPool</code> bean. The following is the simplest way to connect:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">Unresolved directive in &lt;stdin&gt; - include::postgres-reactive/src/test/groovy/io/micronaut/configuration/postgres/reactive/PostgresReactiveSpec.groovy[tags=query,indent=0]</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td><code>client</code> is an instance of the <code>io.reactiverse.reactivex.pgclient.PgPool</code> bean.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>For more information on running queries on Postgres using the reactive client please read the "Running queries" section in the documentation of <a href="https://reactiverse.io/reactive-pg-client/guide/groovy/index.html">reactive-pg-client</a>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_postgres_health_checks">Postgres Health Checks</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>When the <code>postgres-reactive</code> module is activated a <a href="../api/io/micronaut/configuration/postgres/reactive/health/PgPoolHealthIndicator.html">PgPoolHealthIndicator</a> is activated resulting in the <code>/health</code> endpoint and <a href="../api/io/micronaut/health/CurrentHealthStatus.html">CurrentHealthStatus</a> interface resolving the health of the Postgres connection.</p>
-</div>
-<div class="paragraph">
-<p>The only configuration option supported is to enable or disable the indicator by the <code>endpoints.health.postgres.reactive.enabled</code> key.</p>
-</div>
-<div class="paragraph">
-<p>See the section on the &lt;<a href="https://docs.micronaut.io/latest/guide/index.html#healthEndpoint">Health Endpoint</a> for more information.</p>
-</div>
-</div>
-</div>
-
-<h1 id="jasync"><a class="anchor" href="#jasync"></a>5 Configuring JAsync SQL</h1>
+<h1 id="jasync"><a class="anchor" href="#jasync"></a>4 Configuring JAsync SQL</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/jasync.adoc"'>
@@ -1046,7 +922,7 @@ You can also connect to Postgres using <code>uri</code> instead of the other pro
 </div>
 </div>
 
-<h1 id="jooq"><a class="anchor" href="#jooq"></a>6 Configuring jOOQ</h1>
+<h1 id="jooq"><a class="anchor" href="#jooq"></a>5 Configuring jOOQ</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/jooq.adoc"'>
@@ -1176,7 +1052,7 @@ Only beans with the same name qualifier as the data source name will be used.</p
 </div>
 </div>
 
-<h1 id="jdbi"><a class="anchor" href="#jdbi"></a>7 Configuring Jdbi</h1>
+<h1 id="jdbi"><a class="anchor" href="#jdbi"></a>6 Configuring Jdbi</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/jdbi.adoc"'>
@@ -1258,7 +1134,7 @@ Only beans with a <code>Named</code> qualifier name with the same name as the da
 </div>
 </div>
 
-<h1 id="vertxmysqlclient"><a class="anchor" href="#vertxmysqlclient"></a>8 Configuring Vert.x MySQL Client</h1>
+<h1 id="vertxmysqlclient"><a class="anchor" href="#vertxmysqlclient"></a>7 Configuring Reactive MySQL Client</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/vertxmysqlclient.adoc"'>
@@ -1268,7 +1144,7 @@ Only beans with a <code>Named</code> qualifier name with the same name as the da
 
 
 <div class="paragraph">
-<p>Micronaut supports reactive and non-blocking client to connect to MySQL using <a href="https://github.com/eclipse-vertx/vertx-sql-client">vertx-mysql-client</a>, allowing  to handle many database connections with a single thread.</p>
+<p>Micronaut supports reactive and non-blocking client to connect to MySQL using <a href="https://github.com/eclipse-vertx/vertx-sql-client/tree/master/vertx-mysql-client">vertx-mysql-client</a>, allowing to handle many database connections with a single thread.</p>
 </div>
 <div class="sect1">
 <h2 id="_configuring_the_mysql_vertx_client">Configuring the MySQL Vertx Client</h2>
@@ -1382,7 +1258,7 @@ You can also connect to MySQL using <code>uri</code> instead of the other proper
 </div>
 </div>
 
-<h1 id="vertxpgclient"><a class="anchor" href="#vertxpgclient"></a>9 Configuring Vert.x Postgres Client</h1>
+<h1 id="vertxpgclient"><a class="anchor" href="#vertxpgclient"></a>8 Configuring Reactive Postgres Client</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/vertxpgclient.adoc"'>
@@ -1392,7 +1268,7 @@ You can also connect to MySQL using <code>uri</code> instead of the other proper
 
 
 <div class="paragraph">
-<p>Micronaut supports reactive and non-blocking client to connect to Postgres using <a href="https://github.com/eclipse-vertx/vertx-sql-client">vertx-pg-client</a>, allowing  to handle many database connections with a single thread.</p>
+<p>Micronaut supports reactive and non-blocking client to connect to Postgres using <a href="https://github.com/eclipse-vertx/vertx-sql-client/blob/master/vertx-pg-client">vertx-pg-client</a>, allowing to handle many database connections with a single thread.</p>
 </div>
 <div class="sect1">
 <h2 id="_configuring_the_pg_vertx_client">Configuring the Pg Vertx Client</h2>
@@ -1510,7 +1386,7 @@ You can also connect to Postgres using <code>uri</code> instead of the other pro
 </div>
 </div>
 
-<h1 id="repository"><a class="anchor" href="#repository"></a>10 Repository</h1>
+<h1 id="repository"><a class="anchor" href="#repository"></a>9 Repository</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/repository.adoc"'>
