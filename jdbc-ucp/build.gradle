@@ -15,7 +15,8 @@ dependencies {
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-management"
     testImplementation "io.micronaut.configuration:micronaut-micrometer-core"
-    
+    testImplementation "io.micronaut.cache:micronaut-cache-core"
+
     testImplementation "org.springframework:spring-jdbc:$springVersion"
 
 }

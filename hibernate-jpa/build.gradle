@@ -30,6 +30,7 @@ dependencies {
     testImplementation "io.micronaut:micronaut-management"
     testImplementation "io.micronaut:micronaut-inject-groovy"
     testImplementation "io.micronaut:micronaut-function-web"
+    testImplementation "io.micronaut.cache:micronaut-cache-core"
 
     testRuntimeOnly project(":jdbc-tomcat")
     testRuntimeOnly "com.h2database:h2"

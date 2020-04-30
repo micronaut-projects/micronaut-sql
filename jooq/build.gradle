@@ -32,6 +32,7 @@ dependencies {
     testImplementation "io.micronaut:micronaut-management"
     testImplementation "io.micronaut.configuration:micronaut-micrometer-core"
     testImplementation "org.springframework:spring-jdbc:$springVersion"
+    testImplementation "io.micronaut.cache:micronaut-cache-core"
 
     txTestRuntimeOnly project(":jdbc-tomcat")
     txTestRuntimeOnly "com.h2database:h2"
