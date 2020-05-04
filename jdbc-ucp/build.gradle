@@ -4,8 +4,8 @@ dependencies {
 
     api project(":jdbc")
     api "io.micronaut:micronaut-inject:$micronautVersion"
-    api "com.oracle.ojdbc:ucp:19.3.0.0"
-    api("com.oracle.ojdbc:ojdbc8:19.3.0.0") { transitive = false}
+    api "com.oracle.database.jdbc:ucp:19.6.0.0"
+    api("com.oracle.database.jdbc:ojdbc8:19.6.0.0") { transitive = false}
 
     testRuntimeOnly "com.h2database:h2"
 
