@@ -4,7 +4,7 @@ dependencies {
 
     api project(":jdbc")
     api "io.micronaut:micronaut-inject:$micronautVersion"
-    api "com.zaxxer:HikariCP:3.4.2"
+    api "com.zaxxer:HikariCP:3.4.3"
 
     compileOnly "io.micronaut.configuration:micronaut-micrometer-core"
 
