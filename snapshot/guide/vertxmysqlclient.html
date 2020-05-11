@@ -191,7 +191,7 @@ You can also connect to MySQL using <code>uri</code> instead of the other proper
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">result = client.rxQuery('SELECT * FROM foo').map({ RowSet&lt;Row&gt; rowSet -&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">result = client.query('SELECT * FROM foo').rxExecute().map({ RowSet&lt;Row&gt; rowSet -&gt; <i class="conum" data-value="1"></i><b>(1)</b>
     RowIterator&lt;Row&gt; iterator = rowSet.iterator()
     int id = iterator.next().getInteger("id")
     return "id: ${id}"
