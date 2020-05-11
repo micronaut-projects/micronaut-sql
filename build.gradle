@@ -88,8 +88,9 @@ subprojects { Project subproject ->
                   println "     ${dep.projectUrl}"
                 }
               }
+              throw new GradleException('Abort, there are dependencies to update.')
             }            
-            throw new GradleException('Abort, there are dependencies to update.')
+            
         }
       }
     }
