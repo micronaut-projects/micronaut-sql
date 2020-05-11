@@ -1,3 +1,5 @@
+import com.github.benmanes.gradle.versions.reporter.PlainTextReporter
+
 buildscript {
     repositories {
         maven { url "https://repo.grails.org/grails/core" }
@@ -70,9 +72,27 @@ subprojects { Project subproject ->
 
     dependencyUpdates {      
       rejectVersionIf { mod ->
-        mod.candidate.version ==~ /.+[RC|M]\d.*/ || ["alpha", "beta"].any { mod.candidate.version.toLowerCase(Locale.ENGLISH).contains(it) }
+        mod.candidate.version ==~ /.+[RC|M]\d.*/ || 
+            ["alpha", "beta"].any { mod.candidate.version.toLowerCase(Locale.ENGLISH).contains(it) } ||
+             mod.candidate.group == 'io.micronaut' // managed by the micronaut version
       }
-      outputFormatter = 'json'
+      outputFormatter = { result ->
+        println "$result.outdated.dependencies"
+        if (!result.outdated.dependencies.isEmpty()) {
+            def upgradeVersions = result.outdated.dependencies
+            if (!upgradeVersions.isEmpty()) {
+              println "\nThe following dependencies have later ${revision} versions:"
+              upgradeVersions.each { dep ->
+                def currentVersion = dep.version
+                println " - ${dep.group}:${dep.name} [${currentVersion} -> ${dep.available[revision]}]"
+                if (dep.projectUrl != null) {
+                  println "     ${dep.projectUrl}"
+                }
+              }
+            }            
+            throw new GradleException('Abort, there are dependencies to update.')
+        }
+      }
     }
 
     bintray.publish = true
