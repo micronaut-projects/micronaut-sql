@@ -69,3 +69,4 @@ jobs:
              micronautSqlVersion=${{ env.projectVersion }}
              hibernateVersion=${{ env.hibernateVersion }}
              tomcatJdbcVersion=${{ env.tomcatJdbcVersion }}
+          version: ${{ steps.release_version.outputs.release_version }}
