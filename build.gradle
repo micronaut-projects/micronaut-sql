@@ -6,10 +6,13 @@ buildscript {
         classpath "org.grails:grails-docs:$grailsVersion"
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.2"
+        classpath "de.marcphilipp.gradle:nexus-publish-plugin:0.4.0"        
         classpath 'io.github.groovylang.groovydoc:groovydoc-gradle-plugin:1.0.1'
         classpath "io.micronaut.docs:micronaut-docs-asciidoc-extensions:$micronautDocsVersion"
         classpath "io.micronaut.docs:micronaut-docs-gradle-plugins:$micronautDocsVersion"
         classpath "io.spring.nohttp:nohttp-gradle:0.0.4.RELEASE"
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.28.0"
     }
 }
 
@@ -50,6 +53,7 @@ subprojects { Project subproject ->
     apply plugin:"groovy"
     apply plugin:"java-library"
     apply plugin: "io.spring.nohttp"
+    apply plugin: "com.github.ben-manes.versions"
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
@@ -62,6 +66,13 @@ subprojects { Project subproject ->
             attributes('Implementation-Version': projectVersion)
             attributes('Implementation-Title': title)
         }
+    }
+
+    dependencyUpdates {      
+      rejectVersionIf { mod ->
+        mod.candidate.version ==~ /.+[RC|M]\d.*/ || ["alpha", "beta"].any { mod.candidate.version.toLowerCase(Locale.ENGLISH).contains(it) }
+      }
+      outputFormatter = 'json'
     }
 
     bintray.publish = true
