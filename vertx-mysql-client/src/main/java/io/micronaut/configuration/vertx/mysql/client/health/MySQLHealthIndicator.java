@@ -50,14 +50,12 @@ public class MySQLHealthIndicator implements HealthIndicator {
 
     @Override
     public Publisher<HealthResult> getResult() {
-        return client.rxQuery(QUERY)
-                .map(rowSet -> {
-                    HealthResult.Builder status = HealthResult.builder(NAME, HealthStatus.UP);
-                    Row row = rowSet.iterator().next();
-                    status.details(Collections.singletonMap("version", row.getString(0)));
-                    return status.build();
-                })
-                .onErrorReturn(this::buildErrorResult).toFlowable();
+        return client.query(QUERY).rxExecute().map(rows -> {
+            HealthResult.Builder status = HealthResult.builder(NAME, HealthStatus.UP);
+            Row row = rows.iterator().next();
+            status.details(Collections.singletonMap("version", row.getString(0)));
+            return status.build();
+        }).onErrorReturn(this::buildErrorResult).toFlowable();
     }
 
     private HealthResult buildErrorResult(Throwable throwable) {

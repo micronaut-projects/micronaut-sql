@@ -62,11 +62,11 @@ class MySQLClientSpec extends Specification{
         // end::mysqlPool-bean[]
 
         //
-        client.rxQuery("CREATE TABLE IF NOT EXISTS foo(id INTEGER)").blockingGet()
-        client.rxQuery("INSERT INTO foo(id) VALUES (0);").blockingGet()
+        client.query("CREATE TABLE IF NOT EXISTS foo(id INTEGER)").rxExecute().blockingGet()
+        client.query("INSERT INTO foo(id) VALUES (0);").rxExecute().blockingGet()
 
         // tag::query[]
-        result = client.rxQuery('SELECT * FROM foo').map({ RowSet<Row> rowSet -> // <1>
+        result = client.query('SELECT * FROM foo').rxExecute().map({ RowSet<Row> rowSet -> // <1>
             RowIterator<Row> iterator = rowSet.iterator()
             int id = iterator.next().getInteger("id")
             return "id: ${id}"

@@ -24,7 +24,7 @@ dependencies {
     compileOnly "org.springframework:spring-jdbc:$springVersion"
 
     testRuntimeOnly project(":jdbc-hikari")
-    testRuntimeOnly "com.h2database:h2"
+    testRuntimeOnly "com.h2database:h2:1.4.200"
     testRuntimeOnly "org.springframework:spring-jdbc:$springVersion"
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
@@ -32,18 +32,18 @@ dependencies {
     testImplementation "io.micronaut:micronaut-http-server-netty"
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-management"
-    testImplementation "io.micronaut.configuration:micronaut-micrometer-core"
+    testImplementation "io.micronaut.configuration:micronaut-micrometer-core:1.3.1"
     testImplementation "org.jdbi:jdbi3-sqlobject:3.13.0"
 
     txTestRuntimeOnly project(":jdbc-tomcat")
-    txTestRuntimeOnly "com.h2database:h2"
+    txTestRuntimeOnly "com.h2database:h2:1.4.200"
     txTestAnnotationProcessor "io.micronaut:micronaut-inject-java:$micronautVersion"
     txTestAnnotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
     txTestImplementation "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
     txTestImplementation("io.micronaut:micronaut-inject-groovy")
     txTestImplementation("org.spockframework:spock-core:${spockVersion}")
     txTestRuntimeOnly "ch.qos.logback:logback-classic:1.2.3"
-    txTestImplementation "org.jdbi:jdbi3-sqlobject:3.12.2"
+    txTestImplementation "org.jdbi:jdbi3-sqlobject:3.13.0"
 }
 
 
