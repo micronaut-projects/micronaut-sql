@@ -15,6 +15,10 @@
  */
 package io.micronaut.configuration.hibernate.jpa;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.micronaut.configuration.hibernate.jpa.condition.RequiresHibernateEntities;
 import io.micronaut.context.BeanLocator;
 import io.micronaut.context.annotation.*;
@@ -24,6 +28,7 @@ import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.transaction.hibernate5.MicronautSessionContext;
 import org.hibernate.Interceptor;
+import org.hibernate.MappingException;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -50,6 +55,8 @@ import java.util.Map;
  */
 @Factory
 public class EntityManagerFactoryBean {
+
+    private static final Logger LOG = LoggerFactory.getLogger(EntityManagerFactoryBean.class);
 
     private final JpaConfiguration jpaConfiguration;
     private final Environment environment;
@@ -100,7 +107,8 @@ public class EntityManagerFactoryBean {
 
         Map<String, Object> additionalSettings = new LinkedHashMap<>();
         additionalSettings.put(AvailableSettings.DATASOURCE, dataSource);
-        Class sessionContextClass = ClassUtils.forName("org.springframework.orm.hibernate5.SpringSessionContext", EntityManagerFactoryBean.class.getClassLoader())
+        Class<?> sessionContextClass = ClassUtils.forName("org.springframework.orm.hibernate5"
+                                                        + ".SpringSessionContext", EntityManagerFactoryBean.class.getClassLoader())
                 .orElse(MicronautSessionContext.class);
         additionalSettings.put(
                 AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, sessionContextClass.getName());
@@ -168,16 +176,29 @@ public class EntityManagerFactoryBean {
     protected SessionFactoryBuilder hibernateSessionFactoryBuilder(
         MetadataSources metadataSources,
         @Nullable ValidatorFactory validatorFactory) {
-        Metadata metadata = metadataSources.buildMetadata();
-        SessionFactoryBuilder sessionFactoryBuilder = metadata.getSessionFactoryBuilder();
-        if (validatorFactory != null) {
-            sessionFactoryBuilder.applyValidatorFactory(validatorFactory);
-        }
 
-        if (hibernateInterceptor != null) {
-            sessionFactoryBuilder.applyInterceptor(hibernateInterceptor);
+        try {
+            Metadata metadata = metadataSources.buildMetadata();
+            SessionFactoryBuilder sessionFactoryBuilder = metadata.getSessionFactoryBuilder();
+            if (validatorFactory != null) {
+                sessionFactoryBuilder.applyValidatorFactory(validatorFactory);
+            }
+
+            if (hibernateInterceptor != null) {
+                sessionFactoryBuilder.applyInterceptor(hibernateInterceptor);
+            }
+            return sessionFactoryBuilder;
+        } catch (MappingException e) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Hibernate mapping error", e);
+            }
+            throw e;
+        } catch (Exception e) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Error creating SessionFactoryBuilder", e);
+            }
+            throw e;
         }
-        return sessionFactoryBuilder;
     }
 
     /**
