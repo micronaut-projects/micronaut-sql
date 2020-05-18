@@ -189,13 +189,13 @@ public class EntityManagerFactoryBean {
             }
             return sessionFactoryBuilder;
         } catch (MappingException e) {
-            if (LOG.isWarnEnabled()) {
-                LOG.warn("Hibernate mapping error", e);
+            if (LOG.isErrorEnabled()) {
+                LOG.error("Hibernate mapping error", e);
             }
             throw e;
         } catch (Exception e) {
-            if (LOG.isWarnEnabled()) {
-                LOG.warn("Error creating SessionFactoryBuilder", e);
+            if (LOG.isErrorEnabled()) {
+                LOG.error("Error creating SessionFactoryBuilder", e);
             }
             throw e;
         }
