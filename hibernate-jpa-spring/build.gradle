@@ -4,7 +4,7 @@ dependencies {
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
     // needed because otherwise IntelliJ integration broken
     compileOnly "io.micronaut:micronaut-inject-java"
-    compileOnly "org.graalvm.nativeimage:svm:20.0.0"
+    compileOnly "org.graalvm.nativeimage:svm"
     api "org.hibernate:hibernate-core:$hibernateVersion", {
         exclude group:'org.javassist', module:'javassist'
     }
