@@ -3,14 +3,14 @@ dependencies {
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
 
     api "io.micronaut:micronaut-inject:$micronautVersion"
-    compileOnly "com.github.jasync-sql:jasync-mysql:1.0.19"
-    compileOnly "com.github.jasync-sql:jasync-postgresql:1.0.19"
+    compileOnly "com.github.jasync-sql:jasync-mysql:1.1.0"
+    compileOnly "com.github.jasync-sql:jasync-postgresql:1.1.0"
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"
 
     testImplementation "io.micronaut:micronaut-management:$micronautVersion"
     testImplementation "org.testcontainers:spock:1.14.2"
     testImplementation "org.testcontainers:postgresql:1.14.2"
-    testImplementation "com.github.jasync-sql:jasync-postgresql:1.0.19"
+    testImplementation "com.github.jasync-sql:jasync-postgresql:1.1.0"
     testImplementation "io.micronaut:micronaut-management:$micronautVersion"
 
 
