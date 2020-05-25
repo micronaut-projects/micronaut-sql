@@ -26,7 +26,7 @@ final class JdbcFeature implements Feature {
     @Override
     public void beforeAnalysis(BeforeAnalysisAccess access) {
         // h2
-        registerDriver(access, "org.h2.Driver");
+        handleH2(access);
 
         // postgres
         registerDriver(access, "org.postgresql.Driver");
@@ -40,6 +40,22 @@ final class JdbcFeature implements Feature {
         // oracle
         handleOracle(access);
 
+    }
+
+    private void handleH2(BeforeAnalysisAccess access) {
+        Class<?> h2Driver = access.findClassByName("org.h2.Driver");
+        if (h2Driver != null) {
+            registerAllIfPresent(access, "org.h2.mvstore.db.MVTableEngine");
+
+            RuntimeReflection.register(h2Driver);
+            RuntimeClassInitialization.initializeAtBuildTime(h2Driver);
+
+            ResourcesRegistry resourcesRegistry = ImageSingletons.lookup(ResourcesRegistry.class);
+            if (resourcesRegistry != null) {
+                resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
+                resourcesRegistry.addResources("org/h2/util/data.zip");
+            }
+        }
     }
 
     private void handleOracle(BeforeAnalysisAccess access) {
@@ -124,6 +140,7 @@ final class JdbcFeature implements Feature {
 
     private void registerAllAccess(Class<?> t) {
         RuntimeReflection.register(t);
+        RuntimeReflection.registerForReflectiveInstantiation(t);
         for (Method method : t.getMethods()) {
             RuntimeReflection.register(method);
         }
@@ -151,10 +168,10 @@ final class JdbcFeature implements Feature {
     }
 
     private void registerDriver(BeforeAnalysisAccess access, String driverName) {
-        Class<?> h2Driver = access.findClassByName(driverName);
-        if (h2Driver != null) {
-            RuntimeReflection.register(h2Driver);
-            RuntimeClassInitialization.initializeAtBuildTime(h2Driver);
+        Class<?> driver = access.findClassByName(driverName);
+        if (driver != null) {
+            RuntimeReflection.register(driver);
+            RuntimeClassInitialization.initializeAtBuildTime(driver);
         }
     }
 }
