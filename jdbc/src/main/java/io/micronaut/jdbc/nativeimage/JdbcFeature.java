@@ -23,6 +23,8 @@ final class JdbcFeature implements Feature {
 
     private static final String SQL_SERVER_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
+    private ResourcesRegistry resourcesRegistry;
+
     @Override
     public void beforeAnalysis(BeforeAnalysisAccess access) {
         // h2
@@ -50,7 +52,7 @@ final class JdbcFeature implements Feature {
             RuntimeReflection.register(h2Driver);
             RuntimeClassInitialization.initializeAtBuildTime(h2Driver);
 
-            ResourcesRegistry resourcesRegistry = ImageSingletons.lookup(ResourcesRegistry.class);
+            ResourcesRegistry resourcesRegistry = getResourceRegistry();
             if (resourcesRegistry != null) {
                 resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
                 resourcesRegistry.addResources("org/h2/util/data.zip");
@@ -69,7 +71,7 @@ final class JdbcFeature implements Feature {
             registerReflectionIfPresent(access, "oracle.net.ano.EncryptionService");
             registerReflectionIfPresent(access, "oracle.net.ano.SupervisorService");
 
-            ResourcesRegistry resourcesRegistry = ImageSingletons.lookup(ResourcesRegistry.class);
+            ResourcesRegistry resourcesRegistry = getResourceRegistry();
             if (resourcesRegistry != null) {
                 resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
                 resourcesRegistry.addResources("oracle/sql/converter_xcharset/lx20002.glb");
@@ -86,10 +88,7 @@ final class JdbcFeature implements Feature {
                     "oracle.sql.converter.CharacterConverter1Byte"
             );
 
-            initializeAtRuntime(
-                    access,
-                    "java.sql.DriverManager"
-            );
+            initializeAtRuntime(access, "java.sql.DriverManager");
         }
     }
 
@@ -97,12 +96,18 @@ final class JdbcFeature implements Feature {
         Class<?> mariaDriver = access.findClassByName("org.mariadb.jdbc.Driver");
         if (mariaDriver != null) {
             RuntimeReflection.register(mariaDriver);
-            registerAllIfPresent(access, "org.mariadb.jdbc.util.Options");
             registerAllAccess(mariaDriver);
-            RuntimeClassInitialization
-                    .initializeAtBuildTime("org.mariadb");
-            RuntimeClassInitialization
-                    .initializeAtRunTime("org.mariadb.jdbc.credential.aws");
+
+            ResourcesRegistry resourcesRegistry = getResourceRegistry();
+            if (resourcesRegistry != null) {
+                resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
+            }
+
+            registerAllIfPresent(access, "org.mariadb.jdbc.util.Options");
+
+            RuntimeClassInitialization.initializeAtBuildTime("org.mariadb");
+            RuntimeClassInitialization.initializeAtRunTime("org.mariadb.jdbc.credential.aws");
+
             initializeAtRuntime(access, "org.mariadb.jdbc.internal.failover.impl.MastersSlavesListener");
             initializeAtRuntime(access, "org.mariadb.jdbc.internal.com.send.authentication.SendPamAuthPacket");
         }
@@ -173,5 +178,12 @@ final class JdbcFeature implements Feature {
             RuntimeReflection.register(driver);
             RuntimeClassInitialization.initializeAtBuildTime(driver);
         }
+    }
+
+    private ResourcesRegistry getResourceRegistry() {
+        if (resourcesRegistry == null) {
+            resourcesRegistry = ImageSingletons.lookup(ResourcesRegistry.class);
+        }
+        return resourcesRegistry;
     }
 }
