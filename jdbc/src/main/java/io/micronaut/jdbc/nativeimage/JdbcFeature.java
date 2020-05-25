@@ -63,13 +63,13 @@ final class JdbcFeature implements Feature {
     private void handleOracle(BeforeAnalysisAccess access) {
         Class<?> oracleDriver = access.findClassByName("oracle.jdbc.OracleDriver");
         if (oracleDriver != null) {
-            registerReflectionIfPresent(access, "oracle.jdbc.driver.T4CDriverExtension");
-            registerReflectionIfPresent(access, "oracle.jdbc.driver.T2CDriverExtension");
-            registerReflectionIfPresent(access, "oracle.net.ano.Ano");
-            registerReflectionIfPresent(access, "oracle.net.ano.AuthenticationService");
-            registerReflectionIfPresent(access, "oracle.net.ano.DataIntegrityService");
-            registerReflectionIfPresent(access, "oracle.net.ano.EncryptionService");
-            registerReflectionIfPresent(access, "oracle.net.ano.SupervisorService");
+            registerAllIfPresent(access, "oracle.jdbc.driver.T4CDriverExtension");
+            registerAllIfPresent(access, "oracle.jdbc.driver.T2CDriverExtension");
+            registerAllIfPresent(access, "oracle.net.ano.Ano");
+            registerAllIfPresent(access, "oracle.net.ano.AuthenticationService");
+            registerAllIfPresent(access, "oracle.net.ano.DataIntegrityService");
+            registerAllIfPresent(access, "oracle.net.ano.EncryptionService");
+            registerAllIfPresent(access, "oracle.net.ano.SupervisorService");
 
             ResourcesRegistry resourcesRegistry = getResourceRegistry();
             if (resourcesRegistry != null) {
@@ -77,6 +77,8 @@ final class JdbcFeature implements Feature {
                 resourcesRegistry.addResources("oracle/sql/converter_xcharset/lx20002.glb");
                 resourcesRegistry.addResources("oracle/sql/converter_xcharset/lx2001f.glb");
                 resourcesRegistry.addResources("oracle/sql/converter_xcharset/lx200b2.glb");
+                resourcesRegistry.addResourceBundles("oracle.net.jdbc.nl.mesg.NLSR");
+                resourcesRegistry.addResourceBundles("oracle.net.mesg.Message");
             }
 
             initializeAtBuildTime(
