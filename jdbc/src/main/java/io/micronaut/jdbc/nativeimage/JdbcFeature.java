@@ -172,17 +172,19 @@ final class JdbcFeature implements Feature {
     private void handleSqlServer(BeforeAnalysisAccess access) {
         Class<?> sqlServerDriver = access.findClassByName(SQL_SERVER_DRIVER);
         if (sqlServerDriver != null) {
-
-            ResourcesRegistry resourcesRegistry = ImageSingletons.lookup(ResourcesRegistry.class);
-            if (resourcesRegistry != null) {
-                resourcesRegistry
-                        .addResourceBundles("com.microsoft.sqlserver.jdbc.SQLServerResource");
-            }
             RuntimeReflection.register(sqlServerDriver);
-            RuntimeClassInitialization
-                    .initializeAtRunTime("java.sql.DriverManager");
-            RuntimeClassInitialization
-                    .initializeAtBuildTime(SQL_SERVER_DRIVER);
+            registerAllAccess(sqlServerDriver);
+
+            RuntimeClassInitialization.initializeAtBuildTime(SQL_SERVER_DRIVER);
+
+            registerAllIfPresent(access, "com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+            ResourcesRegistry resourcesRegistry = getResourceRegistry();
+            if (resourcesRegistry != null) {
+                resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
+                resourcesRegistry.addResources("javax.crypto.Cipher.class");
+                resourcesRegistry.addResourceBundles("com.microsoft.sqlserver.jdbc.SQLServerResource");
+            }
         }
     }
 
