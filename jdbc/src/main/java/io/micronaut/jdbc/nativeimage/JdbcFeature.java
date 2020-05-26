@@ -15,21 +15,28 @@ import java.lang.reflect.Method;
  * A JDBC feature that configures JDBC drivers correctly for native image.
  *
  * @author graemerocher
- * @since 1.0.0
+ * @author Iván López
+ * @since 2.2.1
  */
 @AutomaticFeature
 @Internal
 final class JdbcFeature implements Feature {
 
+    private static final String H2_DRIVER = "org.h2.Driver";
+    private static final String POSTGRESQL_DRIVER = "org.postgresql.Driver";
     private static final String SQL_SERVER_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    private static final String MARIADB_DRIVER = "org.mariadb.jdbc.Driver";
+    private static final String ORACLE_DRIVER = "oracle.jdbc.OracleDriver";
+
+    private ResourcesRegistry resourcesRegistry;
 
     @Override
     public void beforeAnalysis(BeforeAnalysisAccess access) {
         // h2
-        registerDriver(access, "org.h2.Driver");
+        handleH2(access);
 
         // postgres
-        registerDriver(access, "org.postgresql.Driver");
+        handlePostgres(access);
 
         // sql server
         handleSqlServer(access);
@@ -42,23 +49,59 @@ final class JdbcFeature implements Feature {
 
     }
 
-    private void handleOracle(BeforeAnalysisAccess access) {
-        Class<?> oracleDriver = access.findClassByName("oracle.jdbc.OracleDriver");
-        if (oracleDriver != null) {
-            registerReflectionIfPresent(access, "oracle.jdbc.driver.T4CDriverExtension");
-            registerReflectionIfPresent(access, "oracle.jdbc.driver.T2CDriverExtension");
-            registerReflectionIfPresent(access, "oracle.net.ano.Ano");
-            registerReflectionIfPresent(access, "oracle.net.ano.AuthenticationService");
-            registerReflectionIfPresent(access, "oracle.net.ano.DataIntegrityService");
-            registerReflectionIfPresent(access, "oracle.net.ano.EncryptionService");
-            registerReflectionIfPresent(access, "oracle.net.ano.SupervisorService");
+    private void handleH2(BeforeAnalysisAccess access) {
+        Class<?> h2Driver = access.findClassByName(H2_DRIVER);
+        if (h2Driver != null) {
+            registerAllIfPresent(access, "org.h2.mvstore.db.MVTableEngine");
 
-            ResourcesRegistry resourcesRegistry = ImageSingletons.lookup(ResourcesRegistry.class);
+            RuntimeReflection.register(h2Driver);
+            RuntimeClassInitialization.initializeAtBuildTime(h2Driver);
+
+            ResourcesRegistry resourcesRegistry = getResourceRegistry();
+            if (resourcesRegistry != null) {
+                resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
+                resourcesRegistry.addResources("org/h2/util/data.zip");
+            }
+        }
+    }
+
+    private void handlePostgres(BeforeAnalysisAccess access) {
+        Class<?> postgresDriver = access.findClassByName(POSTGRESQL_DRIVER);
+        if (postgresDriver != null) {
+            RuntimeReflection.register(postgresDriver);
+            RuntimeClassInitialization.initializeAtBuildTime(postgresDriver);
+
+            initializeAtBuildTime(access,
+                    POSTGRESQL_DRIVER,
+                    "org.postgresql.util.SharedTimer"
+            );
+
+            ResourcesRegistry resourcesRegistry = getResourceRegistry();
+            if (resourcesRegistry != null) {
+                resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
+            }
+        }
+    }
+
+    private void handleOracle(BeforeAnalysisAccess access) {
+        Class<?> oracleDriver = access.findClassByName(ORACLE_DRIVER);
+        if (oracleDriver != null) {
+            registerAllIfPresent(access, "oracle.jdbc.driver.T4CDriverExtension");
+            registerAllIfPresent(access, "oracle.jdbc.driver.T2CDriverExtension");
+            registerAllIfPresent(access, "oracle.net.ano.Ano");
+            registerAllIfPresent(access, "oracle.net.ano.AuthenticationService");
+            registerAllIfPresent(access, "oracle.net.ano.DataIntegrityService");
+            registerAllIfPresent(access, "oracle.net.ano.EncryptionService");
+            registerAllIfPresent(access, "oracle.net.ano.SupervisorService");
+
+            ResourcesRegistry resourcesRegistry = getResourceRegistry();
             if (resourcesRegistry != null) {
                 resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
                 resourcesRegistry.addResources("oracle/sql/converter_xcharset/lx20002.glb");
                 resourcesRegistry.addResources("oracle/sql/converter_xcharset/lx2001f.glb");
                 resourcesRegistry.addResources("oracle/sql/converter_xcharset/lx200b2.glb");
+                resourcesRegistry.addResourceBundles("oracle.net.jdbc.nl.mesg.NLSR");
+                resourcesRegistry.addResourceBundles("oracle.net.mesg.Message");
             }
 
             initializeAtBuildTime(
@@ -70,23 +113,26 @@ final class JdbcFeature implements Feature {
                     "oracle.sql.converter.CharacterConverter1Byte"
             );
 
-            initializeAtRuntime(
-                    access,
-                    "java.sql.DriverManager"
-            );
+            initializeAtRuntime(access, "java.sql.DriverManager");
         }
     }
 
     private void handleMariadb(BeforeAnalysisAccess access) {
-        Class<?> mariaDriver = access.findClassByName("org.mariadb.jdbc.Driver");
+        Class<?> mariaDriver = access.findClassByName(MARIADB_DRIVER);
         if (mariaDriver != null) {
             RuntimeReflection.register(mariaDriver);
-            registerAllIfPresent(access, "org.mariadb.jdbc.util.Options");
             registerAllAccess(mariaDriver);
-            RuntimeClassInitialization
-                    .initializeAtBuildTime("org.mariadb");
-            RuntimeClassInitialization
-                    .initializeAtRunTime("org.mariadb.jdbc.credential.aws");
+
+            ResourcesRegistry resourcesRegistry = getResourceRegistry();
+            if (resourcesRegistry != null) {
+                resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
+            }
+
+            registerAllIfPresent(access, "org.mariadb.jdbc.util.Options");
+
+            RuntimeClassInitialization.initializeAtBuildTime("org.mariadb");
+            RuntimeClassInitialization.initializeAtRunTime("org.mariadb.jdbc.credential.aws");
+
             initializeAtRuntime(access, "org.mariadb.jdbc.internal.failover.impl.MastersSlavesListener");
             initializeAtRuntime(access, "org.mariadb.jdbc.internal.com.send.authentication.SendPamAuthPacket");
         }
@@ -115,15 +161,9 @@ final class JdbcFeature implements Feature {
         }
     }
 
-    private void registerReflectionIfPresent(BeforeAnalysisAccess access, String n) {
-        Class<?> t = access.findClassByName(n);
-        if (t != null) {
-            RuntimeReflection.register(t);
-        }
-    }
-
     private void registerAllAccess(Class<?> t) {
         RuntimeReflection.register(t);
+        RuntimeReflection.registerForReflectiveInstantiation(t);
         for (Method method : t.getMethods()) {
             RuntimeReflection.register(method);
         }
@@ -136,25 +176,26 @@ final class JdbcFeature implements Feature {
     private void handleSqlServer(BeforeAnalysisAccess access) {
         Class<?> sqlServerDriver = access.findClassByName(SQL_SERVER_DRIVER);
         if (sqlServerDriver != null) {
-
-            ResourcesRegistry resourcesRegistry = ImageSingletons.lookup(ResourcesRegistry.class);
-            if (resourcesRegistry != null) {
-                resourcesRegistry
-                        .addResourceBundles("com.microsoft.sqlserver.jdbc.SQLServerResource");
-            }
             RuntimeReflection.register(sqlServerDriver);
-            RuntimeClassInitialization
-                    .initializeAtRunTime("java.sql.DriverManager");
-            RuntimeClassInitialization
-                    .initializeAtBuildTime(SQL_SERVER_DRIVER);
+            registerAllAccess(sqlServerDriver);
+
+            RuntimeClassInitialization.initializeAtBuildTime(SQL_SERVER_DRIVER);
+
+            registerAllIfPresent(access, "com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+            ResourcesRegistry resourcesRegistry = getResourceRegistry();
+            if (resourcesRegistry != null) {
+                resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
+                resourcesRegistry.addResources("javax.crypto.Cipher.class");
+                resourcesRegistry.addResourceBundles("com.microsoft.sqlserver.jdbc.SQLServerResource");
+            }
         }
     }
 
-    private void registerDriver(BeforeAnalysisAccess access, String driverName) {
-        Class<?> h2Driver = access.findClassByName(driverName);
-        if (h2Driver != null) {
-            RuntimeReflection.register(h2Driver);
-            RuntimeClassInitialization.initializeAtBuildTime(h2Driver);
+    private ResourcesRegistry getResourceRegistry() {
+        if (resourcesRegistry == null) {
+            resourcesRegistry = ImageSingletons.lookup(ResourcesRegistry.class);
         }
+        return resourcesRegistry;
     }
 }
