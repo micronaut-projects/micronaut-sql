@@ -15,7 +15,8 @@ import java.lang.reflect.Method;
  * A JDBC feature that configures JDBC drivers correctly for native image.
  *
  * @author graemerocher
- * @since 1.0.0
+ * @author Iván López
+ * @since 2.2.1
  */
 @AutomaticFeature
 @Internal
@@ -31,7 +32,7 @@ final class JdbcFeature implements Feature {
         handleH2(access);
 
         // postgres
-        registerDriver(access, "org.postgresql.Driver");
+        handlePostgres(access);
 
         // sql server
         handleSqlServer(access);
@@ -56,6 +57,24 @@ final class JdbcFeature implements Feature {
             if (resourcesRegistry != null) {
                 resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
                 resourcesRegistry.addResources("org/h2/util/data.zip");
+            }
+        }
+    }
+
+    private void handlePostgres(BeforeAnalysisAccess access) {
+        Class<?> postgresDriver = access.findClassByName("org.postgresql.Driver");
+        if (postgresDriver != null) {
+            RuntimeReflection.register(postgresDriver);
+            RuntimeClassInitialization.initializeAtBuildTime(postgresDriver);
+
+            initializeAtBuildTime(access,
+                    "org.postgresql.Driver",
+                    "org.postgresql.util.SharedTimer"
+            );
+
+            ResourcesRegistry resourcesRegistry = getResourceRegistry();
+            if (resourcesRegistry != null) {
+                resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
             }
         }
     }
@@ -138,13 +157,6 @@ final class JdbcFeature implements Feature {
         }
     }
 
-    private void registerReflectionIfPresent(BeforeAnalysisAccess access, String n) {
-        Class<?> t = access.findClassByName(n);
-        if (t != null) {
-            RuntimeReflection.register(t);
-        }
-    }
-
     private void registerAllAccess(Class<?> t) {
         RuntimeReflection.register(t);
         RuntimeReflection.registerForReflectiveInstantiation(t);
@@ -171,14 +183,6 @@ final class JdbcFeature implements Feature {
                     .initializeAtRunTime("java.sql.DriverManager");
             RuntimeClassInitialization
                     .initializeAtBuildTime(SQL_SERVER_DRIVER);
-        }
-    }
-
-    private void registerDriver(BeforeAnalysisAccess access, String driverName) {
-        Class<?> driver = access.findClassByName(driverName);
-        if (driver != null) {
-            RuntimeReflection.register(driver);
-            RuntimeClassInitialization.initializeAtBuildTime(driver);
         }
     }
 
