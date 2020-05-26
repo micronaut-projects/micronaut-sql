@@ -46,13 +46,20 @@ final class HibernateFeature implements Feature {
                 Oracle9iDialect.class,
                 Oracle10gDialect.class,
                 Oracle12cDialect.class);
+
+        registerIfPresent(access,"com.microsoft.sqlserver.jdbc.SQLServerDriver",
+                SQLServerDialect.class,
+                SQLServer2005Dialect.class,
+                SQLServer2008Dialect.class,
+                SQLServer2012Dialect.class);
     }
 
     private void registerIfPresent(BeforeAnalysisAccess access, String name, Class<? extends Dialect>...dialects) {
-        Class<?> h2 = access.findClassByName(name);
-        if (h2 != null) {
+        Class<?> driver = access.findClassByName(name);
+        if (driver != null) {
             for (Class<? extends Dialect> dialect : dialects) {
                 RuntimeReflection.register(dialect);
+                RuntimeReflection.registerForReflectiveInstantiation(dialect);
             }
         }
     }
