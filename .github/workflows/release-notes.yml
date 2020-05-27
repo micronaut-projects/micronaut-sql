@@ -15,6 +15,7 @@ jobs:
   release_notes:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Export Gradle Properties
         uses: micronaut-projects/github-actions/export-gradle-properties@master
       - uses: micronaut-projects/github-actions/release-notes@master
