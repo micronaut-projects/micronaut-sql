@@ -11,7 +11,7 @@
 
         gtag('config', 'UA-82213539-2');
     </script>
-    <title>2 Configuring JDBC 2.2.4.BUILD-SNAPSHOT</title>
+    <title>2 Configuring JDBC 1.4.1.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -47,22 +47,25 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../guide/hibernate.html"><strong>3</strong><span>Configuring Hibernate</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/jasync.html"><strong>4</strong><span>Configuring JAsync SQL</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/pgclient.html"><strong>4</strong><span>Configuring Reactive Postgres</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/jooq.html"><strong>5</strong><span>Configuring jOOQ</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/jasync.html"><strong>5</strong><span>Configuring JAsync SQL</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/jdbi.html"><strong>6</strong><span>Configuring Jdbi</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/jooq.html"><strong>6</strong><span>Configuring jOOQ</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxmysqlclient.html"><strong>7</strong><span>Configuring Reactive MySQL Client</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/jdbi.html"><strong>7</strong><span>Configuring Jdbi</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxpgclient.html"><strong>8</strong><span>Configuring Reactive Postgres Client</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxmysqlclient.html"><strong>8</strong><span>Configuring Vert.x MySQL Client</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/repository.html"><strong>9</strong><span>Repository</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxpgclient.html"><strong>9</strong><span>Configuring Vert.x Postgres Client</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/repository.html"><strong>10</strong><span>Repository</span></a>
                         </div>
                         
                     </div>
@@ -96,7 +99,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>2 Configuring JDBC</h1>
 
-                    <p><strong>Version:</strong> 2.2.4.BUILD-SNAPSHOT</p>
+                    <p><strong>Version:</strong> 1.4.1.BUILD-SNAPSHOT</p>
                 </div>
 
                 
@@ -126,7 +129,7 @@ function addJsClass() {
 <td class="content">
 <div class="title">Using the CLI</div>
 <div class="paragraph">
-<p>If you are creating your project using the Micronaut CLI, supply one of the <code>jdbc-tomcat</code>, <code>jdbc-hikari</code>, <code>jdbc-dbcp</code>, or <code>jdbc-ucp</code> features to preconfigure a simple JDBC connection in your project, along with a default H2 database driver:</p>
+<p>If you are creating your project using the Micronaut CLI, supply one of the <code>jdbc-tomcat</code>, <code>jdbc-hikari</code>, or <code>jdbc-dbcp</code> features to preconfigure a simple JDBC connection in your project, along with a default H2 database driver:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -188,24 +191,6 @@ function addJsClass() {
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
     &lt;groupId&gt;io.micronaut.configuration&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-jdbc-dbcp&lt;/artifactId&gt;
-    &lt;scope&gt;runtime&lt;/scope&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div>
-</p>
-</div>
-<div class="paragraph">
-<p>        <div class="listingblock multi-language-sample">
-<div class="title"></div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">runtime(<span class="hljs-string">"io.micronaut.configuration:micronaut-jdbc-ucp")</span></code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
-    &lt;groupId&gt;io.micronaut.configuration&lt;/groupId&gt;
-    &lt;artifactId&gt;micronaut-jdbc-ucp&lt;/artifactId&gt;
     &lt;scope&gt;runtime&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -305,22 +290,6 @@ function addJsClass() {
 </div>
 </div>
 <div class="paragraph">
-<p>To use Oracle UCP, provide a configuration similar to the following:</p>
-</div>
-<div class="listingblock">
-<div class="title">application.yaml</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">datasources:
-  default:
-    url:
-    connectionFactoryClassName: oracle.jdbc.pool.OracleDataSource
-    username:
-    password:
-    minPoolSize: 1
-    maxPoolSize: 10</code></pre>
-</div>
-</div>
-<div class="paragraph">
 <p>For a list of other properties able to be configured, simply refer to the implementation that is being used. All setter methods are candidates for configuration.</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
@@ -340,10 +309,6 @@ function addJsClass() {
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Apache DBCP</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="http://commons.apache.org/proper/commons-dbcp/api-2.1.1/org/apache/commons/dbcp2/BasicDataSource.html">BasicDataSource</a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Oracle UCP</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.oracle.com/en/database/oracle/oracle-database/18/jjuar/oracle/ucp/jdbc/PoolDataSource.html">PoolDataSource</a></p></td>
 </tr>
 </tbody>
 </table>

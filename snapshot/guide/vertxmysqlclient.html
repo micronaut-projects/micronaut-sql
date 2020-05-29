@@ -11,7 +11,7 @@
 
         gtag('config', 'UA-82213539-2');
     </script>
-    <title>7 Configuring Reactive MySQL Client 2.2.4.BUILD-SNAPSHOT</title>
+    <title>8 Configuring Vert.x MySQL Client 1.4.1.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -47,22 +47,25 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../guide/hibernate.html"><strong>3</strong><span>Configuring Hibernate</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/jasync.html"><strong>4</strong><span>Configuring JAsync SQL</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/pgclient.html"><strong>4</strong><span>Configuring Reactive Postgres</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/jooq.html"><strong>5</strong><span>Configuring jOOQ</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/jasync.html"><strong>5</strong><span>Configuring JAsync SQL</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/jdbi.html"><strong>6</strong><span>Configuring Jdbi</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/jooq.html"><strong>6</strong><span>Configuring jOOQ</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxmysqlclient.html"><strong>7</strong><span>Configuring Reactive MySQL Client</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/jdbi.html"><strong>7</strong><span>Configuring Jdbi</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxpgclient.html"><strong>8</strong><span>Configuring Reactive Postgres Client</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxmysqlclient.html"><strong>8</strong><span>Configuring Vert.x MySQL Client</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/repository.html"><strong>9</strong><span>Repository</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxpgclient.html"><strong>9</strong><span>Configuring Vert.x Postgres Client</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/repository.html"><strong>10</strong><span>Repository</span></a>
                         </div>
                         
                     </div>
@@ -83,26 +86,26 @@ function addJsClass() {
             <div id="main" class="corner-all">
 
                 
-                    <div class="toc-item prev-left"><a href="../guide/jdbi.html">&lt;&lt; <strong>6</strong><span>Configuring Jdbi</span></a></div>
+                    <div class="toc-item prev-left"><a href="../guide/jdbi.html">&lt;&lt; <strong>7</strong><span>Configuring Jdbi</span></a></div>
                 
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
                 
-                    <div class="toc-item next-right"><a href="../guide/vertxpgclient.html"><strong>8</strong><span>Configuring Reactive Postgres Client</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../guide/vertxpgclient.html"><strong>9</strong><span>Configuring Vert.x Postgres Client</span> >></a></div>
                 
 
 
                 <div class="project">
-                    <h1>7 Configuring Reactive MySQL Client</h1>
+                    <h1>8 Configuring Vert.x MySQL Client</h1>
 
-                    <p><strong>Version:</strong> 2.2.4.BUILD-SNAPSHOT</p>
+                    <p><strong>Version:</strong> 1.4.1.BUILD-SNAPSHOT</p>
                 </div>
 
                 
 
                 
-<h1 id="vertxmysqlclient"><a class="anchor" href="#vertxmysqlclient"></a>7 Configuring Reactive MySQL Client</h1>
+<h1 id="vertxmysqlclient"><a class="anchor" href="#vertxmysqlclient"></a>8 Configuring Vert.x MySQL Client</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/vertxmysqlclient.adoc"'>
@@ -112,7 +115,7 @@ function addJsClass() {
 
 
 <div class="paragraph">
-<p>Micronaut supports reactive and non-blocking client to connect to MySQL using <a href="https://github.com/eclipse-vertx/vertx-sql-client/tree/master/vertx-mysql-client">vertx-mysql-client</a>, allowing to handle many database connections with a single thread.</p>
+<p>Micronaut supports reactive and non-blocking client to connect to MySQL using <a href="https://github.com/eclipse-vertx/vertx-sql-client">vertx-mysql-client</a>, allowing  to handle many database connections with a single thread.</p>
 </div>
 <div class="sect1">
 <h2 id="_configuring_the_mysql_vertx_client">Configuring the MySQL Vertx Client</h2>
@@ -191,7 +194,7 @@ You can also connect to MySQL using <code>uri</code> instead of the other proper
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">result = client.query('SELECT * FROM foo').rxExecute().map({ RowSet&lt;Row&gt; rowSet -&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">result = client.rxQuery('SELECT * FROM foo').map({ RowSet&lt;Row&gt; rowSet -&gt; <i class="conum" data-value="1"></i><b>(1)</b>
     RowIterator&lt;Row&gt; iterator = rowSet.iterator()
     int id = iterator.next().getInteger("id")
     return "id: ${id}"
@@ -229,9 +232,9 @@ You can also connect to MySQL using <code>uri</code> instead of the other proper
 
                 <div style="clear:both;margin-top:15px;"></div>
                 
-                    <div class="toc-item prev-left"><a href="../guide/jdbi.html">&lt;&lt; <strong>6</strong><span>Configuring Jdbi</span></a></div>
+                    <div class="toc-item prev-left"><a href="../guide/jdbi.html">&lt;&lt; <strong>7</strong><span>Configuring Jdbi</span></a></div>
                 
-                    <div class="toc-item next-right"><a href="../guide/vertxpgclient.html"><strong>8</strong><span>Configuring Reactive Postgres Client</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../guide/vertxpgclient.html"><strong>9</strong><span>Configuring Vert.x Postgres Client</span> >></a></div>
                 
                 <div style="clear:both"></div>
             </div>

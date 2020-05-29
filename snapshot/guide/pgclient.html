@@ -11,7 +11,7 @@
 
         gtag('config', 'UA-82213539-2');
     </script>
-    <title>4 Configuring Reactive Postgres 2.1.0.BUILD-SNAPSHOT</title>
+    <title>4 Configuring Reactive Postgres 1.4.1.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -99,7 +99,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>4 Configuring Reactive Postgres</h1>
 
-                    <p><strong>Version:</strong> 2.1.0.BUILD-SNAPSHOT</p>
+                    <p><strong>Version:</strong> 1.4.1.BUILD-SNAPSHOT</p>
                 </div>
 
                 
@@ -194,7 +194,15 @@ You can also connect to Postgres using <code>uri</code> instead of the other pro
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">Unresolved directive in &lt;stdin&gt; - include::postgres-reactive/src/test/groovy/io/micronaut/configuration/postgres/reactive/PostgresReactiveSpec.groovy[tags=query,indent=0]</code></pre>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">result = client.rxQuery('SELECT * FROM pg_stat_database').map({ PgRowSet pgRowSet -&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+    int size = 0
+    PgIterator iterator = pgRowSet.iterator()
+    while (iterator.hasNext()) {
+        iterator.next()
+        size++
+    }
+    return "Size: ${size}"
+}).blockingGet()</code></pre>
 </div>
 </div>
 <div class="colist arabic">
