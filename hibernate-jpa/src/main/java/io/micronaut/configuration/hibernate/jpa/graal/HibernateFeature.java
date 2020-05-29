@@ -47,7 +47,7 @@ final class HibernateFeature implements Feature {
                 Oracle10gDialect.class,
                 Oracle12cDialect.class);
 
-        registerIfPresent(access,"com.microsoft.sqlserver.jdbc.SQLServerDriver",
+        registerIfPresent(access, "com.microsoft.sqlserver.jdbc.SQLServerDriver",
                 SQLServerDialect.class,
                 SQLServer2005Dialect.class,
                 SQLServer2008Dialect.class,

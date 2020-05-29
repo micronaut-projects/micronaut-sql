@@ -43,7 +43,6 @@ import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.hibernate.bytecode.spi.BytecodeProvider;
-import org.hibernate.event.spi.AutoFlushEventListener;
 import org.hibernate.event.spi.EventType;
 import org.hibernate.hql.internal.ast.HqlToken;
 import org.hibernate.hql.internal.ast.tree.*;
@@ -186,7 +185,8 @@ final class Loggers {
         "org.hibernate.event.spi.LoadEventListener[]"
 },
    accessType = {TypeHint.AccessType.ALL_PUBLIC})
-final class Hql {}
+final class Hql {
+}
 
 // ID Generators
 @TypeHint({
@@ -296,5 +296,4 @@ final class NoopSchemaResolver implements XMLResolver {
             throws XMLStreamException {
         return null;
     }
-
 }
