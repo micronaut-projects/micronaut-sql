@@ -13,12 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Hibernate Validator, declare and validate application constraints
- *
- * License: Apache License, Version 2.0
- * See the license.txt file in the root directory or <https://www.apache.org/licenses/LICENSE-2.0>.
- */
 package io.micronaut.configuration.hibernate.jpa.validation;
 
 import org.slf4j.Logger;

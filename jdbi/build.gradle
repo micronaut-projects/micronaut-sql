@@ -53,4 +53,7 @@ task txTest(type: Test) {
     shouldRunAfter test
 }
 check.dependsOn txTest
-checkstyleTxTest.enabled = false
+
+project.afterEvaluate {
+    checkstyleTxTest.enabled = false
+}
