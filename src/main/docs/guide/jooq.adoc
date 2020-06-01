@@ -50,3 +50,21 @@ Micronaut will look for the following bean types:
 * link:{jooqapi}/org/jooq/VisitListenerProvider.html[VisitListenerProvider]
 * link:{jooqapi}/org/jooq/TransactionListenerProvider.html[TransactionListenerProvider]
 * link:{jooqapi}/org/jooq/DiagnosticsListenerProvider.html[DiagnosticsListenerProvider]
+
+=== GraalVM native image ===
+
+Micronaut by default deactivates mapping to proxies with `ProxyMapper` to enable native image generation.
+It also provides reflection configuration for basic type mappings.
+
+For now, it is required for developers to flag all generated `Record` classes for reflection like this:
+
+[source,java]
+----
+@TypeHint({
+    MyTableRecord.class,
+    OtherTableRecord.class
+})
+class RecordTypeHints {
+
+}
+----
