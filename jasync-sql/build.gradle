@@ -8,7 +8,7 @@ dependencies {
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"
 
     testImplementation "io.micronaut:micronaut-management:$micronautVersion"
-    testImplementation "org.testcontainers:spock:1.14.2"
+    testImplementation "org.testcontainers:spock:1.14.3"
     testImplementation "org.testcontainers:postgresql:1.14.2"
     testImplementation "com.github.jasync-sql:jasync-postgresql:1.1.0"
     testImplementation "io.micronaut:micronaut-management:$micronautVersion"
