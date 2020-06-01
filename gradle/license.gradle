@@ -9,7 +9,7 @@ license {
         java   = 'SLASHSTAR_STYLE'
         groovy = 'SLASHSTAR_STYLE'
     }
-    ext.year = "2017-${new Date().getYear() + 1900}"
+    ext.year = '2017-2020'
 
     exclude "**/transaction/**"
     exclude '**/*.txt'
