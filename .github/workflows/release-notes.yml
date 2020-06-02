@@ -4,7 +4,7 @@
 #
 # and edit them there. Then, go to:
 #
-# https://github.com/micronaut-projects/micronaut-build/actions?query=workflow%3A%22Actions+sync%22
+# https://github.com/micronaut-projects/micronaut-build/actions?query=workflow%3A%22Files+sync%22
 #
 # and restart the latest job.
 name: Release Notes
@@ -13,12 +13,13 @@ on:
     types: [closed]
     branches:
       - master
-      - [1-9]+.[0-9]+.x
+      - '[1-9]+.[0-9]+.x'
   issues:
     types: [closed,reopened]
   push:
     branches:
       - master
+      - '[1-9]+.[0-9]+.x'
     paths:
       - ".github/workflows/release-notes.yml"
 jobs:
