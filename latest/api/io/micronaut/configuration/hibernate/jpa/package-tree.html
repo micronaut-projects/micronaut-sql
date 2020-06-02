@@ -85,6 +85,80 @@
 </ul>
 </li>
 </ul>
+<h2 title="Interface Hierarchy">Interface Hierarchy</h2>
+<ul>
+<li type="circle">java.lang.AutoCloseable
+<ul>
+<li type="circle">java.io.Closeable
+<ul>
+<li type="circle">org.hibernate.Session (also extends java.lang.AutoCloseable, javax.persistence.EntityManager, org.hibernate.jpa.HibernateEntityManager, org.hibernate.SharedSessionContract)
+<ul>
+<li type="circle">io.micronaut.configuration.hibernate.jpa.<a href="../../../../../io/micronaut/configuration/hibernate/jpa/TransactionalSession.html" title="interface in io.micronaut.configuration.hibernate.jpa"><span class="typeNameLink">TransactionalSession</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li type="circle">org.hibernate.Session (also extends java.io.Closeable, javax.persistence.EntityManager, org.hibernate.jpa.HibernateEntityManager, org.hibernate.SharedSessionContract)
+<ul>
+<li type="circle">io.micronaut.configuration.hibernate.jpa.<a href="../../../../../io/micronaut/configuration/hibernate/jpa/TransactionalSession.html" title="interface in io.micronaut.configuration.hibernate.jpa"><span class="typeNameLink">TransactionalSession</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li type="circle">javax.persistence.EntityManager
+<ul>
+<li type="circle">org.hibernate.jpa.HibernateEntityManager (also extends org.hibernate.query.QueryProducer)
+<ul>
+<li type="circle">org.hibernate.Session (also extends java.lang.AutoCloseable, java.io.Closeable, javax.persistence.EntityManager, org.hibernate.SharedSessionContract)
+<ul>
+<li type="circle">io.micronaut.configuration.hibernate.jpa.<a href="../../../../../io/micronaut/configuration/hibernate/jpa/TransactionalSession.html" title="interface in io.micronaut.configuration.hibernate.jpa"><span class="typeNameLink">TransactionalSession</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li type="circle">org.hibernate.Session (also extends java.lang.AutoCloseable, java.io.Closeable, org.hibernate.jpa.HibernateEntityManager, org.hibernate.SharedSessionContract)
+<ul>
+<li type="circle">io.micronaut.configuration.hibernate.jpa.<a href="../../../../../io/micronaut/configuration/hibernate/jpa/TransactionalSession.html" title="interface in io.micronaut.configuration.hibernate.jpa"><span class="typeNameLink">TransactionalSession</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li type="circle">org.hibernate.query.QueryProducer
+<ul>
+<li type="circle">org.hibernate.jpa.HibernateEntityManager (also extends javax.persistence.EntityManager)
+<ul>
+<li type="circle">org.hibernate.Session (also extends java.lang.AutoCloseable, java.io.Closeable, javax.persistence.EntityManager, org.hibernate.SharedSessionContract)
+<ul>
+<li type="circle">io.micronaut.configuration.hibernate.jpa.<a href="../../../../../io/micronaut/configuration/hibernate/jpa/TransactionalSession.html" title="interface in io.micronaut.configuration.hibernate.jpa"><span class="typeNameLink">TransactionalSession</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li type="circle">org.hibernate.SharedSessionContract (also extends java.io.Serializable)
+<ul>
+<li type="circle">org.hibernate.Session (also extends java.lang.AutoCloseable, java.io.Closeable, javax.persistence.EntityManager, org.hibernate.jpa.HibernateEntityManager)
+<ul>
+<li type="circle">io.micronaut.configuration.hibernate.jpa.<a href="../../../../../io/micronaut/configuration/hibernate/jpa/TransactionalSession.html" title="interface in io.micronaut.configuration.hibernate.jpa"><span class="typeNameLink">TransactionalSession</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li type="circle">java.io.Serializable
+<ul>
+<li type="circle">org.hibernate.SharedSessionContract (also extends org.hibernate.query.QueryProducer)
+<ul>
+<li type="circle">org.hibernate.Session (also extends java.lang.AutoCloseable, java.io.Closeable, javax.persistence.EntityManager, org.hibernate.jpa.HibernateEntityManager)
+<ul>
+<li type="circle">io.micronaut.configuration.hibernate.jpa.<a href="../../../../../io/micronaut/configuration/hibernate/jpa/TransactionalSession.html" title="interface in io.micronaut.configuration.hibernate.jpa"><span class="typeNameLink">TransactionalSession</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </div>
 <!-- ======= START OF BOTTOM NAVBAR ====== -->
 <div class="bottomNav"><a name="navbar.bottom">

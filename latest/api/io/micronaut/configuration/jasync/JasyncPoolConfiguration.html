@@ -48,7 +48,7 @@ var activeTableTab = "activeTableTab";
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../../io/micronaut/configuration/jasync/JasyncMySQLClientFactory.html" title="class in io.micronaut.configuration.jasync"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../../io/micronaut/configuration/jasync/JasyncPostgreSQLClientFactory.html" title="class in io.micronaut.configuration.jasync"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html" title="class in io.micronaut.configuration.jasync"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../index.html?io/micronaut/configuration/jasync/JasyncPoolConfiguration.html" target="_top">Frames</a></li>
@@ -72,7 +72,7 @@ var activeTableTab = "activeTableTab";
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
 <li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
@@ -123,6 +123,27 @@ extends java.lang.Object</pre>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="nested.class.summary">
+<!--   -->
+</a>
+<h3>Nested Class Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Nested Class Summary table, listing nested classes, and an explanation">
+<caption><span>Nested Classes</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static class&nbsp;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html" title="class in io.micronaut.configuration.jasync">JasyncPoolConfiguration.JasyncSslConfiguration</a></span></code>
+<div class="block">Configuration for JAsync SSL.</div>
+</td>
+</tr>
+</table>
+</li>
+</ul>
 <!-- =========== FIELD SUMMARY =========== -->
 <ul class="blockList">
 <li class="blockList"><a name="field.summary">
@@ -151,10 +172,20 @@ extends java.lang.Object</pre>
 <table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
 <caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
 <tr>
-<th class="colOne" scope="col">Constructor and Description</th>
+<th class="colFirst" scope="col">Modifier</th>
+<th class="colLast" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../io/micronaut/configuration/jasync/JasyncPoolConfiguration.html#JasyncPoolConfiguration--">JasyncPoolConfiguration</a></span>()</code>&nbsp;</td>
+<td class="colFirst"><code>&nbsp;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/configuration/jasync/JasyncPoolConfiguration.html#JasyncPoolConfiguration--">JasyncPoolConfiguration</a></span>()</code>
+<div class="block">Default constructor.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>protected </code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/configuration/jasync/JasyncPoolConfiguration.html#JasyncPoolConfiguration-io.micronaut.configuration.jasync.JasyncPoolConfiguration.JasyncSslConfiguration-">JasyncPoolConfiguration</a></span>(<a href="../../../../io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html" title="class in io.micronaut.configuration.jasync">JasyncPoolConfiguration.JasyncSslConfiguration</a>&nbsp;sslConfiguration)</code>
+<div class="block">Injected constructor.</div>
+</td>
 </tr>
 </table>
 </li>
@@ -218,10 +249,27 @@ protected&nbsp;com.github.jasync.sql.db.ConnectionPoolConfigurationBuilder jasyn
 <a name="JasyncPoolConfiguration--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>JasyncPoolConfiguration</h4>
 <pre>public&nbsp;JasyncPoolConfiguration()</pre>
+<div class="block">Default constructor.</div>
+</li>
+</ul>
+<a name="JasyncPoolConfiguration-io.micronaut.configuration.jasync.JasyncPoolConfiguration.JasyncSslConfiguration-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>JasyncPoolConfiguration</h4>
+<pre>@Inject
+protected&nbsp;JasyncPoolConfiguration(@Nullable
+                                          <a href="../../../../io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html" title="class in io.micronaut.configuration.jasync">JasyncPoolConfiguration.JasyncSslConfiguration</a>&nbsp;sslConfiguration)</pre>
+<div class="block">Injected constructor.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>sslConfiguration</code> - The SSL config</dd>
+</dl>
 </li>
 </ul>
 </li>
@@ -273,7 +321,7 @@ protected&nbsp;com.github.jasync.sql.db.ConnectionPoolConfigurationBuilder jasyn
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../../io/micronaut/configuration/jasync/JasyncMySQLClientFactory.html" title="class in io.micronaut.configuration.jasync"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../../io/micronaut/configuration/jasync/JasyncPostgreSQLClientFactory.html" title="class in io.micronaut.configuration.jasync"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html" title="class in io.micronaut.configuration.jasync"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../index.html?io/micronaut/configuration/jasync/JasyncPoolConfiguration.html" target="_top">Frames</a></li>
@@ -297,7 +345,7 @@ protected&nbsp;com.github.jasync.sql.db.ConnectionPoolConfigurationBuilder jasyn
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
 <li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
