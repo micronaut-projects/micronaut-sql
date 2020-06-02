@@ -44,6 +44,8 @@ jobs:
           BRANCH: gh-pages
           FOLDER: build/docs
           VERSION: ${{ steps.release_version.outputs.release_version }}
+      - name: Export Gradle Properties
+        uses: micronaut-projects/github-actions/export-gradle-properties@master
       - name: Checkout micronaut-core
         uses: actions/checkout@v2
         with:
@@ -52,8 +54,6 @@ jobs:
           ref: ${{ env.githubCoreBranch }}
           path: micronaut-core # Must be micronaut-core
         continue-on-error: true
-      - name: Export Gradle Properties
-        uses: micronaut-projects/github-actions/export-gradle-properties@master
       - name: Update BOM
         uses: micronaut-projects/github-actions/update-bom@master
 #        env:
