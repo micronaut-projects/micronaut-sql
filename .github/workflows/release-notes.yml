@@ -31,6 +31,8 @@ jobs:
         uses: micronaut-projects/github-actions/export-gradle-properties@master
       - uses: micronaut-projects/github-actions/release-notes@master
         id: release_notes
+        with:
+          branch: ${{ env.githubBranch }}
       - uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
