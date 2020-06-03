@@ -21,4 +21,8 @@ dependencies {
     testImplementation "io.vertx:vertx-rx-java2:$vertxVersion"
     testImplementation "io.vertx:vertx-codegen:$vertxVersion"
     testImplementation "io.vertx:vertx-pg-client:$vertxVersion"
+    testImplementation("org.spockframework:spock-core:${spockVersion}") {
+        exclude module:'groovy-all'
+    }
+    testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
 }

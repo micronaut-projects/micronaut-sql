@@ -8,4 +8,8 @@ dependencies {
     compileOnly "io.micronaut:micronaut-spring"
     compileOnly "org.springframework:spring-jdbc"
     compileOnly "org.springframework:spring-tx"
+    testImplementation("org.spockframework:spock-core:${spockVersion}") {
+        exclude module:'groovy-all'
+    }
+    testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
 }
