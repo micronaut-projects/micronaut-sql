@@ -12,7 +12,7 @@ $ mn create-app my-app --features vertx-pg-client
 
 To configure the Postgres Vertx client you should first add `vertx-pg-client` module to your classpath:
 
-dependency:micronaut-vertx-pg-client[groupId="io.micronaut.configuration"]
+dependency:micronaut-vertx-pg-client[groupId="io.micronaut.sql"]
 
 You should then configure the URI or https://vertx.io/docs/vertx-pg-client/java/[`PgConnectOptions`,`PoolOptions`] of the Postgres server you wish to communicate with in `application.yml`:
 

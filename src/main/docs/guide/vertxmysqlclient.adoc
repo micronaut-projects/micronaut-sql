@@ -12,7 +12,7 @@ $ mn create-app my-app --features vertx-mysql-client
 
 To configure the MySQL Vertx client you should first add `vertx-mysql-client` module to your classpath:
 
-dependency:micronaut-vertx-mysql-client[groupId="io.micronaut.configuration"]
+dependency:micronaut-vertx-mysql-client[groupId="io.micronaut.sql"]
 
 You should then configure the URI or https://vertx.io/docs/vertx-mysql-client/java/[`MySQLConnectOptions`,`PoolOptions`] of the MySQL server you wish to communicate with in `application.yml`:
 

@@ -4,7 +4,7 @@ dependencies {
 
     api project(":jdbc")
     api "io.micronaut:micronaut-inject:$micronautVersion"
-    api "org.apache.commons:commons-dbcp2:2.7.0"
+    api "org.apache.commons:commons-dbcp2:$commonsDbcpVersion"
 
     testRuntimeOnly "org.apache.tomcat:tomcat-jdbc"
     testRuntimeOnly "com.h2database:h2"

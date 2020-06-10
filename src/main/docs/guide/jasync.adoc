@@ -12,7 +12,7 @@ $ mn create-app my-app --features jasync-sql
 
 To configure the Jasync client you should first add `jasync-sql` module to your classpath:
 
-dependency:micronaut-jasync-sql[groupId="io.micronaut.configuration"]
+dependency:micronaut-jasync-sql[groupId="io.micronaut.sql"]
 
 You should then configure the https://github.com/jasync-sql/jasync-sql/wiki/Configuring-and-Managing-Connections[`PoolOptions`] of the database server you wish to communicate with in `application.yml`:
 

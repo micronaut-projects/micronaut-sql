@@ -10,7 +10,7 @@ buildscript {
 }
 
 subprojects { Project subproject ->
-    group "io.micronaut.configuration"
+    group "io.micronaut.sql"
     apply plugin: "io.micronaut.build.common"
 
     if (subproject.parent.name == "docs-examples" || subproject.name == "docs-examples") {

@@ -4,7 +4,7 @@ Micronaut supports automatically configuring http://www.jooq.org/[jOOQ] library 
 
 To configure jOOQ library you should first add `jooq` module to your classpath:
 
-dependency:micronaut-jooq[groupId="io.micronaut.configuration"]
+dependency:micronaut-jooq[groupId="io.micronaut.sql"]
 
 You should then <<jdbc, configure one or many DataSources>>.
 For each registered `DataSource`, Micronaut will configure the following jOOQ beans using api:configuration.jooq.JooqConfigurationFactory[]:
