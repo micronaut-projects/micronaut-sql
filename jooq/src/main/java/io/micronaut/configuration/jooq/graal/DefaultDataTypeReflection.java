@@ -22,6 +22,7 @@ import org.jooq.JSONB;
 import org.jooq.Result;
 import org.jooq.RowId;
 import org.jooq.types.*;
+import org.jooq.Record;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
