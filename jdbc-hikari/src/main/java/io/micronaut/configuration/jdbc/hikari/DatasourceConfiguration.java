@@ -178,7 +178,12 @@ public class DatasourceConfiguration extends HikariConfig implements BasicJdbcCo
         super.getDataSourceProperties().putAll(dsProperties);
     }
 
+    /**
+     * @param dsProperties The data source properties
+     * @deprecated Use {@link #setDataSourceProperties(Map)} instead
+     */
     @Override
+    @Deprecated
     public void setDataSourceProperties(Properties dsProperties) {
         // otherwise properties will be added twice
     }
