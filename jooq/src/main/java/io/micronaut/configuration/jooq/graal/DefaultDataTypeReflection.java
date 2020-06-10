@@ -17,17 +17,17 @@ package io.micronaut.configuration.jooq.graal;
 
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.annotation.TypeHint.AccessType;
-import org.jooq.JSON;
-import org.jooq.JSONB;
-import org.jooq.Result;
-import org.jooq.RowId;
+import org.jooq.*;
 import org.jooq.types.*;
 import org.jooq.Record;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.*;
+import java.util.UUID;
 
 @TypeHint(accessType = AccessType.ALL_PUBLIC_CONSTRUCTORS, value = {
         LocalDate[].class,
@@ -38,6 +38,8 @@ import java.time.*;
         OffsetTime[].class,
         Instant[].class,
         Timestamp[].class,
+        Date[].class,
+        Time[].class,
         BigInteger[].class,
         BigDecimal[].class,
         UNumber[].class,
@@ -46,12 +48,22 @@ import java.time.*;
         ULong[].class,
         Unsigned[].class,
         UShort[].class,
+        Byte[].class,
+        Integer[].class,
+        Long[].class,
+        Float[].class,
+        Double[].class,
+        String[].class,
         YearToMonth[].class,
         YearToSecond[].class,
+        DayToSecond[].class,
         RowId[].class,
         Result[].class,
+        Record[].class,
         JSON[].class,
-        JSONB[].class
+        JSONB[].class,
+        UUID[].class,
+        byte[].class
 })
 final class DefaultDataTypeReflection {
 
