@@ -17,54 +17,46 @@ package io.micronaut.configuration.jooq.graal;
 
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.annotation.TypeHint.AccessType;
-import org.jooq.*;
-import org.jooq.types.*;
-import org.jooq.Record;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.*;
-import java.util.UUID;
-
-@TypeHint(accessType = AccessType.ALL_PUBLIC_CONSTRUCTORS, value = {
-        LocalDate[].class,
-        LocalDateTime[].class,
-        LocalTime[].class,
-        ZonedDateTime[].class,
-        OffsetDateTime[].class,
-        OffsetTime[].class,
-        Instant[].class,
-        Timestamp[].class,
-        Date[].class,
-        Time[].class,
-        BigInteger[].class,
-        BigDecimal[].class,
-        UNumber[].class,
-        UByte[].class,
-        UInteger[].class,
-        ULong[].class,
-        Unsigned[].class,
-        UShort[].class,
-        Byte[].class,
-        Integer[].class,
-        Long[].class,
-        Float[].class,
-        Double[].class,
-        String[].class,
-        YearToMonth[].class,
-        YearToSecond[].class,
-        DayToSecond[].class,
-        RowId[].class,
-        Result[].class,
-        Record[].class,
-        JSON[].class,
-        JSONB[].class,
-        UUID[].class,
-        byte[].class
-})
+@TypeHint(
+        typeNames = {
+                "java.time.LocalDate[]",
+                "java.time.LocalDateTime[]",
+                "java.time.LocalTime[]",
+                "java.time.ZonedDateTime[]",
+                "java.time.OffsetDateTime[]",
+                "java.time.OffsetTime[]",
+                "java.time.Instant[]",
+                "java.sql.Timestamp[]",
+                "java.sql.Date[]",
+                "java.sql.Time[]",
+                "java.math.BigInteger[]",
+                "java.math.BigDecimal[]",
+                "org.jooq.types.UNumber[]",
+                "org.jooq.types.UByte[]",
+                "org.jooq.types.UInteger[]",
+                "org.jooq.types.ULong[]",
+                "org.jooq.types.Unsigned[]",
+                "org.jooq.types.UShort[]",
+                "java.lang.Byte[]",
+                "java.lang.Integer[]",
+                "java.lang.Long[]",
+                "java.lang.Float[]",
+                "java.lang.Double[]",
+                "java.lang.String[]",
+                "org.jooq.types.YearToMonth[]",
+                "org.jooq.types.YearToSecond[]",
+                "org.jooq.types.DayToSecond[]",
+                "org.jooq.RowId[]",
+                "org.jooq.Result[]",
+                "org.jooq.Record[]",
+                "org.jooq.JSON[]",
+                "org.jooq.JSONB[]",
+                "java.util.UUID[]",
+                "byte[]",
+        },
+        accessType = AccessType.ALL_PUBLIC_CONSTRUCTORS
+)
 final class DefaultDataTypeReflection {
 
 }
