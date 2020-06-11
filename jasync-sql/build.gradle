@@ -1,6 +1,6 @@
 ext {
     testContainersVersion="1.14.3"
-    jasyncVersion="1.1.2"
+    jasyncVersion="1.1.3"
 }
 dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
