@@ -24,6 +24,7 @@ import org.hibernate.dialect.*;
  * Feature for automatically configuring the dialect for the active driver with GraalVM.
  *
  * @author graemerocher
+ * @author Iván López
  * @since 2.2.1
  */
 @AutomaticFeature
@@ -67,9 +68,15 @@ final class HibernateFeature implements Feature {
                 SQLServer2005Dialect.class,
                 SQLServer2008Dialect.class,
                 SQLServer2012Dialect.class);
+
+        registerIfPresent(access, "com.mysql.cj.jdbc.Driver",
+                MySQL5Dialect.class,
+                MySQL55Dialect.class,
+                MySQL57Dialect.class,
+                MySQL8Dialect.class);
     }
 
-    private void registerIfPresent(BeforeAnalysisAccess access, String name, Class<? extends Dialect>...dialects) {
+    private void registerIfPresent(BeforeAnalysisAccess access, String name, Class<? extends Dialect>... dialects) {
         Class<?> driver = access.findClassByName(name);
         if (driver != null) {
             for (Class<? extends Dialect> dialect : dialects) {
