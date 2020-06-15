@@ -5,21 +5,24 @@ dependencies {
     compileOnly "io.micronaut:micronaut-inject-java"
     testCompileOnly "io.micronaut:micronaut-inject-java"
 
-    compile "io.micronaut:micronaut-jdbc:$micronautVersion"
-    compile "io.micronaut:micronaut-inject:$micronautVersion"
-    compile "org.jdbi:jdbi3-core:3.12.2"
+    api "io.micronaut:micronaut-jdbc:$micronautVersion"
+    api "io.micronaut:micronaut-inject:$micronautVersion"
+    api "org.jdbi:jdbi3-core:3.12.2"
     compileOnly "com.h2database:h2"
     compileOnly "org.springframework:spring-jdbc:$springVersion"
 
-    testRuntime project(":jdbc-hikari")
-    testRuntime "com.h2database:h2"
-    testRuntime "org.springframework:spring-jdbc:$springVersion"
+    testRuntimeOnly project(":jdbc-hikari")
+    testRuntimeOnly "com.h2database:h2"
+    testRuntimeOnly "org.springframework:spring-jdbc:$springVersion"
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    testCompile "io.micronaut:micronaut-spring"
-    testCompile "io.micronaut:micronaut-http-server-netty"
-    testCompile "io.micronaut:micronaut-http-client"
-    testCompile "io.micronaut:micronaut-management"
-    testCompile "io.micronaut.configuration:micronaut-micrometer-core"
-    testCompile "org.jdbi:jdbi3-sqlobject:3.12.2"
+    testImplementation "io.micronaut:micronaut-spring"
+    testImplementation "io.micronaut:micronaut-http-server-netty"
+    testImplementation "io.micronaut:micronaut-http-client"
+    testImplementation "io.micronaut:micronaut-management"
+    testImplementation "io.micronaut.configuration:micronaut-micrometer-core"
+    testImplementation "org.jdbi:jdbi3-sqlobject:3.12.2"
+    testImplementation("org.spockframework:spock-core:${spockVersion}") {
+        exclude module:'groovy-all'
+    }
 }

@@ -18,5 +18,8 @@ dependencies {
     testImplementation "io.micronaut:micronaut-management"
     testImplementation "io.micronaut.configuration:micronaut-micrometer-core"
     testImplementation "org.springframework:spring-jdbc:$springVersion"
+    testImplementation("org.spockframework:spock-core:${spockVersion}") {
+        exclude module:'groovy-all'
+    }
 }
 

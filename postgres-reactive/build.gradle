@@ -24,4 +24,7 @@ dependencies {
     testImplementation "io.vertx:vertx-codegen:3.8.5", {
         exclude module: "vertx-core"
     }
+    testImplementation("org.spockframework:spock-core:${spockVersion}") {
+        exclude module:'groovy-all'
+    }
 }

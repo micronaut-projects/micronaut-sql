@@ -12,6 +12,8 @@ dependencies {
     testImplementation "org.testcontainers:postgresql:1.13.0"
     testImplementation "com.github.jasync-sql:jasync-postgresql:1.0.6"
     testImplementation "io.micronaut:micronaut-management:$micronautVersion"
-
+    testImplementation("org.spockframework:spock-core:${spockVersion}") {
+        exclude module:'groovy-all'
+    }
 
 }
