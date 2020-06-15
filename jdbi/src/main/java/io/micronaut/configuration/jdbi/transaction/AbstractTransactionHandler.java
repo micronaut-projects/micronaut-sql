@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.micronaut.configuration.jdbi.transaction;
 
 import org.jdbi.v3.core.Handle;
