@@ -233,21 +233,50 @@ Only beans with the same name qualifier as the data source name will be used.</p
 <h3 id="_graalvm_native_image">GraalVM native image</h3>
 <div class="paragraph">
 <p>Micronaut by default deactivates mapping to proxies with <code>ProxyMapper</code> to enable native image generation.
-It also provides reflection configuration for basic type mappings.</p>
+It also provides reflection configuration for basic type mappings but it is necessary to declare the <code>Record</code> classes
+for reflection.
+The easiest way to do it is configure jOOQ to annotate the generated classes with the JPA annotations enabling the
+option <code>jpaAnnotations</code>. This way Micronaut will be able to detect them and automatically generate the reflection
+configuration that GraalVM needs.</p>
 </div>
 <div class="paragraph">
-<p>For now, it is required for developers to flag all generated <code>Record</code> classes for reflection like this:</p>
+<p>For example, if you are using <a href="https://github.com/etiennestuder/gradle-jooq-plugin">this gradle plugin</a> you can add the
+following:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@TypeHint({
-    MyTableRecord.class,
-    OtherTableRecord.class
-})
-class RecordTypeHints {
-
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">jooq {
+    devDb(sourceSets.main) {
+        ...
+        generator {
+            ...
+            generate {
+                jpaAnnotations = true <i class="conum" data-value="1"></i><b>(1)</b>
+            }
+        }
+    }
 }</code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Configure jOOQ to generate the JPA annotations.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Find more information in the <a href="https://www.jooq.org/doc/latest/manual/code-generation/codegen-advanced/codegen-config-generate/codegen-generate-annotations">jOOQ documentation</a>.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
