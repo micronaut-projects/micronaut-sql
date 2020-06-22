@@ -20,7 +20,7 @@ dependencies {
     testCompileOnly "io.micronaut:micronaut-inject-java"
 
     // needed for native image (adding @Entity annotation to UpdatableRecords for reflection registration)
-    implementation "jakarta.persistence:jakarta.persistence-api:2.2.2"
+    implementation "jakarta.persistence:jakarta.persistence-api:2.2.3"
 
     api "io.micronaut:micronaut-jdbc:$micronautVersion"
     api "io.micronaut:micronaut-inject:$micronautVersion"
