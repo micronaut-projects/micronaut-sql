@@ -21,7 +21,7 @@ import org.simpleflatmapper.reflect.DefaultReflectionService;
 import org.simpleflatmapper.reflect.asm.AsmFactory;
 
 /**
- * Disable not supported ASM bytecode manipulation in GraalVM native image runtime
+ * Disable not supported ASM bytecode manipulation in GraalVM native image runtime.
  *
  * @author Lukas Moravec
  * @since 2.3.5

@@ -19,7 +19,7 @@ import com.oracle.svm.core.annotate.Substitute;
 import com.oracle.svm.core.annotate.TargetClass;
 
 /**
- * Disable not supported ProxyMapper in GraalVM native image runtime
+ * Disable not supported ProxyMapper in GraalVM native image runtime.
  *
  * @author Lukas Moravec
  * @since 2.2.5
