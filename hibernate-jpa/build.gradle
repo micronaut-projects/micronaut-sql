@@ -16,7 +16,7 @@ dependencies {
 
     api "io.micronaut.data:micronaut-data-tx-hibernate:1.1.1"
     api "io.micronaut:micronaut-aop:$micronautVersion"
-    api "io.micronaut:micronaut-jdbc:$micronautVersion"
+    api project(":jdbc")
     api "io.micronaut:micronaut-runtime:$micronautVersion"
     api "io.micronaut:micronaut-validation:$micronautVersion"
     compileOnly "io.micronaut:micronaut-management"

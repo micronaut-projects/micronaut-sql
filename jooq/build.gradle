@@ -22,7 +22,7 @@ dependencies {
     // needed for native image (adding @Entity annotation to UpdatableRecords for reflection registration)
     implementation "jakarta.persistence:jakarta.persistence-api:2.2.3"
 
-    api "io.micronaut:micronaut-jdbc:$micronautVersion"
+    api project(":jdbc")
     api "io.micronaut:micronaut-inject:$micronautVersion"
     api "org.jooq:jooq:3.13.2"
     compileOnly "org.springframework:spring-jdbc:$springVersion"

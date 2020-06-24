@@ -15,7 +15,7 @@ dependencies {
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
     testCompileOnly "io.micronaut:micronaut-inject-java"
 
-    api "io.micronaut:micronaut-jdbc:$micronautVersion"
+    api project(":jdbc")
     api "io.micronaut:micronaut-aop:$micronautVersion"
     api "io.micronaut:micronaut-inject:$micronautVersion"
     api "org.jdbi:jdbi3-core:3.14.1"
