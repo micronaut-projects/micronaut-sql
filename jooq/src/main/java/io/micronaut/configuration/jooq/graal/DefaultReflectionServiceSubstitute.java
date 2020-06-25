@@ -17,17 +17,21 @@ package io.micronaut.configuration.jooq.graal;
 
 import com.oracle.svm.core.annotate.Substitute;
 import com.oracle.svm.core.annotate.TargetClass;
+import org.simpleflatmapper.reflect.asm.AsmFactory;
 
 /**
- * Disable not supported ProxyMapper in GraalVM native image runtime.
+ * Disable not supported ASM bytecode manipulation in GraalVM native image runtime.
  *
  * @author Lukas Moravec
- * @since 2.2.5
+ * @since 2.3.5
  */
-@TargetClass(className = "org.jooq.impl.DefaultRecordMapper", innerClass = "ProxyMapper")
-final class ProxyMapperSubstitute {
+@TargetClass(
+        className = "org.simpleflatmapper.reflect.DefaultReflectionService",
+        onlyWith = SimpleFlatMapperAvailable.class
+)
+final class DefaultReflectionServiceSubstitute {
     @Substitute
-    private Object proxy() {
-        throw new UnsupportedOperationException("Not supported in GraalVM native image.");
+    public AsmFactory getAsmFactory(ClassLoader classLoader) {
+        return null;
     }
 }

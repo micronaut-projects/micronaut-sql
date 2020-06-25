@@ -15,19 +15,25 @@
  */
 package io.micronaut.configuration.jooq.graal;
 
-import com.oracle.svm.core.annotate.Substitute;
-import com.oracle.svm.core.annotate.TargetClass;
+import io.micronaut.core.annotation.Internal;
+
+import java.util.function.BooleanSupplier;
 
 /**
- * Disable not supported ProxyMapper in GraalVM native image runtime.
+ * Companion class for DefaultReflectionServiceSubstitute.
  *
  * @author Lukas Moravec
- * @since 2.2.5
+ * @since 2.3.5
  */
-@TargetClass(className = "org.jooq.impl.DefaultRecordMapper", innerClass = "ProxyMapper")
-final class ProxyMapperSubstitute {
-    @Substitute
-    private Object proxy() {
-        throw new UnsupportedOperationException("Not supported in GraalVM native image.");
+@Internal
+public class SimpleFlatMapperAvailable implements BooleanSupplier {
+    @Override
+    public boolean getAsBoolean() {
+        try {
+            Class.forName("org.simpleflatmapper.reflect.DefaultReflectionService");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 }
