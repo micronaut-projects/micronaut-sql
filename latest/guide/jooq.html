@@ -11,7 +11,7 @@
 
         gtag('config', 'UA-82213539-2');
     </script>
-    <title>5 Configuring jOOQ 2.3.5</title>
+    <title>5 Configuring jOOQ 2.3.6</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -96,7 +96,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>5 Configuring jOOQ</h1>
 
-                    <p><strong>Version:</strong> 2.3.5</p>
+                    <p><strong>Version:</strong> 2.3.6</p>
                 </div>
 
                 
@@ -265,6 +265,28 @@ following:</p>
 <td>Configure jOOQ to generate the JPA annotations.</td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>There is also built-in support for using <a href="https://simpleflatmapper.org/">SimpleFlatMapper</a> with jOOQ in a native-image. No
+additional configuration is needed, just adding the SimpleFlatMapper dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"org.simpleflatmapper:sfm-jdbc:8.2.3")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;org.simpleflatmapper&lt;/groupId&gt;
+    &lt;artifactId&gt;sfm-jdbc&lt;/artifactId&gt;
+    &lt;version&gt;8.2.3&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
 </div>
 <div class="admonitionblock note">
 <table>
