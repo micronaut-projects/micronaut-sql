@@ -11,7 +11,7 @@
 
         gtag('config', 'UA-82213539-2');
     </script>
-    <title>3 Configuring Hibernate 1.4.2.BUILD-SNAPSHOT</title>
+    <title>3 Configuring Hibernate 2.3.6.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -47,25 +47,22 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../guide/hibernate.html"><strong>3</strong><span>Configuring Hibernate</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/pgclient.html"><strong>4</strong><span>Configuring Reactive Postgres</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/jasync.html"><strong>4</strong><span>Configuring JAsync SQL</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/jasync.html"><strong>5</strong><span>Configuring JAsync SQL</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/jooq.html"><strong>5</strong><span>Configuring jOOQ</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/jooq.html"><strong>6</strong><span>Configuring jOOQ</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/jdbi.html"><strong>6</strong><span>Configuring Jdbi</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/jdbi.html"><strong>7</strong><span>Configuring Jdbi</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxmysqlclient.html"><strong>7</strong><span>Configuring Reactive MySQL Client</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxmysqlclient.html"><strong>8</strong><span>Configuring Vert.x MySQL Client</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxpgclient.html"><strong>8</strong><span>Configuring Reactive Postgres Client</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/vertxpgclient.html"><strong>9</strong><span>Configuring Vert.x Postgres Client</span></a>
-                        </div>
-                        
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/repository.html"><strong>10</strong><span>Repository</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/repository.html"><strong>9</strong><span>Repository</span></a>
                         </div>
                         
                     </div>
@@ -92,14 +89,14 @@ function addJsClass() {
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
                 
-                    <div class="toc-item next-right"><a href="../guide/pgclient.html"><strong>4</strong><span>Configuring Reactive Postgres</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../guide/jasync.html"><strong>4</strong><span>Configuring JAsync SQL</span> >></a></div>
                 
 
 
                 <div class="project">
                     <h1>3 Configuring Hibernate</h1>
 
-                    <p><strong>Version:</strong> 1.4.2.BUILD-SNAPSHOT</p>
+                    <p><strong>Version:</strong> 2.3.6.BUILD-SNAPSHOT</p>
                 </div>
 
                 
@@ -108,7 +105,7 @@ function addJsClass() {
 <h1 id="hibernate"><a class="anchor" href="#hibernate"></a>3 Configuring Hibernate</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/1.4.x/src/main/docs/guide/hibernate.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/hibernate.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -146,13 +143,13 @@ function addJsClass() {
 <p>        <div class="listingblock multi-language-sample">
 <div class="title"></div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.configuration:micronaut-hibernate-jpa")</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.sql:micronaut-hibernate-jpa")</span></code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
-    &lt;groupId&gt;io.micronaut.configuration&lt;/groupId&gt;
+    &lt;groupId&gt;io.micronaut.sql&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-hibernate-jpa&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -313,10 +310,30 @@ jpa:
 <div class="sect3">
 <h4 id="_using_spring_transaction_management">Using Spring Transaction Management</h4>
 <div class="paragraph">
-<p>Micronaut&#8217;s Hibernate integration will also automatically provide a Spring <code>HibernateTransactionManager</code> bean so you can use Spring-based transaction management.</p>
+<p>Since 2.0, by default Micronaut-based transaction management is enabled. Thus on any service you can use the <code>io.micronaut.transaction.annotation.TransactionalAdvice</code> annotation (or the <code>javax.transaction.Transactional</code> annotation if you include the <code>micronaut-data-processor</code> dependency in your annotation processor configuration).</p>
 </div>
 <div class="paragraph">
-<p>You should use Micronaut&#8217;s <a href="https://docs.micronaut.io/latest/api/io/micronaut/spring/tx/annotation/Transactional.html">@Transactional</a> annotation to ensure low-overhead, compile-time transaction management is applied to your classes.</p>
+<p>If you wish to use instead replace this with Spring-based transaction management you should add the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.sql:micronaut-hibernate-jpa-spring")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.sql&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-hibernate-jpa-spring&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>Which will enable configuration of the Spring transaction management instead.</p>
 </div>
 </div>
 <div class="sect3">
@@ -340,7 +357,7 @@ jpa:
                 
                     <div class="toc-item prev-left"><a href="../guide/jdbc.html">&lt;&lt; <strong>2</strong><span>Configuring JDBC</span></a></div>
                 
-                    <div class="toc-item next-right"><a href="../guide/pgclient.html"><strong>4</strong><span>Configuring Reactive Postgres</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../guide/jasync.html"><strong>4</strong><span>Configuring JAsync SQL</span> >></a></div>
                 
                 <div style="clear:both"></div>
             </div>
