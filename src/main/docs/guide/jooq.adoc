@@ -79,5 +79,11 @@ jooq {
 ----
 <1> Configure jOOQ to generate the JPA annotations.
 
+There is also built-in support for using https://simpleflatmapper.org/[SimpleFlatMapper] with jOOQ in a native-image. No
+additional configuration is needed, just adding the SimpleFlatMapper dependency:
+
+dependency:org.simpleflatmapper:sfm-jdbc[version="8.2.3"]
+
+
 [NOTE]
 Find more information in the https://www.jooq.org/doc/latest/manual/code-generation/codegen-advanced/codegen-config-generate/codegen-generate-annotations[jOOQ documentation].
