@@ -15,6 +15,8 @@
  */
 package io.micronaut.configuration.jooq.graal;
 
+import io.micronaut.core.annotation.Internal;
+
 import java.util.function.BooleanSupplier;
 
 /**
@@ -23,6 +25,7 @@ import java.util.function.BooleanSupplier;
  * @author Lukas Moravec
  * @since 2.3.5
  */
+@Internal
 public class SimpleFlatMapperAvailable implements BooleanSupplier {
     @Override
     public boolean getAsBoolean() {
