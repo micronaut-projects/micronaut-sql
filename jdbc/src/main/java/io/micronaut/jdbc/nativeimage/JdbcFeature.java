@@ -76,6 +76,20 @@ final class JdbcFeature implements Feature {
             RuntimeReflection.register(h2Driver);
             RuntimeClassInitialization.initializeAtBuildTime(h2Driver);
 
+            // required for file-based H2 databases
+            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathDisk");
+            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathMem");
+            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathMemLZF");
+            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathNioMem");
+            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathNioMemLZF");
+            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathSplit");
+            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathNio");
+            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathNioMapped");
+            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathAsync");
+            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathZip");
+            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathRetryOnInterrupt");
+            initializeAtRuntime(access, "sun.nio.ch.WindowsAsynchronousFileChannelImpl$DefaultIocpHolder");
+
             ResourcesRegistry resourcesRegistry = getResourceRegistry();
             if (resourcesRegistry != null) {
                 resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
@@ -229,6 +243,14 @@ final class JdbcFeature implements Feature {
             for (Constructor constructor : t.getConstructors()) {
                 RuntimeReflection.register(constructor);
             }
+        }
+    }
+
+    private void registerForRuntimeReflectiveInstantiation(BeforeAnalysisAccess access, String n) {
+        Class<?> t = access.findClassByName(n);
+        if (t != null) {
+            RuntimeReflection.register(t);
+            RuntimeReflection.registerForReflectiveInstantiation(t);
         }
     }
 
