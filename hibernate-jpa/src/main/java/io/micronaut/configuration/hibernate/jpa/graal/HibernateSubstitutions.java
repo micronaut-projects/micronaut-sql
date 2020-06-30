@@ -54,8 +54,7 @@ import org.hibernate.id.IncrementGenerator;
 import org.hibernate.id.SelectGenerator;
 import org.hibernate.id.UUIDGenerator;
 import org.hibernate.id.UUIDHexGenerator;
-import org.hibernate.id.enhanced.SequenceStyleGenerator;
-import org.hibernate.id.enhanced.TableGenerator;
+import org.hibernate.id.enhanced.*;
 import org.hibernate.jmx.spi.JmxService;
 import org.hibernate.persister.collection.BasicCollectionPersister;
 import org.hibernate.persister.collection.OneToManyPersister;
@@ -202,6 +201,18 @@ final class Hql {
         TableGenerator.class
 })
 final class IdGenerators {
+}
+
+// ID Optimizers
+@TypeHint({
+        NoopOptimizer.class,
+        HiLoOptimizer.class,
+        LegacyHiLoAlgorithmOptimizer.class,
+        PooledOptimizer.class,
+        PooledLoOptimizer.class,
+        PooledLoThreadLocalOptimizer.class
+})
+final class IdOptimizers {
 }
 
 // Disable Runtime Byte Code Enhancement
