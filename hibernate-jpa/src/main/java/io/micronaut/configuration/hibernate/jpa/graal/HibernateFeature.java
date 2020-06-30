@@ -34,6 +34,7 @@ final class HibernateFeature implements Feature {
         if (registerIfPresent(access, "org.h2.Driver", H2Dialect.class)) {
             Class<?> constClass = access.findClassByName("org.h2.engine.Constants");
             if (constClass != null) {
+                RuntimeReflection.register(constClass);
                 RuntimeReflection.register(constClass.getDeclaredFields());
             }
         }
