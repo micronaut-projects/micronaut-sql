@@ -311,7 +311,7 @@ final class JdbcFeature implements Feature {
                 resourcesRegistry.addResourceBundles("com.mysql.cj.LocalizedErrorMessages");
             }
 
-            initializeAtBuildTime(access, "java.sql.DriverManager");
+            initializeAtRuntime(access, "java.sql.DriverManager");
         }
     }
 
