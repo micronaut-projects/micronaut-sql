@@ -95,6 +95,8 @@ final class JdbcFeature implements Feature {
                 resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
                 resourcesRegistry.addResources("org/h2/util/data.zip");
             }
+
+            initializeAtBuildTime(access, "java.sql.DriverManager");
         }
     }
 
@@ -115,6 +117,8 @@ final class JdbcFeature implements Feature {
             if (resourcesRegistry != null) {
                 resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
             }
+
+            initializeAtBuildTime(access, "java.sql.DriverManager");
         }
     }
 
@@ -128,6 +132,9 @@ final class JdbcFeature implements Feature {
             registerAllIfPresent(access, "oracle.net.ano.DataIntegrityService");
             registerAllIfPresent(access, "oracle.net.ano.EncryptionService");
             registerAllIfPresent(access, "oracle.net.ano.SupervisorService");
+
+            registerAllForRuntimeReflection(access, "oracle.jdbc.logging.annotations.Supports");
+            registerAllForRuntimeReflection(access, "oracle.jdbc.logging.annotations.Feature");
 
             ResourcesRegistry resourcesRegistry = getResourceRegistry();
             if (resourcesRegistry != null) {
@@ -143,9 +150,14 @@ final class JdbcFeature implements Feature {
                     access,
                     "oracle.net.jdbc.nl.mesg.NLSR_en",
                     "oracle.jdbc.driver.DynamicByteArray",
+                    "oracle.jdbc.logging.annotations.Supports",
                     "oracle.sql.ConverterArchive",
                     "oracle.sql.converter.CharacterConverterJDBC",
-                    "oracle.sql.converter.CharacterConverter1Byte"
+                    "oracle.sql.converter.CharacterConverter1Byte",
+                    "com.sun.jmx.mbeanserver.MBeanInstantiator",
+                    "com.sun.jmx.mbeanserver.MXBeanLookup",
+                    "com.sun.jmx.mbeanserver.Introspector",
+                    "com.sun.jmx.defaults.JmxProperties"
             );
 
             initializeAtRuntime(access, "java.sql.DriverManager");
@@ -170,6 +182,8 @@ final class JdbcFeature implements Feature {
 
             initializeAtRuntime(access, "org.mariadb.jdbc.internal.failover.impl.MastersSlavesListener");
             initializeAtRuntime(access, "org.mariadb.jdbc.internal.com.send.authentication.SendPamAuthPacket");
+
+            initializeAtBuildTime(access, "java.sql.DriverManager");
         }
     }
 
@@ -272,6 +286,8 @@ final class JdbcFeature implements Feature {
                 resourcesRegistry.addResources("javax.crypto.Cipher.class");
                 resourcesRegistry.addResourceBundles("com.microsoft.sqlserver.jdbc.SQLServerResource");
             }
+
+            initializeAtBuildTime(access, "java.sql.DriverManager");
         }
     }
 
@@ -295,8 +311,7 @@ final class JdbcFeature implements Feature {
                 resourcesRegistry.addResourceBundles("com.mysql.cj.LocalizedErrorMessages");
             }
 
-            RuntimeClassInitialization.initializeAtRunTime(MYSQL_DRIVER);
-            initializeAtRuntime(access, "java.sql.DriverManager");
+            initializeAtBuildTime(access, "java.sql.DriverManager");
         }
     }
 
