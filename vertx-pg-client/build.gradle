@@ -1,6 +1,6 @@
 ext {
     testContainersVersion="1.14.3"
-    vertxVersion = '3.9.1'
+    vertxVersion = '3.9.2'
 }
 
 dependencies {
