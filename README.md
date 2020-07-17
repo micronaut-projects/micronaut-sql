@@ -22,3 +22,7 @@ A release is performed with the following steps:
 * [Create a new release](https://github.com/micronaut-projects/micronaut-sql/releases/new). The Git Tag should start with `v`. For example `v1.0.0`.
 * [Monitor the Workflow](https://github.com/micronaut-projects/micronaut-sql/actions?query=workflow%3ARelease) to check it passed successfully.
 * Celebrate!
+
+
+
+
