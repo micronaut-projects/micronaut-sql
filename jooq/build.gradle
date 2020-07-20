@@ -24,7 +24,7 @@ dependencies {
 
     api project(":jdbc")
     api "io.micronaut:micronaut-inject:$micronautVersion"
-    api "org.jooq:jooq:3.13.2"
+    api "org.jooq:jooq:3.13.3"
     compileOnly "org.springframework:spring-jdbc:$springVersion"
     compileOnly "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
     compileOnly "org.simpleflatmapper:sfm-reflect:8.2.3"
