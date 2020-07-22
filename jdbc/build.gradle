@@ -5,7 +5,7 @@ dependencies {
 
     api "io.micronaut:micronaut-inject:$micronautVersion"
 
-    compileOnly "io.micronaut:micronaut-spring"
+    compileOnly "io.micronaut.spring:micronaut-spring"
     compileOnly "org.springframework:spring-jdbc"
     compileOnly "org.springframework:spring-tx"
 }

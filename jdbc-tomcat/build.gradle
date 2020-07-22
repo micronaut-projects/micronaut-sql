@@ -9,7 +9,7 @@ dependencies {
     testRuntimeOnly "com.h2database:h2"
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    testImplementation "io.micronaut:micronaut-spring"
+    testImplementation "io.micronaut.spring:micronaut-spring"
     testImplementation "io.micronaut:micronaut-http-server-netty"
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-management"
