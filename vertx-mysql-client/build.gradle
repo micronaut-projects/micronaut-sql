@@ -1,5 +1,6 @@
-ext{
-    vertxVersion = '3.8.5'
+ext {
+    testContainersVersion="1.15.0-rc1"
+    vertxVersion = '3.9.2'
 }
 
 dependencies {
@@ -13,10 +14,14 @@ dependencies {
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"
 
     testImplementation "io.micronaut:micronaut-management:$micronautVersion"
-    testImplementation "org.testcontainers:spock:1.14.1"
-    testImplementation "org.testcontainers:mysql:1.14.1"
-    testImplementation "mysql:mysql-connector-java:8.0.19"
+    testImplementation "org.testcontainers:spock:$testContainersVersion"
+    testImplementation "org.testcontainers:mysql:$testContainersVersion"
+    testImplementation "mysql:mysql-connector-java:8.0.21"
     testImplementation "io.vertx:vertx-rx-java2:$vertxVersion"
     testImplementation "io.vertx:vertx-codegen:$vertxVersion"
     testImplementation "io.vertx:vertx-mysql-client:$vertxVersion"
+    testImplementation("org.spockframework:spock-core:${spockVersion}") {
+        exclude module:'groovy-all'
+    }
+    testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
 }

@@ -13,7 +13,7 @@ Micronaut features built in support for configuring a http://hibernate.org[Hiber
 
 Once you have <<jdbc, configured one or many DataSources>> to use Hibernate, you will need to add the `hibernate-jpa` dependency to your build configuration:
 
-dependency:micronaut-hibernate-jpa[groupId="io.micronaut.configuration"]
+dependency:micronaut-hibernate-jpa[groupId="io.micronaut.sql"]
 
 And that is it. For each registered SQL `DataSource`, Micronaut will configure the following beans using api:configuration.hibernate.jpa.EntityManagerFactoryBean[]:
 
@@ -137,7 +137,7 @@ Since 2.0, by default Micronaut-based transaction management is enabled. Thus on
 
 If you wish to use instead replace this with Spring-based transaction management you should add the following dependency:
 
-dependency:micronaut-hibernate-jpa-spring[groupId="io.micronaut.configuration"]
+dependency:micronaut-hibernate-jpa-spring[groupId="io.micronaut.sql"]
 
 Which will enable configuration of the Spring transaction management instead.
 

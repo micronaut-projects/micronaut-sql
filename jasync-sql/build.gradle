@@ -1,17 +1,25 @@
+ext {
+    testContainersVersion="1.15.0-rc1"
+    jasyncVersion="1.1.3"
+}
 dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
 
     api "io.micronaut:micronaut-inject:$micronautVersion"
-    compileOnly "com.github.jasync-sql:jasync-mysql:1.0.7"
-    compileOnly "com.github.jasync-sql:jasync-postgresql:1.0.7"
+    compileOnly "com.github.jasync-sql:jasync-mysql:$jasyncVersion"
+    compileOnly "com.github.jasync-sql:jasync-postgresql:$jasyncVersion"
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"
 
+    testImplementation "io.micronaut:micronaut-management"
+    testImplementation "org.testcontainers:spock:$testContainersVersion"
+    testImplementation "org.testcontainers:postgresql:$testContainersVersion"
+    testImplementation "com.github.jasync-sql:jasync-postgresql:$jasyncVersion"
     testImplementation "io.micronaut:micronaut-management:$micronautVersion"
-    testImplementation "org.testcontainers:spock:1.14.1"
-    testImplementation "org.testcontainers:postgresql:1.14.1"
-    testImplementation "com.github.jasync-sql:jasync-postgresql:1.0.6"
-    testImplementation "io.micronaut:micronaut-management:$micronautVersion"
-
-
+    testImplementation "io.micronaut:micronaut-http-client"
+    testImplementation "io.micronaut:micronaut-http-server-netty"
+    testImplementation("org.spockframework:spock-core:${spockVersion}") {
+        exclude module:'groovy-all'
+    }
+    testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
 }

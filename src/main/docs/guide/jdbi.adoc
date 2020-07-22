@@ -4,7 +4,7 @@ Micronaut supports automatically configuring https://jdbi.org/[Jdbi] library for
 
 To configure the Jdbi library you should first add the `jdbi` module to your classpath:
 
-dependency:micronaut-jdbi[groupId="io.micronaut.configuration"]
+dependency:micronaut-jdbi[groupId="io.micronaut.sql"]
 
 You should then <<jdbc, configure one or many DataSources>>.
 For each registered `DataSource`, Micronaut will configure the following Jdbi beans using api:configuration.jdbi.JdbiFactory[]:

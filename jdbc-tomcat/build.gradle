@@ -4,7 +4,7 @@ dependencies {
 
     api project(":jdbc")
     api "io.micronaut:micronaut-inject:$micronautVersion"
-    api "org.apache.tomcat:tomcat-jdbc:9.0.33"
+    api "org.apache.tomcat:tomcat-jdbc:$tomcatJdbcVersion"
 
     testRuntimeOnly "com.h2database:h2"
 
@@ -13,10 +13,15 @@ dependencies {
     testImplementation "io.micronaut:micronaut-http-server-netty"
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-management"
+    
     testImplementation "io.micronaut.micrometer:micronaut-micrometer-core"
     testImplementation "io.micronaut.cache:micronaut-cache-core"
 
     testImplementation "org.springframework:spring-jdbc:$springVersion"
+    testImplementation("org.spockframework:spock-core:${spockVersion}") {
+        exclude module:'groovy-all'
+    }
+    testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
 }
 
 

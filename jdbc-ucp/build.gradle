@@ -4,8 +4,10 @@ dependencies {
 
     api project(":jdbc")
     api "io.micronaut:micronaut-inject:$micronautVersion"
-    api "com.oracle.ojdbc:ucp:19.3.0.0"
-    api("com.oracle.ojdbc:ojdbc8:19.3.0.0") { transitive = false}
+    api "com.oracle.database.jdbc:ucp:$ojdbcVersion"
+    api("com.oracle.database.jdbc:ojdbc8:$ojdbcVersion") {
+        transitive = false
+    }
 
     testRuntimeOnly "com.h2database:h2"
 
@@ -18,7 +20,10 @@ dependencies {
     testImplementation "io.micronaut.cache:micronaut-cache-core"
 
     testImplementation "org.springframework:spring-jdbc:$springVersion"
-
+    testImplementation("org.spockframework:spock-core:${spockVersion}") {
+        exclude module:'groovy-all'
+    }
+    testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
 }
 
 

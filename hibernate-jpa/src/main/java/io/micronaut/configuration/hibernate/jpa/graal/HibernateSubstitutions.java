@@ -43,7 +43,6 @@ import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.hibernate.bytecode.spi.BytecodeProvider;
-import org.hibernate.event.spi.AutoFlushEventListener;
 import org.hibernate.event.spi.EventType;
 import org.hibernate.hql.internal.ast.HqlToken;
 import org.hibernate.hql.internal.ast.tree.*;
@@ -55,8 +54,7 @@ import org.hibernate.id.IncrementGenerator;
 import org.hibernate.id.SelectGenerator;
 import org.hibernate.id.UUIDGenerator;
 import org.hibernate.id.UUIDHexGenerator;
-import org.hibernate.id.enhanced.SequenceStyleGenerator;
-import org.hibernate.id.enhanced.TableGenerator;
+import org.hibernate.id.enhanced.*;
 import org.hibernate.jmx.spi.JmxService;
 import org.hibernate.persister.collection.BasicCollectionPersister;
 import org.hibernate.persister.collection.OneToManyPersister;
@@ -186,7 +184,8 @@ final class Loggers {
         "org.hibernate.event.spi.LoadEventListener[]"
 },
    accessType = {TypeHint.AccessType.ALL_PUBLIC})
-final class Hql {}
+final class Hql {
+}
 
 // ID Generators
 @TypeHint({
@@ -202,6 +201,18 @@ final class Hql {}
         TableGenerator.class
 })
 final class IdGenerators {
+}
+
+// ID Optimizers
+@TypeHint({
+        NoopOptimizer.class,
+        HiLoOptimizer.class,
+        LegacyHiLoAlgorithmOptimizer.class,
+        PooledOptimizer.class,
+        PooledLoOptimizer.class,
+        PooledLoThreadLocalOptimizer.class
+})
+final class IdOptimizers {
 }
 
 // Disable Runtime Byte Code Enhancement
@@ -296,5 +307,4 @@ final class NoopSchemaResolver implements XMLResolver {
             throws XMLStreamException {
         return null;
     }
-
 }

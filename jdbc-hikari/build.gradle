@@ -4,7 +4,7 @@ dependencies {
 
     api project(":jdbc")
     api "io.micronaut:micronaut-inject:$micronautVersion"
-    api "com.zaxxer:HikariCP:3.4.2"
+    api "com.zaxxer:HikariCP:$hikariVersion"
 
     compileOnly "io.micronaut.micrometer:micronaut-micrometer-core"
 
@@ -16,9 +16,14 @@ dependencies {
     testImplementation "io.micronaut:micronaut-http-server-netty"
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-management"
+
     testImplementation "io.micronaut.micrometer:micronaut-micrometer-core"
     testImplementation "io.micronaut.cache:micronaut-cache-core"
 
     testImplementation "org.springframework:spring-jdbc:$springVersion"
+    testImplementation("org.spockframework:spock-core:${spockVersion}") {
+        exclude module:'groovy-all'
+    }
+    testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
 }
 

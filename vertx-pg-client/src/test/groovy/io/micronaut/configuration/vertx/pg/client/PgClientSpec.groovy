@@ -85,7 +85,7 @@ class PgClientSpec extends Specification {
         // end::pgPool-bean[]
 
         // tag::query[]
-        result = client.rxQuery('SELECT * FROM pg_stat_database').map({ RowSet<Row> rowSet -> // <1>
+        result = client.query('SELECT * FROM pg_stat_database').rxExecute().map({ RowSet<Row> rowSet -> // <1>
             int size = 0
             RowIterator<Row> iterator = rowSet.iterator()
             while (iterator.hasNext()) {

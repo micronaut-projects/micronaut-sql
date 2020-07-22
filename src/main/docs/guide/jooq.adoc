@@ -4,7 +4,7 @@ Micronaut supports automatically configuring http://www.jooq.org/[jOOQ] library 
 
 To configure jOOQ library you should first add `jooq` module to your classpath:
 
-dependency:micronaut-jooq[groupId="io.micronaut.configuration"]
+dependency:micronaut-jooq[groupId="io.micronaut.sql"]
 
 You should then <<jdbc, configure one or many DataSources>>.
 For each registered `DataSource`, Micronaut will configure the following jOOQ beans using api:configuration.jooq.JooqConfigurationFactory[]:
@@ -50,3 +50,40 @@ Micronaut will look for the following bean types:
 * link:{jooqapi}/org/jooq/VisitListenerProvider.html[VisitListenerProvider]
 * link:{jooqapi}/org/jooq/TransactionListenerProvider.html[TransactionListenerProvider]
 * link:{jooqapi}/org/jooq/DiagnosticsListenerProvider.html[DiagnosticsListenerProvider]
+
+=== GraalVM native image ===
+
+Micronaut by default deactivates mapping to proxies with `ProxyMapper` to enable native image generation.
+It also provides reflection configuration for basic type mappings but it is necessary to declare the `Record` classes
+for reflection.
+The easiest way to do it is configure jOOQ to annotate the generated classes with the JPA annotations enabling the
+option `jpaAnnotations`. This way Micronaut will be able to detect them and automatically generate the reflection
+configuration that GraalVM needs.
+
+For example, if you are using https://github.com/etiennestuder/gradle-jooq-plugin[this gradle plugin] you can add the
+following:
+
+[source,groovy]
+----
+jooq {
+    devDb(sourceSets.main) {
+        ...
+        generator {
+            ...
+            generate {
+                jpaAnnotations = true // <1>
+            }
+        }
+    }
+}
+----
+<1> Configure jOOQ to generate the JPA annotations.
+
+There is also built-in support for using https://simpleflatmapper.org/[SimpleFlatMapper] with jOOQ in a native-image. No
+additional configuration is needed, just adding the SimpleFlatMapper dependency:
+
+dependency:org.simpleflatmapper:sfm-jdbc[version="8.2.3"]
+
+
+[NOTE]
+Find more information in the https://www.jooq.org/doc/latest/manual/code-generation/codegen-advanced/codegen-config-generate/codegen-generate-annotations[jOOQ documentation].
