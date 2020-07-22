@@ -6,7 +6,7 @@ dependencies {
     api "io.micronaut:micronaut-inject:$micronautVersion"
     api "com.zaxxer:HikariCP:3.4.2"
 
-    compileOnly "io.micronaut.configuration:micronaut-micrometer-core"
+    compileOnly "io.micronaut.micrometer:micronaut-micrometer-core"
 
     testRuntimeOnly "org.apache.tomcat:tomcat-jdbc"
     testRuntimeOnly "com.h2database:h2"
@@ -16,7 +16,7 @@ dependencies {
     testImplementation "io.micronaut:micronaut-http-server-netty"
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-management"
-    testImplementation "io.micronaut.configuration:micronaut-micrometer-core"
+    testImplementation "io.micronaut.micrometer:micronaut-micrometer-core"
     testImplementation "io.micronaut.cache:micronaut-cache-core"
 
     testImplementation "org.springframework:spring-jdbc:$springVersion"

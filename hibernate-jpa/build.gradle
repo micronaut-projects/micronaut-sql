@@ -20,7 +20,7 @@ dependencies {
     api "io.micronaut:micronaut-runtime:$micronautVersion"
     api "io.micronaut:micronaut-validation:$micronautVersion"
     compileOnly "io.micronaut:micronaut-management"
-    compileOnly "io.micronaut.configuration:micronaut-micrometer-core"
+    compileOnly "io.micronaut.micrometer:micronaut-micrometer-core"
 
     api "io.micronaut:micronaut-validation:$micronautVersion"
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
@@ -34,5 +34,5 @@ dependencies {
 
     testRuntimeOnly project(":jdbc-tomcat")
     testRuntimeOnly "com.h2database:h2"
-    testImplementation "io.micronaut.configuration:micronaut-micrometer-core"
+    testImplementation "io.micronaut.micrometer:micronaut-micrometer-core"
 }
