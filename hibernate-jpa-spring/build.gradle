@@ -11,6 +11,6 @@ dependencies {
 
     api "io.micronaut:micronaut-aop:$micronautVersion"
     api project(":jdbc")
-    api "io.micronaut:micronaut-spring:$micronautVersion"
+    api "io.micronaut.spring:micronaut-spring:$micronautVersion"
     api "org.springframework:spring-orm:$springVersion"
 }

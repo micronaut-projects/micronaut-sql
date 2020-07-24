@@ -32,12 +32,14 @@ dependencies {
     testRuntimeOnly project(":jdbc-tomcat")
     testRuntimeOnly "com.h2database:h2:1.4.200"
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    testImplementation "io.micronaut:micronaut-spring"
+    testImplementation "io.micronaut.spring:micronaut-spring"
     testImplementation "io.micronaut:micronaut-http-server-netty"
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-management"
-    testImplementation "io.micronaut.configuration:micronaut-micrometer-core:1.3.1"
+
+    testImplementation "io.micronaut.micrometer:micronaut-micrometer-core"
     testImplementation "org.springframework:spring-jdbc:$springVersion"
+    testImplementation "io.micronaut.cache:micronaut-cache-core"
     testImplementation("org.spockframework:spock-core:${spockVersion}") {
         exclude module:'groovy-all'
     }

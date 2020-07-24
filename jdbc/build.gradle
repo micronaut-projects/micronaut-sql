@@ -3,8 +3,10 @@ dependencies {
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"    
 
     api "io.micronaut:micronaut-inject:$micronautVersion"
+
     compileOnly "org.graalvm.nativeimage:svm"
-    compileOnly "io.micronaut:micronaut-spring"
+    compileOnly "io.micronaut.spring:micronaut-spring"
+
     compileOnly "org.springframework:spring-jdbc"
     compileOnly "org.springframework:spring-tx"
     testImplementation("org.spockframework:spock-core:${spockVersion}") {
