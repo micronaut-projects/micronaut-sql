@@ -15,9 +15,41 @@
  */
 package io.micronaut.configuration.jasync
 
+import com.github.jasync.sql.db.QueryResult
 import com.github.jasync.sql.db.SSLConfiguration
+import com.github.jasync.sql.db.interceptor.PreparedStatementParams
+import com.github.jasync.sql.db.interceptor.QueryInterceptor
 import io.micronaut.context.ApplicationContext
+import org.jetbrains.annotations.NotNull
 import spock.lang.Specification
+
+import java.util.concurrent.CompletableFuture
+
+class DummyQueryInterceptor1 implements QueryInterceptor {
+
+    @Override
+    PreparedStatementParams interceptPreparedStatement(@NotNull PreparedStatementParams preparedStatementParams) {
+        return null
+    }
+
+    @Override
+    CompletableFuture<QueryResult> interceptPreparedStatementComplete(@NotNull CompletableFuture<QueryResult> completableFuture) {
+        return null
+    }
+
+    @Override
+    String interceptQuery(@NotNull String s) {
+        return null
+    }
+
+    @Override
+    CompletableFuture<QueryResult> interceptQueryComplete(@NotNull CompletableFuture<QueryResult> completableFuture) {
+        return null
+    }
+}
+
+class DummyQueryInterceptor2 extends DummyQueryInterceptor1 {
+}
 
 class JasyncConfigurationSpec extends Specification {
 
@@ -52,6 +84,26 @@ class JasyncConfigurationSpec extends Specification {
         applicationContext?.stop()
     }
 
+    //
+    void "test jasync-client interceptors configuration"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run(
+                'jasync.client.port': '5433'
+        )
 
+        when:
+        applicationContext.registerSingleton(new DummyQueryInterceptor1())
+        applicationContext.registerSingleton(new DummyQueryInterceptor2())
 
+        then:
+        applicationContext.containsBean(JasyncPoolConfiguration)
+        applicationContext.containsBean(QueryInterceptor)
+        applicationContext.containsBean(DummyQueryInterceptor1)
+        applicationContext.containsBean(DummyQueryInterceptor2)
+
+        def config = applicationContext.getBean(JasyncPoolConfiguration)
+        config.jasyncOptions
+        config.jasyncOptions.interceptors
+        config.jasyncOptions.interceptors.size() == 2
+    }
 }

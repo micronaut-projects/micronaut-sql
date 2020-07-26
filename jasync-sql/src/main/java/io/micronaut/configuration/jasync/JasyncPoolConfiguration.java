@@ -18,6 +18,7 @@ package io.micronaut.configuration.jasync;
 import com.github.jasync.sql.db.ConnectionPoolConfiguration;
 import com.github.jasync.sql.db.ConnectionPoolConfigurationBuilder;
 import com.github.jasync.sql.db.SSLConfiguration;
+import com.github.jasync.sql.db.interceptor.QueryInterceptor;
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationInject;
 import io.micronaut.context.annotation.ConfigurationProperties;
@@ -27,7 +28,10 @@ import io.micronaut.core.bind.annotation.Bindable;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.io.File;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * The configuration class for Jasync Client.
@@ -52,9 +56,17 @@ public class JasyncPoolConfiguration {
      * @param sslConfiguration The SSL config
      */
     @Inject
-    protected JasyncPoolConfiguration(@Nullable JasyncSslConfiguration sslConfiguration) {
+    protected JasyncPoolConfiguration(@Nullable JasyncSslConfiguration sslConfiguration, @Nullable List<QueryInterceptor> queryInterceptors) {
         if (sslConfiguration != null) {
             jasyncOptions.setSsl(new SSLConfiguration(sslConfiguration.getMode(), sslConfiguration.getRootCert().orElse(null)));
+        }
+
+        if (queryInterceptors != null) {
+            jasyncOptions.setInterceptors(queryInterceptors
+                    .stream()
+                    .map(x -> (Supplier<QueryInterceptor>) () -> x)
+                    .collect(Collectors.toList())
+            );
         }
     }
 
