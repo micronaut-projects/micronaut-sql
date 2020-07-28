@@ -67,7 +67,8 @@ public class JasyncPoolConfiguration {
      * @param queryInterceptors Query Interceptors
      */
     @Inject
-    protected JasyncPoolConfiguration(@Nullable JasyncSslConfiguration sslConfiguration, @Nullable List<QueryInterceptor> queryInterceptors) {
+    protected JasyncPoolConfiguration(@Nullable JasyncSslConfiguration sslConfiguration,
+                                      @Nullable List<QueryInterceptor> queryInterceptors) {
         if (sslConfiguration != null) {
             jasyncOptions.setSsl(new SSLConfiguration(sslConfiguration.getMode(), sslConfiguration.getRootCert().orElse(null)));
         }
