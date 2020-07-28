@@ -16,9 +16,6 @@
 package io.micronaut.configuration.jasync
 
 import com.github.jasync.sql.db.SSLConfiguration
-import com.github.jasync.sql.db.interceptor.LoggingInterceptorSupplier
-import com.github.jasync.sql.db.interceptor.MdcQueryInterceptorSupplier
-import com.github.jasync.sql.db.interceptor.QueryInterceptor
 import io.micronaut.context.ApplicationContext
 import spock.lang.Specification
 
@@ -52,25 +49,5 @@ class JasyncConfigurationSpec extends Specification {
 
         cleanup:
         applicationContext?.stop()
-    }
-
-    void "test jasync-client interceptors configuration"() {
-        given:
-        ApplicationContext applicationContext = ApplicationContext.run(
-                'jasync.client.port': '5433'
-        )
-
-        when:
-        applicationContext.registerSingleton(new MdcQueryInterceptorSupplier().get())
-        applicationContext.registerSingleton(new LoggingInterceptorSupplier().get())
-
-        then:
-        applicationContext.containsBean(JasyncPoolConfiguration)
-        applicationContext.containsBean(QueryInterceptor)
-
-        def config = applicationContext.getBean(JasyncPoolConfiguration)
-        config.jasyncOptions
-        config.jasyncOptions.interceptors
-        config.jasyncOptions.interceptors.size() == 2
     }
 }
