@@ -47,11 +47,7 @@ class JasyncConfigurationSpec extends Specification {
         config.jasyncOptions.ssl.mode == SSLConfiguration.Mode.Prefer
         config.jasyncOptions.ssl.rootCert == new File("some.cert")
 
-
         cleanup:
         applicationContext?.stop()
     }
-
-
-
 }
