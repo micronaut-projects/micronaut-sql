@@ -48,7 +48,17 @@ public class JasyncPoolConfiguration {
     /**
      * Default constructor.
      */
+    @Deprecated
     public JasyncPoolConfiguration() {
+    }
+
+    /**
+     * @param sslConfiguration The SSL config
+     * @deprecated Use {@link JasyncPoolConfiguration(JasyncPoolConfiguration, List) instead
+     */
+    @Deprecated
+    protected JasyncPoolConfiguration(@Nullable JasyncSslConfiguration sslConfiguration) {
+        this(sslConfiguration, null);
     }
 
     /**
