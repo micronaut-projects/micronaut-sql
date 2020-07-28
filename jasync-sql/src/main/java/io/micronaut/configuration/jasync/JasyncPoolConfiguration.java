@@ -54,6 +54,7 @@ public class JasyncPoolConfiguration {
     /**
      * Injected constructor.
      * @param sslConfiguration The SSL config
+     * @param queryInterceptors Query Interceptors
      */
     @Inject
     protected JasyncPoolConfiguration(@Nullable JasyncSslConfiguration sslConfiguration, @Nullable List<QueryInterceptor> queryInterceptors) {
