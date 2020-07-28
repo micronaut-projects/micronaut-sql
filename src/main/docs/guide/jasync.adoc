@@ -40,7 +40,7 @@ include::jasync-sql/src/test/groovy/io/micronaut/configuration/jasync/JasyncSpec
 
 For more information on running queries on using the client please read the "Running queries" section in the documentation of https://github.com/jasync-sql/jasync-sql/wiki/Executing-Statements[jasync-sql].
 
-To use the Jasync query interceptors just register the bean that implements QueryInterceptor interface.
+To use https://github.com/jasync-sql/jasync-sql/wiki/Interceptors[Jasync query interceptors] register beans of type `com.github.jasync.sql.db.interceptor.QueryInterceptor`.
 
 == Database Health Checks
 
