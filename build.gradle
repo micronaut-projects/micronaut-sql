@@ -5,7 +5,7 @@ buildscript {
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
-        classpath "io.micronaut.build:micronaut-gradle-plugins:2.0.5"
+        classpath "io.micronaut.build:micronaut-gradle-plugins:2.0.6"
     }
 }
 
@@ -23,10 +23,7 @@ subprojects { Project subproject ->
     micronautBuild {
         dependencyUpdatesPattern = /.+(-|\.?)(b|M|RC|kts)(-|\.?)\d?.*/
     }
-
-    tasks.withType(Test) {
-        useJUnitPlatform()
-    }
 }
 
 apply plugin: "io.micronaut.build.docs"
+apply plugin: "io.micronaut.build.dependency-updates"
