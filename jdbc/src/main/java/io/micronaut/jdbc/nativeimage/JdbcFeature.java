@@ -18,14 +18,21 @@ package io.micronaut.jdbc.nativeimage;
 import com.oracle.svm.core.annotate.AutomaticFeature;
 import com.oracle.svm.core.configure.ResourcesRegistry;
 import io.micronaut.core.annotation.Internal;
-import org.graalvm.nativeimage.ImageSingletons;
 import org.graalvm.nativeimage.hosted.Feature;
-import org.graalvm.nativeimage.hosted.RuntimeClassInitialization;
-import org.graalvm.nativeimage.hosted.RuntimeReflection;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.util.Arrays;
+
+import static io.micronaut.core.graal.AutomaticFeatureUtils.addResourceBundles;
+import static io.micronaut.core.graal.AutomaticFeatureUtils.addResourcePatterns;
+import static io.micronaut.core.graal.AutomaticFeatureUtils.initializeAtBuildTime;
+import static io.micronaut.core.graal.AutomaticFeatureUtils.initializeAtRunTime;
+import static io.micronaut.core.graal.AutomaticFeatureUtils.initializePackagesAtBuildTime;
+import static io.micronaut.core.graal.AutomaticFeatureUtils.initializePackagesAtRunTime;
+import static io.micronaut.core.graal.AutomaticFeatureUtils.registerAllForRuntimeReflection;
+import static io.micronaut.core.graal.AutomaticFeatureUtils.registerClassForRuntimeReflection;
+import static io.micronaut.core.graal.AutomaticFeatureUtils.registerClassForRuntimeReflectionAndReflectiveInstantiation;
+import static io.micronaut.core.graal.AutomaticFeatureUtils.registerFieldsAndMethodsWithReflectiveAccess;
+import static io.micronaut.core.graal.AutomaticFeatureUtils.registerMethodsForRuntimeReflection;
 
 /**
  * A JDBC feature that configures JDBC drivers correctly for native image.
@@ -49,52 +56,51 @@ final class JdbcFeature implements Feature {
 
     @Override
     public void beforeAnalysis(BeforeAnalysisAccess access) {
-        // h2
         handleH2(access);
 
-        // postgres
         handlePostgres(access);
 
-        // sql server
-        handleSqlServer(access);
-
-        // mariadb
         handleMariadb(access);
 
-        // oracle
         handleOracle(access);
 
-        // mysql
+        handleSqlServer(access);
+
         handleMySql(access);
     }
 
     private void handleH2(BeforeAnalysisAccess access) {
         Class<?> h2Driver = access.findClassByName(H2_DRIVER);
         if (h2Driver != null) {
-            registerAllIfPresent(access, "org.h2.mvstore.db.MVTableEngine");
+            registerFieldsAndMethodsWithReflectiveAccess(access, "org.h2.mvstore.db.MVTableEngine");
 
-            RuntimeReflection.register(h2Driver);
-            RuntimeClassInitialization.initializeAtBuildTime(h2Driver);
+            registerClassForRuntimeReflection(access, H2_DRIVER);
+            initializeAtBuildTime(access, H2_DRIVER);
+
+            registerClassForRuntimeReflection(access, "org.h2.engine.Constants");
+            registerMethodsForRuntimeReflection(access, "org.h2.engine.Constants");
 
             // required for file-based H2 databases
-            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathDisk");
-            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathMem");
-            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathMemLZF");
-            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathNioMem");
-            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathNioMemLZF");
-            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathSplit");
-            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathNio");
-            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathNioMapped");
-            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathAsync");
-            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathZip");
-            registerForRuntimeReflectiveInstantiation(access, "org.h2.store.fs.FilePathRetryOnInterrupt");
-            initializeAtRuntime(access, "sun.nio.ch.WindowsAsynchronousFileChannelImpl$DefaultIocpHolder");
+            Arrays.asList(
+                    "org.h2.store.fs.FilePathDisk",
+                    "org.h2.store.fs.FilePathMem",
+                    "org.h2.store.fs.FilePathMemLZF",
+                    "org.h2.store.fs.FilePathNioMem",
+                    "org.h2.store.fs.FilePathNioMemLZF",
+                    "org.h2.store.fs.FilePathSplit",
+                    "org.h2.store.fs.FilePathNio",
+                    "org.h2.store.fs.FilePathNioMapped",
+                    "org.h2.store.fs.FilePathAsync",
+                    "org.h2.store.fs.FilePathZip",
+                    "org.h2.store.fs.FilePathRetryOnInterrupt"
+            ).forEach(c -> registerClassForRuntimeReflectionAndReflectiveInstantiation(access, c));
 
-            ResourcesRegistry resourcesRegistry = getResourceRegistry();
-            if (resourcesRegistry != null) {
-                resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
-                resourcesRegistry.addResources("org/h2/util/data.zip");
-            }
+            initializeAtRunTime(access, "sun.nio.ch.WindowsAsynchronousFileChannelImpl$DefaultIocpHolder");
+
+            addResourcePatterns(
+                    "META-INF/services/java.sql.Driver",
+                    "org/h2/util/data.zip"
+            );
 
             initializeAtBuildTime(access, "java.sql.DriverManager");
         }
@@ -103,20 +109,35 @@ final class JdbcFeature implements Feature {
     private void handlePostgres(BeforeAnalysisAccess access) {
         Class<?> postgresDriver = access.findClassByName(POSTGRESQL_DRIVER);
         if (postgresDriver != null) {
-            RuntimeReflection.register(postgresDriver);
-            RuntimeClassInitialization.initializeAtBuildTime(postgresDriver);
+            registerClassForRuntimeReflection(access, POSTGRESQL_DRIVER);
 
             initializeAtBuildTime(access,
                     POSTGRESQL_DRIVER,
                     "org.postgresql.util.SharedTimer"
             );
 
-            registerAllFields(access, "org.postgresql.PGProperty");
+            registerAllForRuntimeReflection(access, "org.postgresql.PGProperty");
 
-            ResourcesRegistry resourcesRegistry = getResourceRegistry();
-            if (resourcesRegistry != null) {
-                resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
-            }
+            addResourcePatterns("META-INF/services/java.sql.Driver");
+
+            initializeAtBuildTime(access, "java.sql.DriverManager");
+        }
+    }
+
+    private void handleMariadb(BeforeAnalysisAccess access) {
+        Class<?> mariaDriver = access.findClassByName(MARIADB_DRIVER);
+        if (mariaDriver != null) {
+            registerFieldsAndMethodsWithReflectiveAccess(access, MARIADB_DRIVER);
+
+            addResourcePatterns("META-INF/services/java.sql.Driver");
+
+            registerFieldsAndMethodsWithReflectiveAccess(access, "org.mariadb.jdbc.util.Options");
+
+            initializePackagesAtBuildTime("org.mariadb");
+            initializePackagesAtRunTime("org.mariadb.jdbc.credential.aws");
+
+            initializeAtRunTime(access, "org.mariadb.jdbc.internal.failover.impl.MastersSlavesListener");
+            initializeAtRunTime(access, "org.mariadb.jdbc.internal.com.send.authentication.SendPamAuthPacket");
 
             initializeAtBuildTime(access, "java.sql.DriverManager");
         }
@@ -125,26 +146,30 @@ final class JdbcFeature implements Feature {
     private void handleOracle(BeforeAnalysisAccess access) {
         Class<?> oracleDriver = access.findClassByName(ORACLE_DRIVER);
         if (oracleDriver != null) {
-            registerAllIfPresent(access, "oracle.jdbc.driver.T4CDriverExtension");
-            registerAllIfPresent(access, "oracle.jdbc.driver.T2CDriverExtension");
-            registerAllIfPresent(access, "oracle.net.ano.Ano");
-            registerAllIfPresent(access, "oracle.net.ano.AuthenticationService");
-            registerAllIfPresent(access, "oracle.net.ano.DataIntegrityService");
-            registerAllIfPresent(access, "oracle.net.ano.EncryptionService");
-            registerAllIfPresent(access, "oracle.net.ano.SupervisorService");
+            Arrays.asList(
+                    "oracle.jdbc.driver.T4CDriverExtension",
+                    "oracle.jdbc.driver.T2CDriverExtension",
+                    "oracle.net.ano.Ano",
+                    "oracle.net.ano.AuthenticationService",
+                    "oracle.net.ano.DataIntegrityService",
+                    "oracle.net.ano.EncryptionService",
+                    "oracle.net.ano.SupervisorService"
+            ).forEach(c -> registerFieldsAndMethodsWithReflectiveAccess(access, c));
 
             registerAllForRuntimeReflection(access, "oracle.jdbc.logging.annotations.Supports");
             registerAllForRuntimeReflection(access, "oracle.jdbc.logging.annotations.Feature");
 
-            ResourcesRegistry resourcesRegistry = getResourceRegistry();
-            if (resourcesRegistry != null) {
-                resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
-                resourcesRegistry.addResources("oracle/sql/converter_xcharset/lx20002.glb");
-                resourcesRegistry.addResources("oracle/sql/converter_xcharset/lx2001f.glb");
-                resourcesRegistry.addResources("oracle/sql/converter_xcharset/lx200b2.glb");
-                resourcesRegistry.addResourceBundles("oracle.net.jdbc.nl.mesg.NLSR");
-                resourcesRegistry.addResourceBundles("oracle.net.mesg.Message");
-            }
+            addResourcePatterns(
+                    "META-INF/services/java.sql.Driver",
+                    "oracle/sql/converter_xcharset/lx20002.glb",
+                    "oracle/sql/converter_xcharset/lx2001f.glb",
+                    "oracle/sql/converter_xcharset/lx200b2.glb"
+            );
+
+            addResourceBundles(
+                    "oracle.net.jdbc.nl.mesg.NLSR",
+                    "oracle.net.mesg.Message"
+            );
 
             initializeAtBuildTime(
                     access,
@@ -160,132 +185,26 @@ final class JdbcFeature implements Feature {
                     "com.sun.jmx.defaults.JmxProperties"
             );
 
-            initializeAtRuntime(access, "java.sql.DriverManager");
-        }
-    }
-
-    private void handleMariadb(BeforeAnalysisAccess access) {
-        Class<?> mariaDriver = access.findClassByName(MARIADB_DRIVER);
-        if (mariaDriver != null) {
-            RuntimeReflection.register(mariaDriver);
-            registerAllAccess(mariaDriver);
-
-            ResourcesRegistry resourcesRegistry = getResourceRegistry();
-            if (resourcesRegistry != null) {
-                resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
-            }
-
-            registerAllIfPresent(access, "org.mariadb.jdbc.util.Options");
-
-            RuntimeClassInitialization.initializeAtBuildTime("org.mariadb");
-            RuntimeClassInitialization.initializeAtRunTime("org.mariadb.jdbc.credential.aws");
-
-            initializeAtRuntime(access, "org.mariadb.jdbc.internal.failover.impl.MastersSlavesListener");
-            initializeAtRuntime(access, "org.mariadb.jdbc.internal.com.send.authentication.SendPamAuthPacket");
-
-            initializeAtBuildTime(access, "java.sql.DriverManager");
-        }
-    }
-
-    private void initializeAtRuntime(BeforeAnalysisAccess access, String n) {
-        Class<?> t = access.findClassByName(n);
-        if (t != null) {
-            RuntimeClassInitialization.initializeAtRunTime(t);
-        }
-    }
-
-    private void initializeAtBuildTime(BeforeAnalysisAccess access, String... names) {
-        for (String name : names) {
-            Class<?> t = access.findClassByName(name);
-            if (t != null) {
-                RuntimeClassInitialization.initializeAtBuildTime(t);
-            }
-        }
-    }
-
-    private void registerAllIfPresent(BeforeAnalysisAccess access, String n) {
-        Class<?> t = access.findClassByName(n);
-        if (t != null) {
-            registerAllAccess(t);
-        }
-    }
-
-    private void registerAllAccess(Class<?> t) {
-        RuntimeReflection.register(t);
-        RuntimeReflection.registerForReflectiveInstantiation(t);
-        for (Method method : t.getMethods()) {
-            RuntimeReflection.register(method);
-        }
-        Field[] fields = t.getFields();
-        for (Field field : fields) {
-            RuntimeReflection.register(field);
-        }
-    }
-
-    private void registerAllForRuntimeReflection(BeforeAnalysisAccess access, String n) {
-        Class<?> t = access.findClassByName(n);
-        if (t != null) {
-            RuntimeReflection.register(t);
-            registerAllFields(access, n);
-            registerAllMethods(access, n);
-            registerAllConstructors(access, n);
-        }
-    }
-
-    private void registerAllFields(BeforeAnalysisAccess access, String n) {
-        Class<?> t = access.findClassByName(n);
-        if (t != null) {
-            Field[] fields = t.getFields();
-            for (Field field : fields) {
-                RuntimeReflection.register(field);
-            }
-        }
-    }
-
-    private void registerAllMethods(BeforeAnalysisAccess access, String n) {
-        Class<?> t = access.findClassByName(n);
-        if (t != null) {
-            for (Method method : t.getMethods()) {
-                RuntimeReflection.register(method);
-            }
-        }
-    }
-
-    private void registerAllConstructors(BeforeAnalysisAccess access, String n) {
-        Class<?> t = access.findClassByName(n);
-        if (t != null) {
-            for (Constructor constructor : t.getConstructors()) {
-                RuntimeReflection.register(constructor);
-            }
-        }
-    }
-
-    private void registerForRuntimeReflectiveInstantiation(BeforeAnalysisAccess access, String n) {
-        Class<?> t = access.findClassByName(n);
-        if (t != null) {
-            RuntimeReflection.register(t);
-            RuntimeReflection.registerForReflectiveInstantiation(t);
+            initializeAtRunTime(access, "java.sql.DriverManager");
         }
     }
 
     private void handleSqlServer(BeforeAnalysisAccess access) {
         Class<?> sqlServerDriver = access.findClassByName(SQL_SERVER_DRIVER);
         if (sqlServerDriver != null) {
-            RuntimeReflection.register(sqlServerDriver);
-            registerAllAccess(sqlServerDriver);
+            registerFieldsAndMethodsWithReflectiveAccess(access, SQL_SERVER_DRIVER);
 
-            RuntimeClassInitialization.initializeAtBuildTime(SQL_SERVER_DRIVER);
+            initializeAtBuildTime(access,
+                    SQL_SERVER_DRIVER,
+                    "com.microsoft.sqlserver.jdbc.Util",
+                    "com.microsoft.sqlserver.jdbc.SQLServerException"
+            );
 
-            initializeAtBuildTime(access, "com.microsoft.sqlserver.jdbc.Util");
-            initializeAtBuildTime(access, "com.microsoft.sqlserver.jdbc.SQLServerException");
-            registerAllIfPresent(access, "com.microsoft.sqlserver.jdbc.SQLServerDriver");
-
-            ResourcesRegistry resourcesRegistry = getResourceRegistry();
-            if (resourcesRegistry != null) {
-                resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
-                resourcesRegistry.addResources("javax.crypto.Cipher.class");
-                resourcesRegistry.addResourceBundles("com.microsoft.sqlserver.jdbc.SQLServerResource");
-            }
+            addResourcePatterns(
+                    "META-INF/services/java.sql.Driver",
+                    "javax.crypto.Cipher.class"
+            );
+            addResourceBundles("com.microsoft.sqlserver.jdbc.SQLServerResource");
 
             initializeAtBuildTime(access, "java.sql.DriverManager");
         }
@@ -294,31 +213,24 @@ final class JdbcFeature implements Feature {
     private void handleMySql(BeforeAnalysisAccess access) {
         Class<?> mysqlDriver = access.findClassByName(MYSQL_DRIVER);
         if (mysqlDriver != null) {
-            registerAllAccess(mysqlDriver);
+            registerFieldsAndMethodsWithReflectiveAccess(access, MYSQL_DRIVER);
 
             registerAllForRuntimeReflection(access, "com.mysql.cj.log.StandardLogger");
             registerAllForRuntimeReflection(access, "com.mysql.cj.conf.url.SingleConnectionUrl");
 
-            registerAllIfPresent(access, "com.mysql.cj.protocol.StandardSocketFactory");
-            registerAllIfPresent(access, "com.mysql.cj.jdbc.AbandonedConnectionCleanupThread");
+            registerFieldsAndMethodsWithReflectiveAccess(access, "com.mysql.cj.protocol.StandardSocketFactory");
+            registerFieldsAndMethodsWithReflectiveAccess(access, "com.mysql.cj.jdbc.AbandonedConnectionCleanupThread");
 
-            ResourcesRegistry resourcesRegistry = getResourceRegistry();
-            if (resourcesRegistry != null) {
-                resourcesRegistry.addResources("META-INF/services/java.sql.Driver");
-                resourcesRegistry.addResources("com/mysql/cj/TlsSettings.properties");
-                resourcesRegistry.addResources("com/mysql/cj/LocalizedErrorMessages.properties");
-                resourcesRegistry.addResources("com/mysql/cj/util/TimeZoneMapping.properties");
-                resourcesRegistry.addResourceBundles("com.mysql.cj.LocalizedErrorMessages");
-            }
+            addResourcePatterns(
+                    "META-INF/services/java.sql.Driver",
+                    "com/mysql/cj/TlsSettings.properties",
+                    "com/mysql/cj/LocalizedErrorMessages.properties",
+                    "com/mysql/cj/util/TimeZoneMapping.properties"
+            );
+            addResourceBundles("com.mysql.cj.LocalizedErrorMessages");
 
-            initializeAtRuntime(access, "java.sql.DriverManager");
+            initializeAtRunTime(access, "java.sql.DriverManager");
         }
     }
 
-    private ResourcesRegistry getResourceRegistry() {
-        if (resourcesRegistry == null) {
-            resourcesRegistry = ImageSingletons.lookup(ResourcesRegistry.class);
-        }
-        return resourcesRegistry;
-    }
 }

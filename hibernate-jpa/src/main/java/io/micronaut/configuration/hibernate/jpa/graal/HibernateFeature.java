@@ -16,8 +16,8 @@
 package io.micronaut.configuration.hibernate.jpa.graal;
 
 import com.oracle.svm.core.annotate.AutomaticFeature;
+import io.micronaut.core.graal.AutomaticFeatureUtils;
 import org.graalvm.nativeimage.hosted.Feature;
-import org.graalvm.nativeimage.hosted.RuntimeReflection;
 import org.hibernate.dialect.*;
 
 /**
@@ -29,15 +29,12 @@ import org.hibernate.dialect.*;
  */
 @AutomaticFeature
 final class HibernateFeature implements Feature {
+
     @Override
     public void beforeAnalysis(BeforeAnalysisAccess access) {
-        if (registerIfPresent(access, "org.h2.Driver", H2Dialect.class)) {
-            Class<?> constClass = access.findClassByName("org.h2.engine.Constants");
-            if (constClass != null) {
-                RuntimeReflection.register(constClass);
-                RuntimeReflection.register(constClass.getDeclaredFields());
-            }
-        }
+        registerIfPresent(access, "org.h2.Driver",
+                H2Dialect.class
+        );
 
         registerIfPresent(access, "org.postgresql.Driver",
                 PostgreSQL9Dialect.class,
@@ -50,11 +47,6 @@ final class HibernateFeature implements Feature {
                 PostgreSQL81Dialect.class,
                 PostgreSQL82Dialect.class
         );
-
-        registerIfPresent(access, "com.microsoft.sqlserver.jdbc.SQLServerResource",
-                SQLServer2005Dialect.class,
-                SQLServer2008Dialect.class,
-                SQLServer2012Dialect.class);
 
         registerIfPresent(access, "org.mariadb.jdbc.Driver",
                 MariaDBDialect.class,
@@ -82,15 +74,13 @@ final class HibernateFeature implements Feature {
                 MySQL8Dialect.class);
     }
 
-    private boolean registerIfPresent(BeforeAnalysisAccess access, String name, Class<? extends Dialect>... dialects) {
+    private void registerIfPresent(BeforeAnalysisAccess access, String name, Class<? extends Dialect>... dialects) {
         Class<?> driver = access.findClassByName(name);
         boolean present = driver != null;
         if (present) {
             for (Class<? extends Dialect> dialect : dialects) {
-                RuntimeReflection.register(dialect);
-                RuntimeReflection.registerForReflectiveInstantiation(dialect);
+                AutomaticFeatureUtils.registerClassForRuntimeReflectionAndReflectiveInstantiation(dialect);
             }
         }
-        return present;
     }
 }
