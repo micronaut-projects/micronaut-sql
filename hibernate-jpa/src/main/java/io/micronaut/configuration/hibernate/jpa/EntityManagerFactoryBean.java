@@ -161,6 +161,13 @@ public class EntityManagerFactoryBean {
         MetadataSources metadataSources = createMetadataSources(standardServiceRegistry);
         JpaConfiguration.EntityScanConfiguration entityScanConfiguration = jpaConfiguration.getEntityScanConfiguration();
         entityScanConfiguration.findEntities().forEach(metadataSources::addAnnotatedClass);
+
+        if (jpaConfiguration.getMappingResources() != null) {
+            for (String resource : jpaConfiguration.getMappingResources()) {
+                metadataSources.addResource(resource);
+            }
+        }
+
         return metadataSources;
     }
 
