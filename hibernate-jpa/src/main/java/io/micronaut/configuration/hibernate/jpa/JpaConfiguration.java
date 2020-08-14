@@ -53,6 +53,7 @@ public class JpaConfiguration {
     private final Environment environment;
     private final ApplicationContext applicationContext;
     private Map<String, Object> jpaProperties = new HashMap<>(10);
+    private List<String> mappingResources = new ArrayList<>();
     private EntityScanConfiguration entityScanConfiguration;
 
     /**
@@ -189,6 +190,22 @@ public class JpaConfiguration {
         return new StandardServiceRegistryBuilder(
                 bootstrapServiceRegistry
         );
+    }
+
+    /**
+     * Mapping resources (equivalent to "mapping-file" entries in persistence.xml).
+     */
+    public List<String> getMappingResources() {
+        return this.mappingResources;
+    }
+
+    /**
+     * Sets additional mapping resources.
+     *
+     * @param mappingResources list of mapping files
+     */
+    public void setMappingResources(List<String> mappingResources) {
+        this.mappingResources = mappingResources;
     }
 
     /**

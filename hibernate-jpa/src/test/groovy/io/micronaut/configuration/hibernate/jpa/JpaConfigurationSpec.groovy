@@ -55,4 +55,21 @@ class JpaConfigurationSpec extends Specification {
         cleanup:
         ctx?.close()
     }
+
+    void "test mapping resources"() {
+        given:
+        def ctx = ApplicationContext.run(
+                'jpa.default.mapping-resources': ['hibernate/custom.hbm.xml']
+        )
+
+        def config = ctx.getBean(JpaConfiguration)
+
+        expect:
+        config.mappingResources
+        config.mappingResources == ['hibernate/custom.hbm.xml']
+
+        cleanup:
+        ctx?.close()
+    }
+
 }
