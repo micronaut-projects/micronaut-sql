@@ -14,7 +14,7 @@ dependencies {
     // included for Java 11
     runtimeOnly 'javax.xml.bind:jaxb-api:2.3.1'
 
-    api "io.micronaut.data:micronaut-data-tx-hibernate:1.1.3"
+    api "io.micronaut.data:micronaut-data-tx-hibernate:2.0.0"
     api "io.micronaut:micronaut-aop:$micronautVersion"
     api project(":jdbc")
     api "io.micronaut:micronaut-runtime:$micronautVersion"
