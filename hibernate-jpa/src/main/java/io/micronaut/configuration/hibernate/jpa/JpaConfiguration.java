@@ -29,15 +29,25 @@ import io.micronaut.core.util.StringUtils;
 import io.micronaut.core.util.Toggleable;
 import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
+import org.hibernate.boot.registry.StandardServiceInitiator;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.bytecode.spi.BytecodeProvider;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.integrator.spi.Integrator;
+import org.hibernate.service.spi.ServiceRegistryImplementor;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.persistence.Entity;
 import javax.validation.ValidatorFactory;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Configuration for JPA and Hibernate.
@@ -55,6 +65,8 @@ public class JpaConfiguration {
     private Map<String, Object> jpaProperties = new HashMap<>(10);
     private List<String> mappingResources = new ArrayList<>();
     private EntityScanConfiguration entityScanConfiguration;
+
+    private boolean compileTimeHibernateProxies;
 
     /**
      * @param applicationContext The application context
@@ -99,9 +111,24 @@ public class JpaConfiguration {
      */
     @SuppressWarnings("WeakerAccess")
     public StandardServiceRegistry buildStandardServiceRegistry(@Nullable Map<String, Object> additionalSettings) {
-        StandardServiceRegistryBuilder standardServiceRegistryBuilder = createStandServiceRegistryBuilder(bootstrapServiceRegistry);
-
         Map<String, Object> jpaProperties = getProperties();
+
+        StandardServiceRegistryBuilder standardServiceRegistryBuilder = createStandServiceRegistryBuilder(bootstrapServiceRegistry);
+        if (compileTimeHibernateProxies) {
+            // It would be enough to add `ProxyFactoryFactory` by providing `BytecodeProvider` we eliminate bytecode Enhancer
+            standardServiceRegistryBuilder.addInitiator(new StandardServiceInitiator<BytecodeProvider>() {
+                @Override
+                public BytecodeProvider initiateService(Map configurationValues, ServiceRegistryImplementor registry) {
+                    return applicationContext.getBean(BytecodeProvider.class);
+                }
+
+                @Override
+                public Class<BytecodeProvider> getServiceInitiated() {
+                    return BytecodeProvider.class;
+                }
+            });
+        }
+
         if (CollectionUtils.isNotEmpty(jpaProperties)) {
             standardServiceRegistryBuilder.applySettings(jpaProperties);
         }
@@ -157,6 +184,13 @@ public class JpaConfiguration {
         if (validatorFactory != null) {
             jpaProperties.put(org.hibernate.cfg.AvailableSettings.JPA_VALIDATION_FACTORY, validatorFactory);
         }
+        // Disable default bytecode provider bytebuddy if it isn't present on the classpath
+        try {
+            Class.forName("net.bytebuddy.ByteBuddy");
+        } catch (ClassNotFoundException e) {
+            jpaProperties.put(AvailableSettings.BYTECODE_PROVIDER, org.hibernate.cfg.Environment.BYTECODE_PROVIDER_NAME_NONE);
+            System.setProperty(AvailableSettings.BYTECODE_PROVIDER, org.hibernate.cfg.Environment.BYTECODE_PROVIDER_NAME_NONE);
+        }
         return jpaProperties;
     }
 
@@ -206,6 +240,24 @@ public class JpaConfiguration {
      */
     public void setMappingResources(List<String> mappingResources) {
         this.mappingResources = mappingResources;
+    }
+
+    /**
+     * Compile time Hibernate proxies.
+     *
+     * @return true if compile time proxies enabled
+     */
+    public boolean isCompileTimeHibernateProxies() {
+        return compileTimeHibernateProxies;
+    }
+
+    /**
+     * Enable compile time Hibernate proxies.
+     *
+     * @param compileTimeHibernateProxies true to enable compile time proxies
+     */
+    public void setCompileTimeHibernateProxies(boolean compileTimeHibernateProxies) {
+        this.compileTimeHibernateProxies = compileTimeHibernateProxies;
     }
 
     /**

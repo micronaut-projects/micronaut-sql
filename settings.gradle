@@ -1,3 +1,10 @@
+pluginManagement {
+    plugins {
+        id 'io.micronaut.application' version getProperty("micronautGradlePluginVersion")
+        id 'io.micronaut.library' version getProperty("micronautGradlePluginVersion")
+    }
+}
+
 rootProject.name = 'sql'
 
 include 'jdbc'
@@ -12,4 +19,12 @@ include 'jooq'
 include 'vertx-mysql-client'
 include 'vertx-pg-client'
 include 'jdbi'
-
+include 'test-graalvm-hibernate-jpa'
+include 'test-graalvm-hibernate-jpa:postgres'
+include 'test-graalvm-hibernate-jpa:mysql'
+include 'test-graalvm-hibernate-jpa:mariadb'
+include 'test-graalvm-hibernate-jpa:oracle'
+include 'test-graalvm-hibernate-jpa:h2'
+include 'test-graalvm-hibernate-jpa:mssql'
+include 'test-graalvm-hibernate-jpa:common'
+include 'test-graalvm-hibernate-jpa:common-tests'

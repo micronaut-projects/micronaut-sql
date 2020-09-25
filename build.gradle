@@ -10,6 +10,11 @@ buildscript {
 }
 
 subprojects { Project subproject ->
+
+    if (subproject.getPath().startsWith(":test-")) {
+        return
+    }
+
     group "io.micronaut.sql"
     apply plugin: "io.micronaut.build.common"
 
