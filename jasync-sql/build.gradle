@@ -1,5 +1,5 @@
 ext {
-    testContainersVersion="1.15.0-rc1"
+    testContainersVersion="1.15.0-rc2"
     jasyncVersion="1.1.4"
 }
 dependencies {
