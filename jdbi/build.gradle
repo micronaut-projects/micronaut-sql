@@ -18,7 +18,7 @@ dependencies {
     api project(":jdbc")
     api "io.micronaut:micronaut-aop:$micronautVersion"
     api "io.micronaut:micronaut-inject:$micronautVersion"
-    api "org.jdbi:jdbi3-core:3.14.4"
+    api "org.jdbi:jdbi3-core:3.15.1"
     compileOnly "com.h2database:h2"
     compileOnly "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
     compileOnly "org.springframework:spring-jdbc:$springVersion"
