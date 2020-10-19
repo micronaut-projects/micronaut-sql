@@ -36,7 +36,7 @@ dependencies {
     testImplementation "io.micronaut.micrometer:micronaut-micrometer-core"
    
     testImplementation "io.micronaut.cache:micronaut-cache-core"
-    testImplementation "org.jdbi:jdbi3-sqlobject:3.14.4"
+    testImplementation "org.jdbi:jdbi3-sqlobject:3.17.0"
     testImplementation("org.spockframework:spock-core:${spockVersion}") {
         exclude module:'groovy-all'
     }
