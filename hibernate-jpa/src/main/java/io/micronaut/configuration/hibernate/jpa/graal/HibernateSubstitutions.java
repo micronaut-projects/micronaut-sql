@@ -63,6 +63,7 @@ import org.hibernate.service.Service;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.spi.Manageable;
 import org.hibernate.service.spi.Stoppable;
+import org.hibernate.tuple.component.PojoComponentTuplizer;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.tuple.entity.PojoEntityTuplizer;
 import org.hibernate.type.EnumType;
@@ -89,6 +90,7 @@ final class Loggers {
         EntitiesInPackageCondition.class,
         SingleTableEntityPersister.class,
         EntityMetamodel.class,
+        PojoComponentTuplizer.class,
         PojoEntityTuplizer.class,
         BasicCollectionPersister.class,
         HqlToken.class,
