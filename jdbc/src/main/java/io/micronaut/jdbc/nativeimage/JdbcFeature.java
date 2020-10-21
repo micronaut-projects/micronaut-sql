@@ -21,6 +21,7 @@ import io.micronaut.core.annotation.Internal;
 import org.graalvm.nativeimage.hosted.Feature;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import static io.micronaut.core.graal.AutomaticFeatureUtils.addResourceBundles;
 import static io.micronaut.core.graal.AutomaticFeatureUtils.addResourcePatterns;
@@ -32,6 +33,7 @@ import static io.micronaut.core.graal.AutomaticFeatureUtils.registerAllForRuntim
 import static io.micronaut.core.graal.AutomaticFeatureUtils.registerClassForRuntimeReflection;
 import static io.micronaut.core.graal.AutomaticFeatureUtils.registerClassForRuntimeReflectionAndReflectiveInstantiation;
 import static io.micronaut.core.graal.AutomaticFeatureUtils.registerFieldsAndMethodsWithReflectiveAccess;
+import static io.micronaut.core.graal.AutomaticFeatureUtils.registerFieldsForRuntimeReflection;
 import static io.micronaut.core.graal.AutomaticFeatureUtils.registerMethodsForRuntimeReflection;
 
 /**
@@ -77,8 +79,12 @@ final class JdbcFeature implements Feature {
             registerClassForRuntimeReflection(access, H2_DRIVER);
             initializeAtBuildTime(access, H2_DRIVER);
 
-            registerClassForRuntimeReflection(access, "org.h2.engine.Constants");
-            registerMethodsForRuntimeReflection(access, "org.h2.engine.Constants");
+            Collections.singletonList("org.h2.engine.Constants")
+                    .forEach(s -> {
+                        registerClassForRuntimeReflection(access, s);
+                        registerMethodsForRuntimeReflection(access, s);
+                        registerFieldsForRuntimeReflection(access, s);
+                    });
 
             // required for file-based H2 databases
             Arrays.asList(
