@@ -16,6 +16,7 @@
 package io.micronaut.configuration.hibernate.jpa.graal;
 
 import com.oracle.svm.core.annotate.AutomaticFeature;
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.graal.AutomaticFeatureUtils;
 import org.graalvm.nativeimage.hosted.Feature;
 import org.hibernate.dialect.*;
@@ -28,6 +29,7 @@ import org.hibernate.dialect.*;
  * @since 2.2.1
  */
 @AutomaticFeature
+@Internal
 final class HibernateFeature implements Feature {
 
     @Override
@@ -79,7 +81,7 @@ final class HibernateFeature implements Feature {
         boolean present = driver != null;
         if (present) {
             for (Class<? extends Dialect> dialect : dialects) {
-                AutomaticFeatureUtils.registerClassForRuntimeReflectionAndReflectiveInstantiation(dialect);
+                AutomaticFeatureUtils.registerClassForRuntimeReflectionAndReflectiveInstantiation(access, dialect.getName());
             }
         }
     }
