@@ -33,6 +33,7 @@ import java.sql.SQLException;
 public class JooqConfigurationProperties {
 
     private SQLDialect sqlDialect;
+    private boolean jacksonConverterEnabled = false;
 
     /**
      * SQL dialect to use. If {@code null}, will be detected automatically.
@@ -50,6 +51,24 @@ public class JooqConfigurationProperties {
      */
     public void setSqlDialect(SQLDialect sqlDialect) {
         this.sqlDialect = sqlDialect;
+    }
+
+    /**
+     * If enable {@link JacksonConverterProvider} bean to use Jackson for JSON and JSONB types.
+     *
+     * @return boolean
+     */
+    public boolean isJacksonConverterEnabled() {
+        return jacksonConverterEnabled;
+    }
+
+    /**
+     * Set if enable {@link JacksonConverterProvider} bean to use Jackson for JSON and JSONB types.
+     *
+     * @param jacksonConverterEnabled Enable Jackson
+     */
+    public void setJacksonConverterEnabled(boolean jacksonConverterEnabled) {
+        this.jacksonConverterEnabled = jacksonConverterEnabled;
     }
 
     /**

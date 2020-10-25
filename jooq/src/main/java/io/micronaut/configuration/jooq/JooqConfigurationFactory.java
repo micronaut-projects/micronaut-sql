@@ -50,6 +50,7 @@ public class JooqConfigurationFactory {
      * @param recordMapperProvider   The record mapper provider
      * @param recordUnmapperProvider The record unmapper provider
      * @param metaProvider           The metadata provider
+     * @param converterProvider      The converter provider
      * @param ctx                    The {@link ApplicationContext}
      * @return A {@link Configuration}
      */
@@ -63,6 +64,7 @@ public class JooqConfigurationFactory {
             @Parameter @Nullable RecordMapperProvider recordMapperProvider,
             @Parameter @Nullable RecordUnmapperProvider recordUnmapperProvider,
             @Parameter @Nullable MetaProvider metaProvider,
+            @Parameter @Nullable ConverterProvider converterProvider,
             ApplicationContext ctx
     ) {
         DefaultConfiguration configuration = new DefaultConfiguration();
@@ -90,6 +92,11 @@ public class JooqConfigurationFactory {
         }
         if (metaProvider != null) {
             configuration.setMetaProvider(metaProvider);
+        }
+        if (converterProvider != null) {
+            configuration.set(converterProvider);
+        } else if (properties.isJacksonConverterEnabled()) {
+            ctx.findBean(JacksonConverterProvider.class).ifPresent(configuration::set);
         }
         configuration.setExecuteListenerProvider(ctx.getBeansOfType(ExecuteListenerProvider.class, Qualifiers.byName(name))
                 .toArray(new ExecuteListenerProvider[0]));
