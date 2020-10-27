@@ -45,11 +45,25 @@ Micronaut will look for the following bean types:
 * link:{jooqapi}/org/jooq/RecordMapperProvider.html[RecordMapperProvider]
 * link:{jooqapi}/org/jooq/RecordUnmapperProvider.html[RecordUnmapperProvider]
 * link:{jooqapi}/org/jooq/MetaProvider.html[MetaProvider]
+* link:{jooqapi}/org/jooq/ConverterProvider.html[ConverterProvider]
 * link:{jooqapi}/org/jooq/ExecuteListenerProvider.html[ExecuteListenerProvider]
 * link:{jooqapi}/org/jooq/RecordListenerProvider.html[RecordListenerProvider]
 * link:{jooqapi}/org/jooq/VisitListenerProvider.html[VisitListenerProvider]
 * link:{jooqapi}/org/jooq/TransactionListenerProvider.html[TransactionListenerProvider]
 * link:{jooqapi}/org/jooq/DiagnosticsListenerProvider.html[DiagnosticsListenerProvider]
+
+=== Using Micronaut's ObjectMapper to convert JSON(B) types ===
+
+If you don't register bean of type link:{jooqapi}/org/jooq/ConverterProvider.html[ConverterProvider] and provide following configuration, `JacksonConverterProvider` will be used, which uses Micronaut configured `ObjectMapper` for converting from and to types JSON and JSONB.
+
+.Configuring Micronaut Jackson converter
+[source,yaml]
+----
+jooq:
+    datasources:
+        default:
+            jackson-converter-enabled: true
+----
 
 === GraalVM native image ===
 
