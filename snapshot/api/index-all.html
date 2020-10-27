@@ -830,6 +830,10 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html#isInTransaction-org.jdbi.v3.core.Handle-">isInTransaction(Handle)</a></span> - Method in class io.micronaut.configuration.jdbi.transaction.spring.<a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.spring">SpringTransactionHandler</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html#isJacksonConverterEnabled--">isJacksonConverterEnabled()</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html" title="class in io.micronaut.configuration.jooq">JooqConfigurationProperties</a></dt>
+<dd>
+<div class="block">If enable <a href="io/micronaut/configuration/jooq/JacksonConverterProvider.html" title="class in io.micronaut.configuration.jooq"><code>JacksonConverterProvider</code></a> bean to use Jackson for JSON and JSONB types.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/validation/JPATraversableResolver.html#isReachable-java.lang.Object-javax.validation.Path.Node-java.lang.Class-javax.validation.Path-java.lang.annotation.ElementType-">isReachable(Object, Path.Node, Class&lt;?&gt;, Path, ElementType)</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.validation.<a href="io/micronaut/configuration/hibernate/jpa/validation/JPATraversableResolver.html" title="class in io.micronaut.configuration.hibernate.jpa.validation">JPATraversableResolver</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -838,6 +842,12 @@
 </a>
 <h2 class="title">J</h2>
 <dl>
+<dt><a href="io/micronaut/configuration/jooq/JacksonConverterProvider.html" title="class in io.micronaut.configuration.jooq"><span class="typeNameLink">JacksonConverterProvider</span></a> - Class in <a href="io/micronaut/configuration/jooq/package-summary.html">io.micronaut.configuration.jooq</a></dt>
+<dd>
+<div class="block">jOOQ ConverterProvider integrating Jackson ObjectMapper to convert JSON and JSONB types.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JacksonConverterProvider.html#JacksonConverterProvider-com.fasterxml.jackson.databind.ObjectMapper-">JacksonConverterProvider(ObjectMapper)</a></span> - Constructor for class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JacksonConverterProvider.html" title="class in io.micronaut.configuration.jooq">JacksonConverterProvider</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jasync/JasyncClientSettings.html" title="interface in io.micronaut.configuration.jasync"><span class="typeNameLink">JasyncClientSettings</span></a> - Interface in <a href="io/micronaut/configuration/jasync/package-summary.html">io.micronaut.configuration.jasync</a></dt>
 <dd>
 <div class="block">Client settings interface.</div>
@@ -923,7 +933,7 @@
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbi/JdbiFactory.html#JdbiFactory--">JdbiFactory()</a></span> - Constructor for class io.micronaut.configuration.jdbi.<a href="io/micronaut/configuration/jdbi/JdbiFactory.html" title="class in io.micronaut.configuration.jdbi">JdbiFactory</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqConfigurationFactory.html#jooqConfiguration-java.lang.String-javax.sql.DataSource-org.jooq.TransactionProvider-org.jooq.conf.Settings-org.jooq.ExecutorProvider-org.jooq.RecordMapperProvider-org.jooq.RecordUnmapperProvider-org.jooq.MetaProvider-io.micronaut.context.ApplicationContext-">jooqConfiguration(String, DataSource, TransactionProvider, Settings, ExecutorProvider, RecordMapperProvider, RecordUnmapperProvider, MetaProvider, ApplicationContext)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationFactory.html" title="class in io.micronaut.configuration.jooq">JooqConfigurationFactory</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqConfigurationFactory.html#jooqConfiguration-java.lang.String-javax.sql.DataSource-org.jooq.TransactionProvider-org.jooq.conf.Settings-org.jooq.ExecutorProvider-org.jooq.RecordMapperProvider-org.jooq.RecordUnmapperProvider-org.jooq.MetaProvider-org.jooq.ConverterProvider-io.micronaut.context.ApplicationContext-">jooqConfiguration(String, DataSource, TransactionProvider, Settings, ExecutorProvider, RecordMapperProvider, RecordUnmapperProvider, MetaProvider, ConverterProvider, ApplicationContext)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationFactory.html" title="class in io.micronaut.configuration.jooq">JooqConfigurationFactory</a></dt>
 <dd>
 <div class="block">Creates jOOQ <code>Configuration</code>.</div>
 </dd>
@@ -1092,6 +1102,8 @@
 <dd>
 <div class="block">The prefix used for data source configuration.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JacksonConverterProvider.html#provide-java.lang.Class-java.lang.Class-">provide(Class&lt;T&gt;, Class&lt;U&gt;)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JacksonConverterProvider.html" title="class in io.micronaut.configuration.jooq">JacksonConverterProvider</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/spring/JooqExceptionTranslatorProvider.html#provide--">provide()</a></span> - Method in class io.micronaut.configuration.jooq.spring.<a href="io/micronaut/configuration/jooq/spring/JooqExceptionTranslatorProvider.html" title="class in io.micronaut.configuration.jooq.spring">JooqExceptionTranslatorProvider</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -1195,6 +1207,10 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/hibernate/jpa/EntityManagerFactoryBean.html#setHibernateInterceptor-org.hibernate.Interceptor-">setHibernateInterceptor(Interceptor)</a></span> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/EntityManagerFactoryBean.html" title="class in io.micronaut.configuration.hibernate.jpa">EntityManagerFactoryBean</a></dt>
 <dd>
 <div class="block">Sets the <code>Interceptor</code> to use.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html#setJacksonConverterEnabled-boolean-">setJacksonConverterEnabled(boolean)</a></span> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html" title="class in io.micronaut.configuration.jooq">JooqConfigurationProperties</a></dt>
+<dd>
+<div class="block">Set if enable <a href="io/micronaut/configuration/jooq/JacksonConverterProvider.html" title="class in io.micronaut.configuration.jooq"><code>JacksonConverterProvider</code></a> bean to use Jackson for JSON and JSONB types.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#setJndiName-java.lang.String-">setJndiName(String)</a></span> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration</a></dt>
 <dd>

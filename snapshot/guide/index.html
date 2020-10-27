@@ -959,6 +959,9 @@ Only beans with the same name qualifier as the data source name will be used.</p
 <p><a href="https://www.jooq.org/javadoc/latest/org/jooq/MetaProvider.html">MetaProvider</a></p>
 </li>
 <li>
+<p><a href="https://www.jooq.org/javadoc/latest/org/jooq/ConverterProvider.html">ConverterProvider</a></p>
+</li>
+<li>
 <p><a href="https://www.jooq.org/javadoc/latest/org/jooq/ExecuteListenerProvider.html">ExecuteListenerProvider</a></p>
 </li>
 <li>
@@ -974,6 +977,21 @@ Only beans with the same name qualifier as the data source name will be used.</p
 <p><a href="https://www.jooq.org/javadoc/latest/org/jooq/DiagnosticsListenerProvider.html">DiagnosticsListenerProvider</a></p>
 </li>
 </ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_micronaut_s_objectmapper_to_convert_json_b_types">Using Micronaut&#8217;s ObjectMapper to convert JSON(B) types</h3>
+<div class="paragraph">
+<p>If you don&#8217;t register bean of type <a href="https://www.jooq.org/javadoc/latest/org/jooq/ConverterProvider.html">ConverterProvider</a> and provide following configuration, <code>JacksonConverterProvider</code> will be used, which uses Micronaut configured <code>ObjectMapper</code> for converting from and to types JSON and JSONB.</p>
+</div>
+<div class="listingblock">
+<div class="title">Configuring Micronaut Jackson converter</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">jooq:
+    datasources:
+        default:
+            jackson-converter-enabled: true</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
