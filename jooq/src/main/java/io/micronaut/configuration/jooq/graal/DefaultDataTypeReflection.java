@@ -54,6 +54,16 @@ import io.micronaut.core.annotation.TypeHint.AccessType;
                 "org.jooq.JSONB[]",
                 "java.util.UUID[]",
                 "byte[]",
+                "org.jooq.impl.SQLDataType",
+                "org.jooq.util.cubrid.CUBRIDDataType",
+                "org.jooq.util.derby.DerbyDataType",
+                "org.jooq.util.firebird.FirebirdDataType",
+                "org.jooq.util.h2.H2DataType",
+                "org.jooq.util.hsqldb.HSQLDBDataType",
+                "org.jooq.util.mariadb.MariaDBDataType",
+                "org.jooq.util.mysql.MySQLDataType",
+                "org.jooq.util.postgres.PostgresDataType",
+                "org.jooq.util.sqlite.SQLiteDataType",
         },
         accessType = AccessType.ALL_PUBLIC_CONSTRUCTORS
 )
