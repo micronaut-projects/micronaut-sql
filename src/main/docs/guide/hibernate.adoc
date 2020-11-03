@@ -130,6 +130,53 @@ Note that this approach has the following disadvantages:
 * It is slower, since Micronaut has to search through JAR files and scan class files with ASM
 * It does not work in GraalVM substrate.
 
+==== Using compile-time Hibernate proxies
+
+Hibernate uses a proxy object to implement lazy loading with a default implementation generating a proxy during the runtime.
+
+This has a few disadvantages:
+
+* Runtime class generation can affect startup and runtime performance
+* Environments like GraalVM don't support it
+
+If you wish to use lazy entity associations and avoid runtime proxies you can enable compile-time proxies:
+[source,yaml]
+----
+jpa:
+  default:
+    compile-time-hibernate-proxies: true
+----
+
+Compile-time proxies require for an entity which needs to have a proxy to be annotated with `@GenerateProxy`:
+
+For example:
+
+[source,java]
+----
+@Entity
+public class Pet {
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Owner owner;
+
+    //...
+}
+----
+
+The entity `Owner` needs to be annotated with `@GenerateProxy` to have a proxy generated and the compile-time.
+
+[source,java]
+----
+@Entity
+@GenerateProxy
+public class Owner {
+    //...
+}
+----
+
+[NOTE]
+Compile-time proxies are enabled by default for GraalVM environment.
+
 
 ==== Using Spring Transaction Management
 
