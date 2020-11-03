@@ -82,7 +82,7 @@ final class IntroducedHibernateProxyFactory implements ProxyFactory {
     public HibernateProxy getProxy(Serializable id, SharedSessionContractImplementor session) throws HibernateException {
         if (beanDefinition == null) {
             beanDefinition = beanContext.findProxyTargetBeanDefinition(persistentClass, null)
-                    .orElseThrow(() -> new HibernateException("Cannot find a proxy class, please annotate " + persistentClass + " with @IntroduceHibernateProxy."));
+                    .orElseThrow(() -> new HibernateException("Cannot find a proxy class, please annotate " + persistentClass + " with @GenerateProxy."));
         }
         LazyInitializer lazyInitializer = new IntroducedHibernateProxyLazyInitializer(entityName, persistentClass, id, session);
         Object proxyTargetBean = beanContext.getBean(beanDefinition);
