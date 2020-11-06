@@ -36,6 +36,7 @@ import com.oracle.svm.core.annotate.Substitute;
 import com.oracle.svm.core.annotate.TargetClass;
 
 import io.micronaut.configuration.hibernate.jpa.condition.EntitiesInPackageCondition;
+import io.micronaut.configuration.hibernate.jpa.proxy.IntrospectedHibernateBytecodeProvider;
 import io.micronaut.jdbc.spring.HibernatePresenceCondition;
 import org.hibernate.boot.archive.spi.InputStreamAccess;
 import org.hibernate.boot.jaxb.internal.MappingBinder;
@@ -226,7 +227,7 @@ final class IdOptimizers {
 final class EnvironmentSubs {
     @Substitute
     public static BytecodeProvider buildBytecodeProvider(Properties properties) {
-        return new org.hibernate.bytecode.internal.none.BytecodeProviderImpl();
+        return new IntrospectedHibernateBytecodeProvider();
     }
 }
 

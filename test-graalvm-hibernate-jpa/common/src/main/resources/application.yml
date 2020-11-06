@@ -1,0 +1,16 @@
+micronaut:
+  application:
+    name: graalvm-hibernate-jpa
+  http:
+    client:
+      read-timeout: 60s
+jackson:
+  bean-introspection-module: true
+jpa:
+  default:
+    compile-time-hibernate-proxies: true
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        show_sql: true
