@@ -2,6 +2,7 @@ io.micronaut.configuration.hibernate.jpa
 io.micronaut.configuration.hibernate.jpa.condition
 io.micronaut.configuration.hibernate.jpa.jcache
 io.micronaut.configuration.hibernate.jpa.metrics
+io.micronaut.configuration.hibernate.jpa.proxy
 io.micronaut.configuration.hibernate.jpa.scope
 io.micronaut.configuration.hibernate.jpa.spring
 io.micronaut.configuration.hibernate.jpa.validation
