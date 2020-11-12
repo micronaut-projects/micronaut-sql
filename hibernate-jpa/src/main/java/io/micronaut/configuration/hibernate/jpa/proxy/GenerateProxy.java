@@ -18,7 +18,7 @@ package io.micronaut.configuration.hibernate.jpa.proxy;
 import io.micronaut.aop.Around;
 import io.micronaut.aop.Introduction;
 import io.micronaut.context.annotation.Type;
-import jdk.jfr.Experimental;
+import io.micronaut.core.annotation.Experimental;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
