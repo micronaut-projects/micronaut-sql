@@ -39,7 +39,7 @@ public class JdbcDatabaseManager {
         databases.add(new EmbeddedJdbcDatabase("org.apache.derby.jdbc.EmbeddedDriver", "SELECT 1 FROM SYSIBM.SYSDUMMY1", new String[]{"derby"}, "jdbc:derby:memory:%s;create=true"));
         databases.add(new EmbeddedJdbcDatabase("org.hsqldb.jdbc.JDBCDriver", "select 1 from INFORMATION_SCHEMA.SYSTEM_USERS", new String[]{"hsqldb"}, "jdbc:hsqldb:mem:%s"));
 
-        databases.add(new JdbcDatabase("com.mysql.jdbc.Driver", "mysql"));
+        databases.add(new JdbcDatabase("com.mysql.cj.jdbc.Driver", "mysql"));
         databases.add(new JdbcDatabase("oracle.jdbc.OracleDriver", "SELECT 1 FROM DUAL", new String[]{"oracle"}));
         databases.add(new JdbcDatabase("org.postgresql.Driver", "postgresql"));
         databases.add(new JdbcDatabase("com.microsoft.sqlserver.jdbc.SQLServerDriver", "sqlserver"));
