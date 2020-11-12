@@ -18,6 +18,7 @@ package io.micronaut.jdbc.nativeimage;
 import com.oracle.svm.core.annotate.AutomaticFeature;
 import com.oracle.svm.core.configure.ResourcesRegistry;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.core.graal.AutomaticFeatureUtils;
 import org.graalvm.nativeimage.hosted.Feature;
 
 import java.util.Arrays;
@@ -219,6 +220,36 @@ final class JdbcFeature implements Feature {
     private void handleMySql(BeforeAnalysisAccess access) {
         Class<?> mysqlDriver = access.findClassByName(MYSQL_DRIVER);
         if (mysqlDriver != null) {
+            Arrays.asList(
+                    "com.mysql.cj.exceptions.AssertionFailedException",
+                    "com.mysql.cj.exceptions.CJCommunicationsException",
+                    "com.mysql.cj.exceptions.CJConnectionFeatureNotAvailableException",
+                    "com.mysql.cj.exceptions.CJException",
+                    "com.mysql.cj.exceptions.CJOperationNotSupportedException",
+                    "com.mysql.cj.exceptions.CJPacketTooBigException",
+                    "com.mysql.cj.exceptions.CJTimeoutException",
+                    "com.mysql.cj.exceptions.ClosedOnExpiredPasswordException",
+                    "com.mysql.cj.exceptions.ConnectionIsClosedException",
+                    "com.mysql.cj.exceptions.DataConversionException",
+                    "com.mysql.cj.exceptions.DataReadException",
+                    "com.mysql.cj.exceptions.DataTruncationException",
+                    "com.mysql.cj.exceptions.FeatureNotAvailableException",
+                    "com.mysql.cj.exceptions.InvalidConnectionAttributeException",
+                    "com.mysql.cj.exceptions.MysqlErrorNumbers",
+                    "com.mysql.cj.exceptions.NumberOutOfRange",
+                    "com.mysql.cj.exceptions.OperationCancelledException",
+                    "com.mysql.cj.exceptions.PasswordExpiredException",
+                    "com.mysql.cj.exceptions.PropertyNotModifiableException",
+                    "com.mysql.cj.exceptions.RSAException",
+                    "com.mysql.cj.exceptions.SSLParamsException",
+                    "com.mysql.cj.exceptions.StatementIsClosedException",
+                    "com.mysql.cj.exceptions.UnableToConnectException",
+                    "com.mysql.cj.exceptions.UnsupportedConnectionStringException",
+                    "com.mysql.cj.exceptions.WrongArgumentExceptio"
+            ).forEach(name -> {
+                AutomaticFeatureUtils.registerClassForRuntimeReflection(access, name);
+                AutomaticFeatureUtils.registerConstructorsForRuntimeReflection(access, name);
+            });
             registerFieldsAndMethodsWithReflectiveAccess(access, MYSQL_DRIVER);
 
             registerAllForRuntimeReflection(access, "com.mysql.cj.log.StandardLogger");
