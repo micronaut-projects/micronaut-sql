@@ -107,7 +107,7 @@ project("postgres") {
 }
 project("oracle") {
     dependencies {
-        runtimeOnly "com.oracle.database.jdbc:ojdbc8:19.8.0.0"
+        runtimeOnly "com.oracle.database.jdbc:ojdbc8:$ojdbcVersion"
         testImplementation "org.testcontainers:oracle-xe"
     }
 }
