@@ -30,6 +30,13 @@ jobs:
       - name: Install Native Image
         run: gu install native-image
       - name: Build with Gradle
-        run: ./gradlew check testNativeImage --continue --no-daemon
+        run: |
+          if ./gradlew tasks --all | grep -w "testNativeImage"
+          then
+            ./gradlew check testNativeImage --continue --no-daemon
+          else
+            ./gradlew check --continue --no-daemon
+          fi
         env:
           TESTCONTAINERS_RYUK_DISABLED: true
+
