@@ -33,7 +33,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * @author Denis Stepanov
  * @since 3.3.0
  */
-@Around(proxyTarget = true)
+@Around
 @Introduction(interfaces = IntroducedHibernateProxy.class)
 @Type(IntroducedHibernateProxyAdvice.class)
 @Documented
