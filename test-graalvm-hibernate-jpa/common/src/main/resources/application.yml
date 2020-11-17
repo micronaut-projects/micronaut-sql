@@ -8,7 +8,6 @@ jackson:
   bean-introspection-module: true
 jpa:
   default:
-    compile-time-hibernate-proxies: true
     properties:
       hibernate:
         hbm2ddl:
