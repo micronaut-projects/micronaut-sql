@@ -71,7 +71,7 @@ final class IntroducedHibernateProxyFactoryFactory implements ProxyFactoryFactor
     @Override
     public BasicProxyFactory buildBasicProxyFactory(Class superClass, Class[] interfaces) {
         return () -> {
-            throw new HibernateException( "NoneBasicProxyFactory is unable to generate a BasicProxy for type " + superClass + " and interfaces " + Arrays.toString( interfaces ) + ". Enable a different BytecodeProvider." );
+            throw new HibernateException("NoneBasicProxyFactory is unable to generate a BasicProxy for type " + superClass + " and interfaces " + Arrays.toString(interfaces) + ". Enable a different BytecodeProvider.");
         };
     }
 

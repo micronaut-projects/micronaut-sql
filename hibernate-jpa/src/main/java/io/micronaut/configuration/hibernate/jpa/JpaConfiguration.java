@@ -228,6 +228,8 @@ public class JpaConfiguration {
 
     /**
      * Mapping resources (equivalent to "mapping-file" entries in persistence.xml).
+     *
+     * @return The mapping resources
      */
     public List<String> getMappingResources() {
         return this.mappingResources;
