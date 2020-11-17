@@ -27,6 +27,7 @@ import org.hibernate.bytecode.spi.ReflectionOptimizer;
 
 import javax.inject.Singleton;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,11 +52,7 @@ public final class IntrospectedHibernateBytecodeProvider implements BytecodeProv
     @Override
     public ReflectionOptimizer getReflectionOptimizer(Class clazz, String[] getterNames, String[] setterNames, Class[] types) {
         Optional<BeanIntrospection<?>> optionalBeanIntrospection = BeanIntrospector.SHARED.findIntrospection(clazz);
-        if (!optionalBeanIntrospection.isPresent()) {
-            return null;
-        }
-        BeanIntrospection<?> beanIntrospection = optionalBeanIntrospection.get();
-        return new ReflectionOptimizer() {
+        return optionalBeanIntrospection.map(beanIntrospection -> new ReflectionOptimizer() {
             @Override
             public InstantiationOptimizer getInstantiationOptimizer() {
                 return beanIntrospection::instantiate;
@@ -63,34 +60,38 @@ public final class IntrospectedHibernateBytecodeProvider implements BytecodeProv
 
             @Override
             public AccessOptimizer getAccessOptimizer() {
-                List<BeanProperty> beanProperties = new ArrayList<>(beanIntrospection.getBeanProperties());
+                BeanProperty[] beanProperties = beanIntrospection.getBeanProperties().toArray(new BeanProperty[0]);
                 return new AccessOptimizer() {
+
+                    private final String[] propertyNames = Arrays.stream(beanProperties)
+                            .map(BeanProperty::getName)
+                            .toArray(String[]::new);
 
                     @Override
                     public String[] getPropertyNames() {
-                        return beanProperties
-                                .stream()
-                                .map(BeanProperty::getName)
-                                .toArray(String[]::new);
+                        return propertyNames;
                     }
 
                     @Override
                     public Object[] getPropertyValues(Object object) {
-                        return beanProperties
-                                .stream()
-                                .map(prop -> prop.get(object))
-                                .toArray(Object[]::new);
+                        Object[] values = new Object[beanProperties.length];
+                        for (int i = 0; i < beanProperties.length; i++) {
+                            BeanProperty beanProperty = beanProperties[i];
+                            values[i] = beanProperty.get(i);
+                        }
+                        return values;
                     }
 
                     @Override
                     public void setPropertyValues(Object object, Object[] values) {
-                        for (int i = 0; i < beanProperties.size(); i++) {
-                            beanProperties.get(i).set(object, values[i]);
+                        for (int i = 0; i < beanProperties.length; i++) {
+                            BeanProperty beanProperty = beanProperties[i];
+                            beanProperty.set(object, values[i]);
                         }
                     }
                 };
             }
-        };
+        }).orElse(null);
     }
 
     @Override

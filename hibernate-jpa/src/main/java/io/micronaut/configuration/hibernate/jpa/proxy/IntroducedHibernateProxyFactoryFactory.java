@@ -21,10 +21,16 @@ import org.hibernate.HibernateException;
 import org.hibernate.bytecode.spi.BasicProxyFactory;
 import org.hibernate.bytecode.spi.ProxyFactoryFactory;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.proxy.ProxyFactory;
 import org.hibernate.resource.beans.spi.ManagedBeanRegistry;
+import org.hibernate.type.CompositeType;
 
+import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Set;
 
 /**
  * Implementation of Hibernate's {@link ProxyFactoryFactory} that creates {@link IntroducedHibernateProxyFactory} with {@link BeanContext}.
@@ -35,19 +41,38 @@ import java.util.Arrays;
 @Internal
 final class IntroducedHibernateProxyFactoryFactory implements ProxyFactoryFactory {
 
+    private static final ProxyFactory NO_PROXY_FACTORY = new ProxyFactory() {
+        @Override
+        public void postInstantiate(String entityName, Class persistentClass, Set<Class> interfaces, Method getIdentifierMethod, Method setIdentifierMethod, CompositeType componentIdType) throws HibernateException {
+            // no-op
+        }
+
+        @Override
+        public HibernateProxy getProxy(Serializable id, SharedSessionContractImplementor session) throws HibernateException {
+            throw new HibernateException("Generation of HibernateProxy instances at runtime is not allowed when the configured BytecodeProvider is 'none'; your model requires a more advanced BytecodeProvider to be enabled.");
+        }
+    };
+
     @Override
     public ProxyFactory buildProxyFactory(SessionFactoryImplementor sessionFactory) {
-        BeanContext beanContext = sessionFactory.getServiceRegistry()
-                .getService(ManagedBeanRegistry.class)
-                .getBean(BeanContext.class)
-                .getBeanInstance();
-        return new IntroducedHibernateProxyFactory(beanContext);
+        ManagedBeanRegistry beanRegistry = sessionFactory.getServiceRegistry()
+                .getService(ManagedBeanRegistry.class);
+        BeanContext beanContext;
+        try {
+            beanContext = beanRegistry
+                    .getBean(BeanContext.class)
+                    .getBeanInstance();
+            return new IntroducedHibernateProxyFactory(beanContext);
+        } catch (org.hibernate.InstantiationException e) {
+            return NO_PROXY_FACTORY;
+        }
     }
 
     @Override
     public BasicProxyFactory buildBasicProxyFactory(Class superClass, Class[] interfaces) {
-        // Fallback?
-        throw new HibernateException("Proxying of basic type " + superClass + " and interfaces " + Arrays.toString(interfaces) + " not supported. Micronaut only supports generating proxies for POJOs and non-basic types. Disable Micronaut compile-time proxies or remove basic type proxy to proceed.");
+        return () -> {
+            throw new HibernateException( "NoneBasicProxyFactory is unable to generate a BasicProxy for type " + superClass + " and interfaces " + Arrays.toString( interfaces ) + ". Enable a different BytecodeProvider." );
+        };
     }
 
 }

@@ -30,11 +30,12 @@ abstract class AbstractDBContainerAppSpec extends AbstractAppSpec implements Tes
     Map<String, String> getProperties() {
         dbContainer.start()
         return [
-                "datasources.default.url"                 : dbContainer.getJdbcUrl(),
-                "jpa.default.properties.hibernate.dialect": getHibernateDialect(),
-                "datasources.default.driverClassName"     : dbContainer.getDriverClassName(),
-                "datasources.default.username"            : dbContainer.getUsername(),
-                "datasources.default.password"            : dbContainer.getPassword(),
+                "datasources.default.url"                   : dbContainer.getJdbcUrl(),
+                "jpa.default.compile-time-hibernate-proxies": true,
+                "jpa.default.properties.hibernate.dialect"  : getHibernateDialect(),
+                "datasources.default.driverClassName"       : dbContainer.getDriverClassName(),
+                "datasources.default.username"              : dbContainer.getUsername(),
+                "datasources.default.password"              : dbContainer.getPassword(),
         ]
     }
 
