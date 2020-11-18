@@ -55,10 +55,6 @@ subprojects { Project subproject ->
         testImplementation "org.testcontainers:jdbc"
     }
 
-    nativeImage {
-        args("-H:+TraceClassInitialization")
-    }
-
     mainClassName = "example.Application"
 }
 
