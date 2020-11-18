@@ -85,9 +85,6 @@ project("h2") {
     nativeImage {
         args("--report-unsupported-elements-at-runtime")
     }
-    // Skip on GraalVM Java11
-    tasks.findByName("testNativeImage").onlyIf { !isGraal() || JavaVersion.current() != JavaVersion.VERSION_11 }
-    tasks.findByName("nativeImage").onlyIf { !isGraal() || JavaVersion.current() != JavaVersion.VERSION_11 }
 }
 project("mssql") {
     dependencies {
@@ -122,14 +119,4 @@ project("mariadb") {
         runtimeOnly "org.mariadb.jdbc:mariadb-java-client"
         testImplementation "org.testcontainers:mariadb"
     }
-}
-
-boolean isGraal() {
-    for (String prop : ["jvmci.Compiler", "java.vendor.version"]) {
-        String vv = System.getProperty(prop)
-        if (vv != null && vv.toLowerCase(Locale.ENGLISH).contains("graal")) {
-            return true
-        }
-    }
-    return false
 }
