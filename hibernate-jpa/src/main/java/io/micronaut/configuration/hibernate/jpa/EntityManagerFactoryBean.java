@@ -16,6 +16,7 @@
 package io.micronaut.configuration.hibernate.jpa;
 
 
+import io.micronaut.transaction.hibernate5.MicronautSessionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,10 +24,8 @@ import io.micronaut.configuration.hibernate.jpa.condition.RequiresHibernateEntit
 import io.micronaut.context.BeanLocator;
 import io.micronaut.context.annotation.*;
 import io.micronaut.context.env.Environment;
-import io.micronaut.core.reflect.ClassUtils;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.jdbc.DataSourceResolver;
-import io.micronaut.transaction.hibernate5.MicronautSessionContext;
 import org.hibernate.Interceptor;
 import org.hibernate.MappingException;
 import org.hibernate.SessionFactory;
@@ -107,11 +106,9 @@ public class EntityManagerFactoryBean {
 
         Map<String, Object> additionalSettings = new LinkedHashMap<>();
         additionalSettings.put(AvailableSettings.DATASOURCE, dataSource);
-        Class<?> sessionContextClass = ClassUtils.forName("org.springframework.orm.hibernate5"
-                                                        + ".SpringSessionContext", EntityManagerFactoryBean.class.getClassLoader())
-                .orElse(MicronautSessionContext.class);
-        additionalSettings.put(
-                AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, sessionContextClass.getName());
+        additionalSettings.put(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS,
+                beanLocator.findBean(HibernateCurrentSessionContextClassProvider.class)
+                        .map(provider -> provider.get().getName()).orElseGet(MicronautSessionContext.class::getName));
         additionalSettings.put(AvailableSettings.SESSION_FACTORY_NAME, dataSourceName);
         additionalSettings.put(AvailableSettings.SESSION_FACTORY_NAME_IS_JNDI, false);
         additionalSettings.put(AvailableSettings.BEAN_CONTAINER, new BeanContainer() {
