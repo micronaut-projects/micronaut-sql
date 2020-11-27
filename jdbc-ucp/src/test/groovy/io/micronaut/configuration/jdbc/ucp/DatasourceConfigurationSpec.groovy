@@ -39,6 +39,38 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.close()
     }
 
+    void 'test set datasource properties'() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                [
+                        "datasources.default.url": "jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE",
+                        "datasources.default.username": "sa",
+                        "datasources.default.password": "",
+                        "datasources.default.data-source-properties": [
+                                "oracle.fan.enabled": true
+                        ]
+                ]
+        ))
+        applicationContext.start()
+
+        expect:
+        applicationContext.containsBean(PoolDataSource)
+        applicationContext.containsBean(DatasourceConfiguration)
+
+        when:
+        PoolDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+
+        then: //The default configuration is supplied because H2 is on the classpath
+        dataSource.getURL() == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
+        dataSource.getUser() == 'sa'
+        dataSource.getPassword() == ''
+
+        cleanup:
+        applicationContext.close()
+    }
+
     void "test blank configuration"() {
         given:
         ApplicationContext applicationContext = new DefaultApplicationContext("test")

@@ -164,7 +164,12 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     public void setDataSourceProperties(Map<String, ?> dsProperties) {
         if (dsProperties != null) {
             Properties properties = new Properties();
-            properties.putAll(dsProperties);
+            dsProperties.forEach((key, value) -> {
+                if (value != null) {
+                    properties.put(key, value.toString());
+                }
+            });
+
             try {
                 this.delegate.setConnectionProperties(properties);
             } catch (SQLException e) {
