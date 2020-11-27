@@ -46,7 +46,7 @@
         <div class="docs-content">
             <div class="project">
                 <h1>Configuration Reference</h1>
-                <p><strong>Version:</strong>3.3.2</p>
+                <p><strong>Version:</strong>3.3.3</p>
                 <p></p>
             </div>
 <div class="sect2">
@@ -127,9 +127,43 @@
 </div>
 <div class="sect2">
 <h3 id="_jasync_sql_config_properties">Jasync Sql Config Properties</h3>
+<a id="io.micronaut.configuration.jasync.JasyncPoolConfiguration$JasyncSslConfiguration" href="#io.micronaut.configuration.jasync.JasyncPoolConfiguration$JasyncSslConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 3. Configuration Properties for <a href="../api/io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html">JasyncPoolConfiguration$JasyncSslConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.github.jasync.sql.db.SSLConfiguration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.mode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.github.jasync.sql.db.SSLConfiguration$Mode</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.root-cert</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
 <a id="io.micronaut.configuration.jasync.JasyncPoolConfiguration" href="#io.micronaut.configuration.jasync.JasyncPoolConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 3. Configuration Properties for <a href="../api/io/micronaut/configuration/jasync/JasyncPoolConfiguration.html">JasyncPoolConfiguration</a></caption>
+<caption class="title">Table 4. Configuration Properties for <a href="../api/io/micronaut/configuration/jasync/JasyncPoolConfiguration.html">JasyncPoolConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -236,40 +270,6 @@
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.max-connection-ttl</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Long</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
-<a id="io.micronaut.configuration.jasync.JasyncPoolConfiguration$JasyncSslConfiguration" href="#io.micronaut.configuration.jasync.JasyncPoolConfiguration$JasyncSslConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 4. Configuration Properties for <a href="../api/io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html">JasyncPoolConfiguration$JasyncSslConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.github.jasync.sql.db.SSLConfiguration</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.mode</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.github.jasync.sql.db.SSLConfiguration$Mode</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.root-cert</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
