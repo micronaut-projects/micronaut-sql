@@ -297,6 +297,10 @@ final class JdbcFeature implements Feature {
 
             registerAllForRuntimeReflection(access, "com.mysql.cj.log.StandardLogger");
             registerAllForRuntimeReflection(access, "com.mysql.cj.conf.url.SingleConnectionUrl");
+            // Required for X protocol
+            registerAllForRuntimeReflection(access, "com.mysql.cj.conf.url.XDevApiConnectionUrl");
+            registerAllForRuntimeReflection(access, "com.mysql.cj.protocol.x.SyncFlushDeflaterOutputStream");
+            registerAllForRuntimeReflection(access, "java.util.zip.InflaterInputStream");
 
             registerFieldsAndMethodsWithReflectiveAccess(access, "com.mysql.cj.protocol.StandardSocketFactory");
             registerFieldsAndMethodsWithReflectiveAccess(access, "com.mysql.cj.jdbc.AbandonedConnectionCleanupThread");
