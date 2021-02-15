@@ -1,5 +1,5 @@
 ext {
-    testContainersVersion="1.15.1"
+    testContainersVersion="1.15.2"
     vertxVersion = '3.9.4'
 }
 
