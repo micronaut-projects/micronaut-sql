@@ -18,6 +18,7 @@ package io.micronaut.configuration.hibernate.jpa;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.EachProperty;
+import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.beans.BeanIntrospector;
@@ -59,6 +60,7 @@ import java.util.Map;
 public class JpaConfiguration {
     public static final String PREFIX = "jpa";
 
+    private final String name;
     private final BootstrapServiceRegistry bootstrapServiceRegistry;
     private final Environment environment;
     private final ApplicationContext applicationContext;
@@ -69,31 +71,41 @@ public class JpaConfiguration {
     private boolean compileTimeHibernateProxies;
 
     /**
+     * @param name               The name
      * @param applicationContext The application context
      * @param integrator         The {@link Integrator}
      */
-    protected JpaConfiguration(ApplicationContext applicationContext,
-                               @Nullable Integrator integrator) {
-        this(applicationContext, integrator, new EntityScanConfiguration(applicationContext.getEnvironment()));
+    protected JpaConfiguration(@Parameter String name, ApplicationContext applicationContext, @Nullable Integrator integrator) {
+        this(name, applicationContext, integrator, new EntityScanConfiguration(applicationContext.getEnvironment()));
     }
 
     /**
+     * @param name                    The name
      * @param applicationContext      The application context
      * @param integrator              The {@link Integrator}
      * @param entityScanConfiguration The entity scan configuration
      */
     @Inject
-    protected JpaConfiguration(ApplicationContext applicationContext,
+    protected JpaConfiguration(@Parameter String name,
+                               ApplicationContext applicationContext,
                                @Nullable Integrator integrator,
                                @Nullable EntityScanConfiguration entityScanConfiguration) {
         ClassLoader classLoader = applicationContext.getClassLoader();
         BootstrapServiceRegistryBuilder bootstrapServiceRegistryBuilder =
                 createBootstrapServiceRegistryBuilder(integrator, classLoader);
 
+        this.name = name;
         this.bootstrapServiceRegistry = bootstrapServiceRegistryBuilder.build();
         this.entityScanConfiguration = entityScanConfiguration != null ? entityScanConfiguration : new EntityScanConfiguration(applicationContext.getEnvironment());
         this.environment = applicationContext.getEnvironment();
         this.applicationContext = applicationContext;
+    }
+
+    /**
+     * @return The configuration name
+     */
+    public String getName() {
+        return name;
     }
 
     /**
