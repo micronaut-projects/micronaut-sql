@@ -4,6 +4,9 @@ pluginManagement {
         id 'io.micronaut.library' version getProperty("micronautGradlePluginVersion")
     }
 }
+plugins {
+    id "com.gradle.enterprise" version "3.6.1"
+}
 
 rootProject.name = 'sql'
 
@@ -28,3 +31,12 @@ include 'test-graalvm-hibernate-jpa:h2'
 include 'test-graalvm-hibernate-jpa:mssql'
 include 'test-graalvm-hibernate-jpa:common'
 include 'test-graalvm-hibernate-jpa:common-tests'
+
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
+        publishAlways()
+    }
+}
+
