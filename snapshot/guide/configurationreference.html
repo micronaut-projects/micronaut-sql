@@ -51,43 +51,9 @@
             </div>
 <div class="sect2">
 <h3 id="_hibernate_jpa_config_properties">Hibernate Jpa Config Properties</h3>
-<a id="io.micronaut.configuration.hibernate.jpa.JpaConfiguration.EntityScanConfiguration" href="#io.micronaut.configuration.hibernate.jpa.JpaConfiguration.EntityScanConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/configuration/hibernate/jpa/JpaConfiguration/EntityScanConfiguration.html">EntityScanConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jpa.*.entity-scan.enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Set whether entity scan is enabled. Defaults to true.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jpa.*.entity-scan.classpath</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Sets whether to scan the whole classpath including external JAR files using classpath scanning or just look for introspected beans compiled by this application.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jpa.*.entity-scan.packages</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String[]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The packages</p></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
 <a id="io.micronaut.configuration.hibernate.jpa.JpaConfiguration" href="#io.micronaut.configuration.hibernate.jpa.JpaConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 2. Configuration Properties for <a href="../api/io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html">JpaConfiguration</a></caption>
+<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html">JpaConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -124,12 +90,9 @@
 </tbody>
 </table>
 <div style="page-break-after: always;"></div>
-</div>
-<div class="sect2">
-<h3 id="_jasync_sql_config_properties">Jasync Sql Config Properties</h3>
-<a id="io.micronaut.configuration.jasync.JasyncPoolConfiguration.JasyncSslConfiguration" href="#io.micronaut.configuration.jasync.JasyncPoolConfiguration.JasyncSslConfiguration">&#128279;</a>
+<a id="io.micronaut.configuration.hibernate.jpa.JpaConfiguration.EntityScanConfiguration" href="#io.micronaut.configuration.hibernate.jpa.JpaConfiguration.EntityScanConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 3. Configuration Properties for <a href="../api/io/micronaut/configuration/jasync/JasyncPoolConfiguration/JasyncSslConfiguration.html">JasyncSslConfiguration</a></caption>
+<caption class="title">Table 2. Configuration Properties for <a href="../api/io/micronaut/configuration/hibernate/jpa/JpaConfiguration/EntityScanConfiguration.html">EntityScanConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -144,26 +107,29 @@
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.github.jasync.sql.db.SSLConfiguration</p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jpa.*.entity-scan.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set whether entity scan is enabled. Defaults to true.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.mode</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.github.jasync.sql.db.SSLConfiguration$Mode</p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jpa.*.entity-scan.classpath</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets whether to scan the whole classpath including external JAR files using classpath scanning or just look for introspected beans compiled by this application.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.root-cert</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jpa.*.entity-scan.packages</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The packages</p></td>
 </tr>
 </tbody>
 </table>
 <div style="page-break-after: always;"></div>
+</div>
+<div class="sect2">
+<h3 id="_jasync_sql_config_properties">Jasync Sql Config Properties</h3>
 <a id="io.micronaut.configuration.jasync.JasyncPoolConfiguration" href="#io.micronaut.configuration.jasync.JasyncPoolConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 4. Configuration Properties for <a href="../api/io/micronaut/configuration/jasync/JasyncPoolConfiguration.html">JasyncPoolConfiguration</a></caption>
+<caption class="title">Table 3. Configuration Properties for <a href="../api/io/micronaut/configuration/jasync/JasyncPoolConfiguration.html">JasyncPoolConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -270,6 +236,40 @@
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.max-connection-ttl</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Long</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<a id="io.micronaut.configuration.jasync.JasyncPoolConfiguration.JasyncSslConfiguration" href="#io.micronaut.configuration.jasync.JasyncPoolConfiguration.JasyncSslConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 4. Configuration Properties for <a href="../api/io/micronaut/configuration/jasync/JasyncPoolConfiguration/JasyncSslConfiguration.html">JasyncSslConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.github.jasync.sql.db.SSLConfiguration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.mode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.github.jasync.sql.db.SSLConfiguration$Mode</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.root-cert</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
