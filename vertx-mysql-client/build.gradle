@@ -16,7 +16,7 @@ dependencies {
     testImplementation "io.micronaut:micronaut-management:$micronautVersion"
     testImplementation "org.testcontainers:spock:$testContainersVersion"
     testImplementation "org.testcontainers:mysql:$testContainersVersion"
-    testImplementation "mysql:mysql-connector-java:8.0.23"
+    testImplementation "mysql:mysql-connector-java:8.0.25"
     testImplementation "io.vertx:vertx-rx-java2:$vertxVersion"
     testImplementation "io.vertx:vertx-codegen:$vertxVersion"
     testImplementation "io.vertx:vertx-mysql-client:$vertxVersion"
