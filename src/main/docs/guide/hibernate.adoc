@@ -29,7 +29,7 @@ You can use the `javax.persistence.PersistenceContext` annotation to inject an `
 [source,groovy]
 .Adding the JPA dependency to `annotationProcessor` in Gradle
 ----
-annotationProcessor "javax.persistence:javax.persistence-api:2.2"
+annotationProcessor "jakarta.persistence:jakarta.persistence-api:2.2"
 ----
 
 [source,java]
