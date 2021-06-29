@@ -16,8 +16,8 @@
 package io.micronaut.configuration.hibernate.jpa;
 
 import io.micronaut.transaction.annotation.TransactionalAdvice;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 

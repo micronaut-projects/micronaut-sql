@@ -15,12 +15,12 @@
  */
 package io.micronaut.configuration.jdbc.tomcat;
 
-import javax.annotation.Nullable;
 import io.micronaut.configuration.jdbc.tomcat.metadata.TomcatDataSourcePoolMetadata;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.jdbc.DataSourceResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

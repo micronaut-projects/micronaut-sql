@@ -19,6 +19,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.binder.jpa.HibernateMetrics;
 import io.micronaut.configuration.metrics.annotation.RequiresMetrics;
+import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Property;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.event.BeanCreatedEvent;
@@ -26,10 +27,9 @@ import io.micronaut.context.event.BeanCreatedEventListener;
 import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
+import jakarta.inject.Singleton;
 import org.hibernate.SessionFactory;
 
-import javax.inject.Provider;
-import javax.inject.Singleton;
 import javax.persistence.EntityManagerFactory;
 
 import java.util.Collections;
@@ -50,7 +50,7 @@ import static io.micronaut.configuration.metrics.micrometer.MeterRegistryFactory
 @Requires(property = MICRONAUT_METRICS_BINDERS + ".hibernate.enabled", value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 public class HibernateMetricsBinder implements BeanCreatedEventListener<EntityManagerFactory> {
 
-    private final Provider<MeterRegistry> meterRegistryProvider;
+    private final BeanProvider<MeterRegistry> meterRegistryProvider;
     private final List<Tag> tags;
 
     /**
@@ -59,7 +59,7 @@ public class HibernateMetricsBinder implements BeanCreatedEventListener<EntityMa
      * @param tags The tags
      */
     public HibernateMetricsBinder(
-            Provider<MeterRegistry> meterRegistryProvider,
+            BeanProvider<MeterRegistry> meterRegistryProvider,
             @Property(name = MICRONAUT_METRICS_BINDERS + ".hibernate.tags")
             @MapFormat(transformation = MapFormat.MapTransformation.FLAT)
             Map<String, String> tags) {

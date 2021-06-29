@@ -18,11 +18,11 @@ package io.micronaut.configuration.jdbc.dbcp;
 import io.micronaut.configuration.jdbc.dbcp.metadata.DbcpDataSourcePoolMetadata;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.metadata.DataSourcePoolMetadata;
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import javax.annotation.Nullable;
 import javax.sql.DataSource;
 
 /**

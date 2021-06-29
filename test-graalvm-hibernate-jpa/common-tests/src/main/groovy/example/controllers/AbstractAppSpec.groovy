@@ -18,10 +18,10 @@ package example.controllers
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.RxHttpClient
 import io.micronaut.http.client.annotation.Client
+import jakarta.inject.Inject
 import spock.lang.Specification
 import spock.lang.Stepwise
 
-import javax.inject.Inject
 
 @Stepwise
 abstract class AbstractAppSpec extends Specification {

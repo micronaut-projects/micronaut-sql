@@ -17,8 +17,8 @@ package io.micronaut.configuration.hibernate.jpa.datasources.db1;
 
 import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession;
 import io.micronaut.transaction.annotation.TransactionalAdvice;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

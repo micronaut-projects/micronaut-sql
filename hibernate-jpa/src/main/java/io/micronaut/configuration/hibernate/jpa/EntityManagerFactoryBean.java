@@ -16,7 +16,10 @@
 package io.micronaut.configuration.hibernate.jpa;
 
 
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.transaction.hibernate5.MicronautSessionContext;
+import jakarta.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,9 +41,6 @@ import org.hibernate.resource.beans.container.spi.BeanContainer;
 import org.hibernate.resource.beans.container.spi.ContainedBean;
 import org.hibernate.resource.beans.spi.BeanInstanceProducer;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.inject.Inject;
 import javax.sql.DataSource;
 import javax.validation.ValidatorFactory;
 import java.util.LinkedHashMap;
@@ -226,7 +226,7 @@ public class EntityManagerFactoryBean {
      * @return The sources
      */
     @SuppressWarnings("WeakerAccess")
-    protected MetadataSources createMetadataSources(@Nonnull StandardServiceRegistry serviceRegistry) {
+    protected MetadataSources createMetadataSources(@NonNull StandardServiceRegistry serviceRegistry) {
         return new MetadataSources(serviceRegistry);
     }
 }
