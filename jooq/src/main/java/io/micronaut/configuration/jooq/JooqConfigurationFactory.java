@@ -19,6 +19,7 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.jdbc.DataSourceResolver;
 import org.jooq.*;
@@ -26,7 +27,6 @@ import org.jooq.conf.Settings;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultDSLContext;
 
-import javax.annotation.Nullable;
 import javax.sql.DataSource;
 
 /**

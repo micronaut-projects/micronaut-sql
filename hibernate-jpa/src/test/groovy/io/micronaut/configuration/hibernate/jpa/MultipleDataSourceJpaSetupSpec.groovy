@@ -21,15 +21,15 @@ import io.micronaut.inject.qualifiers.Qualifiers
 import io.micronaut.transaction.annotation.TransactionalAdvice
 import io.micronaut.transaction.hibernate5.HibernateTransactionManager
 import io.micronaut.transaction.jdbc.DelegatingDataSource
+import jakarta.inject.Inject
+import jakarta.inject.Named
+import jakarta.inject.Singleton
 import org.hibernate.Session
 import org.hibernate.SessionFactory
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
-import javax.inject.Inject
-import javax.inject.Named
-import javax.inject.Singleton
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.sql.DataSource
@@ -38,13 +38,15 @@ import javax.sql.DataSource
  * @author graemerocher
  * @since 1.0
  */
-class MultipleDataSourceJpaSetupSpec extends Specification{
+class MultipleDataSourceJpaSetupSpec extends Specification {
 
-    @Shared @AutoCleanup ApplicationContext applicationContext = ApplicationContext.run(
-            'datasources.default.url':'jdbc:h2:mem:mydb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
-            'datasources.other.url':'jdbc:h2:mem:OTHERDB;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
-            'jpa.other.packages-to-scan':'io.micronaut.configuration.hibernate.jpa.other',
-            'jpa.default.properties.hibernate.hbm2ddl.auto':'create-drop'
+    @Shared
+    @AutoCleanup
+    ApplicationContext applicationContext = ApplicationContext.run(
+            'datasources.default.url': 'jdbc:h2:mem:mydb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+            'datasources.other.url': 'jdbc:h2:mem:OTHERDB;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+            'jpa.other.packages-to-scan': 'io.micronaut.configuration.hibernate.jpa.other',
+            'jpa.default.properties.hibernate.hbm2ddl.auto': 'create-drop'
     )
 
     void "test multiple data sources setup"() {
@@ -72,7 +74,7 @@ class MultipleDataSourceJpaSetupSpec extends Specification{
         MultipleDataSourceService service = applicationContext.getBean(MultipleDataSourceService)
         MutipleDataSourceJavaService javaService = applicationContext.getBean(MutipleDataSourceJavaService)
 
-        expect:"Methods that retrieve the current session don't throw an exception"
+        expect: "Methods that retrieve the current session don't throw an exception"
         service.testOther()
         service.testCurrent()
         service.testContextOther()

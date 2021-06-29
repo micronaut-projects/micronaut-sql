@@ -8,6 +8,10 @@ buildscript {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 subprojects { Project subproject ->
 
     if (subproject.getPath().startsWith(":test-")) {
@@ -19,6 +23,12 @@ subprojects { Project subproject ->
     apply plugin: "io.micronaut.build.internal.common"
     apply plugin: "io.micronaut.build.internal.dependency-updates"
     apply plugin: "io.micronaut.build.internal.publishing"
+
+    // TODO: remove after all modules are micronaut 3 compatible
+    dependencies {
+        compileOnly "javax.inject:javax.inject:1"
+        testImplementation "javax.inject:javax.inject:1"
+    }
 
     micronautBuild {
         dependencyUpdatesPattern = /.+(-|\.?)(b|M|RC|kts)(-|\.?)\d?.*/

@@ -16,10 +16,10 @@
 package io.micronaut.configuration.hibernate.jpa;
 
 import io.micronaut.transaction.annotation.TransactionalAdvice;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.hibernate.Session;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 @Singleton
 public class MutipleDataSourceJavaService {

@@ -19,13 +19,13 @@ import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.beans.BeanIntrospector;
 import io.micronaut.core.beans.BeanProperty;
+import jakarta.inject.Singleton;
 import org.hibernate.bytecode.enhance.spi.EnhancementContext;
 import org.hibernate.bytecode.enhance.spi.Enhancer;
 import org.hibernate.bytecode.spi.BytecodeProvider;
 import org.hibernate.bytecode.spi.ProxyFactoryFactory;
 import org.hibernate.bytecode.spi.ReflectionOptimizer;
 
-import javax.inject.Singleton;
 import java.util.Arrays;
 import java.util.Optional;
 

@@ -19,10 +19,10 @@ import io.micronaut.configuration.hibernate.jpa.JpaConfiguration;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.event.BeanCreatedEvent;
 import io.micronaut.context.event.BeanCreatedEventListener;
+import jakarta.inject.Singleton;
 import org.hibernate.cache.jcache.ConfigSettings;
 
 import javax.cache.CacheManager;
-import javax.inject.Singleton;
 import java.util.Map;
 
 /**

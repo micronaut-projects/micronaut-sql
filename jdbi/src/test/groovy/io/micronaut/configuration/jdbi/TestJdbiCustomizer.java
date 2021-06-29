@@ -15,10 +15,10 @@
  */
 package io.micronaut.configuration.jdbi;
 
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import org.jdbi.v3.core.Jdbi;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
 
 @Singleton
 @Named("default")

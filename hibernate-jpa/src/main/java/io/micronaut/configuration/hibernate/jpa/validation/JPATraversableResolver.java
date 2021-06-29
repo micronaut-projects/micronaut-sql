@@ -15,10 +15,10 @@
  */
 package io.micronaut.configuration.hibernate.jpa.validation;
 
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Singleton;
 import javax.persistence.Persistence;
 import javax.validation.Path;
 import javax.validation.TraversableResolver;

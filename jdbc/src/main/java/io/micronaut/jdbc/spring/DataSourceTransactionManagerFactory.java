@@ -21,10 +21,10 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.event.BeanCreatedEvent;
 import io.micronaut.context.event.BeanCreatedEventListener;
 import io.micronaut.core.annotation.Internal;
+import jakarta.inject.Singleton;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
-import javax.inject.Singleton;
 import javax.sql.DataSource;
 
 /**

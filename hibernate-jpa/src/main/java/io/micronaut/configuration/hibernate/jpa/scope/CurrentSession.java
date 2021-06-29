@@ -18,8 +18,8 @@ package io.micronaut.configuration.hibernate.jpa.scope;
 import io.micronaut.context.annotation.AliasFor;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.runtime.context.scope.ScopedProxy;
+import jakarta.inject.Named;
 
-import javax.inject.Named;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -21,9 +21,9 @@ import com.github.jasync.sql.db.mysql.MySQLConnectionBuilder;
 import com.github.jasync.sql.db.pool.ConnectionPool;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import jakarta.inject.Singleton;
 
 import javax.annotation.PreDestroy;
-import javax.inject.Singleton;
 
 /**
  * The Factory for creating Reactive Postgres client.

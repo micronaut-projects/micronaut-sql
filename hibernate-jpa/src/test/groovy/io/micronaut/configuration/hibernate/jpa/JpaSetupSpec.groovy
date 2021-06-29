@@ -21,15 +21,20 @@ import io.micronaut.context.env.Environment
 import io.micronaut.http.exceptions.HttpException
 import io.micronaut.transaction.TransactionDefinition
 import io.micronaut.transaction.annotation.TransactionalAdvice
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import org.hibernate.Session
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
-import javax.inject.Inject
-import javax.inject.Singleton
-import javax.persistence.*
-import javax.persistence.metamodel.Attribute
+import javax.persistence.AttributeConverter
+import javax.persistence.Convert
+import javax.persistence.Entity
+import javax.persistence.EntityManager
+import javax.persistence.EntityManagerFactory
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 import javax.validation.ConstraintViolationException
 import javax.validation.constraints.NotBlank
 

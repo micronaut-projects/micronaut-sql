@@ -15,11 +15,11 @@
  */
 package io.micronaut.configuration.jooq;
 
-import io.micronaut.spring.tx.annotation.Transactional;
+import jakarta.inject.Singleton;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Singleton;
 
 @Singleton
 public class TestService {
