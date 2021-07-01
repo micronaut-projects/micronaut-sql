@@ -60,4 +60,10 @@ public class JavaBookService {
         ((AutoCloseable)entityManager).close();
         return true;
     }
+
+    public boolean testCloseWithoutTx() throws Exception {
+        // just testing the method can be invoked
+        ((AutoCloseable)entityManager).close();
+        return true;
+    }
 }
