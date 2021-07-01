@@ -107,8 +107,6 @@ final class JdbcFeature implements Feature {
                     "org.h2.store.fs.FilePathRetryOnInterrupt"
             ).forEach(c -> registerClassForRuntimeReflectionAndReflectiveInstantiation(access, c));
 
-            initializeAtRunTime(access, "sun.nio.ch.WindowsAsynchronousFileChannelImpl$DefaultIocpHolder");
-
             addResourcePatterns(
                     "META-INF/services/java.sql.Driver",
                     "org/h2/util/data.zip"
