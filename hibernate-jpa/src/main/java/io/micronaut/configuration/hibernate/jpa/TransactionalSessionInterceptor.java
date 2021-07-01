@@ -53,6 +53,11 @@ class TransactionalSessionInterceptor implements MethodInterceptor<Session, Obje
     @Override
     public Object intercept(MethodInvocationContext<Session, Object> context) {
         final ExecutableMethod<Session, Object> method = context.getExecutableMethod();
-        return method.invoke(sessionFactory.getCurrentSession(), context.getParameterValues());
+        if (method.getName().equals("close") && method.getArguments().length == 0) {
+            // close handled by transaction management, ignore
+            return null;
+        } else {
+            return method.invoke(sessionFactory.getCurrentSession(), context.getParameterValues());
+        }
     }
 }

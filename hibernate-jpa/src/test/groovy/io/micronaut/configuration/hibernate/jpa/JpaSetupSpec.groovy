@@ -135,6 +135,8 @@ class JpaSetupSpec extends Specification {
         bookService.testMethodInject()
         bookService.testNativeQuery()
         readOnlyBookService.testNativeQuery()
+        bookService.testClose()
+        bookService.testCloseWithoutTx()
     }
 }
 
