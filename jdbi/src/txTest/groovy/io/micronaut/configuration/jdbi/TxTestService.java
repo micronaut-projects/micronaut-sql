@@ -16,10 +16,10 @@
 package io.micronaut.configuration.jdbi;
 
 import io.micronaut.transaction.annotation.ReadOnly;
+import jakarta.inject.Singleton;
 import org.jdbi.v3.core.Jdbi;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Singleton;
 import javax.transaction.Transactional;
 
 @Singleton

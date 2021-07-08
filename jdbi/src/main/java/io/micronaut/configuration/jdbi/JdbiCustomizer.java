@@ -19,7 +19,7 @@ import org.jdbi.v3.core.Jdbi;
 
 /**
  * Allows custom actions to be performed on a jdbi instance.
- * Customizers must be annotated with a {@link javax.inject.Named} annotation that matches the datasource name
+ * Customizers must be annotated with a {@link jakarta.inject.Named} annotation that matches the datasource name
  * corresponding to the jdbi datasource to be customized.
  *
  * @author Dan Maas
