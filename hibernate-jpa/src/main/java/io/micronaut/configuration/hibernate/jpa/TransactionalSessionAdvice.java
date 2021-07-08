@@ -17,7 +17,6 @@ package io.micronaut.configuration.hibernate.jpa;
 
 import io.micronaut.aop.Introduction;
 import io.micronaut.core.annotation.Internal;
-
 import java.lang.annotation.Retention;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
