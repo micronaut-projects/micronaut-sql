@@ -15,8 +15,8 @@
  */
 package io.micronaut.configuration.hibernate.jpa.datasources.db2;
 
-import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession;
 import io.micronaut.transaction.annotation.TransactionalAdvice;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 
 import javax.persistence.EntityManager;
@@ -32,7 +32,7 @@ public class BookstoreRepository {
 
     private final EntityManager entityManager;
 
-    public BookstoreRepository(@CurrentSession("db2") EntityManager entityManager) {
+    public BookstoreRepository(@Named("db2") EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 

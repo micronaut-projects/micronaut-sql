@@ -58,18 +58,20 @@ public class EntityManagerFactoryBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(EntityManagerFactoryBean.class);
 
-    private final JpaConfiguration jpaConfiguration;
     private final BeanLocator beanLocator;
+    private final JpaConfiguration jpaConfiguration;
 
     /**
-     * @param applicationContext   The applicationContext
+     * @param jpaConfiguration The JPA configuration
      */
-    public EntityManagerFactoryBean(ApplicationContext applicationContext) {
-        this.jpaConfiguration = applicationContext.findBean(JpaConfiguration.class)
-                .orElseGet(() -> new JpaConfiguration(
-                        "default",
-                        applicationContext,
-                        applicationContext.findBean(Integrator.class).orElse(null)));
+    public EntityManagerFactoryBean(
+            @Primary @Nullable JpaConfiguration jpaConfiguration,
+            @Primary @Nullable Integrator integrator,
+            ApplicationContext applicationContext) {
+        this.jpaConfiguration = jpaConfiguration != null ? jpaConfiguration : new JpaConfiguration(
+                applicationContext,
+                integrator
+        );
         this.beanLocator = applicationContext;
     }
 
@@ -81,7 +83,9 @@ public class EntityManagerFactoryBean {
      * @return The {@link StandardServiceRegistry}
      */
     @EachBean(DataSource.class)
-    protected StandardServiceRegistry hibernateStandardServiceRegistry(@Parameter String dataSourceName, DataSource dataSource) {
+    protected StandardServiceRegistry hibernateStandardServiceRegistry(
+            @Parameter String dataSourceName,
+            DataSource dataSource) {
 
         final DataSourceResolver dataSourceResolver = beanLocator.findBean(DataSourceResolver.class).orElse(null);
         if (dataSourceResolver != null) {
@@ -129,17 +133,18 @@ public class EntityManagerFactoryBean {
     /**
      * Builds the {@link MetadataSources} for the given {@link StandardServiceRegistry}.
      *
-     * @param dataSourceName          The associated data source name
      * @param standardServiceRegistry The standard service registry
      * @return The {@link MetadataSources}
      */
     @Requires(classes = MetadataSource.class)
     @EachBean(StandardServiceRegistry.class)
-    protected MetadataSources hibernateMetadataSources(@Parameter String dataSourceName, StandardServiceRegistry standardServiceRegistry) {
+    protected MetadataSources hibernateMetadataSources(
+            @Parameter @Nullable JpaConfiguration jpaConfiguration,
+            StandardServiceRegistry standardServiceRegistry) {
 
-        JpaConfiguration jpaConfiguration = beanLocator.findBean(JpaConfiguration.class, Qualifiers.byName(dataSourceName))
-                .orElse(this.jpaConfiguration);
-
+        if (jpaConfiguration == null) {
+            jpaConfiguration = this.jpaConfiguration;
+        }
         MetadataSources metadataSources = createMetadataSources(standardServiceRegistry);
 
         jpaConfiguration.getEntityScanConfiguration().findEntities().forEach(metadataSources::addAnnotatedClass);
@@ -151,7 +156,7 @@ public class EntityManagerFactoryBean {
         }
 
         if (metadataSources.getAnnotatedClasses().isEmpty()) {
-            throw new ConfigurationException("Entities not found for JPA configuration: '" + jpaConfiguration.getName() + "'!");
+            throw new ConfigurationException("Entities not found for JPA configuration: '" + jpaConfiguration.getName() + "'. Check that you have correctly specified a package containing JPA entities within the \"jpa." + jpaConfiguration.getName() + ".entity-scan.packages\" property in your application configuration and that those entities are either compiled with Micronaut or a build time index produced with @Introspected(packages=\"foo.bar\", includedAnnotations=Entity.class) declared on your Application class");
         }
         return metadataSources;
     }
@@ -201,7 +206,7 @@ public class EntityManagerFactoryBean {
      * @param sessionFactoryBuilder The {@link SessionFactoryBuilder}
      * @return The {@link SessionFactory}
      */
-    @Parallel
+    @Context
     @Requires(beans = SessionFactoryBuilder.class)
     @Bean(preDestroy = "close")
     @EachBean(SessionFactoryBuilder.class)

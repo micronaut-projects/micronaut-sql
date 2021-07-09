@@ -29,7 +29,6 @@ class JpaConfigurationSpec extends Specification {
         def config = ctx.getBean(JpaConfiguration)
 
         expect:
-        config.entityScanConfiguration.classpath
         config.entityScanConfiguration.enabled
         config.packagesToScan == ['my.package'] as String[]
 
@@ -47,7 +46,6 @@ class JpaConfigurationSpec extends Specification {
         def config = ctx.getBean(JpaConfiguration)
 
         expect:
-        !config.entityScanConfiguration.classpath
         config.entityScanConfiguration.enabled
         config.packagesToScan == [] as String[]
         !config.entityScanConfiguration.findEntities().isEmpty()

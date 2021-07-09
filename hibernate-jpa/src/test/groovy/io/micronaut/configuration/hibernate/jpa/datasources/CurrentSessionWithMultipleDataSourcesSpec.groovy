@@ -88,10 +88,9 @@ class CurrentSessionWithMultipleDataSourcesSpec extends Specification {
                     'jpa.xyz.entity-scan.packages': ['doesntexist']
             )
         then:
-            context.isRunning()
-            conditions.eventually {
-                !context.isRunning()
-            }
+        def e = thrown(BeanInstantiationException)
+        e.message.contains "Entities not found for JPA configuration: 'xyz'"
+
     }
 
     void "test eager get of non-default SessionFactory with missing entities"() {
@@ -102,20 +101,19 @@ class CurrentSessionWithMultipleDataSourcesSpec extends Specification {
             ).getBean(SessionFactory, Qualifiers.byName("xyz"))
         then:
             def e = thrown(BeanInstantiationException)
-            e.message.contains "Entities not found for JPA configuration: 'xyz'!"
+            e.message.contains "Entities not found for JPA configuration: 'xyz'"
     }
 
     void "test parallel init of SessionFactory with missing entities2"() {
         when:
-            def context = ApplicationContext.run(
+            ApplicationContext.run(
                     'datasources.default.name': 'db1',
                     'jpa.default.entity-scan.packages': ['doesntexist']
             )
         then:
-            context.isRunning()
-            conditions.eventually {
-                !context.isRunning()
-            }
+        def e = thrown(BeanInstantiationException)
+        e.message.contains "Entities not found for JPA configuration: 'default'"
+
     }
 
     void "test eager get SessionFactory with empty entity-scan"() {
@@ -126,7 +124,7 @@ class CurrentSessionWithMultipleDataSourcesSpec extends Specification {
             ).getBean(SessionFactory, Qualifiers.byName("default"))
         then:
             def e = thrown(BeanInstantiationException)
-            e.message.contains "Entities not found for JPA configuration: 'default'!"
+            e.message.contains "Entities not found for JPA configuration: 'default'"
     }
 
     void "test get SessionFactory without configured default"() {

@@ -15,7 +15,6 @@
  */
 package io.micronaut.configuration.hibernate.jpa.mapping;
 
-import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.transaction.annotation.TransactionalAdvice;
 import jakarta.inject.Singleton;
@@ -29,7 +28,7 @@ public class AccountRepository {
 
     private final EntityManager entityManager;
 
-    public AccountRepository(@CurrentSession EntityManager entityManager) {
+    public AccountRepository(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 

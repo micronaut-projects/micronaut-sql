@@ -29,6 +29,8 @@ import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.core.util.Toggleable;
+import io.micronaut.core.version.SemanticVersion;
+import io.micronaut.core.version.VersionUtils;
 import jakarta.inject.Inject;
 import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
@@ -39,6 +41,8 @@ import org.hibernate.bytecode.spi.BytecodeProvider;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.integrator.spi.Integrator;
 import org.hibernate.service.spi.ServiceRegistryImplementor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.Entity;
 import javax.validation.ValidatorFactory;
@@ -56,9 +60,10 @@ import java.util.Map;
  * @author graemerocher
  * @since 1.0
  */
-@EachProperty(value = JpaConfiguration.PREFIX, primary = "default")
+@EachProperty(value = JpaConfiguration.PREFIX, primary = JpaConfiguration.PRIMARY)
 public class JpaConfiguration {
     public static final String PREFIX = "jpa";
+    public static final String PRIMARY = "default";
 
     private final String name;
     private final BootstrapServiceRegistry bootstrapServiceRegistry;
@@ -71,24 +76,22 @@ public class JpaConfiguration {
     private boolean compileTimeHibernateProxies;
 
     /**
-     * @param name               The name
      * @param applicationContext The application context
      * @param integrator         The {@link Integrator}
      */
-    protected JpaConfiguration(@Parameter String name, ApplicationContext applicationContext, @Nullable Integrator integrator) {
-        this(name, applicationContext, integrator, new EntityScanConfiguration(applicationContext.getEnvironment()));
+    protected JpaConfiguration(ApplicationContext applicationContext, @Nullable Integrator integrator) {
+        this(PRIMARY, integrator, applicationContext, new EntityScanConfiguration(applicationContext.getEnvironment()));
     }
 
     /**
      * @param name                    The name
      * @param applicationContext      The application context
-     * @param integrator              The {@link Integrator}
      * @param entityScanConfiguration The entity scan configuration
      */
     @Inject
     protected JpaConfiguration(@Parameter String name,
+                               @Parameter @Nullable Integrator integrator,
                                ApplicationContext applicationContext,
-                               @Nullable Integrator integrator,
                                @Nullable EntityScanConfiguration entityScanConfiguration) {
         ClassLoader classLoader = applicationContext.getClassLoader();
         BootstrapServiceRegistryBuilder bootstrapServiceRegistryBuilder =
@@ -279,9 +282,9 @@ public class JpaConfiguration {
      */
     @ConfigurationProperties("entity-scan")
     public static class EntityScanConfiguration implements Toggleable {
-
+        private static final Logger LOG = LoggerFactory.getLogger(EntityScanConfiguration.class);
         private boolean enabled = true;
-        private boolean classpath = false;
+        private final boolean classpath = true;
         private String[] packages = StringUtils.EMPTY_STRING_ARRAY;
 
         private final Environment environment;
@@ -302,7 +305,10 @@ public class JpaConfiguration {
 
         /**
          * @return Whether to scan the whole classpath or just look for introspected beans compiled by this application.
+         * @deprecated Runtime classpath scanning is not longer supported. Use {@link io.micronaut.core.annotation.Introspected} to declare the packages you
+         * want to index at build time. Example {@code @Introspected(packages="foo.bar", includedAnnotations=Entity.class)}
          */
+        @Deprecated
         public boolean isClasspath() {
             return classpath;
         }
@@ -311,9 +317,14 @@ public class JpaConfiguration {
          * Sets whether to scan the whole classpath including external JAR files using classpath scanning or just look for introspected beans compiled by this application.
          *
          * @param classpath True if extensive classpath scanning should be used
+         * @deprecated Runtime classpath scanning is not longer supported. Use {@link io.micronaut.core.annotation.Introspected} to declare the packages you
+         * want to index at build time. Example {@code @Introspected(packages="foo.bar", includedAnnotations=Entity.class)}
          */
+        @Deprecated
         public void setClasspath(boolean classpath) {
-            this.classpath = classpath;
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Runtime classpath scanning is not longer supported. Use @Introspected to declare the packages you want to index at build time. Example @Introspected(packages=\"foo.bar\", includedAnnotations=Entity.class)");
+            }
         }
 
         /**
@@ -357,7 +368,10 @@ public class JpaConfiguration {
                 }
             }
 
-            if (isEnabled()) {
+            String micronautVersion = VersionUtils.getMicronautVersion();
+            // we don't need this additional scanning for Micronaut 3+ the results are included in the scan(..) method.
+            boolean isMicronaut3 = micronautVersion != null && SemanticVersion.isAtLeastMajorMinor(micronautVersion, 3, 0);
+            if (isEnabled() && !isMicronaut3) {
                 Collection<BeanIntrospection<Object>> introspections;
                 if (ArrayUtils.isNotEmpty(packages)) {
                     introspections = BeanIntrospector.SHARED.findIntrospections(Entity.class, packages);
