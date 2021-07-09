@@ -10,6 +10,7 @@ plugins {
 
 rootProject.name = 'sql'
 
+include 'sql-bom'
 include 'jdbc'
 include 'jdbc-dbcp'
 include 'jdbc-hikari'

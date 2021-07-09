@@ -22,19 +22,27 @@ subprojects { Project subproject ->
         return
     }
 
-    group "io.micronaut.sql"
+    if (subproject.name != 'sql-bom') {
 
-    apply plugin: "io.micronaut.build.internal.common"
+        group "io.micronaut.sql"
+
+        apply plugin: "io.micronaut.build.internal.common"
+
+        dependencies {
+            implementation 'jakarta.inject:jakarta.inject-api:2.0.0'
+        }
+
+        micronautBuild {
+            dependencyUpdatesPattern = /.+(-|\.?)(b|M|RC|kts)(-|\.?)\d?.*/
+        }
+    } else {
+        apply plugin: "java-platform"
+        version projectVersion
+    }
+
     apply plugin: "io.micronaut.build.internal.dependency-updates"
     apply plugin: "io.micronaut.build.internal.publishing"
 
-    dependencies {
-        implementation 'jakarta.inject:jakarta.inject-api:2.0.0'
-    }
-
-    micronautBuild {
-        dependencyUpdatesPattern = /.+(-|\.?)(b|M|RC|kts)(-|\.?)\d?.*/
-    }
 }
 
 apply plugin: "io.micronaut.build.internal.docs"
