@@ -19,14 +19,15 @@ package io.micronaut.configuration.hibernate.jpa;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.transaction.hibernate5.MicronautSessionContext;
-import jakarta.inject.Inject;
+import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.exceptions.ConfigurationException;
+import org.hibernate.integrator.spi.Integrator;
+import org.hibernate.mapping.MetadataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.micronaut.configuration.hibernate.jpa.condition.RequiresHibernateEntities;
 import io.micronaut.context.BeanLocator;
 import io.micronaut.context.annotation.*;
-import io.micronaut.context.env.Environment;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.jdbc.DataSourceResolver;
 import org.hibernate.Interceptor;
@@ -58,33 +59,18 @@ public class EntityManagerFactoryBean {
     private static final Logger LOG = LoggerFactory.getLogger(EntityManagerFactoryBean.class);
 
     private final JpaConfiguration jpaConfiguration;
-    private final Environment environment;
     private final BeanLocator beanLocator;
-    private Interceptor hibernateInterceptor;
 
     /**
-     * @param jpaConfiguration The JPA configuration
-     * @param environment      The environment
-     * @param beanLocator      The bean locator
+     * @param applicationContext   The applicationContext
      */
-    public EntityManagerFactoryBean(
-            JpaConfiguration jpaConfiguration,
-            Environment environment,
-            BeanLocator beanLocator) {
-
-        this.jpaConfiguration = jpaConfiguration;
-        this.environment = environment;
-        this.beanLocator = beanLocator;
-    }
-
-    /**
-     * Sets the {@link Interceptor} to use.
-     *
-     * @param hibernateInterceptor The hibernate interceptor
-     */
-    @Inject
-    public void setHibernateInterceptor(@Nullable Interceptor hibernateInterceptor) {
-        this.hibernateInterceptor = hibernateInterceptor;
+    public EntityManagerFactoryBean(ApplicationContext applicationContext) {
+        this.jpaConfiguration = applicationContext.findBean(JpaConfiguration.class)
+                .orElseGet(() -> new JpaConfiguration(
+                        "default",
+                        applicationContext,
+                        applicationContext.findBean(Integrator.class).orElse(null)));
+        this.beanLocator = applicationContext;
     }
 
     /**
@@ -95,9 +81,7 @@ public class EntityManagerFactoryBean {
      * @return The {@link StandardServiceRegistry}
      */
     @EachBean(DataSource.class)
-    protected StandardServiceRegistry hibernateStandardServiceRegistry(
-        @Parameter String dataSourceName,
-        DataSource dataSource) {
+    protected StandardServiceRegistry hibernateStandardServiceRegistry(@Parameter String dataSourceName, DataSource dataSource) {
 
         final DataSourceResolver dataSourceResolver = beanLocator.findBean(DataSourceResolver.class).orElse(null);
         if (dataSourceResolver != null) {
@@ -145,19 +129,20 @@ public class EntityManagerFactoryBean {
     /**
      * Builds the {@link MetadataSources} for the given {@link StandardServiceRegistry}.
      *
-     * @param jpaConfiguration        The JPA configuration
+     * @param dataSourceName          The associated data source name
      * @param standardServiceRegistry The standard service registry
      * @return The {@link MetadataSources}
      */
+    @Requires(classes = MetadataSource.class)
     @EachBean(StandardServiceRegistry.class)
-    @RequiresHibernateEntities
-    protected MetadataSources hibernateMetadataSources(
-        @Parameter JpaConfiguration jpaConfiguration,
-        StandardServiceRegistry standardServiceRegistry) {
+    protected MetadataSources hibernateMetadataSources(@Parameter String dataSourceName, StandardServiceRegistry standardServiceRegistry) {
+
+        JpaConfiguration jpaConfiguration = beanLocator.findBean(JpaConfiguration.class, Qualifiers.byName(dataSourceName))
+                .orElse(this.jpaConfiguration);
 
         MetadataSources metadataSources = createMetadataSources(standardServiceRegistry);
-        JpaConfiguration.EntityScanConfiguration entityScanConfiguration = jpaConfiguration.getEntityScanConfiguration();
-        entityScanConfiguration.findEntities().forEach(metadataSources::addAnnotatedClass);
+
+        jpaConfiguration.getEntityScanConfiguration().findEntities().forEach(metadataSources::addAnnotatedClass);
 
         if (jpaConfiguration.getMappingResources() != null) {
             for (String resource : jpaConfiguration.getMappingResources()) {
@@ -165,6 +150,9 @@ public class EntityManagerFactoryBean {
             }
         }
 
+        if (metadataSources.getAnnotatedClasses().isEmpty()) {
+            throw new ConfigurationException("Entities not found for JPA configuration: '" + jpaConfiguration.getName() + "'!");
+        }
         return metadataSources;
     }
 
@@ -173,13 +161,15 @@ public class EntityManagerFactoryBean {
      *
      * @param metadataSources  The {@link MetadataSources}
      * @param validatorFactory The {@link ValidatorFactory}
+     * @param hibernateInterceptor The {@link Interceptor}
      * @return The {@link SessionFactoryBuilder}
      */
     @EachBean(MetadataSources.class)
     @Requires(beans = MetadataSources.class)
     protected SessionFactoryBuilder hibernateSessionFactoryBuilder(
         MetadataSources metadataSources,
-        @Nullable ValidatorFactory validatorFactory) {
+        @Nullable ValidatorFactory validatorFactory,
+        @Nullable Interceptor hibernateInterceptor) {
 
         try {
             Metadata metadata = metadataSources.buildMetadata();
@@ -211,7 +201,7 @@ public class EntityManagerFactoryBean {
      * @param sessionFactoryBuilder The {@link SessionFactoryBuilder}
      * @return The {@link SessionFactory}
      */
-    @Context
+    @Parallel
     @Requires(beans = SessionFactoryBuilder.class)
     @Bean(preDestroy = "close")
     @EachBean(SessionFactoryBuilder.class)
