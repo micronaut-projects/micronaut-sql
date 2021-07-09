@@ -17,7 +17,6 @@ package io.micronaut.configuration.hibernate.jpa.metrics;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
-import io.micrometer.core.instrument.binder.jpa.HibernateMetrics;
 import io.micronaut.configuration.metrics.annotation.RequiresMetrics;
 import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Property;
@@ -29,6 +28,7 @@ import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
 import jakarta.inject.Singleton;
 import org.hibernate.SessionFactory;
+import org.hibernate.stat.HibernateMetrics;
 
 import javax.persistence.EntityManagerFactory;
 
@@ -47,9 +47,11 @@ import static io.micronaut.configuration.metrics.micrometer.MeterRegistryFactory
  */
 @Singleton
 @RequiresMetrics
-@Requires(property = MICRONAUT_METRICS_BINDERS + ".hibernate.enabled", value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
+@Requires(property = HibernateMetricsBinder.HIBERNATE_METRICS_ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
+@Requires(classes = HibernateMetrics.class)
 public class HibernateMetricsBinder implements BeanCreatedEventListener<EntityManagerFactory> {
 
+    public static final String HIBERNATE_METRICS_ENABLED = MICRONAUT_METRICS_BINDERS + ".hibernate.enabled";
     private final BeanProvider<MeterRegistry> meterRegistryProvider;
     private final List<Tag> tags;
 

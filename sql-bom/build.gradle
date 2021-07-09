@@ -21,6 +21,7 @@ dependencies {
         // hibernate
         api "org.hibernate:hibernate-core:$hibernateVersion"
         api "org.hibernate:hibernate-jcache:$hibernateVersion"
+        api "org.hibernate:hibernate-micrometer:$hibernateVersion"
 
         // jasync
         api "com.github.jasync-sql:jasync-mysql:$jasyncVersion"
