@@ -85,6 +85,7 @@ public class JpaConfiguration {
 
     /**
      * @param name                    The name
+     * @param integrator              The integrator
      * @param applicationContext      The application context
      * @param entityScanConfiguration The entity scan configuration
      */
@@ -284,7 +285,7 @@ public class JpaConfiguration {
     public static class EntityScanConfiguration implements Toggleable {
         private static final Logger LOG = LoggerFactory.getLogger(EntityScanConfiguration.class);
         private boolean enabled = true;
-        private final boolean classpath = true;
+        private boolean classpath = false;
         private String[] packages = StringUtils.EMPTY_STRING_ARRAY;
 
         private final Environment environment;
@@ -325,6 +326,7 @@ public class JpaConfiguration {
             if (LOG.isWarnEnabled()) {
                 LOG.warn("Runtime classpath scanning is not longer supported. Use @Introspected to declare the packages you want to index at build time. Example @Introspected(packages=\"foo.bar\", includedAnnotations=Entity.class)");
             }
+            this.classpath = classpath;
         }
 
         /**
@@ -359,7 +361,11 @@ public class JpaConfiguration {
          */
         public Collection<Class<?>> findEntities() {
             Collection<Class<?>> entities = new HashSet<>();
-            if (isClasspath()) {
+            String micronautVersion = VersionUtils.getMicronautVersion();
+            // we don't need this additional scanning for Micronaut 3+ the results are included in the scan(..) method.
+            boolean isMicronaut3 = micronautVersion != null && SemanticVersion.isAtLeastMajorMinor(micronautVersion, 3, 0);
+
+            if (isClasspath() || (isMicronaut3 && isEnabled())) {
 
                 if (ArrayUtils.isNotEmpty(packages)) {
                     environment.scan(Entity.class, packages).forEach(entities::add);
@@ -368,9 +374,6 @@ public class JpaConfiguration {
                 }
             }
 
-            String micronautVersion = VersionUtils.getMicronautVersion();
-            // we don't need this additional scanning for Micronaut 3+ the results are included in the scan(..) method.
-            boolean isMicronaut3 = micronautVersion != null && SemanticVersion.isAtLeastMajorMinor(micronautVersion, 3, 0);
             if (isEnabled() && !isMicronaut3) {
                 Collection<BeanIntrospection<Object>> introspections;
                 if (ArrayUtils.isNotEmpty(packages)) {

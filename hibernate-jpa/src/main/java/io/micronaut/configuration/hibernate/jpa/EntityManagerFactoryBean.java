@@ -62,7 +62,9 @@ public class EntityManagerFactoryBean {
     private final JpaConfiguration jpaConfiguration;
 
     /**
-     * @param jpaConfiguration The JPA configuration
+     * @param jpaConfiguration   The JPA configuration
+     * @param integrator         The integration
+     * @param applicationContext The application context
      */
     public EntityManagerFactoryBean(
             @Primary @Nullable JpaConfiguration jpaConfiguration,
@@ -124,15 +126,16 @@ public class EntityManagerFactoryBean {
             }
         });
         JpaConfiguration jpaConfiguration = beanLocator.findBean(JpaConfiguration.class, Qualifiers.byName(dataSourceName))
-            .orElse(this.jpaConfiguration);
+                .orElse(this.jpaConfiguration);
         return jpaConfiguration.buildStandardServiceRegistry(
-            additionalSettings
+                additionalSettings
         );
     }
 
     /**
      * Builds the {@link MetadataSources} for the given {@link StandardServiceRegistry}.
      *
+     * @param jpaConfiguration        The JPA configuration
      * @param standardServiceRegistry The standard service registry
      * @return The {@link MetadataSources}
      */
@@ -164,17 +167,17 @@ public class EntityManagerFactoryBean {
     /**
      * Builds the {@link SessionFactoryBuilder} to use.
      *
-     * @param metadataSources  The {@link MetadataSources}
-     * @param validatorFactory The {@link ValidatorFactory}
+     * @param metadataSources      The {@link MetadataSources}
+     * @param validatorFactory     The {@link ValidatorFactory}
      * @param hibernateInterceptor The {@link Interceptor}
      * @return The {@link SessionFactoryBuilder}
      */
     @EachBean(MetadataSources.class)
     @Requires(beans = MetadataSources.class)
     protected SessionFactoryBuilder hibernateSessionFactoryBuilder(
-        MetadataSources metadataSources,
-        @Nullable ValidatorFactory validatorFactory,
-        @Nullable Interceptor hibernateInterceptor) {
+            MetadataSources metadataSources,
+            @Nullable ValidatorFactory validatorFactory,
+            @Nullable Interceptor hibernateInterceptor) {
 
         try {
             Metadata metadata = metadataSources.buildMetadata();

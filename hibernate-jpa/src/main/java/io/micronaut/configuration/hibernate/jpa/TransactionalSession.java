@@ -15,7 +15,6 @@
  */
 package io.micronaut.configuration.hibernate.jpa;
 
-import io.micronaut.aop.Introduction;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.core.annotation.Internal;
 import org.hibernate.Session;
