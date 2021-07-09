@@ -20,7 +20,7 @@ import org.testcontainers.containers.JdbcDatabaseContainer
 import org.testcontainers.containers.MariaDBContainer
 import org.testcontainers.utility.DockerImageName
 
-@MicronautTest
+@MicronautTest(packages = "example.domain")
 class MariaDBAppSpec extends AbstractDBContainerAppSpec {
 
     @Override

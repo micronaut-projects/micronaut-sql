@@ -18,7 +18,7 @@ package example.controllers
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import io.micronaut.test.support.TestPropertyProvider
 
-@MicronautTest
+@MicronautTest(packages = "example.domain")
 class H2AppSpec extends AbstractAppSpec implements TestPropertyProvider {
 
     @Override

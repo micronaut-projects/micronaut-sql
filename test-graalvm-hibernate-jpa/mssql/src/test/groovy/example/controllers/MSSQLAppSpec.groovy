@@ -20,7 +20,7 @@ import io.micronaut.test.support.TestPropertyProvider
 import org.testcontainers.containers.JdbcDatabaseContainer
 import org.testcontainers.containers.MSSQLServerContainer
 
-@MicronautTest
+@MicronautTest(packages = "example.domain")
 class MSSQLAppSpec extends AbstractDBContainerAppSpec implements TestPropertyProvider {
 
     @Override

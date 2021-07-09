@@ -18,6 +18,8 @@ package io.micronaut.configuration.hibernate.jpa;
 
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.core.util.ArrayUtils;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.transaction.hibernate5.MicronautSessionContext;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.exceptions.ConfigurationException;
@@ -26,7 +28,6 @@ import org.hibernate.mapping.MetadataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.micronaut.context.BeanLocator;
 import io.micronaut.context.annotation.*;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.jdbc.DataSourceResolver;
@@ -58,7 +59,7 @@ public class EntityManagerFactoryBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(EntityManagerFactoryBean.class);
 
-    private final BeanLocator beanLocator;
+    private final ApplicationContext applicationContext;
     private final JpaConfiguration jpaConfiguration;
 
     /**
@@ -74,7 +75,7 @@ public class EntityManagerFactoryBean {
                 applicationContext,
                 integrator
         );
-        this.beanLocator = applicationContext;
+        this.applicationContext = applicationContext;
     }
 
     /**
@@ -89,7 +90,7 @@ public class EntityManagerFactoryBean {
             @Parameter String dataSourceName,
             DataSource dataSource) {
 
-        final DataSourceResolver dataSourceResolver = beanLocator.findBean(DataSourceResolver.class).orElse(null);
+        final DataSourceResolver dataSourceResolver = applicationContext.findBean(DataSourceResolver.class).orElse(null);
         if (dataSourceResolver != null) {
             dataSource = dataSourceResolver.resolve(dataSource);
         }
@@ -97,14 +98,14 @@ public class EntityManagerFactoryBean {
         Map<String, Object> additionalSettings = new LinkedHashMap<>();
         additionalSettings.put(AvailableSettings.DATASOURCE, dataSource);
         additionalSettings.put(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS,
-                beanLocator.findBean(HibernateCurrentSessionContextClassProvider.class)
+                applicationContext.findBean(HibernateCurrentSessionContextClassProvider.class)
                         .map(provider -> provider.get().getName()).orElseGet(MicronautSessionContext.class::getName));
         additionalSettings.put(AvailableSettings.SESSION_FACTORY_NAME, dataSourceName);
         additionalSettings.put(AvailableSettings.SESSION_FACTORY_NAME_IS_JNDI, false);
         additionalSettings.put(AvailableSettings.BEAN_CONTAINER, new BeanContainer() {
             @Override
             public <B> ContainedBean<B> getBean(Class<B> beanType, LifecycleOptions lifecycleOptions, BeanInstanceProducer fallbackProducer) {
-                B bean = beanLocator.findBean(beanType)
+                B bean = applicationContext.findBean(beanType)
                         .orElseGet(() -> fallbackProducer.produceBeanInstance(beanType));
                 return () -> bean;
             }
@@ -115,7 +116,7 @@ public class EntityManagerFactoryBean {
                     Class<B> beanType,
                     LifecycleOptions lifecycleOptions,
                     BeanInstanceProducer fallbackProducer) {
-                B bean = beanLocator.findBean(beanType, Qualifiers.byName(name))
+                B bean = applicationContext.findBean(beanType, Qualifiers.byName(name))
                         .orElseGet(() -> fallbackProducer.produceBeanInstance(name, beanType));
                 return () -> bean;
             }
@@ -125,7 +126,7 @@ public class EntityManagerFactoryBean {
                 // no-op, managed externally
             }
         });
-        JpaConfiguration jpaConfiguration = beanLocator.findBean(JpaConfiguration.class, Qualifiers.byName(dataSourceName))
+        JpaConfiguration jpaConfiguration = applicationContext.findBean(JpaConfiguration.class, Qualifiers.byName(dataSourceName))
                 .orElse(this.jpaConfiguration);
         return jpaConfiguration.buildStandardServiceRegistry(
                 additionalSettings
@@ -159,7 +160,11 @@ public class EntityManagerFactoryBean {
         }
 
         if (metadataSources.getAnnotatedClasses().isEmpty()) {
-            throw new ConfigurationException("Entities not found for JPA configuration: '" + jpaConfiguration.getName() + "'. Check that you have correctly specified a package containing JPA entities within the \"jpa." + jpaConfiguration.getName() + ".entity-scan.packages\" property in your application configuration and that those entities are either compiled with Micronaut or a build time index produced with @Introspected(packages=\"foo.bar\", includedAnnotations=Entity.class) declared on your Application class");
+            String[] packages = jpaConfiguration.getEntityScanConfiguration().getPackages();
+            if (ArrayUtils.isEmpty(packages)) {
+                packages = applicationContext.getEnvironment().getPackages().toArray(StringUtils.EMPTY_STRING_ARRAY);
+            }
+            throw new ConfigurationException("Entities not found for JPA configuration: '" + jpaConfiguration.getName() + "' within packages [" + String.join(",", packages) + "]. Check that you have correctly specified a package containing JPA entities within the \"jpa." + jpaConfiguration.getName() + ".entity-scan.packages\" property in your application configuration and that those entities are either compiled with Micronaut or a build time index produced with @Introspected(packages=\"foo.bar\", includedAnnotations=Entity.class) declared on your Application class");
         }
         return metadataSources;
     }
