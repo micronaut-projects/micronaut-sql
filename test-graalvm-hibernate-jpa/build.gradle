@@ -66,6 +66,7 @@ project("common") {
 }
 project("common-tests") {
     dependencies {
+        implementation 'javax.inject:javax.inject:1'
         implementation "io.micronaut:micronaut-http-client"
         implementation "io.micronaut.test:micronaut-test-core:$micronautTestVersion"
         implementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
