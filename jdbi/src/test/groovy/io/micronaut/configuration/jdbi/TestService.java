@@ -15,10 +15,10 @@
  */
 package io.micronaut.configuration.jdbi;
 
-import io.micronaut.spring.tx.annotation.Transactional;
+import jakarta.inject.Singleton;
 import org.jdbi.v3.core.Jdbi;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Singleton;
 
 @Singleton
 public class TestService {

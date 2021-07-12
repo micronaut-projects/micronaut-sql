@@ -15,21 +15,27 @@
  */
 package io.micronaut.configuration.hibernate.jpa
 
-
+import io.micrometer.core.instrument.FunctionCounter
+import io.micrometer.core.instrument.MeterRegistry
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.Environment
 import io.micronaut.http.exceptions.HttpException
 import io.micronaut.transaction.TransactionDefinition
 import io.micronaut.transaction.annotation.TransactionalAdvice
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import org.hibernate.Session
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
-import javax.inject.Inject
-import javax.inject.Singleton
-import javax.persistence.*
-import javax.persistence.metamodel.Attribute
+import javax.persistence.AttributeConverter
+import javax.persistence.Convert
+import javax.persistence.Entity
+import javax.persistence.EntityManager
+import javax.persistence.EntityManagerFactory
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 import javax.validation.ConstraintViolationException
 import javax.validation.constraints.NotBlank
 
@@ -42,7 +48,7 @@ class JpaSetupSpec extends Specification {
     @Shared @AutoCleanup ApplicationContext applicationContext = ApplicationContext.run(
             'datasources.default.name':'mydb',
             'jpa.default.properties.hibernate.hbm2ddl.auto':'create-drop',
-//            'jpa.default.properties.hibernate.generate_statistics':true,
+            'jpa.default.properties.hibernate.generate_statistics':true,
             'micronaut.metrics.binders.hibernate.tags.some':'bar'
     )
 
@@ -84,12 +90,12 @@ class JpaSetupSpec extends Specification {
         em.createQuery("select book from Book book").resultList.size() == 1
         em.createNativeQuery("select * from book", Book).resultList.size() == 1
 
-//        when:
-//        MeterRegistry meterRegistry = applicationContext.getBean(MeterRegistry)
-//        FunctionCounter c = meterRegistry.get("hibernate.query.executions").tag("entityManagerFactory", "Primary").functionCounter()
-//
-//        then:
-//        c.count() > 0
+        when:
+        MeterRegistry meterRegistry = applicationContext.getBean(MeterRegistry)
+        FunctionCounter c = meterRegistry.get("hibernate.query.executions").tag("entityManagerFactory", JpaConfiguration.PRIMARY).functionCounter()
+
+        then:
+        c.count() > 0
 
         cleanup:
         tx.rollback()

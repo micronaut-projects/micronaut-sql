@@ -18,9 +18,9 @@ package io.micronaut.jdbc.spring;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.jdbc.DataSourceResolver;
+import jakarta.inject.Singleton;
 import org.springframework.jdbc.datasource.DelegatingDataSource;
 
-import javax.inject.Singleton;
 import javax.sql.DataSource;
 
 /**

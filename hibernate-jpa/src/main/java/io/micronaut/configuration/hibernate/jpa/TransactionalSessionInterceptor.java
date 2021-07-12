@@ -15,6 +15,7 @@
  */
 package io.micronaut.configuration.hibernate.jpa;
 
+import io.micronaut.aop.InterceptorBean;
 import io.micronaut.aop.MethodInterceptor;
 import io.micronaut.aop.MethodInvocationContext;
 import io.micronaut.context.BeanContext;
@@ -35,6 +36,7 @@ import org.hibernate.SessionFactory;
  */
 @Internal
 @Prototype
+@InterceptorBean(TransactionalSessionAdvice.class)
 class TransactionalSessionInterceptor implements MethodInterceptor<Session, Object> {
 
     private final SessionFactory sessionFactory;

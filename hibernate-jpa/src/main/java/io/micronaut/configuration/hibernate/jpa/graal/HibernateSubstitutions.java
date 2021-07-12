@@ -35,7 +35,6 @@ import javax.xml.stream.XMLStreamException;
 import com.oracle.svm.core.annotate.Substitute;
 import com.oracle.svm.core.annotate.TargetClass;
 
-import io.micronaut.configuration.hibernate.jpa.condition.EntitiesInPackageCondition;
 import io.micronaut.configuration.hibernate.jpa.proxy.IntrospectedHibernateBytecodeProvider;
 import io.micronaut.jdbc.spring.HibernatePresenceCondition;
 import org.hibernate.boot.archive.spi.InputStreamAccess;
@@ -88,7 +87,6 @@ final class Loggers {
 @TypeHint(value = {
         // Hibernate
         HibernatePresenceCondition.class,
-        EntitiesInPackageCondition.class,
         SingleTableEntityPersister.class,
         EntityMetamodel.class,
         PojoComponentTuplizer.class,

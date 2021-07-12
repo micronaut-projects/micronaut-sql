@@ -16,8 +16,9 @@
 package io.micronaut.configuration.hibernate.jpa;
 
 import io.micronaut.transaction.annotation.TransactionalAdvice;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -25,12 +26,14 @@ import javax.persistence.PersistenceContext;
 public class JavaBookService {
 
     @PersistenceContext
+    @Inject
     EntityManager entityManagerField;
 
 
     private EntityManager entityManager;
 
     @PersistenceContext
+    @Inject
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.jooq
+package io.micronaut.configuration.jooq.spring
 
+import io.micronaut.configuration.jooq.TestService
 import io.micronaut.configuration.jooq.spring.JooqExceptionTranslatorProvider
 import io.micronaut.configuration.jooq.spring.SpringTransactionProvider
 import io.micronaut.context.ApplicationContext

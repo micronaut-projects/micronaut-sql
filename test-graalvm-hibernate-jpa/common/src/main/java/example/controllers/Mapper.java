@@ -19,8 +19,8 @@ import example.controllers.dto.OwnerDto;
 import example.controllers.dto.PetDto;
 import example.domain.Owner;
 import example.domain.Pet;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
 
 @Singleton
 public class Mapper {

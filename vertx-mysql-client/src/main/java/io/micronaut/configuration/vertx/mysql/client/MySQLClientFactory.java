@@ -17,12 +17,11 @@ package io.micronaut.configuration.vertx.mysql.client;
 
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.StringUtils;
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.mysqlclient.MySQLPool;
-
-import javax.annotation.Nullable;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * The Factory for creating Vertx MySQL client.

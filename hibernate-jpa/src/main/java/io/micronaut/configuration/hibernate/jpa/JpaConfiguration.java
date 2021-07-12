@@ -18,7 +18,9 @@ package io.micronaut.configuration.hibernate.jpa;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.EachProperty;
+import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.env.Environment;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.beans.BeanIntrospector;
 import io.micronaut.core.convert.format.MapFormat;
@@ -27,6 +29,9 @@ import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.core.util.Toggleable;
+import io.micronaut.core.version.SemanticVersion;
+import io.micronaut.core.version.VersionUtils;
+import jakarta.inject.Inject;
 import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.boot.registry.StandardServiceInitiator;
@@ -36,9 +41,9 @@ import org.hibernate.bytecode.spi.BytecodeProvider;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.integrator.spi.Integrator;
 import org.hibernate.service.spi.ServiceRegistryImplementor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nullable;
-import javax.inject.Inject;
 import javax.persistence.Entity;
 import javax.validation.ValidatorFactory;
 import java.util.ArrayList;
@@ -55,10 +60,12 @@ import java.util.Map;
  * @author graemerocher
  * @since 1.0
  */
-@EachProperty(value = JpaConfiguration.PREFIX, primary = "default")
+@EachProperty(value = JpaConfiguration.PREFIX, primary = JpaConfiguration.PRIMARY)
 public class JpaConfiguration {
     public static final String PREFIX = "jpa";
+    public static final String PRIMARY = "default";
 
+    private final String name;
     private final BootstrapServiceRegistry bootstrapServiceRegistry;
     private final Environment environment;
     private final ApplicationContext applicationContext;
@@ -72,28 +79,37 @@ public class JpaConfiguration {
      * @param applicationContext The application context
      * @param integrator         The {@link Integrator}
      */
-    protected JpaConfiguration(ApplicationContext applicationContext,
-                               @Nullable Integrator integrator) {
-        this(applicationContext, integrator, new EntityScanConfiguration(applicationContext.getEnvironment()));
+    protected JpaConfiguration(ApplicationContext applicationContext, @Nullable Integrator integrator) {
+        this(PRIMARY, integrator, applicationContext, new EntityScanConfiguration(applicationContext.getEnvironment()));
     }
 
     /**
+     * @param name                    The name
+     * @param integrator              The integrator
      * @param applicationContext      The application context
-     * @param integrator              The {@link Integrator}
      * @param entityScanConfiguration The entity scan configuration
      */
     @Inject
-    protected JpaConfiguration(ApplicationContext applicationContext,
-                               @Nullable Integrator integrator,
+    protected JpaConfiguration(@Parameter String name,
+                               @Parameter @Nullable Integrator integrator,
+                               ApplicationContext applicationContext,
                                @Nullable EntityScanConfiguration entityScanConfiguration) {
         ClassLoader classLoader = applicationContext.getClassLoader();
         BootstrapServiceRegistryBuilder bootstrapServiceRegistryBuilder =
                 createBootstrapServiceRegistryBuilder(integrator, classLoader);
 
+        this.name = name;
         this.bootstrapServiceRegistry = bootstrapServiceRegistryBuilder.build();
         this.entityScanConfiguration = entityScanConfiguration != null ? entityScanConfiguration : new EntityScanConfiguration(applicationContext.getEnvironment());
         this.environment = applicationContext.getEnvironment();
         this.applicationContext = applicationContext;
+    }
+
+    /**
+     * @return The configuration name
+     */
+    public String getName() {
+        return name;
     }
 
     /**
@@ -267,7 +283,7 @@ public class JpaConfiguration {
      */
     @ConfigurationProperties("entity-scan")
     public static class EntityScanConfiguration implements Toggleable {
-
+        private static final Logger LOG = LoggerFactory.getLogger(EntityScanConfiguration.class);
         private boolean enabled = true;
         private boolean classpath = false;
         private String[] packages = StringUtils.EMPTY_STRING_ARRAY;
@@ -290,7 +306,10 @@ public class JpaConfiguration {
 
         /**
          * @return Whether to scan the whole classpath or just look for introspected beans compiled by this application.
+         * @deprecated Runtime classpath scanning is not longer supported. Use {@link io.micronaut.core.annotation.Introspected} to declare the packages you
+         * want to index at build time. Example {@code @Introspected(packages="foo.bar", includedAnnotations=Entity.class)}
          */
+        @Deprecated
         public boolean isClasspath() {
             return classpath;
         }
@@ -299,8 +318,14 @@ public class JpaConfiguration {
          * Sets whether to scan the whole classpath including external JAR files using classpath scanning or just look for introspected beans compiled by this application.
          *
          * @param classpath True if extensive classpath scanning should be used
+         * @deprecated Runtime classpath scanning is not longer supported. Use {@link io.micronaut.core.annotation.Introspected} to declare the packages you
+         * want to index at build time. Example {@code @Introspected(packages="foo.bar", includedAnnotations=Entity.class)}
          */
+        @Deprecated
         public void setClasspath(boolean classpath) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Runtime classpath scanning is not longer supported. Use @Introspected to declare the packages you want to index at build time. Example @Introspected(packages=\"foo.bar\", includedAnnotations=Entity.class)");
+            }
             this.classpath = classpath;
         }
 
@@ -336,25 +361,42 @@ public class JpaConfiguration {
          */
         public Collection<Class<?>> findEntities() {
             Collection<Class<?>> entities = new HashSet<>();
-            if (isClasspath()) {
+            String micronautVersion = VersionUtils.getMicronautVersion();
+            // we don't need this additional scanning for Micronaut 3+ the results are included in the scan(..) method.
+            boolean isMicronaut3 = micronautVersion != null && SemanticVersion.isAtLeastMajorMinor(micronautVersion, 3, 0);
+            boolean hasPackages = ArrayUtils.isNotEmpty(packages);
 
-                if (ArrayUtils.isNotEmpty(packages)) {
-                    environment.scan(Entity.class, packages).forEach(entities::add);
-                } else {
-                    environment.scan(Entity.class).forEach(entities::add);
+            if (isMicronaut3) {
+                if (isEnabled()) {
+                    if (hasPackages) {
+                        environment.scan(Entity.class, packages).forEach(entities::add);
+                    } else {
+                        BeanIntrospector.SHARED.findIntrospections(Entity.class)
+                                .stream().map(BeanIntrospection::getBeanType)
+                                .forEach(entities::add);
+                    }
                 }
-            }
+            } else {
+                if (isClasspath()) {
 
-            if (isEnabled()) {
-                Collection<BeanIntrospection<Object>> introspections;
-                if (ArrayUtils.isNotEmpty(packages)) {
-                    introspections = BeanIntrospector.SHARED.findIntrospections(Entity.class, packages);
-                } else {
-                    introspections = BeanIntrospector.SHARED.findIntrospections(Entity.class);
+                    if (hasPackages) {
+                        environment.scan(Entity.class, packages).forEach(entities::add);
+                    } else {
+                        environment.scan(Entity.class).forEach(entities::add);
+                    }
                 }
-                introspections
-                        .stream().map(BeanIntrospection::getBeanType)
-                        .forEach(entities::add);
+
+                if (isEnabled()) {
+                    Collection<BeanIntrospection<Object>> introspections;
+                    if (hasPackages) {
+                        introspections = BeanIntrospector.SHARED.findIntrospections(Entity.class, packages);
+                    } else {
+                        introspections = BeanIntrospector.SHARED.findIntrospections(Entity.class);
+                    }
+                    introspections
+                            .stream().map(BeanIntrospection::getBeanType)
+                            .forEach(entities::add);
+                }
             }
             return Collections.unmodifiableCollection(entities);
         }

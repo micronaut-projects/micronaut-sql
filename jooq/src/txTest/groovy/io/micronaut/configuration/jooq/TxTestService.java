@@ -16,11 +16,11 @@
 package io.micronaut.configuration.jooq;
 
 import io.micronaut.transaction.annotation.ReadOnly;
+import jakarta.inject.Singleton;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Singleton;
 import javax.transaction.Transactional;
 
 @Singleton

@@ -11,7 +11,6 @@ subprojects { Project subproject ->
     group "io.micronaut.example"
 
     repositories {
-        jcenter()
         mavenCentral()
     }
 
@@ -59,6 +58,8 @@ subprojects { Project subproject ->
 
 project("common") {
     dependencies {
+        implementation 'javax.inject:javax.inject:1'
+        implementation 'jakarta.inject:jakarta.inject-api:2.0.0'
         implementation "io.micronaut:micronaut-http-client"
         annotationProcessor "io.micronaut:micronaut-graal"
         implementation project(":hibernate-jpa")
@@ -67,6 +68,7 @@ project("common") {
 project("common-tests") {
     dependencies {
         implementation "io.micronaut:micronaut-http-client"
+        implementation 'jakarta.inject:jakarta.inject-api:2.0.0'
         implementation "io.micronaut.test:micronaut-test-core:$micronautTestVersion"
         implementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
         implementation "org.testcontainers:spock"

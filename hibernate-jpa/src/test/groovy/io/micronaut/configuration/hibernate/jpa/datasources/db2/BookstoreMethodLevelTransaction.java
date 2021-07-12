@@ -15,10 +15,10 @@
  */
 package io.micronaut.configuration.hibernate.jpa.datasources.db2;
 
-import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession;
 import io.micronaut.transaction.annotation.TransactionalAdvice;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
@@ -30,7 +30,7 @@ public class BookstoreMethodLevelTransaction {
 
     private final EntityManager entityManager;
 
-    public BookstoreMethodLevelTransaction(@CurrentSession("db2") EntityManager entityManager) {
+    public BookstoreMethodLevelTransaction(@Named("db2") EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 

@@ -15,4 +15,5 @@ dependencies {
     api project(":jdbc")
     api "io.micronaut.spring:micronaut-spring"
     api "org.springframework:spring-orm:$springVersion"
+
 }

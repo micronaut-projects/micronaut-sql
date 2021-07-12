@@ -21,7 +21,7 @@ import org.testcontainers.containers.JdbcDatabaseContainer
 import org.testcontainers.containers.MySQLContainer
 import org.testcontainers.utility.DockerImageName
 
-@MicronautTest
+@MicronautTest(packages = "example.domain")
 class MySQLAppSpec extends AbstractDBContainerAppSpec implements TestPropertyProvider {
 
     @Override

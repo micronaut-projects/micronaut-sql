@@ -20,7 +20,7 @@ import org.testcontainers.containers.JdbcDatabaseContainer
 import org.testcontainers.containers.OracleContainer
 import org.testcontainers.utility.DockerImageName
 
-@MicronautTest
+@MicronautTest(packages = "example.domain")
 class OracleDBAppSpec extends AbstractDBContainerAppSpec {
 
     @Override

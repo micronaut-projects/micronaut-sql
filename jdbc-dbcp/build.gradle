@@ -10,6 +10,7 @@ dependencies {
     testRuntimeOnly "com.h2database:h2"
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+    testAnnotationProcessor "io.micronaut.spring:micronaut-spring-annotation"
     testImplementation "io.micronaut.spring:micronaut-spring"
     testImplementation "io.micronaut:micronaut-http-server-netty"
     testImplementation "io.micronaut:micronaut-http-client"

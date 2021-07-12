@@ -39,6 +39,7 @@ import java.util.Optional;
  * @author graemerocher
  * @since 1.0
  */
+@Deprecated
 @Introspected
 public class EntitiesInPackageCondition implements Condition {
     @Override

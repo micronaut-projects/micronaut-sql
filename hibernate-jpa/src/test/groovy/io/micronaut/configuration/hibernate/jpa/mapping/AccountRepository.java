@@ -15,11 +15,10 @@
  */
 package io.micronaut.configuration.hibernate.jpa.mapping;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
-import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.transaction.annotation.TransactionalAdvice;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.validation.constraints.NotBlank;
 
@@ -29,7 +28,7 @@ public class AccountRepository {
 
     private final EntityManager entityManager;
 
-    public AccountRepository(@CurrentSession EntityManager entityManager) {
+    public AccountRepository(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 

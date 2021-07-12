@@ -27,6 +27,7 @@ import java.lang.annotation.*;
  * @author graemerocher
  * @since 1.0
  */
+@Deprecated
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PACKAGE, ElementType.TYPE, ElementType.METHOD})

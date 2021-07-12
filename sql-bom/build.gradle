@@ -1,0 +1,39 @@
+javaPlatform {
+    allowDependencies()
+}
+
+dependencies {
+    constraints {
+        for (Project p : rootProject.subprojects) {
+            if (p.name == "sql-bom" || p.path.contains("test-graalvm")) continue
+            api "$p.group:micronaut-$p.name:$p.version"
+        }
+
+        // vertx client
+        api "io.vertx:vertx-pg-client:$vertxVersion"
+        api "io.vertx:vertx-rx-java2:$vertxVersion"
+        api "io.vertx:vertx-mysql-client:$vertxVersion"
+        api "io.vertx:vertx-codegen:$vertxVersion"
+
+        // jooq
+        api "org.jooq:jooq:$jooqVersion"
+
+        // hibernate
+        api "org.hibernate:hibernate-core:$hibernateVersion"
+        api "org.hibernate:hibernate-jcache:$hibernateVersion"
+        api "org.hibernate:hibernate-micrometer:$hibernateVersion"
+
+        // jasync
+        api "com.github.jasync-sql:jasync-mysql:$jasyncVersion"
+        api "com.github.jasync-sql:jasync-postgresql:$jasyncVersion"
+
+        // jdbc
+        api "org.apache.commons:commons-dbcp2:$commonsDbcpVersion"
+        api "com.zaxxer:HikariCP:$hikariVersion"
+        api "org.apache.tomcat:tomcat-jdbc:$tomcatJdbcVersion"
+        api "com.oracle.database.jdbc:ucp:$ojdbcVersion"
+
+        // jdbi
+        api "org.jdbi:jdbi3-core:$jdbiVersion"
+    }
+}

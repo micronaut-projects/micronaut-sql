@@ -15,10 +15,10 @@
  */
 package io.micronaut.configuration.jdbc.dbcp;
 
-import io.micronaut.spring.tx.annotation.Transactional;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;

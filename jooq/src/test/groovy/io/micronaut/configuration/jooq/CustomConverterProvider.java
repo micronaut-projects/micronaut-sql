@@ -15,20 +15,18 @@
  */
 package io.micronaut.configuration.jooq;
 
-import org.jetbrains.annotations.Nullable;
+import io.micronaut.core.annotation.Nullable;
 import org.jooq.Converter;
 import org.jooq.ConverterProvider;
 import org.jooq.impl.DefaultConverterProvider;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
 
 public class CustomConverterProvider implements ConverterProvider {
 
     private final DefaultConverterProvider delegate = new DefaultConverterProvider();
 
     @Override
-    public @Nullable <T, U> Converter<T, U> provide(Class<T> tType, Class<U> uType) {
+    public @Nullable
+    <T, U> Converter<T, U> provide(Class<T> tType, Class<U> uType) {
         return delegate.provide(tType, uType);
     }
 

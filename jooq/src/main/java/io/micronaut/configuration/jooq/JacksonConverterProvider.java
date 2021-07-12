@@ -16,8 +16,9 @@
 package io.micronaut.configuration.jooq;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.umd.cs.findbugs.annotations.Nullable;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.annotation.Nullable;
+import jakarta.inject.Singleton;
 import org.jooq.Converter;
 import org.jooq.ConverterProvider;
 import org.jooq.JSON;
@@ -25,7 +26,6 @@ import org.jooq.JSONB;
 import org.jooq.exception.DataTypeException;
 import org.jooq.impl.DefaultConverterProvider;
 
-import javax.inject.Singleton;
 
 /**
  * jOOQ ConverterProvider integrating Jackson ObjectMapper to convert JSON and JSONB types.
