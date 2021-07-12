@@ -27,11 +27,18 @@ dependencies {
         api "com.github.jasync-sql:jasync-mysql:$jasyncVersion"
         api "com.github.jasync-sql:jasync-postgresql:$jasyncVersion"
 
-        // jdbc
+        // jdbc pools
         api "org.apache.commons:commons-dbcp2:$commonsDbcpVersion"
         api "com.zaxxer:HikariCP:$hikariVersion"
         api "org.apache.tomcat:tomcat-jdbc:$tomcatJdbcVersion"
         api "com.oracle.database.jdbc:ucp:$ojdbcVersion"
+
+        // jdbc drivers
+        api "org.postgresql:postgresql:$postgresDriverVersion"
+        api "com.microsoft.sqlserver:mssql-jdbc:$mssqlDriverVersion"
+        api "com.oracle.database.jdbc:ojdbc8:$ojdbcVersion"
+        api "org.mariadb.jdbc:mariadb-java-client:$mariadbDriverVersion"
+        api "mysql:mysql-connector-java:$mysqlDriverVersion"
 
         // jdbi
         api "org.jdbi:jdbi3-core:$jdbiVersion"

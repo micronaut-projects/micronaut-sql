@@ -88,7 +88,7 @@ project("h2") {
 }
 project("mssql") {
     dependencies {
-        runtimeOnly "com.microsoft.sqlserver:mssql-jdbc"
+        runtimeOnly "com.microsoft.sqlserver:mssql-jdbc:$mssqlDriverVersion"
         testImplementation "org.testcontainers:mssqlserver"
     }
     nativeImage {
@@ -98,7 +98,7 @@ project("mssql") {
 }
 project("postgres") {
     dependencies {
-        runtimeOnly "org.postgresql:postgresql"
+        runtimeOnly "org.postgresql:postgresql:$postgresDriverVersion"
         testImplementation "org.testcontainers:postgresql"
     }
 }
@@ -110,13 +110,13 @@ project("oracle") {
 }
 project("mysql") {
     dependencies {
-        runtimeOnly "mysql:mysql-connector-java"
+        runtimeOnly "mysql:mysql-connector-java:$mysqlDriverVersion"
         testImplementation "org.testcontainers:mysql"
     }
 }
 project("mariadb") {
     dependencies {
-        runtimeOnly "org.mariadb.jdbc:mariadb-java-client"
+        runtimeOnly "org.mariadb.jdbc:mariadb-java-client:$mariadbDriverVersion"
         testImplementation "org.testcontainers:mariadb"
     }
 }
