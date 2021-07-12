@@ -22,6 +22,9 @@ subprojects { Project subproject ->
         return
     }
 
+    group "io.micronaut.sql"
+    version projectVersion
+
     if (subproject.name != 'sql-bom') {
 
         group "io.micronaut.sql"
@@ -37,7 +40,6 @@ subprojects { Project subproject ->
         }
     } else {
         apply plugin: "java-platform"
-        version projectVersion
     }
 
     apply plugin: "io.micronaut.build.internal.dependency-updates"
