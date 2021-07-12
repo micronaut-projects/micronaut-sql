@@ -18,7 +18,7 @@ package example.controllers
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.RxHttpClient
 import io.micronaut.http.client.annotation.Client
-import jakarta.inject.Inject
+import javax.inject.Inject
 import spock.lang.Specification
 import spock.lang.Stepwise
 
