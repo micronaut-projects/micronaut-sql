@@ -41,7 +41,7 @@ subprojects { Project subproject ->
     }
 
     dependencies {
-        runtimeOnly "io.micronaut.sql:micronaut-jdbc-hikari"
+        runtimeOnly project(":jdbc-hikari")
         runtimeOnly "ch.qos.logback:logback-classic"
 
         implementation "io.micronaut:micronaut-http-client"
