@@ -22,20 +22,11 @@ package io.micronaut.configuration.hibernate.jpa.graal;
  * @since 1.2.0
  */
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.management.ObjectName;
-import javax.xml.stream.XMLResolver;
-import javax.xml.stream.XMLStreamException;
-
 import com.oracle.svm.core.annotate.Substitute;
 import com.oracle.svm.core.annotate.TargetClass;
-
 import io.micronaut.configuration.hibernate.jpa.proxy.IntrospectedHibernateBytecodeProvider;
+import io.micronaut.core.annotation.TypeHint;
+import io.micronaut.core.annotation.TypeHint.AccessType;
 import io.micronaut.jdbc.spring.HibernatePresenceCondition;
 import org.hibernate.boot.archive.spi.InputStreamAccess;
 import org.hibernate.boot.jaxb.internal.MappingBinder;
@@ -45,7 +36,56 @@ import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.hibernate.bytecode.spi.BytecodeProvider;
 import org.hibernate.event.spi.EventType;
 import org.hibernate.hql.internal.ast.HqlToken;
-import org.hibernate.hql.internal.ast.tree.*;
+import org.hibernate.hql.internal.ast.tree.AggregateNode;
+import org.hibernate.hql.internal.ast.tree.AssignmentSpecification;
+import org.hibernate.hql.internal.ast.tree.BetweenOperatorNode;
+import org.hibernate.hql.internal.ast.tree.BinaryArithmeticOperatorNode;
+import org.hibernate.hql.internal.ast.tree.BinaryLogicOperatorNode;
+import org.hibernate.hql.internal.ast.tree.BooleanLiteralNode;
+import org.hibernate.hql.internal.ast.tree.CastFunctionNode;
+import org.hibernate.hql.internal.ast.tree.CollectionFunction;
+import org.hibernate.hql.internal.ast.tree.ComponentJoin;
+import org.hibernate.hql.internal.ast.tree.ConstructorNode;
+import org.hibernate.hql.internal.ast.tree.CountNode;
+import org.hibernate.hql.internal.ast.tree.DeleteStatement;
+import org.hibernate.hql.internal.ast.tree.DotNode;
+import org.hibernate.hql.internal.ast.tree.EntityJoinFromElement;
+import org.hibernate.hql.internal.ast.tree.FromClause;
+import org.hibernate.hql.internal.ast.tree.FromElement;
+import org.hibernate.hql.internal.ast.tree.FromElementFactory;
+import org.hibernate.hql.internal.ast.tree.FromReferenceNode;
+import org.hibernate.hql.internal.ast.tree.HqlSqlWalkerNode;
+import org.hibernate.hql.internal.ast.tree.IdentNode;
+import org.hibernate.hql.internal.ast.tree.ImpliedFromElement;
+import org.hibernate.hql.internal.ast.tree.InLogicOperatorNode;
+import org.hibernate.hql.internal.ast.tree.IndexNode;
+import org.hibernate.hql.internal.ast.tree.InsertStatement;
+import org.hibernate.hql.internal.ast.tree.IntoClause;
+import org.hibernate.hql.internal.ast.tree.IsNotNullLogicOperatorNode;
+import org.hibernate.hql.internal.ast.tree.IsNullLogicOperatorNode;
+import org.hibernate.hql.internal.ast.tree.JavaConstantNode;
+import org.hibernate.hql.internal.ast.tree.LiteralNode;
+import org.hibernate.hql.internal.ast.tree.MapEntryNode;
+import org.hibernate.hql.internal.ast.tree.MapKeyEntityFromElement;
+import org.hibernate.hql.internal.ast.tree.MapKeyNode;
+import org.hibernate.hql.internal.ast.tree.MapValueNode;
+import org.hibernate.hql.internal.ast.tree.MethodNode;
+import org.hibernate.hql.internal.ast.tree.Node;
+import org.hibernate.hql.internal.ast.tree.NullNode;
+import org.hibernate.hql.internal.ast.tree.OrderByClause;
+import org.hibernate.hql.internal.ast.tree.ParameterNode;
+import org.hibernate.hql.internal.ast.tree.QueryNode;
+import org.hibernate.hql.internal.ast.tree.ResultVariableRefNode;
+import org.hibernate.hql.internal.ast.tree.SearchedCaseNode;
+import org.hibernate.hql.internal.ast.tree.SelectClause;
+import org.hibernate.hql.internal.ast.tree.SelectExpressionImpl;
+import org.hibernate.hql.internal.ast.tree.SelectExpressionList;
+import org.hibernate.hql.internal.ast.tree.SimpleCaseNode;
+import org.hibernate.hql.internal.ast.tree.SqlFragment;
+import org.hibernate.hql.internal.ast.tree.SqlNode;
+import org.hibernate.hql.internal.ast.tree.UnaryArithmeticNode;
+import org.hibernate.hql.internal.ast.tree.UnaryLogicOperatorNode;
+import org.hibernate.hql.internal.ast.tree.UpdateStatement;
 import org.hibernate.id.Assigned;
 import org.hibernate.id.ForeignGenerator;
 import org.hibernate.id.GUIDGenerator;
@@ -54,7 +94,14 @@ import org.hibernate.id.IncrementGenerator;
 import org.hibernate.id.SelectGenerator;
 import org.hibernate.id.UUIDGenerator;
 import org.hibernate.id.UUIDHexGenerator;
-import org.hibernate.id.enhanced.*;
+import org.hibernate.id.enhanced.HiLoOptimizer;
+import org.hibernate.id.enhanced.LegacyHiLoAlgorithmOptimizer;
+import org.hibernate.id.enhanced.NoopOptimizer;
+import org.hibernate.id.enhanced.PooledLoOptimizer;
+import org.hibernate.id.enhanced.PooledLoThreadLocalOptimizer;
+import org.hibernate.id.enhanced.PooledOptimizer;
+import org.hibernate.id.enhanced.SequenceStyleGenerator;
+import org.hibernate.id.enhanced.TableGenerator;
 import org.hibernate.jmx.spi.JmxService;
 import org.hibernate.persister.collection.BasicCollectionPersister;
 import org.hibernate.persister.collection.OneToManyPersister;
@@ -68,8 +115,14 @@ import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.tuple.entity.PojoEntityTuplizer;
 import org.hibernate.type.EnumType;
 
-import io.micronaut.core.annotation.TypeHint;
-import io.micronaut.core.annotation.TypeHint.AccessType;
+import javax.management.ObjectName;
+import javax.xml.stream.XMLResolver;
+import javax.xml.stream.XMLStreamException;
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Map;
+import java.util.Properties;
 
 // Additional classes
 @TypeHint(
@@ -77,7 +130,8 @@ import io.micronaut.core.annotation.TypeHint.AccessType;
                 "org.hibernate.internal.CoreMessageLogger_$logger",
                 "org.hibernate.internal.EntityManagerMessageLogger_$logger",
                 "org.hibernate.annotations.common.util.impl.Log_$logger",
-                "com.sun.xml.internal.stream.events.XMLEventFactoryImpl"
+                "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
+                "org.hibernate.bytecode.enhance.spi.interceptor.BytecodeInterceptorLogging_$logger",
         }
 )
 final class Loggers {
