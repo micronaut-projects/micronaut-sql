@@ -91,7 +91,7 @@ public class JpaConfiguration {
      */
     @Inject
     protected JpaConfiguration(@Parameter String name,
-                               @Parameter @Nullable Integrator integrator,
+                               @Nullable Integrator integrator,
                                ApplicationContext applicationContext,
                                @Nullable EntityScanConfiguration entityScanConfiguration) {
         ClassLoader classLoader = applicationContext.getClassLoader();
