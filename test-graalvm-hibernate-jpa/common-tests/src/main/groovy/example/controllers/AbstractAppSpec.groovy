@@ -16,30 +16,29 @@
 package example.controllers
 
 import io.micronaut.http.HttpRequest
-import io.micronaut.http.client.RxHttpClient
+import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
-import javax.inject.Inject
+import jakarta.inject.Inject
 import spock.lang.Specification
 import spock.lang.Stepwise
-
 
 @Stepwise
 abstract class AbstractAppSpec extends Specification {
 
     @Inject
     @Client("/")
-    RxHttpClient client
+    HttpClient client
 
     def 'should init'() {
         when:
-            client.exchange(HttpRequest.GET("/init")).blockingFirst()
+            client.toBlocking().exchange(HttpRequest.GET("/init"))
         then:
             noExceptionThrown()
     }
 
     def 'should fetch owners'() {
         when:
-            def results = client.retrieve(HttpRequest.GET("/owners"), List).blockingFirst()
+            def results = client.toBlocking().retrieve(HttpRequest.GET("/owners"), List)
         then:
             results.size() == 2
             results[0].name == "Fred"
@@ -48,14 +47,14 @@ abstract class AbstractAppSpec extends Specification {
 
     def 'should fetch owner by name'() {
         when:
-            def result = client.retrieve(HttpRequest.GET("/owners/Fred"), Map).blockingFirst()
+            def result = client.toBlocking().retrieve(HttpRequest.GET("/owners/Fred"), Map)
         then:
             result.name == "Fred"
     }
 
     def 'should fetch pets'() {
         when:
-            def results = client.retrieve(HttpRequest.GET("/pets"), List).blockingFirst()
+            def results = client.toBlocking().retrieve(HttpRequest.GET("/pets"), List)
         then:
             results.size() == 3
             results[0].name == "Dino"
@@ -68,7 +67,7 @@ abstract class AbstractAppSpec extends Specification {
 
     def 'should fetch pet by name'() {
         when:
-            def result = client.retrieve(HttpRequest.GET("/pets/Dino"), Map).blockingFirst()
+            def result = client.toBlocking().retrieve(HttpRequest.GET("/pets/Dino"), Map)
         then:
             result.name == "Dino"
             result.owner.name == "Fred"

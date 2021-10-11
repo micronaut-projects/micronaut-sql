@@ -22,9 +22,9 @@ import io.micronaut.health.HealthStatus;
 import io.micronaut.management.endpoint.health.HealthEndpoint;
 import io.micronaut.management.health.indicator.HealthIndicator;
 import io.micronaut.management.health.indicator.HealthResult;
-import io.reactivex.Flowable;
 import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,13 +55,13 @@ public class JasyncHealthIndicator implements HealthIndicator {
 
     @Override
     public Publisher<HealthResult> getResult() {
-        return Flowable.fromFuture(client.sendQuery(QUERY))
+        return Mono.fromFuture(client.sendQuery(QUERY))
                 .map(queryResult -> {
                     Map<String, String> error = new HashMap<>(1);
                     error.put("version", String.valueOf(queryResult.getRows().get(0).get(0)));
                     return HealthResult.builder(NAME, HealthStatus.UP).details(error).build();
                 })
-                .onErrorReturn(error -> HealthResult.builder(NAME, HealthStatus.DOWN).exception(error).build());
+                .onErrorResume(error -> Mono.just(HealthResult.builder(NAME, HealthStatus.DOWN).exception(error).build()));
     }
 
 }

@@ -3,6 +3,7 @@ dependencies {
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
 
     api "io.micronaut:micronaut-inject:$micronautVersion"
+    implementation "io.projectreactor:reactor-core"
     compileOnly "com.github.jasync-sql:jasync-mysql:$jasyncVersion"
     compileOnly "com.github.jasync-sql:jasync-postgresql:$jasyncVersion"
     compileOnly "io.micronaut:micronaut-management:$micronautVersion"

@@ -18,7 +18,7 @@ package io.micronaut.configuration.jdbc.dbcp.metadata
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.MapPropertySource
 import io.micronaut.http.HttpStatus
-import io.micronaut.http.client.RxHttpClient
+import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.AutoCleanup
@@ -47,11 +47,11 @@ class DbcpDataSourcePoolMetadataDisabledSpec extends AbstractDataSourcePoolMetad
 
     @Shared
     @AutoCleanup
-    RxHttpClient httpClient = context.createBean(RxHttpClient, embeddedServer.getURL())
+    HttpClient httpClient = context.createBean(HttpClient, embeddedServer.getURL())
 
     def "check metrics endpoint for datasource metrics not found for #metric"() {
         when:
-        def response = httpClient.exchange("/metrics", Map).blockingFirst()
+        def response = httpClient.toBlocking().exchange("/metrics", Map)
         Map result = response.body()
 
         then:
@@ -65,7 +65,7 @@ class DbcpDataSourcePoolMetadataDisabledSpec extends AbstractDataSourcePoolMetad
     @Unroll
     def "check metrics endpoint for datasource metrics #metric not found"() {
         when:
-        httpClient.exchange("/metrics/$metric", Map).blockingFirst()
+        httpClient.toBlocking().exchange("/metrics/$metric", Map)
 
         then:
         thrown(HttpClientResponseException)
