@@ -29,8 +29,6 @@ import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.core.util.Toggleable;
-import io.micronaut.core.version.SemanticVersion;
-import io.micronaut.core.version.VersionUtils;
 import jakarta.inject.Inject;
 import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
