@@ -17,7 +17,7 @@ package io.micronaut.configuration.jasync.health
 
 import io.micronaut.context.ApplicationContext
 import io.micronaut.http.HttpStatus
-import io.micronaut.http.client.RxHttpClient
+import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.management.endpoint.health.HealthEndpoint
 import io.micronaut.management.health.indicator.HealthResult
@@ -47,7 +47,7 @@ class JasyncHealthIndicatorSpec extends Specification {
         embeddedServer.start()
 
         URL server = embeddedServer.getURL()
-        RxHttpClient rxClient = embeddedServer.applicationContext.createBean(RxHttpClient, server)
+        HttpClient rxClient = embeddedServer.applicationContext.createBean(HttpClient, server)
 
         when:
         def response = rxClient.toBlocking().exchange('/health', HealthResult.class)

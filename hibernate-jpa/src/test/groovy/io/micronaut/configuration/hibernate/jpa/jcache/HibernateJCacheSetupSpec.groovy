@@ -31,7 +31,7 @@ class HibernateJCacheSetupSpec extends Specification {
     void "test cache manager bound"() {
         given:
         CacheManager cacheManager = Mock(CacheManager)
-        ApplicationContext applicationContext = ApplicationContext.build([
+        ApplicationContext applicationContext = ApplicationContext.builder([
                 'datasources.default.name'                     : 'mydb',
                 'jpa.default.properties.hibernate.hbm2ddl.auto': 'create-drop'
         ])
@@ -52,8 +52,7 @@ class HibernateJCacheSetupSpec extends Specification {
 
     void "test cache manager not bound"() {
         given:
-        CacheManager cacheManager = Mock(CacheManager)
-        ApplicationContext applicationContext = ApplicationContext.build([
+        ApplicationContext applicationContext = ApplicationContext.builder([
                 'datasources.default.name'                     : 'mydb',
                 'jpa.default.properties.hibernate.hbm2ddl.auto': 'create-drop'
         ])

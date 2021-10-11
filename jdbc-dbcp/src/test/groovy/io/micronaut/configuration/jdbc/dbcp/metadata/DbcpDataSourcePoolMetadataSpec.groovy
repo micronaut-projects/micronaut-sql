@@ -18,12 +18,11 @@ package io.micronaut.configuration.jdbc.dbcp.metadata
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.MapPropertySource
 import io.micronaut.http.HttpStatus
-import io.micronaut.http.client.RxHttpClient
+import io.micronaut.http.client.HttpClient
 import io.micronaut.runtime.server.EmbeddedServer
 import org.apache.commons.dbcp2.BasicDataSource
 import spock.lang.AutoCleanup
 import spock.lang.Shared
-import spock.lang.Specification
 import spock.lang.Unroll
 
 import static io.micronaut.configuration.metrics.micrometer.MeterRegistryFactory.MICRONAUT_METRICS_BINDERS
@@ -48,7 +47,7 @@ class DbcpDataSourcePoolMetadataSpec extends AbstractDataSourcePoolMetadataSpec 
 
     @Shared
     @AutoCleanup
-    RxHttpClient httpClient = context.createBean(RxHttpClient, embeddedServer.getURL())
+    HttpClient httpClient = context.createBean(HttpClient, embeddedServer.getURL())
 
     def "test wire class manually"() {
         given:
@@ -69,7 +68,7 @@ class DbcpDataSourcePoolMetadataSpec extends AbstractDataSourcePoolMetadataSpec 
     @Unroll
     def "check metrics endpoint for datasource metrics for #metric"() {
         when:
-        def response = httpClient.exchange("/metrics", Map).blockingFirst()
+        def response = httpClient.toBlocking().exchange("/metrics", Map)
         Map result = response.body()
 
         then:
@@ -83,7 +82,7 @@ class DbcpDataSourcePoolMetadataSpec extends AbstractDataSourcePoolMetadataSpec 
 
     def "check metrics endpoint for datasource metrics #metric"() {
         when:
-        def response = httpClient.exchange("/metrics/$metric", Map).blockingFirst()
+        def response = httpClient.toBlocking().exchange("/metrics/$metric", Map)
         Map result = (Map) response.body()
 
         then:

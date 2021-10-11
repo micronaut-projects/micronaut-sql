@@ -361,43 +361,16 @@ public class JpaConfiguration {
          */
         public Collection<Class<?>> findEntities() {
             Collection<Class<?>> entities = new HashSet<>();
-            String micronautVersion = VersionUtils.getMicronautVersion();
-            // we don't need this additional scanning for Micronaut 3+ the results are included in the scan(..) method.
-            boolean isMicronaut3 = micronautVersion != null && SemanticVersion.isAtLeastMajorMinor(micronautVersion, 3, 0);
-            boolean hasPackages = ArrayUtils.isNotEmpty(packages);
-
-            if (isMicronaut3) {
-                if (isEnabled()) {
-                    if (hasPackages) {
-                        environment.scan(Entity.class, packages).forEach(entities::add);
-                    } else {
-                        BeanIntrospector.SHARED.findIntrospections(Entity.class)
-                                .stream().map(BeanIntrospection::getBeanType)
-                                .forEach(entities::add);
-                    }
-                }
-            } else {
-                if (isClasspath()) {
-
-                    if (hasPackages) {
-                        environment.scan(Entity.class, packages).forEach(entities::add);
-                    } else {
-                        environment.scan(Entity.class).forEach(entities::add);
-                    }
-                }
-
-                if (isEnabled()) {
-                    Collection<BeanIntrospection<Object>> introspections;
-                    if (hasPackages) {
-                        introspections = BeanIntrospector.SHARED.findIntrospections(Entity.class, packages);
-                    } else {
-                        introspections = BeanIntrospector.SHARED.findIntrospections(Entity.class);
-                    }
-                    introspections
+            if (isEnabled()) {
+                if (ArrayUtils.isNotEmpty(packages)) {
+                    environment.scan(Entity.class, packages).forEach(entities::add);
+                } else {
+                    BeanIntrospector.SHARED.findIntrospections(Entity.class)
                             .stream().map(BeanIntrospection::getBeanType)
                             .forEach(entities::add);
                 }
             }
+
             return Collections.unmodifiableCollection(entities);
         }
     }
