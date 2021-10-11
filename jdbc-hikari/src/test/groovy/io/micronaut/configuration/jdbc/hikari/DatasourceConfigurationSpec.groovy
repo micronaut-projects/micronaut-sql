@@ -67,6 +67,7 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.username == 'sa'
         dataSource.password == ''
         dataSource.driverClassName == 'org.h2.Driver'
+        dataSource.connectionTestQuery == "SELECT 1"
 
         cleanup:
         applicationContext.close()
@@ -272,6 +273,29 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.dataSourceProperties.size() == 2
         dataSource.dataSourceProperties.get('reWriteBatchInserts') == true
         dataSource.dataSourceProperties.get('anotherOne') == 'value'
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    void "test validation query is not set"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                ['datasources.default.automatic-validation-query': false]
+        ))
+        applicationContext.start()
+
+        when:
+        HikariUrlDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+
+        then: //The default configuration is supplied because H2 is on the classpath
+        dataSource.jdbcUrl == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
+        dataSource.username == 'sa'
+        dataSource.password == ''
+        dataSource.driverClassName == 'org.h2.Driver'
+        dataSource.connectionTestQuery == null
 
         cleanup:
         applicationContext.close()

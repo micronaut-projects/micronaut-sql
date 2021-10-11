@@ -45,6 +45,7 @@ public class DatasourceConfiguration extends HikariConfig implements BasicJdbcCo
 
     private CalculatedSettings calculatedSettings;
     private String name;
+    private boolean automaticValidationQuery = true;
 
     /**
      * Constructor.
@@ -75,7 +76,7 @@ public class DatasourceConfiguration extends HikariConfig implements BasicJdbcCo
         if (getConfiguredPassword() == null) {
             setPassword(getPassword());
         }
-        if (getConfiguredValidationQuery() == null) {
+        if (getConfiguredValidationQuery() == null && isAutomaticValidationQuery()) {
             setValidationQuery(getValidationQuery());
         }
     }
@@ -186,5 +187,22 @@ public class DatasourceConfiguration extends HikariConfig implements BasicJdbcCo
     @Deprecated
     public void setDataSourceProperties(Properties dsProperties) {
         // otherwise properties will be added twice
+    }
+
+    /**
+     * @return True if the validation query should be set automatically
+     */
+    public boolean isAutomaticValidationQuery() {
+        return automaticValidationQuery;
+    }
+
+    /**
+     * Set to true if the validation query should be set with an appropriate default value
+     * if not set manually.
+     *
+     * @param automaticValidationQuery Whether to auto set the validation query
+     */
+    public void setAutomaticValidationQuery(boolean automaticValidationQuery) {
+        this.automaticValidationQuery = automaticValidationQuery;
     }
 }
