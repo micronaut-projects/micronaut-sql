@@ -19,7 +19,6 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
-import oracle.ucp.UniversalConnectionPoolAdapter;
 import oracle.ucp.UniversalConnectionPoolException;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
 import oracle.ucp.admin.UniversalConnectionPoolManagerImpl;
@@ -32,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Creates a ucp data source for each configuration bean.
+ * Creates an ucp data source for each configuration bean.
  *
  * @author toddsharp
  * @since 2.0.1
@@ -66,8 +65,6 @@ public class DatasourceFactory implements AutoCloseable {
         PoolDataSource ds = datasourceConfiguration.delegate;
         dataSources.add(ds);
 
-        connectionPoolManager.createConnectionPool((UniversalConnectionPoolAdapter) ds);
-        connectionPoolManager.startConnectionPool(ds.getConnectionPoolName());
         return ds;
     }
 
@@ -79,7 +76,7 @@ public class DatasourceFactory implements AutoCloseable {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Closing connection pool named: {}", dataSource.getConnectionPoolName());
                 }
-                UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager().destroyConnectionPool(dataSource.getConnectionPoolName());
+                connectionPoolManager.destroyConnectionPool(dataSource.getConnectionPoolName());
             } catch (Exception e) {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn("Error closing data source [" + dataSource + "]: " + e.getMessage(), e);

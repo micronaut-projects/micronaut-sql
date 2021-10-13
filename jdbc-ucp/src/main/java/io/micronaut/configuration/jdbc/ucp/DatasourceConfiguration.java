@@ -64,6 +64,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     public DatasourceConfiguration(@Parameter String name) throws SQLException {
         super();
         this.name = name;
+        this.delegate.setConnectionPoolName(name);
         this.calculatedSettings = new CalculatedSettings(this);
     }
 
