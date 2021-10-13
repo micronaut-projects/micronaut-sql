@@ -19,6 +19,9 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
+import oracle.ucp.UniversalConnectionPoolAdapter;
+import oracle.ucp.UniversalConnectionPoolException;
+import oracle.ucp.admin.UniversalConnectionPoolManager;
 import oracle.ucp.admin.UniversalConnectionPoolManagerImpl;
 import oracle.ucp.jdbc.PoolDataSource;
 import org.slf4j.Logger;
@@ -38,16 +41,17 @@ import java.util.List;
 public class DatasourceFactory implements AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
     private List<PoolDataSource> dataSources = new ArrayList<>(2);
-
-    private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
+    private final UniversalConnectionPoolManager connectionPoolManager;
 
     /**
      * Default constructor.
      *
      * @param applicationContext The application context
      */
-    public DatasourceFactory(ApplicationContext applicationContext) {
+    public DatasourceFactory(ApplicationContext applicationContext) throws UniversalConnectionPoolException {
         this.applicationContext = applicationContext;
+        this.connectionPoolManager = UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager();
     }
 
     /**
@@ -58,9 +62,12 @@ public class DatasourceFactory implements AutoCloseable {
      */
     @Context
     @EachBean(DatasourceConfiguration.class)
-    public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
+    public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration) throws UniversalConnectionPoolException {
         PoolDataSource ds = datasourceConfiguration.delegate;
         dataSources.add(ds);
+
+        connectionPoolManager.createConnectionPool((UniversalConnectionPoolAdapter) ds);
+        connectionPoolManager.startConnectionPool(ds.getConnectionPoolName());
         return ds;
     }
 

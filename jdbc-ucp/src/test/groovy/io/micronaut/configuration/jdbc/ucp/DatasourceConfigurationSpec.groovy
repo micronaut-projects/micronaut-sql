@@ -266,7 +266,7 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.start()
 
         when:
-            PoolDataSource dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("person")).targetDataSource
+        PoolDataSource dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("person")).targetDataSource
 
         then:
         dataSource
@@ -303,5 +303,37 @@ class DatasourceConfigurationSpec extends Specification {
 
         then:
         dataSource
+    }
+
+    void "test pool is created with calculated settings"() {
+
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                [
+                        "datasources.default.data-source-properties": [
+                                "oracle.fan.enabled": true
+                        ]
+                ]
+        ))
+        applicationContext.start()
+
+        expect:
+        applicationContext.containsBean(PoolDataSource)
+        applicationContext.containsBean(DatasourceConfiguration)
+
+        when:
+        PoolDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+
+        then: //The default configuration is supplied because H2 is on the classpath
+        dataSource.getSQLForValidateConnection()== 'SELECT 1'
+        dataSource.getConnectionFactoryClassName() == 'org.h2.Driver'
+        dataSource.getURL() == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
+        dataSource.getUser() == "sa"
+        dataSource.getPassword() == ""
+
+        cleanup:
+        applicationContext.close()
     }
 }

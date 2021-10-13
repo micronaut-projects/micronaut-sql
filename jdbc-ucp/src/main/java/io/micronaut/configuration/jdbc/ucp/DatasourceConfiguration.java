@@ -22,18 +22,20 @@ import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
+import jakarta.annotation.PostConstruct;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
 import oracle.ucp.jdbc.PoolDataSourceImpl;
 
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
  * Allows the configuration of UCP JDBC data sources. All properties on
  * {@link PoolDataSourceImpl} are available to be configured.
- *
- * If the url, driver class, username, or password are missing, sensible defaults
+ * <p>
+ * If the url, driver class, validation sql query, username, or password are missing, sensible defaults
  * will be provided when possible. If no configuration beyond the datasource name
  * is provided, an in memory datasource will be configured based on the available
  * drivers on the classpath.
@@ -52,6 +54,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
 
     /**
      * Constructor.
+     *
      * @param name name that comes from properties
      */
     public DatasourceConfiguration(@Parameter String name) throws SQLException {
@@ -66,7 +69,6 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     }
 
     /**
-     *
      * @param name the name of the datasource
      * @throws SQLException an sql exception
      */
@@ -183,4 +185,44 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         return delegate.getSQLForValidateConnection();
     }
 
+
+    /**
+     * Configures the missing properties of the data source from the calculated settings.
+     *
+     * @since 4.0.2
+     */
+    @PostConstruct
+    public void initialize() {
+        if (Objects.equals(getConfiguredDriverClassName(), "")) {
+            setDriverClassName(getDriverClassName());
+        }
+
+        if (getConfiguredUrl() == null) {
+            setUrl(getUrl());
+        }
+
+        if (getConfiguredValidationQuery() == null) {
+            try {
+                delegate.setSQLForValidateConnection(getValidationQuery());
+            } catch (SQLException e) {
+                throw new ConfigurationException("Unable to set datasource calculated validation query:" + e.getMessage(), e);
+            }
+        }
+
+        if (getConfiguredUsername() == null) {
+            try {
+                delegate.setUser(calculatedSettings.getUsername());
+            } catch (SQLException e) {
+                throw new ConfigurationException("Unable to set datasource calculated username:" + e.getMessage(), e);
+            }
+        }
+
+        if (getConfiguredPassword() == null) {
+            try {
+                delegate.setPassword(calculatedSettings.getPassword());
+            } catch (SQLException e) {
+                throw new ConfigurationException("Unable to set datasource calculated password:" + e.getMessage(), e);
+            }
+        }
+    }
 }
