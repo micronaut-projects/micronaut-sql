@@ -193,7 +193,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
      */
     @PostConstruct
     public void initialize() {
-        if (Objects.equals(getConfiguredDriverClassName(), "")) {
+        if ("".equals(getConfiguredDriverClassName()) {
             setDriverClassName(getDriverClassName());
         }
 
