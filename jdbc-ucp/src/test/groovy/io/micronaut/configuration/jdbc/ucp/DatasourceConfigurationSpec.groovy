@@ -311,11 +311,7 @@ class DatasourceConfigurationSpec extends Specification {
         ApplicationContext applicationContext = new DefaultApplicationContext("test")
         applicationContext.environment.addPropertySource(MapPropertySource.of(
                 'test',
-                [
-                        "datasources.default.data-source-properties": [
-                                "oracle.fan.enabled": true
-                        ]
-                ]
+                ["datasources.default.data-source-properties": ["oracle.fan.enabled": true]]
         ))
         applicationContext.start()
 
