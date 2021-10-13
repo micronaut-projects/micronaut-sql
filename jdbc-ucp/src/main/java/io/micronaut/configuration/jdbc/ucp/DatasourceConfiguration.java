@@ -20,11 +20,14 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.exceptions.ConfigurationException;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
 import jakarta.annotation.PostConstruct;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
 import oracle.ucp.jdbc.PoolDataSourceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.Map;
@@ -45,6 +48,8 @@ import java.util.Properties;
 @EachProperty(value = BasicJdbcConfiguration.PREFIX, primary = "default")
 @Context
 public class DatasourceConfiguration implements BasicJdbcConfiguration {
+    private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
+
     @ConfigurationBuilder(allowZeroArgs = true, excludes = {"connectionFactoryProperties"})
     PoolDataSourceImpl delegate = (PoolDataSourceImpl) PoolDataSourceFactory.getPoolDataSource();
     private CalculatedSettings calculatedSettings;
@@ -161,6 +166,14 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         return calculatedSettings.getValidationQuery();
     }
 
+    public void setValidationQuery(String validationQuery) {
+        try {
+            delegate.setSQLForValidateConnection(validationQuery);
+        } catch (SQLException e) {
+            throw new ConfigurationException("Unable to set datasource validation query:" + e.getMessage(), e);
+        }
+    }
+
     @Override
     public void setDataSourceProperties(Map<String, ?> dsProperties) {
         if (dsProperties != null) {
@@ -192,36 +205,61 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
      */
     @PostConstruct
     public void initialize() {
-        if ("".equals(getConfiguredDriverClassName())) {
+        if (StringUtils.isEmpty(getConfiguredDriverClassName()) && !StringUtils.isEmpty(getDriverClassName())) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Configuring calculated driver class name: {}", getDriverClassName());
+            }
             setDriverClassName(getDriverClassName());
         }
 
-        if (getConfiguredUrl() == null) {
-            setUrl(getUrl());
-        }
-
-        if (getConfiguredValidationQuery() == null) {
+        if (StringUtils.isEmpty(getConfiguredUrl())) {
+            String url = null;
             try {
-                delegate.setSQLForValidateConnection(getValidationQuery());
-            } catch (SQLException e) {
-                throw new ConfigurationException("Unable to set datasource calculated validation query:" + e.getMessage(), e);
+                url = getUrl();
+            } catch (ConfigurationException e) {
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("Failed to configure calculated url: {}", e.getMessage());
+                }
+            }
+
+            if (url != null) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Configuring calculated url: {}", getUrl());
+                }
+                setUrl(url);
             }
         }
 
-        if (getConfiguredUsername() == null) {
+        if (StringUtils.isEmpty(getConfiguredValidationQuery())) {
+            String validationQuery = null;
             try {
-                delegate.setUser(calculatedSettings.getUsername());
-            } catch (SQLException e) {
-                throw new ConfigurationException("Unable to set datasource calculated username:" + e.getMessage(), e);
+                validationQuery = getValidationQuery();
+            } catch (ConfigurationException e) {
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("Failed to configure SQL validation query: {}", e.getMessage());
+                }
+            }
+
+            if (validationQuery != null) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Configuring calculated SQL validation query: {}", getValidationQuery());
+                }
+                setValidationQuery(validationQuery);
             }
         }
 
-        if (getConfiguredPassword() == null) {
-            try {
-                delegate.setPassword(calculatedSettings.getPassword());
-            } catch (SQLException e) {
-                throw new ConfigurationException("Unable to set datasource calculated password:" + e.getMessage(), e);
+        if (StringUtils.isEmpty(getConfiguredUsername()) && !StringUtils.isEmpty(calculatedSettings.getUsername())) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Configuring calculated username: {}", calculatedSettings.getUsername());
             }
+            setUsername(calculatedSettings.getUsername());
+        }
+
+        if (StringUtils.isEmpty(getConfiguredPassword())) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Configuring calculated password: *****");
+            }
+            setPassword(getPassword());
         }
     }
 }
