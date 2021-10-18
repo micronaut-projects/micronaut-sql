@@ -21,6 +21,7 @@ import io.micronaut.context.event.BeanCreatedEventListener;
 import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.order.Ordered;
+import io.micronaut.core.util.StringUtils;
 import jakarta.inject.Singleton;
 import oracle.ucp.UniversalConnectionPoolAdapter;
 import oracle.ucp.UniversalConnectionPoolException;
@@ -41,10 +42,17 @@ import javax.sql.DataSource;
  */
 @Singleton
 @Requires(classes = PoolDataSource.class)
+@Requires(property = "ucp-manager.enabled", notEquals = StringUtils.FALSE, defaultValue = StringUtils.TRUE)
 @Internal
 public class ConnectionPoolManagerListener implements BeanCreatedEventListener<DataSource>, Ordered {
     private static final int POSITION = Ordered.LOWEST_PRECEDENCE;
     private static final Logger LOG = LoggerFactory.getLogger(ConnectionPoolManagerListener.class);
+
+    private final UniversalConnectionPoolManager connectionPoolManager;
+
+    public ConnectionPoolManagerListener(UniversalConnectionPoolManager connectionPoolManager) {
+        this.connectionPoolManager = connectionPoolManager;
+    }
 
     @Override
     public DataSource onCreated(BeanCreatedEvent<DataSource> event) {
@@ -53,7 +61,6 @@ public class ConnectionPoolManagerListener implements BeanCreatedEventListener<D
             final PoolDataSource poolDataSource = (PoolDataSource) dataSource;
             final String poolName = poolDataSource.getConnectionPoolName();
             try {
-                final UniversalConnectionPoolManager connectionPoolManager = UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager();
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Creating connection pool named: {}", poolName);
                 }
