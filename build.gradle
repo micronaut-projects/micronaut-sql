@@ -32,7 +32,7 @@ subprojects { Project subproject ->
         apply plugin: "io.micronaut.build.internal.common"
 
         dependencies {
-            implementation 'jakarta.inject:jakarta.inject-api:2.0.0'
+            implementation 'jakarta.inject:jakarta.inject-api:2.0.1'
         }
 
         micronautBuild {
