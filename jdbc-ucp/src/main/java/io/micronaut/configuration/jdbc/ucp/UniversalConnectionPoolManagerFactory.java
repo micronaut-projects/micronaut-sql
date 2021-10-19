@@ -35,10 +35,17 @@ import oracle.ucp.admin.UniversalConnectionPoolManagerImpl;
 @Factory
 public class UniversalConnectionPoolManagerFactory {
 
+    /**
+     * Creates the {@link UniversalConnectionPoolManager}.
+     *
+     * @param jmxBeanConfiguration configuration
+     * @return ucp manager
+     * @throws UniversalConnectionPoolException when the manager can't be configured.
+     */
     @Singleton
-    public UniversalConnectionPoolManager connectionPoolManager(UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration mxBeanConfiguration) throws UniversalConnectionPoolException {
+    public UniversalConnectionPoolManager connectionPoolManager(UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration jmxBeanConfiguration) throws UniversalConnectionPoolException {
         UniversalConnectionPoolManager connectionPoolManager = UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager();
-        connectionPoolManager.setJmxEnabled(mxBeanConfiguration.isEnabled());
+        connectionPoolManager.setJmxEnabled(jmxBeanConfiguration.isEnabled());
         return connectionPoolManager;
     }
 }

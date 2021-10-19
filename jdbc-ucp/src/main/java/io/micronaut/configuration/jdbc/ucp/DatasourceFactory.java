@@ -22,7 +22,6 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.exceptions.NoSuchBeanException;
 import oracle.ucp.UniversalConnectionPoolException;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
-import oracle.ucp.admin.UniversalConnectionPoolManagerImpl;
 import oracle.ucp.jdbc.PoolDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +44,6 @@ public class DatasourceFactory implements AutoCloseable {
 
     private List<PoolDataSource> dataSources = new ArrayList<>(2);
     private UniversalConnectionPoolManager connectionPoolManager;
-
 
     /**
      * Default constructor.

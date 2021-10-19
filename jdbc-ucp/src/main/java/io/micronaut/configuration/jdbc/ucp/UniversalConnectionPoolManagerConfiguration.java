@@ -29,6 +29,10 @@ public interface UniversalConnectionPoolManagerConfiguration {
 
     String PREFIX = "ucp-manager";
 
+    /**
+     * Enables {@link oracle.ucp.admin.UniversalConnectionPoolManager}.
+     * @return flag to enable UCP manager. Defaults to <code>true</code>.
+     */
     @Bindable(defaultValue = "true")
     boolean isEnabled();
 
@@ -40,6 +44,12 @@ public interface UniversalConnectionPoolManagerConfiguration {
 
         String PREFIX = "jmx";
 
+        /**
+         * Enables the JMX-Based Management of UCP.
+         *
+         * @see <a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/jmx-based-management.html">Overview of JMX-Based Management in UCP</a>
+         * @return flag to enable JMX bean. Defaults to <code>false</code>.
+         */
         @Bindable(defaultValue = "false")
         boolean isEnabled();
     }
