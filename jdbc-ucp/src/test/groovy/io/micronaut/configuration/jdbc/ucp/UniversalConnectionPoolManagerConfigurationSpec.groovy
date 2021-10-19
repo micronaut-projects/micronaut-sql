@@ -6,7 +6,7 @@ import spock.lang.Specification
 
 class UniversalConnectionPoolManagerConfigurationSpec extends Specification {
 
-    void "all is enabled"() {
+    void "default is the ucp pool is enabled and jmx disabled"() {
         given:
         ApplicationContext applicationContext = ApplicationContext.run("test")
 
@@ -14,27 +14,27 @@ class UniversalConnectionPoolManagerConfigurationSpec extends Specification {
         applicationContext.containsBean(UniversalConnectionPoolManagerConfiguration)
         applicationContext.getBean(UniversalConnectionPoolManagerConfiguration).isEnabled()
 
-        applicationContext.containsBean(UniversalConnectionPoolManagerConfiguration.MxBeanConfiguration)
-        applicationContext.getBean(UniversalConnectionPoolManagerConfiguration.MxBeanConfiguration).isEnabled()
+        applicationContext.containsBean(UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration)
+        !applicationContext.getBean(UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration).isEnabled()
 
         cleanup:
         applicationContext.close()
     }
 
-    void "all is disabled"() {
+    void "test non defaults"() {
         given:
         ApplicationContext applicationContext = ApplicationContext.run(
                 [
-                        "ucp-manager.enabled"        : false,
-                        "ucp-manager.mx-bean.enabled": false],
+                        "ucp-manager.enabled"    : false,
+                        "ucp-manager.jmx.enabled": true],
                 "test")
 
         expect:
         applicationContext.containsBean(UniversalConnectionPoolManagerConfiguration)
         !applicationContext.getBean(UniversalConnectionPoolManagerConfiguration).isEnabled()
 
-        applicationContext.containsBean(UniversalConnectionPoolManagerConfiguration.MxBeanConfiguration)
-        !applicationContext.getBean(UniversalConnectionPoolManagerConfiguration.MxBeanConfiguration).isEnabled()
+        applicationContext.containsBean(UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration)
+        applicationContext.getBean(UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration).isEnabled()
 
         cleanup:
         applicationContext.close()

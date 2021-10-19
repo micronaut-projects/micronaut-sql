@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 original authors
+ * Copyright 2017-2021 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,12 +35,12 @@ public interface UniversalConnectionPoolManagerConfiguration {
     /**
      * MX Bean configuration.
      */
-    @ConfigurationProperties(MxBeanConfiguration.PREFIX)
-    interface MxBeanConfiguration {
+    @ConfigurationProperties(JMXBeanConfiguration.PREFIX)
+    interface JMXBeanConfiguration {
 
-        String PREFIX = "mx-bean";
+        String PREFIX = "jmx";
 
-        @Bindable(defaultValue = "true")
+        @Bindable(defaultValue = "false")
         boolean isEnabled();
     }
 }

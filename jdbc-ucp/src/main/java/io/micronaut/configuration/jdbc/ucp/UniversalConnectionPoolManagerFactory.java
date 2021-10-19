@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 original authors
+ * Copyright 2017-2021 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import oracle.ucp.admin.UniversalConnectionPoolManagerImpl;
 public class UniversalConnectionPoolManagerFactory {
 
     @Singleton
-    public UniversalConnectionPoolManager connectionPoolManager(UniversalConnectionPoolManagerConfiguration.MxBeanConfiguration mxBeanConfiguration) throws UniversalConnectionPoolException {
+    public UniversalConnectionPoolManager connectionPoolManager(UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration mxBeanConfiguration) throws UniversalConnectionPoolException {
         UniversalConnectionPoolManager connectionPoolManager = UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager();
         connectionPoolManager.setJmxEnabled(mxBeanConfiguration.isEnabled());
         return connectionPoolManager;

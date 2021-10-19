@@ -22,7 +22,8 @@ dependencies {
         exclude module:'groovy-all'
     }
     testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
-    testImplementation "com.oracle.database.jdbc:ojdbc8:$ojdbcVersion"
+    testImplementation "com.oracle.database.observability:ojdbc8dms:$ojdbcVersion"
+    testImplementation "com.oracle.database.observability:dms:$ojdbcVersion"
 }
 
 

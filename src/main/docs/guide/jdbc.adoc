@@ -80,6 +80,8 @@ datasources:
     maxPoolSize: 10
 ----
 
+The Oracle UCP is managed by the link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/admin/UniversalConnectionPoolManager.html[UniversalConnectionPoolManager]. The manager can be disabled byt setting `ucp-manager.enabled` to `false`. Additionally you can enable the link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/jmx-based-management.html[JMX-Based Management] by setting the `ucp-manager.jmx.enabled` to `true` and providing the `oracle*dms.jar` and `dms.jar` dependencies.
+
 For a list of other properties able to be configured, simply refer to the implementation that is being used. All setter methods are candidates for configuration.
 
 [cols="20%,80%"]
@@ -87,7 +89,7 @@ For a list of other properties able to be configured, simply refer to the implem
 |Tomcat |link:https://tomcat.apache.org/tomcat-9.0-doc/api/org/apache/tomcat/jdbc/pool/PoolProperties.html[PoolProperties]
 |Hikari |link:http://static.javadoc.io/com.zaxxer/HikariCP/2.7.1/com/zaxxer/hikari/HikariConfig.html[HikariConfig]
 |Apache DBCP |link:http://commons.apache.org/proper/commons-dbcp/api-2.1.1/org/apache/commons/dbcp2/BasicDataSource.html[BasicDataSource]
-|Oracle UCP|link:https://docs.oracle.com/en/database/oracle/oracle-database/18/jjuar/oracle/ucp/jdbc/PoolDataSource.html[PoolDataSource]
+|Oracle UCP|link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/jdbc/PoolDataSource.html[PoolDataSource]
 |=======
 
 == Configuring Multiple Data Sources
