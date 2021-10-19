@@ -65,7 +65,6 @@ class DatasourceConfigurationSpec extends Specification {
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.getURL() == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
         dataSource.getUser() == 'sa'
-        dataSource.getPassword() == ''
 
         cleanup:
         applicationContext.close()
@@ -94,7 +93,6 @@ class DatasourceConfigurationSpec extends Specification {
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.getURL() == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
         dataSource.getUser() == 'sa'
-        dataSource.getPassword() == ''
 
         cleanup:
         applicationContext.close()
@@ -165,7 +163,6 @@ class DatasourceConfigurationSpec extends Specification {
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.getURL() == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
         dataSource.getUser() == 'sa'
-        dataSource.getPassword() == ''
 
         when:
         dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("foo")).targetDataSource
@@ -173,7 +170,6 @@ class DatasourceConfigurationSpec extends Specification {
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.getURL() == 'jdbc:h2:mem:foo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
         dataSource.getUser() == 'sa'
-        dataSource.getPassword() == ''
 
         cleanup:
         applicationContext.close()
@@ -270,6 +266,9 @@ class DatasourceConfigurationSpec extends Specification {
 
         then:
         dataSource
+
+        cleanup:
+        applicationContext.close()
     }
 
     void "test pool is created"() {
@@ -303,6 +302,9 @@ class DatasourceConfigurationSpec extends Specification {
 
         then:
         dataSource
+
+        cleanup:
+        applicationContext.close()
     }
 
     void "test pool is created with calculated settings"() {
@@ -327,7 +329,6 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.getConnectionFactoryClassName() == 'org.h2.Driver'
         dataSource.getURL() == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
         dataSource.getUser() == "sa"
-        dataSource.getPassword() == ""
 
         cleanup:
         applicationContext.close()

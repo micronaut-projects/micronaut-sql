@@ -55,6 +55,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     private CalculatedSettings calculatedSettings;
     private String name;
     private String username;
+    private String password;
 
     /**
      * Constructor.
@@ -150,6 +151,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     @Override
     public void setPassword(String password) {
         try {
+            this.password = password;
             this.delegate.setPassword(password);
         } catch (SQLException e) {
             throw new ConfigurationException("Unable to set datasource password: " + e.getMessage(), e);
@@ -159,7 +161,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
 
     @Override
     public String getConfiguredPassword() {
-        return delegate.getPassword();
+        return this.password;
     }
 
     @Override
