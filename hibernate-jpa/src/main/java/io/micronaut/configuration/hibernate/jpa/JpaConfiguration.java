@@ -304,7 +304,7 @@ public class JpaConfiguration {
 
         /**
          * @return Whether to scan the whole classpath or just look for introspected beans compiled by this application.
-         * @deprecated Runtime classpath scanning is not longer supported. Use {@link io.micronaut.core.annotation.Introspected} to declare the packages you
+         * @deprecated Runtime classpath scanning is no longer supported. Use {@link io.micronaut.core.annotation.Introspected} to declare the packages you
          * want to index at build time. Example {@code @Introspected(packages="foo.bar", includedAnnotations=Entity.class)}
          */
         @Deprecated
@@ -316,13 +316,13 @@ public class JpaConfiguration {
          * Sets whether to scan the whole classpath including external JAR files using classpath scanning or just look for introspected beans compiled by this application.
          *
          * @param classpath True if extensive classpath scanning should be used
-         * @deprecated Runtime classpath scanning is not longer supported. Use {@link io.micronaut.core.annotation.Introspected} to declare the packages you
+         * @deprecated Runtime classpath scanning is no longer supported. Use {@link io.micronaut.core.annotation.Introspected} to declare the packages you
          * want to index at build time. Example {@code @Introspected(packages="foo.bar", includedAnnotations=Entity.class)}
          */
         @Deprecated
         public void setClasspath(boolean classpath) {
             if (LOG.isWarnEnabled()) {
-                LOG.warn("Runtime classpath scanning is not longer supported. Use @Introspected to declare the packages you want to index at build time. Example @Introspected(packages=\"foo.bar\", includedAnnotations=Entity.class)");
+                LOG.warn("Runtime classpath scanning is no longer supported. Use @Introspected to declare the packages you want to index at build time. Example @Introspected(packages=\"foo.bar\", includedAnnotations=Entity.class)");
             }
             this.classpath = classpath;
         }
