@@ -19,10 +19,9 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
-import oracle.ucp.UniversalConnectionPoolAdapter;
+import io.micronaut.context.exceptions.NoSuchBeanException;
 import oracle.ucp.UniversalConnectionPoolException;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
-import oracle.ucp.admin.UniversalConnectionPoolManagerImpl;
 import oracle.ucp.jdbc.PoolDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Creates a ucp data source for each configuration bean.
+ * Creates an ucp data source for each configuration bean.
  *
  * @author toddsharp
  * @since 2.0.1
@@ -40,9 +39,11 @@ import java.util.List;
 @Factory
 public class DatasourceFactory implements AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
-    private List<PoolDataSource> dataSources = new ArrayList<>(2);
     private final ApplicationContext applicationContext;
-    private final UniversalConnectionPoolManager connectionPoolManager;
+    private final UniversalConnectionPoolManagerConfiguration configuration;
+
+    private List<PoolDataSource> dataSources = new ArrayList<>(2);
+    private UniversalConnectionPoolManager connectionPoolManager;
 
     /**
      * Default constructor.
@@ -51,7 +52,12 @@ public class DatasourceFactory implements AutoCloseable {
      */
     public DatasourceFactory(ApplicationContext applicationContext) throws UniversalConnectionPoolException {
         this.applicationContext = applicationContext;
-        this.connectionPoolManager = UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager();
+        this.configuration = applicationContext.getBean(UniversalConnectionPoolManagerConfiguration.class);
+        try {
+            this.connectionPoolManager = applicationContext.getBean(UniversalConnectionPoolManager.class);
+        } catch (NoSuchBeanException e) {
+            // no-op
+        }
     }
 
     /**
@@ -66,23 +72,23 @@ public class DatasourceFactory implements AutoCloseable {
         PoolDataSource ds = datasourceConfiguration.delegate;
         dataSources.add(ds);
 
-        connectionPoolManager.createConnectionPool((UniversalConnectionPoolAdapter) ds);
-        connectionPoolManager.startConnectionPool(ds.getConnectionPoolName());
         return ds;
     }
 
     @Override
     @PreDestroy
     public void close() {
-        for (PoolDataSource dataSource : dataSources) {
-            try {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Closing connection pool named: {}", dataSource.getConnectionPoolName());
-                }
-                UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager().destroyConnectionPool(dataSource.getConnectionPoolName());
-            } catch (Exception e) {
-                if (LOG.isWarnEnabled()) {
-                    LOG.warn("Error closing data source [" + dataSource + "]: " + e.getMessage(), e);
+        if (configuration.isEnabled() && connectionPoolManager != null) {
+            for (PoolDataSource dataSource : dataSources) {
+                try {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Closing connection pool named: {}", dataSource.getConnectionPoolName());
+                    }
+                    connectionPoolManager.destroyConnectionPool(dataSource.getConnectionPoolName());
+                } catch (Exception e) {
+                    if (LOG.isWarnEnabled()) {
+                        LOG.warn("Error closing data source [" + dataSource + "]: " + e.getMessage(), e);
+                    }
                 }
             }
         }
