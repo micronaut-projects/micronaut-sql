@@ -46,7 +46,7 @@
         <div class="docs-content">
             <div class="project">
                 <h1>Configuration Reference</h1>
-                <p><strong>Version:</strong>4.0.3</p>
+                <p><strong>Version:</strong>4.0.4</p>
                 <p></p>
             </div>
 <div class="sect2">
@@ -127,53 +127,9 @@
 </div>
 <div class="sect2">
 <h3 id="_jasync_sql_config_properties">Jasync Sql Config Properties</h3>
-<a id="io.micronaut.configuration.jasync.JasyncPoolConfiguration.JasyncSslConfiguration" href="#io.micronaut.configuration.jasync.JasyncPoolConfiguration.JasyncSslConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 3. Configuration Properties for <a href="../api/io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html">JasyncSslConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.github.jasync.sql.db.SSLConfiguration</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.mode</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.github.jasync.sql.db.SSLConfiguration$Mode</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.root-cert</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.client-cert</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.client-private-key</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
 <a id="io.micronaut.configuration.jasync.JasyncPoolConfiguration" href="#io.micronaut.configuration.jasync.JasyncPoolConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 4. Configuration Properties for <a href="../api/io/micronaut/configuration/jasync/JasyncPoolConfiguration.html">JasyncPoolConfiguration</a></caption>
+<caption class="title">Table 3. Configuration Properties for <a href="../api/io/micronaut/configuration/jasync/JasyncPoolConfiguration.html">JasyncPoolConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -280,6 +236,50 @@
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.max-connection-ttl</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Long</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<a id="io.micronaut.configuration.jasync.JasyncPoolConfiguration.JasyncSslConfiguration" href="#io.micronaut.configuration.jasync.JasyncPoolConfiguration.JasyncSslConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 4. Configuration Properties for <a href="../api/io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html">JasyncSslConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.mode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.github.jasync.sql.db.SSLConfiguration$Mode</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.root-cert</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.client-cert</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.client-private-key</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.github.jasync.sql.db.SSLConfiguration</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
@@ -1085,9 +1085,60 @@
 </div>
 <div class="sect2">
 <h3 id="_jdbc_ucp_config_properties">Jdbc Ucp Config Properties</h3>
+<a id="io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration" href="#io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 8. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration.html">JMXBeanConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ucp-manager.jmx.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enables the JMX-Based Management of UCP.</p>
+<p class="tableblock"> @see &lt;a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/jmx-based-management.html"&gt;Overview of JMX-Based Management in UCP&lt;/a&gt;
+ @return flag to enable JMX bean. Defaults to &lt;code&gt;false&lt;/code&gt;.</p></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<a id="io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration" href="#io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 9. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerConfiguration.html">UniversalConnectionPoolManagerConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ucp-manager.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enables {@link oracle.ucp.admin.UniversalConnectionPoolManager}.
+ @return flag to enable UCP manager. Defaults to &lt;code&gt;true&lt;/code&gt;.</p></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
 <a id="io.micronaut.configuration.jdbc.ucp.DatasourceConfiguration" href="#io.micronaut.configuration.jdbc.ucp.DatasourceConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 8. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html">DatasourceConfiguration</a></caption>
+<caption class="title">Table 10. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html">DatasourceConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1345,57 +1396,6 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.data-source-properties</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.util.Map</p></td>
 <td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
-<a id="io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration" href="#io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 9. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration.html">JMXBeanConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ucp-manager.jmx.enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Enables the JMX-Based Management of UCP.</p>
-<p class="tableblock"> @see &lt;a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/jmx-based-management.html"&gt;Overview of JMX-Based Management in UCP&lt;/a&gt;
- @return flag to enable JMX bean. Defaults to &lt;code&gt;false&lt;/code&gt;.</p></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
-<a id="io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration" href="#io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 10. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerConfiguration.html">UniversalConnectionPoolManagerConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ucp-manager.enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Enables {@link oracle.ucp.admin.UniversalConnectionPoolManager}.
- @return flag to enable UCP manager. Defaults to &lt;code&gt;true&lt;/code&gt;.</p></td>
 </tr>
 </tbody>
 </table>
