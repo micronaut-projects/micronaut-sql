@@ -60,6 +60,7 @@ import io.micronaut.core.annotation.TypeHint.AccessType;
                 "org.jooq.util.firebird.FirebirdDataType",
                 "org.jooq.util.h2.H2DataType",
                 "org.jooq.util.hsqldb.HSQLDBDataType",
+                "org.jooq.util.ignite.IgniteDataType",
                 "org.jooq.util.mariadb.MariaDBDataType",
                 "org.jooq.util.mysql.MySQLDataType",
                 "org.jooq.util.postgres.PostgresDataType",
