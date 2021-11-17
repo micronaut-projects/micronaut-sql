@@ -281,7 +281,7 @@ public class JpaConfiguration {
          * @return The entities
          */
         public Collection<Class<?>> findEntities() {
-            Collection<Class<?>> entities = new HashSet<>();
+            Collection<Class<?>> entities = Collections.synchronizedSet(new HashSet<>());
             if (isClasspath()) {
 
                 if (ArrayUtils.isNotEmpty(packages)) {
