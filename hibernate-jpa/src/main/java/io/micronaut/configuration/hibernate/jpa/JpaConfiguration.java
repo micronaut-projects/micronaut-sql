@@ -358,7 +358,7 @@ public class JpaConfiguration {
          * @return The entities
          */
         public Collection<Class<?>> findEntities() {
-            Collection<Class<?>> entities = new HashSet<>();
+            Collection<Class<?>> entities = Collections.synchronizedSet(new HashSet<>());
             if (isEnabled()) {
                 if (ArrayUtils.isNotEmpty(packages)) {
                     environment.scan(Entity.class, packages).forEach(entities::add);
