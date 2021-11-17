@@ -38,6 +38,7 @@ import javax.inject.Inject;
 import javax.persistence.Entity;
 import javax.validation.ValidatorFactory;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Configuration for JPA and Hibernate.
@@ -281,13 +282,13 @@ public class JpaConfiguration {
          * @return The entities
          */
         public Collection<Class<?>> findEntities() {
-            Collection<Class<?>> entities = Collections.synchronizedSet(new HashSet<>());
+            Collection<Class<?>> entities = new HashSet<>();
             if (isClasspath()) {
 
                 if (ArrayUtils.isNotEmpty(packages)) {
-                    environment.scan(Entity.class, packages).forEach(entities::add);
+                    entities.addAll(environment.scan(Entity.class, packages).collect(Collectors.toSet()));
                 } else {
-                    environment.scan(Entity.class).forEach(entities::add);
+                    entities.addAll(environment.scan(Entity.class).collect(Collectors.toSet()));
                 }
             }
 
@@ -298,9 +299,9 @@ public class JpaConfiguration {
                 } else {
                     introspections = BeanIntrospector.SHARED.findIntrospections(Entity.class);
                 }
-                introspections
+                entities.addAll(introspections
                         .stream().map(BeanIntrospection::getBeanType)
-                        .forEach(entities::add);
+                        .collect(Collectors.toSet()));
             }
             return Collections.unmodifiableCollection(entities);
         }
