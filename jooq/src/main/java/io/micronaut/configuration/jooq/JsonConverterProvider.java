@@ -15,10 +15,10 @@
  */
 package io.micronaut.configuration.jooq;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.core.type.Argument;
+import io.micronaut.json.JsonMapper;
 import jakarta.inject.Singleton;
 import org.jooq.Converter;
 import org.jooq.ConverterProvider;
@@ -27,25 +27,23 @@ import org.jooq.JSONB;
 import org.jooq.exception.DataTypeException;
 import org.jooq.impl.DefaultConverterProvider;
 
+import java.nio.charset.StandardCharsets;
 
 /**
- * jOOQ ConverterProvider integrating Jackson ObjectMapper to convert JSON and JSONB types.
+ * jOOQ ConverterProvider integrating the micronaut-json-core {@link JsonMapper} to convert JSON and JSONB types.
  *
  * @author Lukas Moravec
- * @since 3.2.1
- * @deprecated Use {@link JsonConverterProvider} instead
+ * @since 4.1.0
  */
 @Singleton
-@Requires(beans = {ObjectMapper.class})
-@Bean(typed = JacksonConverterProvider.class) // don't provide ConverterProvider
-@Deprecated
-public class JacksonConverterProvider implements ConverterProvider {
+@Requires(beans = {JsonMapper.class})
+public class JsonConverterProvider implements ConverterProvider {
 
     private final ConverterProvider delegate = new DefaultConverterProvider();
-    private final ObjectMapper objectMapper;
+    private final JsonMapper jsonMapper;
 
-    public JacksonConverterProvider(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    public JsonConverterProvider(JsonMapper jsonMapper) {
+        this.jsonMapper = jsonMapper;
     }
 
     @Override
@@ -56,14 +54,14 @@ public class JacksonConverterProvider implements ConverterProvider {
             return Converter.ofNullable(tType, uType,
                     t -> {
                         try {
-                            return objectMapper.readValue(((JSON) t).data(), uType);
+                            return jsonMapper.readValue(((JSON) t).data(), Argument.of(uType));
                         } catch (Exception e) {
                             throw new DataTypeException("JSON mapping error", e);
                         }
                     },
                     u -> {
                         try {
-                            return (T) JSON.valueOf(objectMapper.writeValueAsString(u));
+                            return (T) JSON.valueOf(new String(jsonMapper.writeValueAsBytes(u), StandardCharsets.UTF_8));
                         } catch (Exception e) {
                             throw new DataTypeException("JSON mapping error", e);
                         }
@@ -73,14 +71,14 @@ public class JacksonConverterProvider implements ConverterProvider {
             return Converter.ofNullable(tType, uType,
                     t -> {
                         try {
-                            return objectMapper.readValue(((JSONB) t).data(), uType);
+                            return jsonMapper.readValue(((JSONB) t).data(), Argument.of(uType));
                         } catch (Exception e) {
                             throw new DataTypeException("JSON mapping error", e);
                         }
                     },
                     u -> {
                         try {
-                            return (T) JSONB.valueOf(objectMapper.writeValueAsString(u));
+                            return (T) JSONB.valueOf(new String(jsonMapper.writeValueAsBytes(u), StandardCharsets.UTF_8));
                         } catch (Exception e) {
                             throw new DataTypeException("JSON mapping error", e);
                         }

@@ -97,6 +97,8 @@ public class JooqConfigurationFactory {
             configuration.set(converterProvider);
         } else if (properties.isJacksonConverterEnabled()) {
             ctx.findBean(JacksonConverterProvider.class).ifPresent(configuration::set);
+        } else if (properties.isJsonConverterEnabled()) {
+            ctx.findBean(JsonConverterProvider.class).ifPresent(configuration::set);
         }
         configuration.setExecuteListenerProvider(ctx.getBeansOfType(ExecuteListenerProvider.class, Qualifiers.byName(name))
                 .toArray(new ExecuteListenerProvider[0]));

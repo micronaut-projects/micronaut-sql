@@ -29,6 +29,7 @@ dependencies {
     compileOnly "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
     compileOnly "org.simpleflatmapper:sfm-reflect:8.2.3"
     compileOnly "com.fasterxml.jackson.core:jackson-databind"
+    compileOnly "io.micronaut:micronaut-json-core:$micronautVersion"
 
     testRuntimeOnly project(":jdbc-tomcat")
     testRuntimeOnly "com.h2database:h2:1.4.200"
