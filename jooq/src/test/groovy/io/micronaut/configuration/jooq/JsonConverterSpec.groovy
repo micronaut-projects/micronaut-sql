@@ -24,7 +24,7 @@ import org.jooq.JSON
 import org.jooq.JSONB
 import spock.lang.Specification
 
-class JacksonConverterSpec extends Specification {
+class JsonConverterSpec extends Specification {
 
     void "test json conversion"() {
         given:
@@ -32,14 +32,14 @@ class JacksonConverterSpec extends Specification {
         applicationContext.environment.addPropertySource(MapPropertySource.of(
                 'test',
                 ['datasources.default'                               : [:],
-                 'jooq.datasources.default.jackson-converter-enabled': true]
+                 'jooq.datasources.default.json-converter-enabled': true]
         ))
         applicationContext.start()
 
-        ConverterProvider converterProvider = applicationContext.getBean(JacksonConverterProvider)
+        ConverterProvider converterProvider = applicationContext.getBean(ConverterProvider)
 
         expect:
-        converterProvider instanceof JacksonConverterProvider
+        converterProvider instanceof JsonConverterProvider
 
         when:
         Converter jsonConverter = converterProvider.provide(JSON, TestObject)

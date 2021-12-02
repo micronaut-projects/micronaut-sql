@@ -34,6 +34,7 @@ public class JooqConfigurationProperties {
 
     private SQLDialect sqlDialect;
     private boolean jacksonConverterEnabled = false;
+    private boolean jsonConverterEnabled = false;
 
     /**
      * SQL dialect to use. If {@code null}, will be detected automatically.
@@ -57,7 +58,9 @@ public class JooqConfigurationProperties {
      * If enable {@link JacksonConverterProvider} bean to use Jackson for JSON and JSONB types.
      *
      * @return boolean
+     * @deprecated Use {@link #isJsonConverterEnabled()} instead
      */
+    @Deprecated
     public boolean isJacksonConverterEnabled() {
         return jacksonConverterEnabled;
     }
@@ -66,9 +69,31 @@ public class JooqConfigurationProperties {
      * Set if enable {@link JacksonConverterProvider} bean to use Jackson for JSON and JSONB types.
      *
      * @param jacksonConverterEnabled Enable Jackson
+     * @deprecated Use {@link #setJsonConverterEnabled} instead
      */
+    @Deprecated
     public void setJacksonConverterEnabled(boolean jacksonConverterEnabled) {
         this.jacksonConverterEnabled = jacksonConverterEnabled;
+    }
+
+    /**
+     * If enable {@link JsonConverterProvider} bean to use Jackson for JSON and JSONB types.
+     *
+     * @return boolean
+     * @since 4.1.0
+     */
+    public boolean isJsonConverterEnabled() {
+        return jsonConverterEnabled;
+    }
+
+    /**
+     * Set if enable {@link JsonConverterProvider} bean to use Jackson for JSON and JSONB types.
+     *
+     * @param jsonConverterEnabled Enable JSON mapping
+     * @since 4.1.0
+     */
+    public void setJsonConverterEnabled(boolean jsonConverterEnabled) {
+        this.jsonConverterEnabled = jsonConverterEnabled;
     }
 
     /**
