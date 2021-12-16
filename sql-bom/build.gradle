@@ -1,13 +1,15 @@
-javaPlatform {
-    allowDependencies()
+plugins {
+    id 'io.micronaut.build.internal.bom'
+}
+
+micronautBom {
+    excludeProject.set({ p ->
+        p.path.startsWith(':test')
+    } as Spec<String>)
 }
 
 dependencies {
     constraints {
-        for (Project p : rootProject.subprojects) {
-            if (p.name == "sql-bom" || p.path.contains("test-graalvm")) continue
-            api "$p.group:micronaut-$p.name:$p.version"
-        }
 
         // vertx client
         api "io.vertx:vertx-pg-client:$vertxVersion"

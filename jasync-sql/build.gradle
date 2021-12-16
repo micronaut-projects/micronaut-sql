@@ -1,6 +1,8 @@
+plugins {
+    id 'io.micronaut.build.internal.sql-module'
+}
+
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-inject-java"
-    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
 
     api "io.micronaut:micronaut-inject:$micronautVersion"
     implementation "io.projectreactor:reactor-core"

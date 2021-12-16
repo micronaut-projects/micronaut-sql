@@ -1,0 +1,8 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application'
+}
+
+dependencies {
+    runtimeOnly "org.postgresql:postgresql:$postgresDriverVersion"
+    testImplementation "org.testcontainers:postgresql"
+}

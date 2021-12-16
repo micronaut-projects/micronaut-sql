@@ -1,0 +1,8 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application'
+}
+
+dependencies {
+    runtimeOnly "mysql:mysql-connector-java:$mysqlDriverVersion"
+    testImplementation "org.testcontainers:mysql"
+}

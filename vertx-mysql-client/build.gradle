@@ -1,11 +1,13 @@
+plugins {
+    id 'io.micronaut.build.internal.sql-module'
+}
+
 ext {
     testContainersVersion="1.15.3"
     vertxVersion = '3.9.4'
 }
 
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-inject-java"
-    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
 
     api "io.micronaut:micronaut-inject:$micronautVersion"
     api "io.vertx:vertx-mysql-client:$vertxVersion"

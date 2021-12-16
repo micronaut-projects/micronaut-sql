@@ -1,0 +1,11 @@
+plugins {
+    id 'io.micronaut.build.internal.module'
+}
+
+dependencies {
+    implementation 'jakarta.inject:jakarta.inject-api:2.0.1'
+}
+
+micronautBuild {
+    dependencyUpdatesPattern = /.+(-|\.?)(b|M|RC|kts)(-|\.?)\d?.*/
+}

@@ -1,3 +1,7 @@
+plugins {
+    id 'io.micronaut.build.internal.sql-module'
+}
+
 sourceSets {
     txTest {
         compileClasspath += main.output
