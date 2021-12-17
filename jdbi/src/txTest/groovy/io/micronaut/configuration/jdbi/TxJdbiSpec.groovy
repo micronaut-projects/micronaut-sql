@@ -69,7 +69,7 @@ class TxJdbiSpec extends Specification {
 
     // fails due to https://issues.apache.org/jira/browse/GROOVY-10145
     @Requires({
-        SemanticVersion.isAtLeastMajorMinor(GroovySystem.shortVersion, 4, 0) ||
+        SemanticVersion.isAtLeastMajorMinor(GroovySystem.version, 4, 0) ||
                 !Jvm.current.isJava16Compatible()
     })
     void "test transaction sql"() {
