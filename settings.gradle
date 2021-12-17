@@ -1,16 +1,5 @@
-pluginManagement {
-    plugins {
-        id 'io.micronaut.application' version getProperty("micronautGradlePluginVersion")
-        id 'io.micronaut.library' version getProperty("micronautGradlePluginVersion")
-    }
-    repositories {
-        gradlePluginPortal()
-        mavenCentral()
-    }
-}
-
 plugins {
-    id 'io.micronaut.build.shared.settings' version '4.1.4'
+    id 'io.micronaut.build.shared.settings' version '5.0.3'
 }
 
 rootProject.name = 'sql'
@@ -28,6 +17,7 @@ include 'jooq'
 include 'vertx-mysql-client'
 include 'vertx-pg-client'
 include 'jdbi'
+
 include 'test-graalvm-hibernate-jpa'
 include 'test-graalvm-hibernate-jpa:postgres'
 include 'test-graalvm-hibernate-jpa:mysql'

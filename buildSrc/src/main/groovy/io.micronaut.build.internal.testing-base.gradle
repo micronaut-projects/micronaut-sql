@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+    id 'groovy'
+}
+
+group "io.micronaut.example"
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+configurations {
+    all*.exclude module: "byte-buddy"
+    all*.exclude module: "javassist"
+}

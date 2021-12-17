@@ -1,0 +1,36 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application'
+}
+
+dependencies {
+    runtimeOnly "com.h2database:h2"
+}
+
+graalvmNative {
+    binaries {
+        main {
+            buildArgs("--report-unsupported-elements-at-runtime")
+        }
+    }
+}
+
+// Skip on GraalVM Java11
+project.afterEvaluate {
+    tasks.named("testNativeImage") {
+        onlyIf { isGraal() && JavaVersion.current() != JavaVersion.VERSION_11 }
+    }
+    tasks.named("nativeCompile") {
+        onlyIf { isGraal() && JavaVersion.current() != JavaVersion.VERSION_11 }
+    }
+}
+
+
+boolean isGraal() {
+    for (String prop : ["jvmci.Compiler", "java.vendor.version"]) {
+        String vv = System.getProperty(prop)
+        if (vv != null && vv.toLowerCase(Locale.ENGLISH).contains("graal")) {
+            return true
+        }
+    }
+    return false
+}

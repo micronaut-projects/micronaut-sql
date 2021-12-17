@@ -1,0 +1,28 @@
+plugins {
+    id 'io.micronaut.build.internal.testing-base'
+    id 'io.micronaut.application'
+}
+
+micronaut {
+    version project.ext.micronautVersion
+    runtime "netty"
+    testRuntime "spock"
+}
+
+dependencies {
+    runtimeOnly project(":jdbc-hikari")
+    runtimeOnly "ch.qos.logback:logback-classic"
+
+    implementation "io.micronaut:micronaut-http-client"
+    implementation project(":test-graalvm-hibernate-jpa:common")
+    testImplementation project(":test-graalvm-hibernate-jpa:common-tests")
+
+    testImplementation "io.micronaut.test:micronaut-test-core:$micronautTestVersion"
+    testImplementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
+    testImplementation "org.testcontainers:spock"
+    testImplementation "org.testcontainers:jdbc"
+}
+
+application {
+    mainClass = "example.Application"
+}

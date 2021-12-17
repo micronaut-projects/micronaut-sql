@@ -18,13 +18,18 @@ package io.micronaut.configuration.jdbi
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource
+import io.micronaut.core.version.SemanticVersion
+import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.internal.OnDemandExtensions
 import org.jdbi.v3.core.statement.SqlStatements
 import org.jdbi.v3.sqlobject.SqlObjectFactory
+import spock.lang.Requires
 import spock.lang.Specification
+import spock.util.environment.Jvm
 
 import javax.sql.DataSource
+
 
 class JdbiSpec extends Specification {
 
@@ -103,6 +108,11 @@ class JdbiSpec extends Specification {
         applicationContext.close()
     }
 
+    // fails due to https://issues.apache.org/jira/browse/GROOVY-10145
+    @Requires({
+        SemanticVersion.isAtLeastMajorMinor(GroovySystem.version, 4, 0) ||
+                !Jvm.current.isJava16Compatible()
+    })
     void "test transaction sql"() {
         given:
         ApplicationContext applicationContext = new DefaultApplicationContext("test")
@@ -221,8 +231,11 @@ class JdbiSpec extends Specification {
     }
 
     private void cleanupDatabase(Jdbi jdbi) {
-        jdbi.useHandle { handle ->
+        def handle = jdbi.open()
+        try {
             handle.execute("DELETE FROM foo")
+        } finally {
+            handle.close()
         }
     }
 

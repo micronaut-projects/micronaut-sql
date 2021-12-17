@@ -1,0 +1,8 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application'
+}
+
+dependencies {
+    runtimeOnly "com.oracle.database.jdbc:ojdbc8:$ojdbcVersion"
+    testImplementation "org.testcontainers:oracle-xe"
+}

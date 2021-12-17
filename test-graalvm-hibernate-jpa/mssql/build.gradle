@@ -1,0 +1,19 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application'
+}
+
+dependencies {
+    runtimeOnly "com.microsoft.sqlserver:mssql-jdbc:$mssqlDriverVersion"
+    testImplementation "org.testcontainers:mssqlserver"
+}
+
+graalvmNative {
+    binaries {
+        main {
+            buildArgs.addAll(
+                    "--report-unsupported-elements-at-runtime",
+                    "-H:+AddAllCharsets"
+            )
+        }
+    }
+}
