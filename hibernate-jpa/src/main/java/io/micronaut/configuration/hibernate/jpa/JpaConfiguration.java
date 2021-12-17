@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Configuration for JPA and Hibernate.
@@ -361,14 +362,13 @@ public class JpaConfiguration {
             Collection<Class<?>> entities = new HashSet<>();
             if (isEnabled()) {
                 if (ArrayUtils.isNotEmpty(packages)) {
-                    environment.scan(Entity.class, packages).forEach(entities::add);
+                    entities.addAll(environment.scan(Entity.class, packages).collect(Collectors.toSet()));
                 } else {
-                    BeanIntrospector.SHARED.findIntrospections(Entity.class)
+                    entities.addAll(BeanIntrospector.SHARED.findIntrospections(Entity.class)
                             .stream().map(BeanIntrospection::getBeanType)
-                            .forEach(entities::add);
+                                            .collect(Collectors.toSet()));
                 }
             }
-
             return Collections.unmodifiableCollection(entities);
         }
     }
