@@ -47,7 +47,7 @@ dependencies {
     testImplementation "io.micronaut.micrometer:micronaut-micrometer-core"
    
     testImplementation "io.micronaut.cache:micronaut-cache-core"
-    testImplementation "org.jdbi:jdbi3-sqlobject:3.18.0"
+    testImplementation "org.jdbi:jdbi3-sqlobject:$jdbiVersion"
     testImplementation("org.spockframework:spock-core:${spockVersion}") {
         exclude module:'groovy-all'
     }
@@ -59,8 +59,8 @@ dependencies {
     txTestAnnotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
     txTestImplementation "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
     txTestImplementation("io.micronaut:micronaut-inject-groovy")
-    txTestRuntimeOnly "ch.qos.logback:logback-classic:1.2.3"
-    txTestImplementation "org.jdbi:jdbi3-sqlobject:3.17.0"
+    txTestRuntimeOnly "ch.qos.logback:logback-classic:1.2.9"
+    txTestImplementation "org.jdbi:jdbi3-sqlobject:$jdbiVersion"
     txTestImplementation("org.spockframework:spock-core:${spockVersion}") {
         exclude module:'groovy-all'
     }
