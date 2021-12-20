@@ -36,7 +36,7 @@ dependencies {
     compileOnly "io.micronaut:micronaut-json-core:$micronautVersion"
 
     testRuntimeOnly project(":jdbc-tomcat")
-    testRuntimeOnly "com.h2database:h2:1.4.200"
+    testRuntimeOnly "com.h2database:h2:2.0.202"
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testAnnotationProcessor "io.micronaut.spring:micronaut-spring-annotation"
     testImplementation "io.micronaut.spring:micronaut-spring"
