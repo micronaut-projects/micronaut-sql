@@ -9,6 +9,7 @@ micronautBom {
 }
 
 dependencies {
+    api platform("org.jdbi:jdbi3-bom:$jdbiVersion")
     
     constraints {
 
@@ -42,10 +43,6 @@ dependencies {
         api "com.oracle.database.jdbc:ojdbc8:$ojdbcVersion"
         api "org.mariadb.jdbc:mariadb-java-client:$mariadbDriverVersion"
         api "mysql:mysql-connector-java:$mysqlDriverVersion"
-
-
-        // jdbi
-        platform("org.jdbi:jdbi3-bom:$jdbiVersion")
 
         // Will remove these - just want to chat about it first
         api "org.jdbi:jdbi3-core"
