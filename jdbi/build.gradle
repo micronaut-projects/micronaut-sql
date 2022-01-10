@@ -34,7 +34,7 @@ dependencies {
     }
 
     testRuntimeOnly project(":jdbc-hikari")
-    testRuntimeOnly "com.h2database:h2:1.4.200"
+    testRuntimeOnly "com.h2database:h2:2.0.206"
     testRuntimeOnly "org.springframework:spring-jdbc:$springVersion"
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
