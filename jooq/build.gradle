@@ -29,6 +29,7 @@ dependencies {
     api project(":jdbc")
     api "io.micronaut:micronaut-inject:$micronautVersion"
     api "org.jooq:jooq:$jooqVersion"
+    api "io.micronaut.r2dbc:micronaut-r2dbc-core:$micronautR2dbcVersion"
     compileOnly "org.springframework:spring-jdbc:$springVersion"
     compileOnly "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
     compileOnly "org.simpleflatmapper:sfm-reflect:8.2.3"
@@ -54,9 +55,12 @@ dependencies {
 
     txTestRuntimeOnly project(":jdbc-tomcat")
     txTestRuntimeOnly "com.h2database:h2:1.4.200"
+    txTestRuntimeOnly "io.r2dbc:r2dbc-h2:0.9.0.RELEASE"
     txTestAnnotationProcessor "io.micronaut:micronaut-inject-java:$micronautVersion"
     txTestAnnotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
     txTestImplementation "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
+    txTestImplementation "io.micronaut.data:micronaut-data-r2dbc:$micronautDataVersion"
+    txTestImplementation "io.projectreactor:reactor-core"
     txTestImplementation("io.micronaut:micronaut-inject-groovy")
     txTestImplementation("org.spockframework:spock-core:${spockVersion}") {
         exclude module:'groovy-all'
