@@ -24,6 +24,7 @@ import io.micronaut.core.util.StringUtils;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
 import jakarta.annotation.PostConstruct;
+import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
 import oracle.ucp.jdbc.PoolDataSourceImpl;
 import org.slf4j.Logger;
@@ -67,6 +68,14 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         this.name = name;
         this.delegate.setConnectionPoolName(name);
         this.calculatedSettings = new CalculatedSettings(this);
+    }
+
+    /**
+     * @return the pool data source
+     * @since 4.1
+     */
+    public PoolDataSource getPoolDataSource() {
+        return delegate;
     }
 
     @Override
