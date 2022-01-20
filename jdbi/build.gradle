@@ -59,7 +59,7 @@ dependencies {
     txTestAnnotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
     txTestImplementation "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
     txTestImplementation("io.micronaut:micronaut-inject-groovy")
-    txTestRuntimeOnly "ch.qos.logback:logback-classic:1.2.3"
+    txTestRuntimeOnly "ch.qos.logback:logback-classic:1.2.10"
     txTestImplementation "org.jdbi:jdbi3-sqlobject:$jdbiVersion"
     txTestImplementation("org.spockframework:spock-core:${spockVersion}") {
         exclude module:'groovy-all'
