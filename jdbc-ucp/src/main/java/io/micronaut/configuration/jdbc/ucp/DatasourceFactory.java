@@ -69,7 +69,7 @@ public class DatasourceFactory implements AutoCloseable {
     @Context
     @EachBean(DatasourceConfiguration.class)
     public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration) throws UniversalConnectionPoolException {
-        PoolDataSource ds = datasourceConfiguration.delegate;
+        PoolDataSource ds = datasourceConfiguration.getPoolDataSource();
         dataSources.add(ds);
 
         return ds;
