@@ -24,6 +24,9 @@ import org.jooq.Record1;
 import org.jooq.SelectJoinStep;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;
@@ -39,16 +42,15 @@ public class AsyncTxTestService {
   }
 
   @PostConstruct
-  public void init() {
+  public void init() throws Exception {
     init(db);
   }
 
-  private void init(DSLContext db) {
-    Flux.from(db.dropTable("foo"))
-        .thenMany(db.createTable("foo")
-                    .column(name("id"), INTEGER)
-                 )
-        .subscribe();
+  private void init(DSLContext db) throws Exception {
+    Flux.from(db.dropTable("foo")).onErrorReturn(0).blockLast();
+    Flux.from(db.createTable("foo")
+                    .column(name("id"), INTEGER))
+            .blockLast();
   }
 
   @Transactional

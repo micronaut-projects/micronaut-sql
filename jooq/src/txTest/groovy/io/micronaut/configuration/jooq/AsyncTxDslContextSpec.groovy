@@ -28,19 +28,21 @@ class AsyncTxDslContextSpec extends Specification {
         ApplicationContext applicationContext = new DefaultApplicationContext("test")
         applicationContext.environment.addPropertySource(MapPropertySource.of(
                 'test',
-                ['r2dbc.datasources.default.dialect'                  : 'h2',
-                 'r2dbc.datasources.default.username'                 : 'sa',
-                 'r2dbc.datasources.default.password'                 : '',
-                 'r2dbc.datasources.default.url'                      : 'r2dbc:h2:file://localhost/~/jooq-r2dbc-example2',
-                 'jooq.r2dbc-datasources.default.sql-dialect'         : 'h2']
+                ['r2dbc.datasources.default.dialect'         : 'h2',
+                 'r2dbc.datasources.default.username'        : 'sa',
+                 'r2dbc.datasources.default.password'        : '',
+                 'r2dbc.datasources.default.url'             : 'r2dbc:h2:mem:///testdb',
+                 "r2dbc.datasources.default.options.DB_CLOSE_DELAY": "10",
+                 "r2dbc.datasources.default.options.protocol"      : "mem",
+                 'jooq.r2dbc-datasources.default.sql-dialect': 'h2']
         ))
         applicationContext.start()
         DSLContext db = applicationContext.getBean(DSLContext)
         AsyncTxTestService service = applicationContext.getBean(AsyncTxTestService)
 
         when:
-        service.abortTransaction().subscribe()
-        service.count().subscribe()
+        service.abortTransaction().blockLast()
+        service.count().blockLast()
 
         then:
         RuntimeException ex = thrown()
