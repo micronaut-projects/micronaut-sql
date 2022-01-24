@@ -3,7 +3,7 @@ plugins {
 }
 
 ext {
-    testContainersVersion="1.15.3"
+    testContainersVersion="1.16.3"
     vertxVersion = '3.9.4'
 }
 
