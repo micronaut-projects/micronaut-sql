@@ -1,5 +1,5 @@
 plugins {
-    id 'io.micronaut.build.shared.settings' version '5.1.1'
+    id 'io.micronaut.build.shared.settings' version '5.1.2'
 }
 
 rootProject.name = 'sql'
