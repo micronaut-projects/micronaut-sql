@@ -124,10 +124,10 @@ See the section on the https://docs.micronaut.io/latest/guide/index.html#healthE
 
 If you wish to use Spring-based transaction management you can add the following dependencies to your application:
 
-dependency:micronaut-spring[]
+dependency:micronaut-spring[groupId="io.micronaut.spring", scope="compile"]
 
 dependency:spring-jdbc[groupId="org.springframework", scope="runtime"]
 
 Micronaut will automatically configure a `DataSourceTransactionManager` and wrap the `DataSource` in a `TransactionAwareDataSourceProxy` for each configured `DataSource`.
 
-You should then use Micronaut's https://docs.micronaut.io/latest/api/io/micronaut/spring/tx/annotation/Transactional.html[@Transactional] annotation to ensure low-overhead, compile-time transaction management is applied to your classes.
+For transactions to work, use spring's https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Transactional.html[@Transactional] annotation and https://micronaut-projects.github.io/micronaut-spring/latest/guide/#springToMicronautStart[configure micronaut-spring-annotation in your annotation processor path].
