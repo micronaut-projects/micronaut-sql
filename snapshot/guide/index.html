@@ -450,13 +450,13 @@
 <p>        <div class="listingblock multi-language-sample">
 <div class="title"></div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut:micronaut-spring")</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.spring:micronaut-spring")</span></code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
-    &lt;groupId&gt;io.micronaut&lt;/groupId&gt;
+    &lt;groupId&gt;io.micronaut.spring&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-spring&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -485,7 +485,7 @@
 <p>Micronaut will automatically configure a <code>DataSourceTransactionManager</code> and wrap the <code>DataSource</code> in a <code>TransactionAwareDataSourceProxy</code> for each configured <code>DataSource</code>.</p>
 </div>
 <div class="paragraph">
-<p>You should then use Micronaut&#8217;s <a href="https://docs.micronaut.io/latest/api/io/micronaut/spring/tx/annotation/Transactional.html">@Transactional</a> annotation to ensure low-overhead, compile-time transaction management is applied to your classes.</p>
+<p>For transactions to work, use spring&#8217;s <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Transactional.html">@Transactional</a> annotation and <a href="https://micronaut-projects.github.io/micronaut-spring/latest/guide/#springToMicronautStart">configure micronaut-spring-annotation in your annotation processor path</a>.</p>
 </div>
 </div>
 </div>
