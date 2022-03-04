@@ -205,8 +205,7 @@
     &lt;scope&gt;runtime&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
@@ -223,8 +222,7 @@
     &lt;scope&gt;runtime&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
@@ -241,8 +239,7 @@
     &lt;scope&gt;runtime&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
@@ -259,8 +256,7 @@
     &lt;scope&gt;runtime&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>You also need to add a JDBC driver dependency to your classpath. For example to add the <a href="http://www.h2database.com">H2 In-Memory Database</a>:</p>
@@ -280,8 +276,7 @@
     &lt;scope&gt;runtime&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 </div>
 </div>
@@ -304,7 +299,7 @@
 <div class="paragraph">
 <p>Several configuration options will be calculated if they are not provided.</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 20%;">
 <col style="width: 80%;">
@@ -376,7 +371,7 @@
 <div class="paragraph">
 <p>For a list of other properties able to be configured, simply refer to the implementation that is being used. All setter methods are candidates for configuration.</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 20%;">
 <col style="width: 80%;">
@@ -460,8 +455,7 @@
     &lt;artifactId&gt;micronaut-spring&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
@@ -478,8 +472,7 @@
     &lt;scope&gt;runtime&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>Micronaut will automatically configure a <code>DataSourceTransactionManager</code> and wrap the <code>DataSource</code> in a <code>TransactionAwareDataSourceProxy</code> for each configured <code>DataSource</code>.</p>
@@ -500,7 +493,7 @@
 
 
 <div class="sect3">
-<h4 id="_setting_up_a_hibernate_jpa_entitymanager">Setting up a Hibernate/JPA EntityManager</h4>
+<h4 id="_setting_up_a_hibernatejpa_entitymanager">Setting up a Hibernate/JPA EntityManager</h4>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -541,8 +534,7 @@
     &lt;artifactId&gt;micronaut-hibernate-jpa&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>And that is it. For each registered SQL <code>DataSource</code>, Micronaut will configure the following beans using <a href="../api/io/micronaut/configuration/hibernate/jpa/EntityManagerFactoryBean.html">EntityManagerFactoryBean</a>:</p>
@@ -788,8 +780,7 @@ Compile-time proxies are enabled by default for GraalVM environment.
     &lt;artifactId&gt;micronaut-hibernate-jpa-spring&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>Which will enable configuration of the Spring transaction management instead.</p>
@@ -863,8 +854,7 @@ Compile-time proxies are enabled by default for GraalVM environment.
     &lt;artifactId&gt;micronaut-jasync-sql&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>You should then configure the <a href="https://github.com/jasync-sql/jasync-sql/wiki/Configuring-and-Managing-Connections"><code>PoolOptions</code></a> of the database server you wish to communicate with in <code>application.yml</code>:</p>
@@ -955,8 +945,7 @@ Compile-time proxies are enabled by default for GraalVM environment.
     &lt;artifactId&gt;micronaut-jooq&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>You should then <a href="#jdbc">configure one or many DataSources</a>.
@@ -1054,7 +1043,7 @@ Only beans with the same name qualifier as the data source name will be used.</p
 </div>
 </div>
 <div class="sect2">
-<h3 id="_using_micronaut_s_objectmapper_to_convert_json_b_types">Using Micronaut&#8217;s ObjectMapper to convert JSON(B) types</h3>
+<h3 id="_using_micronauts_objectmapper_to_convert_jsonb_types">Using Micronaut&#8217;s ObjectMapper to convert JSON(B) types</h3>
 <div class="paragraph">
 <p>If you don&#8217;t register bean of type <a href="https://www.jooq.org/javadoc/latest/org/jooq/ConverterProvider.html">ConverterProvider</a> and provide following configuration, <code>JacksonConverterProvider</code> will be used, which uses Micronaut configured <code>ObjectMapper</code> for converting from and to types JSON and JSONB.</p>
 </div>
@@ -1124,8 +1113,7 @@ additional configuration is needed, just adding the SimpleFlatMapper dependency:
     &lt;version&gt;8.2.3&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1175,8 +1163,7 @@ Find more information in the <a href="https://www.jooq.org/doc/latest/manual/cod
     &lt;artifactId&gt;micronaut-jdbi&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>You should then <a href="#jdbc">configure one or many DataSources</a>.
@@ -1277,8 +1264,7 @@ Only beans with a <code>Named</code> qualifier name with the same name as the da
     &lt;artifactId&gt;micronaut-vertx-mysql-client&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>You should then configure the URI or <a href="https://vertx.io/docs/vertx-mysql-client/java/"><code>MySQLConnectOptions</code>,<code>PoolOptions</code></a> of the MySQL server you wish to communicate with in <code>application.yml</code>:</p>
@@ -1401,8 +1387,7 @@ You can also connect to MySQL using <code>uri</code> instead of the other proper
     &lt;artifactId&gt;micronaut-vertx-pg-client&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>You should then configure the URI or <a href="https://vertx.io/docs/vertx-pg-client/java/"><code>PgConnectOptions</code>,<code>PoolOptions</code></a> of the Postgres server you wish to communicate with in <code>application.yml</code>:</p>
