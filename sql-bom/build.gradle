@@ -5,7 +5,7 @@ plugins {
 micronautBom {
     excludeProject.set({ p ->
         p.path.startsWith(':test')
-    } as Spec<String>)
+    } as Spec<Project>)
 }
 
 dependencies {

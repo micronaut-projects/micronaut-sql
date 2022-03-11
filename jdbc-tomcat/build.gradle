@@ -5,7 +5,7 @@ plugins {
 dependencies {
 
     api project(":jdbc")
-    api "io.micronaut:micronaut-inject:$micronautVersion"
+    api "io.micronaut:micronaut-inject"
     api "org.apache.tomcat:tomcat-jdbc:$tomcatJdbcVersion"
 
     testRuntimeOnly "com.h2database:h2"
@@ -20,8 +20,4 @@ dependencies {
     testImplementation "io.micronaut.cache:micronaut-cache-core"
 
     testImplementation "org.springframework:spring-jdbc:$springVersion"
-    testImplementation("org.spockframework:spock-core:${spockVersion}") {
-        exclude module:'groovy-all'
-    }
-    testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
 }

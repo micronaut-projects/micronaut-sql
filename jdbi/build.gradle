@@ -15,16 +15,14 @@ configurations {
 }
 
 dependencies {
-    testCompileOnly "io.micronaut:micronaut-inject-java"
-
     api project(":jdbc")
-    api "io.micronaut:micronaut-aop:$micronautVersion"
-    api "io.micronaut:micronaut-inject:$micronautVersion"
+    api "io.micronaut:micronaut-aop"
+    api "io.micronaut:micronaut-inject"
     api "org.jdbi:jdbi3-core:$jdbiVersion", {
         exclude group:'com.github.ben-manes.caffeine', module:'caffeine'
     }
     compileOnly "com.h2database:h2"
-    compileOnly "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
+    compileOnly "io.micronaut.data:micronaut-data-tx"
     compileOnly "org.springframework:spring-jdbc:$springVersion"
     runtimeOnly "io.micronaut.cache:micronaut-cache-caffeine"
     runtimeOnly "com.github.ben-manes.caffeine:caffeine:2.9.1", {
@@ -48,10 +46,6 @@ dependencies {
    
     testImplementation "io.micronaut.cache:micronaut-cache-core"
     testImplementation "org.jdbi:jdbi3-sqlobject:$jdbiVersion"
-    testImplementation("org.spockframework:spock-core:${spockVersion}") {
-        exclude module:'groovy-all'
-    }
-    testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
 
     txTestRuntimeOnly project(":jdbc-tomcat")
     txTestRuntimeOnly "com.h2database:h2:1.4.200"

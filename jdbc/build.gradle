@@ -3,18 +3,11 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-inject-java"
-    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"    
-
-    api "io.micronaut:micronaut-inject:$micronautVersion"
+    api "io.micronaut:micronaut-inject"
 
     compileOnly "org.graalvm.nativeimage:svm"
     compileOnly "io.micronaut.spring:micronaut-spring"
 
     compileOnly "org.springframework:spring-jdbc"
     compileOnly "org.springframework:spring-tx"
-    testImplementation("org.spockframework:spock-core:${spockVersion}") {
-        exclude module:'groovy-all'
-    }
-    testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
 }
