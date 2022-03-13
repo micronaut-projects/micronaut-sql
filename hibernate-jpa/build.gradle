@@ -40,5 +40,5 @@ dependencies {
 
     testRuntimeOnly "io.micronaut.configuration:micronaut-hibernate-validator"
     testRuntimeOnly project(":jdbc-tomcat")
-    testRuntimeOnly "com.h2database:h2:1.4.200"
+    testRuntimeOnly "com.h2database:h2:2.1.210"
 }
