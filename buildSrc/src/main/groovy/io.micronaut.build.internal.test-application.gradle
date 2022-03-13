@@ -17,8 +17,8 @@ dependencies {
     implementation project(":test-graalvm-hibernate-jpa:common")
     testImplementation project(":test-graalvm-hibernate-jpa:common-tests")
 
-    testImplementation "io.micronaut.test:micronaut-test-core:$micronautTestVersion"
-    testImplementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
+    testImplementation "io.micronaut.test:micronaut-test-core"
+    testImplementation platform("org.testcontainers:testcontainers-bom")
     testImplementation "org.testcontainers:spock"
     testImplementation "org.testcontainers:jdbc"
 }

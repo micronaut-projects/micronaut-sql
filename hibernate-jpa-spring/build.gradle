@@ -3,21 +3,17 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-graal"
-    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
-    // needed because otherwise IntelliJ integration broken
-    compileOnly "io.micronaut:micronaut-inject-java"
+
     compileOnly "org.graalvm.nativeimage:svm"
     api "org.hibernate:hibernate-core:$hibernateVersion", {
         exclude group:'org.javassist', module:'javassist'
     }
 
-    api "io.micronaut:micronaut-aop:$micronautVersion"
+    api "io.micronaut:micronaut-aop"
     api project(":hibernate-jpa")
 
     api project(":jdbc")
     api "io.micronaut.spring:micronaut-spring"
     api "org.springframework:spring-orm:$springVersion"
-
 }

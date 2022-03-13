@@ -15,9 +15,8 @@ configurations {
 }
 
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-graal"
-    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
+
     // needed because otherwise IntelliJ integration broken
     compileOnly "io.micronaut:micronaut-inject-java"
     compileOnly "org.graalvm.nativeimage:svm"
@@ -27,13 +26,14 @@ dependencies {
     api "jakarta.persistence:jakarta.persistence-api:2.2.3"
 
     api project(":jdbc")
-    api "io.micronaut:micronaut-inject:$micronautVersion"
+    api "io.micronaut:micronaut-inject"
     api "org.jooq:jooq:$jooqVersion"
+
     compileOnly "org.springframework:spring-jdbc:$springVersion"
-    compileOnly "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
+    compileOnly "io.micronaut.data:micronaut-data-tx"
     compileOnly "org.simpleflatmapper:sfm-reflect:8.2.3"
     compileOnly "com.fasterxml.jackson.core:jackson-databind"
-    compileOnly "io.micronaut:micronaut-json-core:$micronautVersion"
+    compileOnly "io.micronaut:micronaut-json-core"
 
     testRuntimeOnly project(":jdbc-tomcat")
     testRuntimeOnly "com.h2database:h2:1.4.200"
@@ -47,10 +47,6 @@ dependencies {
     testImplementation "io.micronaut.micrometer:micronaut-micrometer-core"
     testImplementation "org.springframework:spring-jdbc:$springVersion"
     testImplementation "io.micronaut.cache:micronaut-cache-core"
-    testImplementation("org.spockframework:spock-core:${spockVersion}") {
-        exclude module:'groovy-all'
-    }
-    testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
 
     txTestRuntimeOnly project(":jdbc-tomcat")
     txTestRuntimeOnly "com.h2database:h2:1.4.200"
