@@ -9,6 +9,8 @@ micronautBom {
 }
 
 dependencies {
+    api platform("org.jdbi:jdbi3-bom:$jdbiVersion")
+    
     constraints {
 
         // vertx client
@@ -43,6 +45,6 @@ dependencies {
         api "mysql:mysql-connector-java:$mysqlDriverVersion"
 
         // jdbi
-        api "org.jdbi:jdbi3-core:$jdbiVersion"
+        api "org.jdbi:jdbi3-core"
     }
 }
