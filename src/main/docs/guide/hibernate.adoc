@@ -42,7 +42,7 @@ EntityManager entityManager;
 EntityManager otherManager;
 ----
 
-Micronaut will inject a compile time scoped proxy that retrieves the `EntityManager` associated with the current transaction when using https://docs.micronaut.io/latest/api/io/micronaut/spring/tx/annotation/Transactional.html[@Transactional] (see "Using Spring Transaction Management" below).
+Micronaut will inject a compile time scoped proxy that retrieves the `EntityManager` associated with the current transaction when using https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Transactional.html[@Transactional] (see "Using Spring Transaction Management" below).
 
 Note the examples above use field injection, since the `@PersistenceContext` annotation does not support declaration on a parameter of a constructor or method argument. Therefore if you wish to instead use constructor or method injection you must use the ann:configuration.hibernate.jpa.scope.CurrentSession[] instead:
 
@@ -182,7 +182,7 @@ Compile-time proxies are enabled by default for GraalVM environment.
 
 Since 2.0, by default Micronaut-based transaction management is enabled. Thus on any service you can use the `io.micronaut.transaction.annotation.TransactionalAdvice` annotation (or the `javax.transaction.Transactional` annotation if you include the `micronaut-data-processor` dependency in your annotation processor configuration).
 
-If you wish to use instead replace this with Spring-based transaction management you should add the following dependency:
+If you wish to use Spring-based transaction management instead you should add the following dependency:
 
 dependency:micronaut-hibernate-jpa-spring[groupId="io.micronaut.sql"]
 
@@ -192,7 +192,7 @@ Which will enable configuration of the Spring transaction management instead.
 
 Micronaut is built on Netty which is based on a non-blocking, event loop model. JDBC and Hibernate are blocking APIs and hence when they are used in a Micronaut application the work is shifted to a blocking I/O thread pool.
 
-When using ann:spring.tx.annotation.Transactional[] the Hibernate `Session` will only be open for the duration of this method execution and then will automatically be closed. This ensures that the blocking operation is kept as short as possible.
+When using https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Transactional.html[@Transactional] the Hibernate `Session` will only be open for the duration of this method execution and then will automatically be closed. This ensures that the blocking operation is kept as short as possible.
 
 There is no notion of OpenSessionInView (OSIV) in Micronaut and never will be, since it is https://vladmihalcea.com/the-open-session-in-view-anti-pattern/[sub-optimal and not recommended]. You should optimize the queries that you write to return all the necessary data Micronaut will need to encode your objects into JSON either by using the appropriate join queries or using a https://vladmihalcea.com/the-best-way-to-map-a-projection-query-to-a-dto-with-jpa-and-hibernate/[data transfer object (DTO)].
 
