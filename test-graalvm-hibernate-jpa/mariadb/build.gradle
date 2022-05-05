@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly "org.mariadb.jdbc:mariadb-java-client:$mariadbDriverVersion"
-    testImplementation "org.testcontainers:mariadb"
+    runtimeOnly(libs.mariadb.java.client)
+    testImplementation(libs.testcontainers.mariadb)
 }

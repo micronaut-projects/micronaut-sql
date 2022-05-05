@@ -4,20 +4,20 @@ plugins {
 
 dependencies {
     api project(":jdbc")
-    api "io.micronaut:micronaut-inject"
-    api "org.apache.commons:commons-dbcp2:$commonsDbcpVersion"
+    api(libs.micronaut.inject)
+    api(libs.commons.dbcp2)
 
-    testRuntimeOnly "org.apache.tomcat:tomcat-jdbc"
-    testRuntimeOnly "com.h2database:h2"
+    testRuntimeOnly(libs.tomcat.jdbc)
+    testRuntimeOnly(libs.h2)
 
-    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    testAnnotationProcessor "io.micronaut.spring:micronaut-spring-annotation"
-    testImplementation "io.micronaut.spring:micronaut-spring"
-    testImplementation "io.micronaut:micronaut-http-server-netty"
-    testImplementation "io.micronaut:micronaut-http-client"
-    testImplementation "io.micronaut:micronaut-management"
-    testImplementation "io.micronaut.micrometer:micronaut-micrometer-core"
-    testImplementation "io.micronaut.cache:micronaut-cache-core"
+    testAnnotationProcessor(libs.micronaut.inject.java)
+    testAnnotationProcessor(libs.micronaut.spring.annotation)
+    testImplementation(libs.micronaut.spring)
+    testImplementation(libs.micronaut.http.server.netty)
+    testImplementation(libs.micronaut.http.client)
+    testImplementation(libs.micronaut.management)
+    testImplementation(libs.micronaut.micrometer.core)
+    testImplementation(libs.micronaut.cache.core)
 
-    testImplementation "org.springframework:spring-jdbc:$springVersion"
+    testImplementation(libs.spring.jdbc)
 }

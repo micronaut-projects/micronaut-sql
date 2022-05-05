@@ -4,22 +4,22 @@ plugins {
 
 dependencies {
     api project(":jdbc")
-    api "io.micronaut:micronaut-inject"
-    api "com.zaxxer:HikariCP:$hikariVersion"
+    api(libs.micronaut.inject)
+    api(libs.hikaricp)
 
-    compileOnly "io.micronaut.micrometer:micronaut-micrometer-core"
+    compileOnly(libs.micronaut.micrometer.core)
 
-    testRuntimeOnly "org.apache.tomcat:tomcat-jdbc"
-    testRuntimeOnly "com.h2database:h2"
+    testRuntimeOnly(libs.tomcat.jdbc)
+    testRuntimeOnly(libs.h2)
 
-    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    testImplementation "io.micronaut.spring:micronaut-spring"
-    testImplementation "io.micronaut:micronaut-http-server-netty"
-    testImplementation "io.micronaut:micronaut-http-client"
-    testImplementation "io.micronaut:micronaut-management"
+    testAnnotationProcessor(libs.micronaut.inject.java)
+    testImplementation(libs.micronaut.spring)
+    testImplementation(libs.micronaut.http.server.netty)
+    testImplementation(libs.micronaut.http.client)
+    testImplementation(libs.micronaut.management)
 
-    testImplementation "io.micronaut.micrometer:micronaut-micrometer-core"
-    testImplementation "io.micronaut.cache:micronaut-cache-core"
+    testImplementation(libs.micronaut.micrometer.core)
+    testImplementation(libs.micronaut.cache.core)
 
-    testImplementation "org.springframework:spring-jdbc:$springVersion"
+    testImplementation(libs.spring.jdbc)
 }

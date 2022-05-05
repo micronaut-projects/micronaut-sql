@@ -3,19 +3,19 @@ plugins {
 }
 
 dependencies {
-    api "io.micronaut:micronaut-inject"
+    api(libs.micronaut.inject)
 
-    implementation "io.projectreactor:reactor-core"
+    implementation(libs.reactor.core)
 
-    compileOnly "com.github.jasync-sql:jasync-mysql:$jasyncVersion"
-    compileOnly "com.github.jasync-sql:jasync-postgresql:$jasyncVersion"
-    compileOnly "io.micronaut:micronaut-management"
+    compileOnly(libs.jasync.mysql)
+    compileOnly(libs.jasync.postgresql)
+    compileOnly(libs.micronaut.management)
 
-    testImplementation "io.micronaut:micronaut-management"
-    testImplementation "org.testcontainers:spock:$testContainersVersion"
-    testImplementation "org.testcontainers:postgresql:$testContainersVersion"
-    testImplementation "com.github.jasync-sql:jasync-postgresql:$jasyncVersion"
-    testImplementation "io.micronaut:micronaut-management"
-    testImplementation "io.micronaut:micronaut-http-client"
-    testImplementation "io.micronaut:micronaut-http-server-netty"
+    testImplementation(libs.micronaut.management)
+    testImplementation(libs.testcontainers.spock)
+    testImplementation(libs.testcontainers.postgresql)
+    testImplementation(libs.jasync.postgresql)
+    testImplementation(libs.micronaut.management)
+    testImplementation(libs.micronaut.http.client)
+    testImplementation(libs.micronaut.http.server.netty)
 }

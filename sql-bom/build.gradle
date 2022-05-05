@@ -9,39 +9,39 @@ micronautBom {
 }
 
 dependencies {
-    api platform("org.jdbi:jdbi3-bom:$jdbiVersion")
-    
+    api(platform(libs.boms.jdbi3))
+
     constraints {
 
         // vertx client
-        api "io.vertx:vertx-pg-client:$vertxVersion"
-        api "io.vertx:vertx-rx-java2:$vertxVersion"
-        api "io.vertx:vertx-mysql-client:$vertxVersion"
-        api "io.vertx:vertx-codegen:$vertxVersion"
+        api(libs.vertx.pg.client)
+        api(libs.vertx.rx.java2)
+        api(libs.vertx.mysql.client)
+        api(libs.vertx.codegen)
 
         // jooq
-        api "org.jooq:jooq:$jooqVersion"
+        api(libs.jooq)
 
         // hibernate
-        api "org.hibernate:hibernate-core:$hibernateVersion"
-        api "org.hibernate:hibernate-jcache:$hibernateVersion"
-        api "org.hibernate:hibernate-micrometer:$hibernateVersion"
+        api(libs.hibernate.core)
+        api(libs.hibernate.jcache)
+        api(libs.hibernate.micrometer)
 
         // jasync
-        api "com.github.jasync-sql:jasync-mysql:$jasyncVersion"
-        api "com.github.jasync-sql:jasync-postgresql:$jasyncVersion"
+        api(libs.jasync.mysql)
+        api(libs.jasync.postgresql)
 
         // jdbc pools
-        api "org.apache.commons:commons-dbcp2:$commonsDbcpVersion"
-        api "com.zaxxer:HikariCP:$hikariVersion"
-        api "org.apache.tomcat:tomcat-jdbc:$tomcatJdbcVersion"
-        api "com.oracle.database.jdbc:ucp:$ojdbcVersion"
+        api(libs.commons.dbcp2)
+        api(libs.hikaricp)
+        api(libs.tomcat.jdbc)
+        api(libs.ucp)
 
         // jdbc drivers
-        api "org.postgresql:postgresql:$postgresDriverVersion"
-        api "com.microsoft.sqlserver:mssql-jdbc:$mssqlDriverVersion"
-        api "com.oracle.database.jdbc:ojdbc8:$ojdbcVersion"
-        api "org.mariadb.jdbc:mariadb-java-client:$mariadbDriverVersion"
-        api "mysql:mysql-connector-java:$mysqlDriverVersion"
+        api(libs.postgresql)
+        api(libs.mssql.jdbc)
+        api(libs.ojdbc8)
+        api(libs.mariadb.java.client)
+        api(libs.mysql.connector.java)
     }
 }

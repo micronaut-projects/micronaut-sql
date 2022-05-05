@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly "com.microsoft.sqlserver:mssql-jdbc:$mssqlDriverVersion"
-    testImplementation "org.testcontainers:mssqlserver"
+    runtimeOnly(libs.mssql.jdbc)
+    testImplementation(libs.testcontainers.mssqlserver)
 }
 
 graalvmNative {

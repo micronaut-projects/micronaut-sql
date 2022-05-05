@@ -16,15 +16,15 @@ configurations {
 
 dependencies {
     api project(":jdbc")
-    api "io.micronaut:micronaut-aop"
-    api "io.micronaut:micronaut-inject"
+    api(libs.micronaut.aop)
+    api(libs.micronaut.inject)
     api "org.jdbi:jdbi3-core:$jdbiVersion", {
         exclude group:'com.github.ben-manes.caffeine', module:'caffeine'
     }
-    compileOnly "com.h2database:h2"
-    compileOnly "io.micronaut.data:micronaut-data-tx"
-    compileOnly "org.springframework:spring-jdbc:$springVersion"
-    runtimeOnly "io.micronaut.cache:micronaut-cache-caffeine"
+    compileOnly(libs.h2)
+    compileOnly(libs.micronaut.data.tx)
+    compileOnly(libs.spring.jdbc)
+    runtimeOnly(libs.micronaut.cache.caffeine)
     runtimeOnly "com.github.ben-manes.caffeine:caffeine:2.9.1", {
         version {
             strictly("2.9.1")
@@ -32,20 +32,20 @@ dependencies {
     }
 
     testRuntimeOnly project(":jdbc-hikari")
-    testRuntimeOnly "com.h2database:h2:2.1.212"
-    testRuntimeOnly "org.springframework:spring-jdbc:$springVersion"
+    testRuntimeOnly(libs.h2)
+    testRuntimeOnly(libs.spring.jdbc)
 
-    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    testAnnotationProcessor "io.micronaut.spring:micronaut-spring-annotation"
-    testImplementation "io.micronaut.spring:micronaut-spring"
-    testImplementation "io.micronaut:micronaut-http-server-netty"
-    testImplementation "io.micronaut:micronaut-http-client"
-    testImplementation "io.micronaut:micronaut-management"
+    testAnnotationProcessor(libs.micronaut.inject.java)
+    testAnnotationProcessor(libs.micronaut.spring.annotation)
+    testImplementation(libs.micronaut.spring)
+    testImplementation(libs.micronaut.http.server.netty)
+    testImplementation(libs.micronaut.http.client)
+    testImplementation(libs.micronaut.management)
     
-    testImplementation "io.micronaut.micrometer:micronaut-micrometer-core"
+    testImplementation(libs.micronaut.micrometer.core)
    
-    testImplementation "io.micronaut.cache:micronaut-cache-core"
-    testImplementation "org.jdbi:jdbi3-sqlobject:$jdbiVersion"
+    testImplementation(libs.micronaut.cache.core)
+    testImplementation(libs.jdbi3.sqlobject)
 
     txTestRuntimeOnly project(":jdbc-tomcat")
     txTestRuntimeOnly "com.h2database:h2:1.4.200"

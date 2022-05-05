@@ -3,17 +3,17 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-graal"
+    annotationProcessor(libs.micronaut.graal)
 
-    compileOnly "org.graalvm.nativeimage:svm"
-    api "org.hibernate:hibernate-core:$hibernateVersion", {
+    compileOnly(libs.graal)
+    api(libs.hibernate.core) {
         exclude group:'org.javassist', module:'javassist'
     }
 
-    api "io.micronaut:micronaut-aop"
+    api(libs.micronaut.aop)
     api project(":hibernate-jpa")
 
     api project(":jdbc")
-    api "io.micronaut.spring:micronaut-spring"
-    api "org.springframework:spring-orm:$springVersion"
+    api(libs.micronaut.spring)
+    api(libs.spring.orm)
 }

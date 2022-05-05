@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly "org.postgresql:postgresql:$postgresDriverVersion"
-    testImplementation "org.testcontainers:postgresql"
+    runtimeOnly(libs.postgresql)
+    testImplementation(libs.testcontainers.postgresql)
 }

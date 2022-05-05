@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly "mysql:mysql-connector-java:$mysqlDriverVersion"
-    testImplementation "org.testcontainers:mysql"
+    runtimeOnly(libs.mysql.connector.java)
+    testImplementation(libs.testcontainers.mysql)
 }

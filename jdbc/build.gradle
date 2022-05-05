@@ -3,11 +3,11 @@ plugins {
 }
 
 dependencies {
-    api "io.micronaut:micronaut-inject"
+    api(libs.micronaut.inject)
 
-    compileOnly "org.graalvm.nativeimage:svm"
-    compileOnly "io.micronaut.spring:micronaut-spring"
+    compileOnly(libs.graal)
+    compileOnly(libs.micronaut.spring)
 
-    compileOnly "org.springframework:spring-jdbc"
-    compileOnly "org.springframework:spring-tx"
+    compileOnly(libs.spring.jdbc)
+    compileOnly(libs.spring.tx)
 }

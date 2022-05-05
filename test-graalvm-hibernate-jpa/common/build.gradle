@@ -3,9 +3,9 @@ plugins {
 }
 
 dependencies {
-    implementation 'javax.inject:javax.inject:1'
-    implementation 'jakarta.inject:jakarta.inject-api:2.0.1'
-    implementation "io.micronaut:micronaut-http-client"
-    annotationProcessor "io.micronaut:micronaut-graal"
+    implementation(libs.javax.inject)
+    implementation(libs.jakarta.inject.api)
+    implementation(libs.micronaut.http.client)
+    annotationProcessor(libs.micronaut.graal)
     implementation project(":hibernate-jpa")
 }
