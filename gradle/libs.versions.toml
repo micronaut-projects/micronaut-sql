@@ -70,6 +70,7 @@ jasync-postgresql = { module = "com.github.jasync-sql:jasync-postgresql", versio
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
 jaxb-api = { module = "javax.xml.bind:jaxb-api", version.ref = "jaxb-api" }
 jdbi3-sqlobject = { module = "org.jdbi:jdbi3-sqlobject", version.ref = "jdbi" }
+jdbi3-core = { module = "org.jdbi:jdbi3-core", version.ref = "jdbi" }
 jooq = { module = "org.jooq:jooq", version.ref = "jooq" }
 mariadb-java-client = { module = "org.mariadb.jdbc:mariadb-java-client", version.ref = "mariadb-driver" }
 mssql-jdbc = { module = "com.microsoft.sqlserver:mssql-jdbc", version.ref = "mssql-driver" }

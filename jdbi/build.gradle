@@ -18,7 +18,7 @@ dependencies {
     api project(":jdbc")
     api(libs.micronaut.aop)
     api(libs.micronaut.inject)
-    api "org.jdbi:jdbi3-core:$jdbiVersion", {
+    api(libs.jdbi3.core) {
         exclude group:'com.github.ben-manes.caffeine', module:'caffeine'
     }
     compileOnly(libs.h2)
@@ -41,9 +41,9 @@ dependencies {
     testImplementation(libs.micronaut.http.server.netty)
     testImplementation(libs.micronaut.http.client)
     testImplementation(libs.micronaut.management)
-    
+
     testImplementation(libs.micronaut.micrometer.core)
-   
+
     testImplementation(libs.micronaut.cache.core)
     testImplementation(libs.jdbi3.sqlobject)
 
@@ -54,7 +54,7 @@ dependencies {
     txTestImplementation "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
     txTestImplementation("io.micronaut:micronaut-inject-groovy")
     txTestRuntimeOnly "ch.qos.logback:logback-classic:1.2.11"
-    txTestImplementation "org.jdbi:jdbi3-sqlobject:$jdbiVersion"
+    txTestImplementation(libs.jdbi3.sqlobject)
     txTestImplementation("org.spockframework:spock-core:${spockVersion}") {
         exclude module:'groovy-all'
     }
