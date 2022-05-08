@@ -13,7 +13,7 @@ dependencies {
         exclude group:'org.javassist', module:'javassist'
         exclude group:'org.jboss:jandex', module:'jar'
     }
-    api 'jakarta.transaction:jakarta.transaction-api:1.3.3'
+    api 'jakarta.transaction:jakarta.transaction-api:2.0.1'
     api "io.micronaut:micronaut-validation"
     api "io.micronaut.data:micronaut-data-tx-hibernate"
     api "io.micronaut:micronaut-aop"

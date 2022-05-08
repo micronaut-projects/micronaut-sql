@@ -25,7 +25,7 @@ dependencies {
     compileOnly "io.micronaut.data:micronaut-data-tx"
     compileOnly "org.springframework:spring-jdbc:$springVersion"
     runtimeOnly "io.micronaut.cache:micronaut-cache-caffeine"
-    runtimeOnly "com.github.ben-manes.caffeine:caffeine:2.9.1", {
+    runtimeOnly "com.github.ben-manes.caffeine:caffeine:3.1.0", {
         version {
             strictly("2.9.1")
         }
@@ -48,7 +48,7 @@ dependencies {
     testImplementation "org.jdbi:jdbi3-sqlobject:$jdbiVersion"
 
     txTestRuntimeOnly project(":jdbc-tomcat")
-    txTestRuntimeOnly "com.h2database:h2:1.4.200"
+    txTestRuntimeOnly "com.h2database:h2:2.1.212"
     txTestAnnotationProcessor "io.micronaut:micronaut-inject-java:$micronautVersion"
     txTestAnnotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
     txTestImplementation "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
