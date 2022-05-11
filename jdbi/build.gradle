@@ -47,6 +47,8 @@ dependencies {
     testImplementation(libs.micronaut.cache.core)
     testImplementation(libs.jdbi3.sqlobject)
 
+    txTestAnnotationProcessor(platform(libs.micronaut.bom))
+    txTestImplementation(platform(libs.micronaut.bom))
     txTestRuntimeOnly project(":jdbc-tomcat")
     txTestRuntimeOnly(libs.h2)
     txTestAnnotationProcessor(libs.micronaut.inject.java)
