@@ -11,6 +11,7 @@ managed-postgres-driver = "42.3.4"
 managed-mariadb-driver = "2.7.5"
 managed-mssql-driver = "9.4.1.jre8"
 managed-mysql-driver = "8.0.29"
+managed-jdbi = "3.20.1"
 
 h2 = "2.1.212"
 jakarta-inject-api = "2.0.1"
@@ -18,7 +19,6 @@ jakarta-persistence-api = "2.2.3"
 jakarta-transaction-api = "1.3.3"
 javax-inject = "1"
 jaxb-api = "2.3.1"
-jdbi = "3.20.1"
 sfm-reflect = "8.2.3"
 spring = "5.3.19"
 caffeine = "2.9.1"
@@ -52,7 +52,7 @@ managed-mysql-connector-java = { module = "mysql:mysql-connector-java", version.
 managed-ojdbc8 = { module = "com.oracle.database.jdbc:ojdbc8", version.ref = "managed-ojdbc" }
 
 # BOMs
-boms-jdbi3 = { module = "org.jdbi:jdbi3-bom", version.ref = "jdbi" }
+boms-jdbi3 = { module = "org.jdbi:jdbi3-bom", version.ref = "managed-jdbi" }
 
 # Micronaut
 micronaut-bom = { module = "io.micronaut:micronaut-bom", version.ref = "micronaut" }
@@ -90,8 +90,8 @@ jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-ap
 jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transaction-api", version.ref = "jakarta-transaction-api" }
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
 jaxb-api = { module = "javax.xml.bind:jaxb-api", version.ref = "jaxb-api" }
-jdbi3-sqlobject = { module = "org.jdbi:jdbi3-sqlobject", version.ref = "jdbi" }
-jdbi3-core = { module = "org.jdbi:jdbi3-core", version.ref = "jdbi" }
+jdbi3-sqlobject = { module = "org.jdbi:jdbi3-sqlobject", version.ref = "managed-jdbi" }
+jdbi3-core = { module = "org.jdbi:jdbi3-core", version.ref = "managed-jdbi" }
 ojdbc8dms = { module = "com.oracle.database.observability:ojdbc8dms", version.ref = "managed-ojdbc" }
 reactor-core = { module = "io.projectreactor:reactor-core" }
 sfm-reflect = { module = "org.simpleflatmapper:sfm-reflect", version.ref = "sfm-reflect" }
