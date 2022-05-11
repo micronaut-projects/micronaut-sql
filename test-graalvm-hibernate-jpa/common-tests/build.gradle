@@ -6,7 +6,7 @@ dependencies {
     implementation(libs.micronaut.http.client)
     implementation(libs.jakarta.inject.api)
     implementation(libs.micronaut.test.core)
-    implementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
+    implementation platform(libs.testcontainers.bom)
     implementation(libs.testcontainers.spock)
     implementation(libs.testcontainers.jdbc)
 }

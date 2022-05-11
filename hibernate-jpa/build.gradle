@@ -28,7 +28,7 @@ dependencies {
     compileOnly(libs.micronaut.micrometer.core)
 
     testAnnotationProcessor(libs.micronaut.inject.java)
-    testRuntimeOnly "io.micronaut.configuration:micronaut-hibernate-validator:$micronautHibernateValidator"
+    testRuntimeOnly(libs.micronaut.hibernate.validator)
     testImplementation(libs.micronaut.inject.java)
     testImplementation(libs.managed.hibernate.jcache)
     testImplementation(libs.micronaut.management)

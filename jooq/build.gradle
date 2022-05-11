@@ -49,15 +49,15 @@ dependencies {
     testImplementation(libs.micronaut.cache.core)
 
     txTestRuntimeOnly project(":jdbc-tomcat")
-    txTestRuntimeOnly "com.h2database:h2:1.4.200"
-    txTestAnnotationProcessor "io.micronaut:micronaut-inject-java:$micronautVersion"
-    txTestAnnotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
-    txTestImplementation "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
-    txTestImplementation("io.micronaut:micronaut-inject-groovy")
-    txTestImplementation("org.spockframework:spock-core:${spockVersion}") {
+    txTestRuntimeOnly(libs.h2)
+    txTestAnnotationProcessor(libs.micronaut.inject.java)
+    txTestAnnotationProcessor(libs.micronaut.data.processor)
+    txTestImplementation(libs.micronaut.data.tx)
+    txTestImplementation(libs.micronaut.inject.groovy)
+    txTestImplementation(libs.spock.core) {
         exclude module:'groovy-all'
     }
-    txTestImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
+    txTestImplementation(libs.micronaut.test.spock)
 }
 
 task txTest(type: Test) {

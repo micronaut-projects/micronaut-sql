@@ -25,7 +25,7 @@ dependencies {
     compileOnly(libs.micronaut.data.tx)
     compileOnly(libs.spring.jdbc)
     runtimeOnly(libs.micronaut.cache.caffeine)
-    runtimeOnly "com.github.ben-manes.caffeine:caffeine:2.9.1", {
+    runtimeOnly(libs.caffeine) {
         version {
             strictly("2.9.1")
         }
@@ -48,17 +48,17 @@ dependencies {
     testImplementation(libs.jdbi3.sqlobject)
 
     txTestRuntimeOnly project(":jdbc-tomcat")
-    txTestRuntimeOnly "com.h2database:h2:1.4.200"
-    txTestAnnotationProcessor "io.micronaut:micronaut-inject-java:$micronautVersion"
-    txTestAnnotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
-    txTestImplementation "io.micronaut.data:micronaut-data-tx:$micronautDataVersion"
-    txTestImplementation("io.micronaut:micronaut-inject-groovy")
-    txTestRuntimeOnly "ch.qos.logback:logback-classic:1.2.11"
+    txTestRuntimeOnly(libs.h2)
+    txTestAnnotationProcessor(libs.micronaut.inject.java)
+    txTestAnnotationProcessor(libs.micronaut.data.processor)
+    txTestImplementation(libs.micronaut.data.tx)
+    txTestImplementation(libs.micronaut.inject.groovy)
+    txTestRuntimeOnly(libs.logback.classic)
     txTestImplementation(libs.jdbi3.sqlobject)
-    txTestImplementation("org.spockframework:spock-core:${spockVersion}") {
+    txTestImplementation(libs.spock.core) {
         exclude module:'groovy-all'
     }
-    txTestImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
+    txTestImplementation(libs.micronaut.test.spock)
 }
 
 
