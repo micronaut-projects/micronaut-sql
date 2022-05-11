@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly(libs.mysql.connector.java)
+    runtimeOnly(libs.managed.mysql.connector.java)
     testImplementation(libs.testcontainers.mysql)
 }

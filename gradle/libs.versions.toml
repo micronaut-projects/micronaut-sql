@@ -26,6 +26,26 @@ micronaut-test = "3.1.1"
 
 
 [libraries]
+managed-vertx-codegen = { module = "io.vertx:vertx-codegen", version.ref = "vertx" }
+managed-vertx-mysql-client = { module = "io.vertx:vertx-mysql-client", version.ref = "vertx" }
+managed-vertx-pg-client = { module = "io.vertx:vertx-pg-client", version.ref = "vertx" }
+managed-vertx-rx-java2 = { module = "io.vertx:vertx-rx-java2", version.ref = "vertx" }
+managed-jooq = { module = "org.jooq:jooq", version.ref = "jooq" }
+managed-hibernate-core = { module = "org.hibernate:hibernate-core", version.ref = "hibernate" }
+managed-hibernate-jcache = { module = "org.hibernate:hibernate-jcache", version.ref = "hibernate" }
+managed-hibernate-micrometer = { module = "org.hibernate:hibernate-micrometer", version.ref = "hibernate" }
+managed-jasync-mysql = { module = "com.github.jasync-sql:jasync-mysql", version.ref = "jasync" }
+managed-jasync-postgresql = { module = "com.github.jasync-sql:jasync-postgresql", version.ref = "jasync" }
+managed-hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
+managed-commons-dbcp2 = { module = "org.apache.commons:commons-dbcp2", version.ref = "commons-dbcp" }
+managed-tomcat-jdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "tomcat-jdbc" }
+managed-ucp = { module = "com.oracle.database.jdbc:ucp", version.ref = "ojdbc" }
+managed-postgresql = { module = "org.postgresql:postgresql", version.ref = "postgres-driver" }
+managed-mariadb-java-client = { module = "org.mariadb.jdbc:mariadb-java-client", version.ref = "mariadb-driver" }
+managed-mssql-jdbc = { module = "com.microsoft.sqlserver:mssql-jdbc", version.ref = "mssql-driver" }
+managed-mysql-connector-java = { module = "mysql:mysql-connector-java", version.ref = "mysql-driver" }
+managed-ojdbc8 = { module = "com.oracle.database.jdbc:ojdbc8", version.ref = "ojdbc" }
+
 # BOMs
 boms-jdbi3 = { module = "org.jdbi:jdbi3-bom", version.ref = "jdbi" }
 
@@ -53,31 +73,18 @@ micronaut-spring-annotation = { module = "io.micronaut.spring:micronaut-spring-a
 micronaut-test-core = { module = "io.micronaut.test:micronaut-test-core", version.ref = "micronaut-test" }
 micronaut-validation = { module = "io.micronaut:micronaut-validation" }
 
-hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
-commons-dbcp2 = { module = "org.apache.commons:commons-dbcp2", version.ref = "commons-dbcp" }
 dms = { module = "com.oracle.database.observability:dms", version.ref = "ojdbc" }
 graal = { module = "org.graalvm.nativeimage:svm" }
 h2 = { module = "com.h2database:h2" }
-hibernate-core = { module = "org.hibernate:hibernate-core", version.ref = "hibernate" }
-hibernate-jcache = { module = "org.hibernate:hibernate-jcache", version.ref = "hibernate" }
-hibernate-micrometer = { module = "org.hibernate:hibernate-micrometer", version.ref = "hibernate" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
 jakarta-inject-api = { module = "jakarta.inject:jakarta.inject-api", version.ref = "jakarta-inject-api" }
 jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version.ref = "jakarta-persistence-api" }
 jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transaction-api", version.ref = "jakarta-transaction-api" }
-jasync-mysql = { module = "com.github.jasync-sql:jasync-mysql", version.ref = "jasync" }
-jasync-postgresql = { module = "com.github.jasync-sql:jasync-postgresql", version.ref = "jasync" }
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
 jaxb-api = { module = "javax.xml.bind:jaxb-api", version.ref = "jaxb-api" }
 jdbi3-sqlobject = { module = "org.jdbi:jdbi3-sqlobject", version.ref = "jdbi" }
 jdbi3-core = { module = "org.jdbi:jdbi3-core", version.ref = "jdbi" }
-jooq = { module = "org.jooq:jooq", version.ref = "jooq" }
-mariadb-java-client = { module = "org.mariadb.jdbc:mariadb-java-client", version.ref = "mariadb-driver" }
-mssql-jdbc = { module = "com.microsoft.sqlserver:mssql-jdbc", version.ref = "mssql-driver" }
-mysql-connector-java = { module = "mysql:mysql-connector-java", version.ref = "mysql-driver" }
-ojdbc8 = { module = "com.oracle.database.jdbc:ojdbc8", version.ref = "ojdbc" }
 ojdbc8dms = { module = "com.oracle.database.observability:ojdbc8dms", version.ref = "ojdbc" }
-postgresql = { module = "org.postgresql:postgresql", version.ref = "postgres-driver" }
 reactor-core = { module = "io.projectreactor:reactor-core" }
 sfm-reflect = { module = "org.simpleflatmapper:sfm-reflect", version.ref = "sfm-reflect" }
 spring-jdbc = { module = "org.springframework:spring-jdbc", version.ref = "spring" }
@@ -90,9 +97,3 @@ testcontainers-mysql = { module = "org.testcontainers:mysql" }
 testcontainers-oracle-xe = { module = "org.testcontainers:oracle-xe" }
 testcontainers-postgresql = { module = "org.testcontainers:postgresql" }
 testcontainers-spock = { module = "org.testcontainers:spock" }
-tomcat-jdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "tomcat-jdbc" }
-ucp = { module = "com.oracle.database.jdbc:ucp", version.ref = "ojdbc" }
-vertx-codegen = { module = "io.vertx:vertx-codegen", version.ref = "vertx" }
-vertx-mysql-client = { module = "io.vertx:vertx-mysql-client", version.ref = "vertx" }
-vertx-pg-client = { module = "io.vertx:vertx-pg-client", version.ref = "vertx" }
-vertx-rx-java2 = { module = "io.vertx:vertx-rx-java2", version.ref = "vertx" }

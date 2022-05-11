@@ -4,15 +4,15 @@ plugins {
 
 dependencies {
     api(libs.micronaut.inject)
-    api(libs.vertx.mysql.client)
-    api(libs.vertx.rx.java2)
+    api(libs.managed.vertx.mysql.client)
+    api(libs.managed.vertx.rx.java2)
 
-    implementation(libs.vertx.codegen)
+    implementation(libs.managed.vertx.codegen)
 
     compileOnly(libs.micronaut.management)
 
     testImplementation(libs.micronaut.management)
     testImplementation(libs.testcontainers.spock)
     testImplementation(libs.testcontainers.mysql)
-    testImplementation(libs.mysql.connector.java)
+    testImplementation(libs.managed.mysql.connector.java)
 }

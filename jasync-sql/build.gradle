@@ -7,14 +7,14 @@ dependencies {
 
     implementation(libs.reactor.core)
 
-    compileOnly(libs.jasync.mysql)
-    compileOnly(libs.jasync.postgresql)
+    compileOnly(libs.managed.jasync.mysql)
+    compileOnly(libs.managed.jasync.postgresql)
     compileOnly(libs.micronaut.management)
 
     testImplementation(libs.micronaut.management)
     testImplementation(libs.testcontainers.spock)
     testImplementation(libs.testcontainers.postgresql)
-    testImplementation(libs.jasync.postgresql)
+    testImplementation(libs.managed.jasync.postgresql)
     testImplementation(libs.micronaut.management)
     testImplementation(libs.micronaut.http.client)
     testImplementation(libs.micronaut.http.server.netty)

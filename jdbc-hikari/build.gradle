@@ -5,11 +5,11 @@ plugins {
 dependencies {
     api project(":jdbc")
     api(libs.micronaut.inject)
-    api(libs.hikaricp)
+    api(libs.managed.hikaricp)
 
     compileOnly(libs.micronaut.micrometer.core)
 
-    testRuntimeOnly(libs.tomcat.jdbc)
+    testRuntimeOnly(libs.managed.tomcat.jdbc)
     testRuntimeOnly(libs.h2)
 
     testAnnotationProcessor(libs.micronaut.inject.java)

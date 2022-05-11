@@ -27,7 +27,7 @@ dependencies {
 
     api project(":jdbc")
     api(libs.micronaut.inject)
-    api(libs.jooq)
+    api(libs.managed.jooq)
 
     compileOnly(libs.spring.jdbc)
     compileOnly(libs.micronaut.data.tx)

@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly(libs.postgresql)
+    runtimeOnly(libs.managed.postgresql)
     testImplementation(libs.testcontainers.postgresql)
 }

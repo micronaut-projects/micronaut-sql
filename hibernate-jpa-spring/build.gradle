@@ -6,7 +6,7 @@ dependencies {
     annotationProcessor(libs.micronaut.graal)
 
     compileOnly(libs.graal)
-    api(libs.hibernate.core) {
+    api(libs.managed.hibernate.core) {
         exclude group:'org.javassist', module:'javassist'
     }
 

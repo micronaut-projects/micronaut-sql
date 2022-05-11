@@ -7,7 +7,7 @@ dependencies {
     api project(":jdbc")
     api(libs.micronaut.inject)
     api(libs.micronaut.context)
-    api(libs.ucp)
+    api(libs.managed.ucp)
 
     testRuntimeOnly(libs.h2)
 
