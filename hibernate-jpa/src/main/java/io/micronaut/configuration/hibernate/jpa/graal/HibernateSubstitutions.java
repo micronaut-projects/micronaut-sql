@@ -242,6 +242,10 @@ final class Loggers {
 final class Hql {
 }
 
+@TypeHint(typeNames = "org.hibernate.cfg.beanvalidation.TypeSafeActivator", accessType = {TypeHint.AccessType.ALL_PUBLIC})
+final class Cfg {
+}
+
 // ID Generators
 @TypeHint({
         UUIDGenerator.class,
