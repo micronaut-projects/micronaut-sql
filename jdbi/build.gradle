@@ -27,7 +27,7 @@ dependencies {
     runtimeOnly(libs.micronaut.cache.caffeine)
     runtimeOnly(libs.caffeine) {
         version {
-            strictly("2.9.1")
+            strictly("2.9.3")
         }
     }
 
