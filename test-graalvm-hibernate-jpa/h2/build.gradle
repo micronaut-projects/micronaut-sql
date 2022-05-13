@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly "com.h2database:h2"
+    runtimeOnly(libs.h2)
 }
 
 graalvmNative {

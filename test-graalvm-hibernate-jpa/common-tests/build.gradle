@@ -3,10 +3,10 @@ plugins {
 }
 
 dependencies {
-    implementation "io.micronaut:micronaut-http-client"
-    implementation 'jakarta.inject:jakarta.inject-api:2.0.1'
-    implementation "io.micronaut.test:micronaut-test-core:$micronautTestVersion"
-    implementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
-    implementation "org.testcontainers:spock"
-    implementation "org.testcontainers:jdbc"
+    implementation(libs.micronaut.http.client)
+    implementation(libs.jakarta.inject.api)
+    implementation(libs.micronaut.test.core)
+    implementation platform(libs.testcontainers.bom)
+    implementation(libs.testcontainers.spock)
+    implementation(libs.testcontainers.jdbc)
 }

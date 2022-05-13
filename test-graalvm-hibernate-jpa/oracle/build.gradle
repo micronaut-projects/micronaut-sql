@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly "com.oracle.database.jdbc:ojdbc8:$ojdbcVersion"
-    testImplementation "org.testcontainers:oracle-xe"
+    runtimeOnly(libs.managed.ojdbc8)
+    testImplementation(libs.testcontainers.oracle.xe)
 }
