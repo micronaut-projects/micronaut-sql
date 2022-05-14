@@ -11,7 +11,7 @@ managed-postgres-driver = "42.3.5"
 managed-mariadb-driver = "2.7.5"
 managed-mssql-driver = "9.4.1.jre8"
 managed-mysql-driver = "8.0.29"
-managed-jdbi = "3.20.1"
+managed-jdbi = "3.28.0"
 
 h2 = "2.1.212"
 jakarta-inject-api = "2.0.1"
