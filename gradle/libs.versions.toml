@@ -1,5 +1,5 @@
 [versions]
-managed-vertx = "4.2.2"
+managed-vertx = "4.3.0"
 managed-jooq = "3.14.12"
 managed-hibernate = "5.6.8.Final"
 managed-jasync = "1.2.3"
