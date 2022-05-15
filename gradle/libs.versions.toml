@@ -1,7 +1,7 @@
 [versions]
 managed-vertx = "4.3.0"
-managed-jooq = "3.14.12"
-managed-hibernate = "5.6.8.Final"
+managed-jooq = "3.16.6"
+managed-hibernate = "5.6.9.Final"
 managed-jasync = "1.2.3"
 managed-hikari = "4.0.3"
 managed-commons-dbcp = "2.9.0"
@@ -9,7 +9,7 @@ managed-tomcat-jdbc = "10.0.20"
 managed-ojdbc = "21.5.0.0"
 managed-postgres-driver = "42.3.5"
 managed-mariadb-driver = "2.7.5"
-managed-mssql-driver = "9.4.1.jre8"
+managed-mssql-driver = "9.4.1.jre16"
 managed-mysql-driver = "8.0.29"
 managed-jdbi = "3.28.0"
 
