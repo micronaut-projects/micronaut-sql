@@ -64,7 +64,7 @@ class JasyncSpec extends Specification {
 
         ApplicationContext applicationContext = ApplicationContext.run(
                 'jasync.client.port': postgres.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT),
-                'jasync.client.host': postgres.getContainerIpAddress(),
+                'jasync.client.host': postgres.getHost(),
                 'jasync.client.database': postgres.databaseName,
                 'jasync.client.username': postgres.username,
                 'jasync.client.password': postgres.password

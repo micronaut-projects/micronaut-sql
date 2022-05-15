@@ -45,7 +45,7 @@ class MySQLClientSpec extends Specification{
 
         ApplicationContext applicationContext = ApplicationContext.run(
                 'vertx.mysql.client.port': mysql.getMappedPort(MySQLContainer.MYSQL_PORT),
-                'vertx.mysql.client.host': mysql.getContainerIpAddress(),
+                'vertx.mysql.client.host': mysql.getHost(),
                 'vertx.mysql.client.database': mysql.databaseName,
                 'vertx.mysql.client.user': mysql.username,
                 'vertx.mysql.client.password': mysql.password,
