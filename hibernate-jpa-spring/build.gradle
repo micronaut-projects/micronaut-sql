@@ -3,17 +3,17 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor(libs.micronaut.graal)
+    annotationProcessor(mn.graal)
 
-    compileOnly(libs.graal)
+    compileOnly(mn.graal)
     api(libs.managed.hibernate.core) {
         exclude group:'org.javassist', module:'javassist'
     }
 
-    api(libs.micronaut.aop)
-    api project(":hibernate-jpa")
+    api(mn.micronaut.aop)
+    api projects.hibernateJpa
 
-    api project(":jdbc")
-    api(libs.micronaut.spring)
+    api projects.jdbc
+    api(mn.micronaut.spring)
     api(libs.spring.orm)
 }

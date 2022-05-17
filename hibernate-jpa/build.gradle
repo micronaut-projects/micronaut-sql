@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor(libs.micronaut.graal)
+    annotationProcessor(mn.graal)
 
     // included for Java 11
     runtimeOnly(libs.jaxb.api)
@@ -14,31 +14,31 @@ dependencies {
         exclude group:'org.jboss:jandex', module:'jar'
     }
     api(libs.jakarta.transaction.api)
-    api(libs.micronaut.validation)
-    api(libs.micronaut.data.tx.hibernate)
-    api(libs.micronaut.aop)
-    api project(":jdbc")
-    api(libs.micronaut.runtime)
-    api(libs.micronaut.validation)
+    api(mn.micronaut.validation)
+    api(mn.micronaut.data.tx.hibernate)
+    api(mn.micronaut.aop)
+    api projects.jdbc
+    api(mn.micronaut.runtime)
+    api(mn.micronaut.validation)
 
-    compileOnly(libs.graal)
+    compileOnly(mn.graal)
     compileOnly(libs.managed.hibernate.micrometer)
     compileOnly(libs.managed.hibernate.jcache)
-    compileOnly(libs.micronaut.management)
-    compileOnly(libs.micronaut.micrometer.core)
+    compileOnly(mn.micronaut.management)
+    compileOnly(mn.micronaut.micrometer.core)
 
-    testAnnotationProcessor(libs.micronaut.inject.java)
-    testRuntimeOnly(libs.micronaut.hibernate.validator)
-    testImplementation(libs.micronaut.inject.java)
+    testAnnotationProcessor(mn.micronaut.inject.java)
+    testRuntimeOnly(mn.micronaut.hibernate.validator)
+    testImplementation(mn.micronaut.inject.java)
     testImplementation(libs.managed.hibernate.jcache)
-    testImplementation(libs.micronaut.management)
-    testImplementation(libs.micronaut.inject.groovy)
-    testImplementation(libs.micronaut.function.web)
-    testImplementation(libs.micronaut.cache.core)
-    testImplementation(libs.micronaut.micrometer.core)
+    testImplementation(mn.micronaut.management)
+    testImplementation(mn.micronaut.inject.groovy)
+    testImplementation(mn.micronaut.function.web)
+    testImplementation(mn.micronaut.cache.core)
+    testImplementation(mn.micronaut.micrometer.core)
     testImplementation(libs.managed.hibernate.micrometer)
 
-    testRuntimeOnly(libs.micronaut.hibernate.validator)
-    testRuntimeOnly project(":jdbc-tomcat")
-    testRuntimeOnly(libs.h2)
+    testRuntimeOnly(mn.micronaut.hibernate.validator)
+    testRuntimeOnly projects.jdbcTomcat
+    testRuntimeOnly(libs.managed.h2)
 }

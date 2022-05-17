@@ -1,7 +1,3 @@
 plugins {
     id 'io.micronaut.build.internal.module'
 }
-
-micronautBuild {
-    dependencyUpdatesPattern = /.+(-|\.?)(b|M|RC|kts)(-|\.?)\d?.*/
-}

@@ -1,0 +1,38 @@
+plugins {
+    id 'io.micronaut.build.internal.sql-module'
+}
+
+micronautBuild {
+    sourceCompatibility = "11"
+    targetCompatibility = "11"
+    binaryCompatibility {
+        enabled.set(false)
+    }
+}
+
+dependencies {
+    annotationProcessor(mn.graal)
+
+    api(projects.hibernateJpa) {
+        exclude module: 'jdbc'
+        exclude group: 'micronaut-data'
+    }
+    api libs.managed.hibernate.reactive.core
+    api mn.micronaut.runtime
+
+    compileOnly mn.graal
+
+    testAnnotationProcessor mn.micronaut.inject.java
+    testRuntimeOnly mn.micronaut.hibernate.validator
+    testImplementation mn.micronaut.inject.java
+    testImplementation mn.micronaut.inject.groovy
+    testImplementation projects.jdbc
+    testRuntimeOnly projects.jdbcTomcat
+    testRuntimeOnly(libs.managed.h2)
+
+    testImplementation libs.testcontainers.bom
+    testImplementation libs.testcontainers.spock
+    testImplementation libs.testcontainers.jdbc
+    testImplementation libs.testcontainers.postgresql
+    implementation libs.managed.vertx.pg.client
+}

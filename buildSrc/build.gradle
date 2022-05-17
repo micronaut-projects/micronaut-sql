@@ -7,11 +7,6 @@ repositories {
     mavenCentral()
 }
 
-def props = new Properties()
-file('../gradle.properties').withInputStream {
-    props.load(it)
-}
-
 dependencies {
-    implementation "io.micronaut.gradle:micronaut-gradle-plugin:${props.getProperty('micronautGradlePluginVersion')}"
+    implementation libs.gradle.micronaut
 }

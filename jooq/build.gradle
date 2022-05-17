@@ -15,51 +15,46 @@ configurations {
 }
 
 dependencies {
-    annotationProcessor(libs.micronaut.graal)
+    annotationProcessor(mn.graal)
 
     // needed because otherwise IntelliJ integration broken
-    compileOnly(libs.micronaut.inject.java)
-    compileOnly(libs.graal)
-    testCompileOnly(libs.micronaut.inject.java)
+    compileOnly(mn.micronaut.inject.java)
+    compileOnly(mn.graal)
+    testCompileOnly(mn.micronaut.inject.java)
 
     // needed for native image (adding @Entity annotation to UpdatableRecords for reflection registration)
     api(libs.jakarta.persistence.api)
 
-    api project(":jdbc")
-    api(libs.micronaut.inject)
+    api projects.jdbc
+    api(mn.micronaut.inject)
     api(libs.managed.jooq)
 
     compileOnly(libs.spring.jdbc)
-    compileOnly(libs.micronaut.data.tx)
+    compileOnly(mn.micronaut.data.tx)
     compileOnly(libs.sfm.reflect)
-    compileOnly(libs.jackson.databind)
-    compileOnly(libs.micronaut.json.core)
+    compileOnly(mn.jackson.databind)
+    compileOnly(mn.micronaut.json.core)
 
-    testRuntimeOnly project(":jdbc-tomcat")
-    testRuntimeOnly(libs.h2)
-    testAnnotationProcessor(libs.micronaut.inject.java)
-    testAnnotationProcessor(libs.micronaut.spring.annotation)
-    testImplementation(libs.micronaut.spring)
-    testImplementation(libs.micronaut.http.server.netty)
-    testImplementation(libs.micronaut.http.client)
-    testImplementation(libs.micronaut.management)
+    testRuntimeOnly projects.jdbcTomcat
+    testRuntimeOnly(libs.managed.h2)
+    testAnnotationProcessor(mn.micronaut.inject.java)
+    testAnnotationProcessor(mn.micronaut.spring.annotation)
+    testImplementation(mn.micronaut.spring)
+    testImplementation(mn.micronaut.http.server.netty)
+    testImplementation(mn.micronaut.http.client)
+    testImplementation(mn.micronaut.management)
 
-    testImplementation(libs.micronaut.micrometer.core)
+    testImplementation(mn.micronaut.micrometer.core)
     testImplementation(libs.spring.jdbc)
-    testImplementation(libs.micronaut.cache.core)
+    testImplementation(mn.micronaut.cache.core)
 
-    txTestAnnotationProcessor(platform(libs.micronaut.bom))
-    txTestImplementation(platform(libs.micronaut.bom))
-    txTestRuntimeOnly project(":jdbc-tomcat")
-    txTestRuntimeOnly(libs.h2)
-    txTestAnnotationProcessor(libs.micronaut.inject.java)
-    txTestAnnotationProcessor(libs.micronaut.data.processor)
-    txTestImplementation(libs.micronaut.data.tx)
-    txTestImplementation(libs.micronaut.inject.groovy)
-    txTestImplementation(libs.spock.core) {
-        exclude module:'groovy-all'
-    }
-    txTestImplementation(libs.micronaut.test.spock)
+    txTestRuntimeOnly projects.jdbcTomcat
+    txTestRuntimeOnly(libs.managed.h2)
+    txTestAnnotationProcessor(mn.micronaut.inject.java)
+    txTestAnnotationProcessor(mn.micronaut.data.processor)
+    txTestImplementation(mn.micronaut.data.tx)
+    txTestImplementation(mn.micronaut.inject.groovy)
+    txTestImplementation(mn.micronaut.test.spock)
 }
 
 task txTest(type: Test) {

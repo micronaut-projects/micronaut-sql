@@ -1,8 +1,0 @@
-plugins {
-    id 'io.micronaut.build.internal.test-application'
-}
-
-dependencies {
-    runtimeOnly(libs.managed.mariadb.java.client)
-    testImplementation(libs.testcontainers.mariadb)
-}

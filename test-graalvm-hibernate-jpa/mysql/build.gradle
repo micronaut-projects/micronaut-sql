@@ -1,8 +1,0 @@
-plugins {
-    id 'io.micronaut.build.internal.test-application'
-}
-
-dependencies {
-    runtimeOnly(libs.managed.mysql.connector.java)
-    testImplementation(libs.testcontainers.mysql)
-}

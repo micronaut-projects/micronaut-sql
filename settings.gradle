@@ -1,4 +1,7 @@
 pluginManagement {
+    plugins {
+        id 'io.micronaut.build.shared.settings' version getProperty("micronautSharedSettingVersion")
+    }
     repositories {
         gradlePluginPortal()
         mavenCentral()
@@ -6,7 +9,13 @@ pluginManagement {
 }
 
 plugins {
-    id("io.micronaut.build.shared.settings") version "5.3.9"
+    id 'io.micronaut.build.shared.settings'
+}
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+micronautBuild {
+    importMicronautCatalog()
 }
 
 rootProject.name = 'sql-parent'
@@ -20,17 +29,31 @@ include 'jdbc-ucp'
 include 'jasync-sql'
 include 'hibernate-jpa'
 include 'hibernate-jpa-spring'
+
+if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_11)) {
+    include 'hibernate-reactive'
+}
+
 include 'jooq'
 include 'vertx-mysql-client'
 include 'vertx-pg-client'
 include 'jdbi'
 
-include 'test-graalvm-hibernate-jpa'
-include 'test-graalvm-hibernate-jpa:postgres'
-include 'test-graalvm-hibernate-jpa:mysql'
-include 'test-graalvm-hibernate-jpa:mariadb'
-include 'test-graalvm-hibernate-jpa:oracle'
-include 'test-graalvm-hibernate-jpa:h2'
-include 'test-graalvm-hibernate-jpa:mssql'
-include 'test-graalvm-hibernate-jpa:common'
-include 'test-graalvm-hibernate-jpa:common-tests'
+include 'tests:hibernate5:hibernate5-sync-common'
+include 'tests:hibernate5:hibernate5-sync-common-tests'
+include 'tests:hibernate5:hibernate5-postgres'
+include 'tests:hibernate5:hibernate5-mysql'
+include 'tests:hibernate5:hibernate5-mariadb'
+include 'tests:hibernate5:hibernate5-oracle'
+include 'tests:hibernate5:hibernate5-h2'
+include 'tests:hibernate5:hibernate5-mssql'
+
+if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_11)) {
+    include 'tests:hibernate5:hibernate5-reactive-common'
+    include 'tests:hibernate5:hibernate5-reactive-common-tests'
+    include 'tests:hibernate5:hibernate5-reactive-postgres'
+    include 'tests:hibernate5:hibernate5-reactive-mysql'
+    include 'tests:hibernate5:hibernate5-reactive-mssql'
+    include 'tests:hibernate5:hibernate5-reactive-oracle'
+}
+

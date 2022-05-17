@@ -15,52 +15,47 @@ configurations {
 }
 
 dependencies {
-    api project(":jdbc")
-    api(libs.micronaut.aop)
-    api(libs.micronaut.inject)
+    api projects.jdbc
+    api(mn.micronaut.aop)
+    api(mn.micronaut.inject)
     api(libs.jdbi3.core) {
         exclude group:'com.github.ben-manes.caffeine', module:'caffeine'
     }
-    compileOnly(libs.h2)
-    compileOnly(libs.micronaut.data.tx)
+    compileOnly(libs.managed.h2)
+    compileOnly(mn.micronaut.data.tx)
     compileOnly(libs.spring.jdbc)
-    runtimeOnly(libs.micronaut.cache.caffeine)
+    runtimeOnly(mn.micronaut.cache.caffeine)
     runtimeOnly(libs.caffeine) {
         version {
             strictly("2.9.3")
         }
     }
 
-    testRuntimeOnly project(":jdbc-hikari")
-    testRuntimeOnly(libs.h2)
+    testRuntimeOnly projects.jdbcHikari
+    testRuntimeOnly(libs.managed.h2)
     testRuntimeOnly(libs.spring.jdbc)
 
-    testAnnotationProcessor(libs.micronaut.inject.java)
-    testAnnotationProcessor(libs.micronaut.spring.annotation)
-    testImplementation(libs.micronaut.spring)
-    testImplementation(libs.micronaut.http.server.netty)
-    testImplementation(libs.micronaut.http.client)
-    testImplementation(libs.micronaut.management)
+    testAnnotationProcessor(mn.micronaut.inject.java)
+    testAnnotationProcessor(mn.micronaut.spring.annotation)
+    testImplementation(mn.micronaut.spring)
+    testImplementation(mn.micronaut.http.server.netty)
+    testImplementation(mn.micronaut.http.client)
+    testImplementation(mn.micronaut.management)
 
-    testImplementation(libs.micronaut.micrometer.core)
+    testImplementation(mn.micronaut.micrometer.core)
 
-    testImplementation(libs.micronaut.cache.core)
+    testImplementation(mn.micronaut.cache.core)
     testImplementation(libs.jdbi3.sqlobject)
 
-    txTestAnnotationProcessor(platform(libs.micronaut.bom))
-    txTestImplementation(platform(libs.micronaut.bom))
-    txTestRuntimeOnly project(":jdbc-tomcat")
-    txTestRuntimeOnly(libs.h2)
-    txTestAnnotationProcessor(libs.micronaut.inject.java)
-    txTestAnnotationProcessor(libs.micronaut.data.processor)
-    txTestImplementation(libs.micronaut.data.tx)
-    txTestImplementation(libs.micronaut.inject.groovy)
-    txTestRuntimeOnly(libs.logback.classic)
+    txTestRuntimeOnly projects.jdbcTomcat
+    txTestRuntimeOnly(libs.managed.h2)
+    txTestAnnotationProcessor(mn.micronaut.inject.java)
+    txTestAnnotationProcessor(mn.micronaut.data.processor)
+    txTestImplementation(mn.micronaut.data.tx)
+    txTestImplementation(mn.micronaut.inject.groovy)
+    txTestRuntimeOnly(mn.logback)
     txTestImplementation(libs.jdbi3.sqlobject)
-    txTestImplementation(libs.spock.core) {
-        exclude module:'groovy-all'
-    }
-    txTestImplementation(libs.micronaut.test.spock)
+    txTestImplementation(mn.micronaut.test.spock)
 }
 
 

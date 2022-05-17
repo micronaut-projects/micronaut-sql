@@ -8,5 +8,185 @@
     "type": "io.micronaut.configuration.jooq.JooqConfigurationFactory",
     "member": "Method io.micronaut.configuration.jooq.JooqConfigurationFactory.jooqConfiguration(java.lang.String,javax.sql.DataSource,org.jooq.TransactionProvider,org.jooq.conf.Settings,org.jooq.ExecutorProvider,org.jooq.RecordMapperProvider,org.jooq.RecordUnmapperProvider,org.jooq.MetaProvider,org.jooq.ConverterProvider,io.micronaut.context.ApplicationContext)",
     "reason": "Ability to use custom org.jooq.ConnectionProvider"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$Definition$Reference",
+    "member": "Class io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$Definition$Reference",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$Definition$Reference.getBeanDefinitionType()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$Definition$Reference.getBeanType()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$Definition$Reference.load()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$Definition$Reference",
+    "member": "Constructor io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$Definition$Reference()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateMetadataSources1$Definition$Reference",
+    "member": "Class io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateMetadataSources1$Definition$Reference",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateMetadataSources1$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateMetadataSources1$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateMetadataSources1$Definition$Reference.getBeanDefinitionType()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateMetadataSources1$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateMetadataSources1$Definition$Reference.getBeanType()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateMetadataSources1$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateMetadataSources1$Definition$Reference.load()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateMetadataSources1$Definition$Reference",
+    "member": "Constructor io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateMetadataSources1$Definition$Reference()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactory3$Definition$Reference",
+    "member": "Class io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactory3$Definition$Reference",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactory3$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactory3$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactory3$Definition$Reference.getBeanDefinitionType()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactory3$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactory3$Definition$Reference.getBeanType()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactory3$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactory3$Definition$Reference.load()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactory3$Definition$Reference",
+    "member": "Constructor io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactory3$Definition$Reference()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactoryBuilder2$Definition$Reference",
+    "member": "Class io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactoryBuilder2$Definition$Reference",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactoryBuilder2$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactoryBuilder2$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactoryBuilder2$Definition$Reference.getBeanDefinitionType()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactoryBuilder2$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactoryBuilder2$Definition$Reference.getBeanType()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactoryBuilder2$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactoryBuilder2$Definition$Reference.load()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactoryBuilder2$Definition$Reference",
+    "member": "Constructor io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateSessionFactoryBuilder2$Definition$Reference()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateStandardServiceRegistry0$Definition$Reference",
+    "member": "Class io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateStandardServiceRegistry0$Definition$Reference",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateStandardServiceRegistry0$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateStandardServiceRegistry0$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateStandardServiceRegistry0$Definition$Reference.getBeanDefinitionType()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateStandardServiceRegistry0$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateStandardServiceRegistry0$Definition$Reference.getBeanType()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateStandardServiceRegistry0$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateStandardServiceRegistry0$Definition$Reference.load()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateStandardServiceRegistry0$Definition$Reference",
+    "member": "Constructor io.micronaut.configuration.hibernate.jpa.$EntityManagerFactoryBean$HibernateStandardServiceRegistry0$Definition$Reference()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.jcache.$HibernateJCacheManagerBinder$Definition$Reference",
+    "member": "Class io.micronaut.configuration.hibernate.jpa.jcache.$HibernateJCacheManagerBinder$Definition$Reference",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.jcache.$HibernateJCacheManagerBinder$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.jcache.$HibernateJCacheManagerBinder$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.jcache.$HibernateJCacheManagerBinder$Definition$Reference.getBeanDefinitionType()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.jcache.$HibernateJCacheManagerBinder$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.jcache.$HibernateJCacheManagerBinder$Definition$Reference.getBeanType()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.jcache.$HibernateJCacheManagerBinder$Definition$Reference",
+    "member": "Method io.micronaut.configuration.hibernate.jpa.jcache.$HibernateJCacheManagerBinder$Definition$Reference.load()",
+    "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.jcache.$HibernateJCacheManagerBinder$Definition$Reference",
+    "member": "Constructor io.micronaut.configuration.hibernate.jpa.jcache.$HibernateJCacheManagerBinder$Definition$Reference()",
+    "reason": "Not a bean anymore"
   }
 ]

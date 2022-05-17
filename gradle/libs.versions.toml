@@ -1,103 +1,126 @@
 [versions]
+
+# Micronaut
+
+micronaut = "3.4.3"
+micronaut-docs = "2.0.0"
+micronaut-gradle-plugin = "3.4.0"
+
+# Frameworks
+
 managed-vertx = "4.3.0"
 managed-jooq = "3.14.12"
 managed-hibernate = "5.6.9.Final"
+managed-hibernate-reactive = "1.1.6.Final"
 managed-jasync = "1.2.3"
-managed-hikari = "4.0.3"
-managed-commons-dbcp = "2.9.0"
-managed-tomcat-jdbc = "10.0.21"
+managed-jdbi = "3.28.0"
+
+# JDBC Drivers
+
 managed-ojdbc = "21.5.0.0"
 managed-postgres-driver = "42.3.6"
 managed-mariadb-driver = "2.7.5"
 managed-mssql-driver = "9.4.1.jre8"
 managed-mysql-driver = "8.0.29"
-managed-jdbi = "3.28.0"
 
-h2 = "2.1.212"
-jakarta-inject-api = "2.0.1"
+# JDBC Pools
+
+managed-hikari = "4.0.3"
+managed-commons-dbcp = "2.9.0"
+managed-tomcat-jdbc = "10.0.20"
+
+# JPA
+
 jakarta-persistence-api = "2.2.3"
 jakarta-transaction-api = "1.3.3"
-javax-inject = "1"
+
+managed-h2 = "2.1.212"
+
+# Other
+
 jaxb-api = "2.3.1"
 sfm-reflect = "8.2.3"
 spring = "5.3.20"
 caffeine = "2.9.3"
-testcontainers = "1.17.2"
 
-# Micronaut
-micronaut = "3.4.3"
-micronaut-test = "3.3.0"
-micronaut-hibernate-validator = "2.0.0"
+# Testing
 
+groovy = "3.0.10"
+testcontainers = "1.17.1"
+sonar-gradle-plugin = "3.3"
 
 [libraries]
+
+# Vertx
+
 managed-vertx-codegen = { module = "io.vertx:vertx-codegen", version.ref = "managed-vertx" }
 managed-vertx-mysql-client = { module = "io.vertx:vertx-mysql-client", version.ref = "managed-vertx" }
 managed-vertx-pg-client = { module = "io.vertx:vertx-pg-client", version.ref = "managed-vertx" }
+managed-vertx-mssql-client = { module = "io.vertx:vertx-mssql-client", version.ref = "managed-vertx" }
+managed-vertx-oracle-client = { module = "io.vertx:vertx-oracle-client", version.ref = "managed-vertx" }
 managed-vertx-rx-java2 = { module = "io.vertx:vertx-rx-java2", version.ref = "managed-vertx" }
+
 managed-jooq = { module = "org.jooq:jooq", version.ref = "managed-jooq" }
+
+# Hibernate
+
 managed-hibernate-core = { module = "org.hibernate:hibernate-core", version.ref = "managed-hibernate" }
 managed-hibernate-jcache = { module = "org.hibernate:hibernate-jcache", version.ref = "managed-hibernate" }
 managed-hibernate-micrometer = { module = "org.hibernate:hibernate-micrometer", version.ref = "managed-hibernate" }
+managed-hibernate-reactive-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version.ref = "managed-hibernate-reactive" }
+
+# Jasync
+
 managed-jasync-mysql = { module = "com.github.jasync-sql:jasync-mysql", version.ref = "managed-jasync" }
 managed-jasync-postgresql = { module = "com.github.jasync-sql:jasync-postgresql", version.ref = "managed-jasync" }
+
+# JDBI
+
+boms-jdbi3 = { module = "org.jdbi:jdbi3-bom", version.ref = "managed-jdbi" }
+jdbi3-sqlobject = { module = "org.jdbi:jdbi3-sqlobject", version.ref = "managed-jdbi" }
+jdbi3-core = { module = "org.jdbi:jdbi3-core", version.ref = "managed-jdbi" }
+
+# JDBC pools
+
 managed-hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "managed-hikari" }
 managed-commons-dbcp2 = { module = "org.apache.commons:commons-dbcp2", version.ref = "managed-commons-dbcp" }
 managed-tomcat-jdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "managed-tomcat-jdbc" }
 managed-ucp = { module = "com.oracle.database.jdbc:ucp", version.ref = "managed-ojdbc" }
+
+# UCP
+
+dms = { module = "com.oracle.database.observability:dms", version.ref = "managed-ojdbc" }
+ojdbc8dms = { module = "com.oracle.database.observability:ojdbc8dms", version.ref = "managed-ojdbc" }
+
+# JDBC drivers
+
 managed-postgresql = { module = "org.postgresql:postgresql", version.ref = "managed-postgres-driver" }
 managed-mariadb-java-client = { module = "org.mariadb.jdbc:mariadb-java-client", version.ref = "managed-mariadb-driver" }
 managed-mssql-jdbc = { module = "com.microsoft.sqlserver:mssql-jdbc", version.ref = "managed-mssql-driver" }
 managed-mysql-connector-java = { module = "mysql:mysql-connector-java", version.ref = "managed-mysql-driver" }
 managed-ojdbc8 = { module = "com.oracle.database.jdbc:ojdbc8", version.ref = "managed-ojdbc" }
 
-# BOMs
-boms-jdbi3 = { module = "org.jdbi:jdbi3-bom", version.ref = "managed-jdbi" }
+managed-h2 = { module = "com.h2database:h2", version.ref = "managed-h2" }
 
-# Micronaut
-micronaut-bom = { module = "io.micronaut:micronaut-bom", version.ref = "micronaut" }
-micronaut-aop = { module = "io.micronaut:micronaut-aop" }
-micronaut-cache-caffeine = { module = "io.micronaut.cache:micronaut-cache-caffeine" }
-micronaut-cache-core = { module = "io.micronaut.cache:micronaut-cache-core" }
-micronaut-context = { module = "io.micronaut:micronaut-context" }
-micronaut-data-tx = { module = "io.micronaut.data:micronaut-data-tx" }
-micronaut-data-tx-hibernate = { module = "io.micronaut.data:micronaut-data-tx-hibernate" }
-micronaut-function-web = { module = "io.micronaut:micronaut-function-web" }
-micronaut-graal = { module = "io.micronaut:micronaut-graal" }
-micronaut-hibernate-validator = { module = "io.micronaut.configuration:micronaut-hibernate-validator", version.ref = "micronaut-hibernate-validator" }
-micronaut-http-client = { module = "io.micronaut:micronaut-http-client" }
-micronaut-http-server-netty = { module = "io.micronaut:micronaut-http-server-netty" }
-micronaut-inject = { module = "io.micronaut:micronaut-inject" }
-micronaut-inject-groovy = { module = "io.micronaut:micronaut-inject-groovy" }
-micronaut-inject-java = { module = "io.micronaut:micronaut-inject-java" }
-micronaut-json-core = { module = "io.micronaut:micronaut-json-core" }
-micronaut-management = { module = "io.micronaut:micronaut-management" }
-micronaut-micrometer-core = { module = "io.micronaut.micrometer:micronaut-micrometer-core" }
-micronaut-runtime = { module = "io.micronaut:micronaut-runtime" }
-micronaut-spring = { module = "io.micronaut.spring:micronaut-spring" }
-micronaut-spring-annotation = { module = "io.micronaut.spring:micronaut-spring-annotation" }
-micronaut-test-core = { module = "io.micronaut.test:micronaut-test-core", version.ref = "micronaut-test" }
-micronaut-validation = { module = "io.micronaut:micronaut-validation" }
-micronaut-data-processor = { module = "io.micronaut.data:micronaut-data-processor" }
-micronaut-test-spock = { module = "io.micronaut.test:micronaut-test-spock" }
+# Spring
 
-dms = { module = "com.oracle.database.observability:dms", version.ref = "managed-ojdbc" }
-graal = { module = "org.graalvm.nativeimage:svm" }
-h2 = { module = "com.h2database:h2" }
-jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
-jakarta-inject-api = { module = "jakarta.inject:jakarta.inject-api", version.ref = "jakarta-inject-api" }
-jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version.ref = "jakarta-persistence-api" }
-jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transaction-api", version.ref = "jakarta-transaction-api" }
-javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
-jaxb-api = { module = "javax.xml.bind:jaxb-api", version.ref = "jaxb-api" }
-jdbi3-sqlobject = { module = "org.jdbi:jdbi3-sqlobject", version.ref = "managed-jdbi" }
-jdbi3-core = { module = "org.jdbi:jdbi3-core", version.ref = "managed-jdbi" }
-ojdbc8dms = { module = "com.oracle.database.observability:ojdbc8dms", version.ref = "managed-ojdbc" }
-reactor-core = { module = "io.projectreactor:reactor-core" }
-sfm-reflect = { module = "org.simpleflatmapper:sfm-reflect", version.ref = "sfm-reflect" }
 spring-jdbc = { module = "org.springframework:spring-jdbc", version.ref = "spring" }
 spring-orm = { module = "org.springframework:spring-orm", version.ref = "spring" }
 spring-tx = { module = "org.springframework:spring-tx" }
+
+# JPA
+
+jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version.ref = "jakarta-persistence-api" }
+jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transaction-api", version.ref = "jakarta-transaction-api" }
+
+# Others
+
+jaxb-api = { module = "javax.xml.bind:jaxb-api", version.ref = "jaxb-api" }
+sfm-reflect = { module = "org.simpleflatmapper:sfm-reflect", version.ref = "sfm-reflect" }
+caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "caffeine" }
+
+# Testcontainers
+
 testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version.ref = "testcontainers" }
 testcontainers-jdbc = { module = "org.testcontainers:jdbc" }
 testcontainers-mariadb = { module = "org.testcontainers:mariadb" }
@@ -106,6 +129,8 @@ testcontainers-mysql = { module = "org.testcontainers:mysql" }
 testcontainers-oracle-xe = { module = "org.testcontainers:oracle-xe" }
 testcontainers-postgresql = { module = "org.testcontainers:postgresql" }
 testcontainers-spock = { module = "org.testcontainers:spock" }
-caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "caffeine" }
-logback-classic = { module = "ch.qos.logback:logback-classic" }
-spock-core = { module = "org.spockframework:spock-core" }
+
+#PLUGINS
+
+gradle-micronaut = { module = "io.micronaut.gradle:micronaut-gradle-plugin", version.ref = "micronaut-gradle-plugin" }
+gradle-sonar = { module = "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin", version.ref = "sonar-gradle-plugin" }

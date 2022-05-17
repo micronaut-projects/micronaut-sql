@@ -1,0 +1,16 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application'
+}
+
+dependencies {
+    implementation projects.tests.hibernate5.hibernate5SyncCommon
+    testImplementation projects.tests.hibernate5.hibernate5SyncCommonTests
+
+    runtimeOnly libs.managed.ojdbc8
+    testImplementation libs.testcontainers.oracle.xe
+}
+
+configurations {
+    all*.exclude module: "byte-buddy"
+    all*.exclude module: "javassist"
+}
