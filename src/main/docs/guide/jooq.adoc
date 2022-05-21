@@ -41,6 +41,7 @@ Micronaut will look for the following bean types:
 
 * link:{jooqapi}/org/jooq/conf/Settings.html[Settings]
 * link:{jooqapi}/org/jooq/TransactionProvider.html[TransactionProvider]
+* link:{jooqapi}/org/jooq/ConnectionProvider.html[ConnectionProvider]
 * link:{jooqapi}/org/jooq/ExecutorProvider.html[ExecutorProvider]
 * link:{jooqapi}/org/jooq/RecordMapperProvider.html[RecordMapperProvider]
 * link:{jooqapi}/org/jooq/RecordUnmapperProvider.html[RecordUnmapperProvider]
