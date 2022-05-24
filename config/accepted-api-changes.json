@@ -1,0 +1,12 @@
+[
+  {
+    "type": "io.micronaut.configuration.jooq.JooqConfigurationFactory",
+    "member": "Class io.micronaut.configuration.jooq.JooqConfigurationFactory",
+    "reason": "Ability to use custom org.jooq.ConnectionProvider"
+  },
+  {
+    "type": "io.micronaut.configuration.jooq.JooqConfigurationFactory",
+    "member": "Method io.micronaut.configuration.jooq.JooqConfigurationFactory.jooqConfiguration(java.lang.String,javax.sql.DataSource,org.jooq.TransactionProvider,org.jooq.conf.Settings,org.jooq.ExecutorProvider,org.jooq.RecordMapperProvider,org.jooq.RecordUnmapperProvider,org.jooq.MetaProvider,org.jooq.ConverterProvider,io.micronaut.context.ApplicationContext)",
+    "reason": "Ability to use custom org.jooq.ConnectionProvider"
+  }
+]
