@@ -28,12 +28,19 @@ import io.micronaut.configuration.hibernate.jpa.proxy.IntrospectedHibernateBytec
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.annotation.TypeHint.AccessType;
 import io.micronaut.jdbc.spring.HibernatePresenceCondition;
+import org.dom4j.DocumentFactory;
 import org.hibernate.boot.archive.spi.InputStreamAccess;
 import org.hibernate.boot.jaxb.internal.MappingBinder;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.hibernate.bytecode.spi.BytecodeProvider;
+import org.hibernate.envers.DefaultRevisionEntity;
+import org.hibernate.envers.boot.internal.LegacyModifiedColumnNamingStrategy;
+import org.hibernate.envers.configuration.internal.ClassesAuditingData;
+import org.hibernate.envers.configuration.internal.RevisionInfoConfiguration;
+import org.hibernate.envers.internal.EnversMessageLogger;
+import org.hibernate.envers.strategy.DefaultAuditStrategy;
 import org.hibernate.event.spi.EventType;
 import org.hibernate.hql.internal.ast.HqlToken;
 import org.hibernate.hql.internal.ast.tree.AggregateNode;
@@ -123,6 +130,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
+import java.util.ServiceLoader;
 
 // Additional classes
 @TypeHint(
@@ -132,6 +140,7 @@ import java.util.Properties;
                 "org.hibernate.annotations.common.util.impl.Log_$logger",
                 "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
                 "org.hibernate.bytecode.enhance.spi.interceptor.BytecodeInterceptorLogging_$logger",
+                "org.hibernate.envers.internal.EnversMessageLogger_$logger",
         }
 )
 final class Loggers {
@@ -199,6 +208,15 @@ final class Loggers {
         UnaryArithmeticNode.class,
         UnaryLogicOperatorNode.class,
         UpdateStatement.class,
+        // Hibernate Envers
+        LegacyModifiedColumnNamingStrategy.class,
+        DefaultRevisionEntity.class,
+        RevisionInfoConfiguration.class,
+        DefaultAuditStrategy.class,
+        org.hibernate.envers.strategy.internal.DefaultAuditStrategy.class,
+        DocumentFactory.class,
+        EnversMessageLogger.class,
+        ClassesAuditingData.class,
         // Others
         ImplicitNamingStrategyJpaCompliantImpl.class
 }, typeNames = {
@@ -236,7 +254,8 @@ final class Loggers {
         "org.hibernate.event.spi.ReplicateEventListener[]",
         "org.hibernate.event.spi.ResolveNaturalIdEventListener[]",
         "org.hibernate.event.spi.SaveOrUpdateEventListener[]",
-        "org.hibernate.event.spi.LoadEventListener[]"
+        "org.hibernate.event.spi.LoadEventListener[]",
+        "java.util.ServiceLoader$Provider"
 },
    accessType = {TypeHint.AccessType.ALL_PUBLIC})
 final class Hql {

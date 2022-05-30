@@ -13,6 +13,7 @@ dependencies {
         exclude group:'org.javassist', module:'javassist'
         exclude group:'org.jboss:jandex', module:'jar'
     }
+    api(libs.managed.hibernate.envers)
     api(libs.jakarta.transaction.api)
     api(libs.micronaut.validation)
     api(libs.micronaut.data.tx.hibernate)
