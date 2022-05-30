@@ -107,7 +107,7 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html?is-external=true" title="class or interface in java.io">Serializable</a>, <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html?is-external=true" title="class or interface in org.hibernate.bytecode.spi">BytecodeProvider</a>, <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/service/Service.html?is-external=true" title="class or interface in org.hibernate.service">Service</a></dd>
+<dd><a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html?is-external=true" title="class or interface in java.io">Serializable</a>, org.hibernate.bytecode.spi.BytecodeProvider, org.hibernate.service.Service</dd>
 </dl>
 <hr>
 <br>
@@ -115,9 +115,9 @@ var activeTableTab = "activeTableTab";
  @Internal
 public final class <span class="typeNameLabel">IntrospectedHibernateBytecodeProvider</span>
 extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>
-implements <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html?is-external=true" title="class or interface in org.hibernate.bytecode.spi">BytecodeProvider</a></pre>
-<div class="block">Compile-time proxies implementation of Hibernate's <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html?is-external=true" title="class or interface in org.hibernate.bytecode.spi"><code>BytecodeProvider</code></a>.
- Implementation provides custom implementation of <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/ProxyFactoryFactory.html?is-external=true" title="class or interface in org.hibernate.bytecode.spi"><code>ProxyFactoryFactory</code></a> and disables bytecode enhancer.</div>
+implements org.hibernate.bytecode.spi.BytecodeProvider</pre>
+<div class="block">Compile-time proxies implementation of Hibernate's <code>BytecodeProvider</code>.
+ Implementation provides custom implementation of <code>ProxyFactoryFactory</code> and disables bytecode enhancer.</div>
 <dl>
 <dt><span class="simpleTagLabel">Since:</span></dt>
 <dd>3.3.0</dd>
@@ -162,15 +162,15 @@ implements <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hi
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/enhance/spi/Enhancer.html?is-external=true" title="class or interface in org.hibernate.bytecode.enhance.spi">Enhancer</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../io/micronaut/configuration/hibernate/jpa/proxy/IntrospectedHibernateBytecodeProvider.html#getEnhancer-org.hibernate.bytecode.enhance.spi.EnhancementContext-">getEnhancer</a></span>(<a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/enhance/spi/EnhancementContext.html?is-external=true" title="class or interface in org.hibernate.bytecode.enhance.spi">EnhancementContext</a>&nbsp;enhancementContext)</code>&nbsp;</td>
+<td class="colFirst"><code>org.hibernate.bytecode.enhance.spi.Enhancer</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../io/micronaut/configuration/hibernate/jpa/proxy/IntrospectedHibernateBytecodeProvider.html#getEnhancer-org.hibernate.bytecode.enhance.spi.EnhancementContext-">getEnhancer</a></span>(org.hibernate.bytecode.enhance.spi.EnhancementContext&nbsp;enhancementContext)</code>&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/ProxyFactoryFactory.html?is-external=true" title="class or interface in org.hibernate.bytecode.spi">ProxyFactoryFactory</a></code></td>
+<td class="colFirst"><code>org.hibernate.bytecode.spi.ProxyFactoryFactory</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../io/micronaut/configuration/hibernate/jpa/proxy/IntrospectedHibernateBytecodeProvider.html#getProxyFactoryFactory--">getProxyFactoryFactory</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/ReflectionOptimizer.html?is-external=true" title="class or interface in org.hibernate.bytecode.spi">ReflectionOptimizer</a></code></td>
+<td class="colFirst"><code>org.hibernate.bytecode.spi.ReflectionOptimizer</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../io/micronaut/configuration/hibernate/jpa/proxy/IntrospectedHibernateBytecodeProvider.html#getReflectionOptimizer-java.lang.Class-java.lang.String:A-java.lang.String:A-java.lang.Class:A-">getReflectionOptimizer</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&nbsp;clazz,
                       <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;getterNames,
                       <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;setterNames,
@@ -188,8 +188,8 @@ implements <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hi
 <li class="blockList"><a name="methods.inherited.from.class.org.hibernate.bytecode.spi.BytecodeProvider">
 <!--   -->
 </a>
-<h3>Methods inherited from interface&nbsp;org.hibernate.bytecode.spi.<a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html?is-external=true" title="class or interface in org.hibernate.bytecode.spi">BytecodeProvider</a></h3>
-<code><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html?is-external=true#resetCaches--" title="class or interface in org.hibernate.bytecode.spi">resetCaches</a></code></li>
+<h3>Methods inherited from interface&nbsp;org.hibernate.bytecode.spi.BytecodeProvider</h3>
+<code>resetCaches</code></li>
 </ul>
 </li>
 </ul>
@@ -228,10 +228,10 @@ implements <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hi
 <ul class="blockList">
 <li class="blockList">
 <h4>getProxyFactoryFactory</h4>
-<pre>public&nbsp;<a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/ProxyFactoryFactory.html?is-external=true" title="class or interface in org.hibernate.bytecode.spi">ProxyFactoryFactory</a>&nbsp;getProxyFactoryFactory()</pre>
+<pre>public&nbsp;org.hibernate.bytecode.spi.ProxyFactoryFactory&nbsp;getProxyFactoryFactory()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html?is-external=true#getProxyFactoryFactory--" title="class or interface in org.hibernate.bytecode.spi">getProxyFactoryFactory</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html?is-external=true" title="class or interface in org.hibernate.bytecode.spi">BytecodeProvider</a></code></dd>
+<dd><code>getProxyFactoryFactory</code>&nbsp;in interface&nbsp;<code>org.hibernate.bytecode.spi.BytecodeProvider</code></dd>
 </dl>
 </li>
 </ul>
@@ -241,13 +241,13 @@ implements <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hi
 <ul class="blockList">
 <li class="blockList">
 <h4>getReflectionOptimizer</h4>
-<pre>public&nbsp;<a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/ReflectionOptimizer.html?is-external=true" title="class or interface in org.hibernate.bytecode.spi">ReflectionOptimizer</a>&nbsp;getReflectionOptimizer(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&nbsp;clazz,
-                                                  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;getterNames,
-                                                  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;setterNames,
-                                                  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>[]&nbsp;types)</pre>
+<pre>public&nbsp;org.hibernate.bytecode.spi.ReflectionOptimizer&nbsp;getReflectionOptimizer(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&nbsp;clazz,
+                                                                             <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;getterNames,
+                                                                             <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;setterNames,
+                                                                             <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>[]&nbsp;types)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html?is-external=true#getReflectionOptimizer-java.lang.Class-java.lang.String:A-java.lang.String:A-java.lang.Class:A-" title="class or interface in org.hibernate.bytecode.spi">getReflectionOptimizer</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html?is-external=true" title="class or interface in org.hibernate.bytecode.spi">BytecodeProvider</a></code></dd>
+<dd><code>getReflectionOptimizer</code>&nbsp;in interface&nbsp;<code>org.hibernate.bytecode.spi.BytecodeProvider</code></dd>
 </dl>
 </li>
 </ul>
@@ -257,10 +257,10 @@ implements <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hi
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getEnhancer</h4>
-<pre>public&nbsp;<a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/enhance/spi/Enhancer.html?is-external=true" title="class or interface in org.hibernate.bytecode.enhance.spi">Enhancer</a>&nbsp;getEnhancer(<a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/enhance/spi/EnhancementContext.html?is-external=true" title="class or interface in org.hibernate.bytecode.enhance.spi">EnhancementContext</a>&nbsp;enhancementContext)</pre>
+<pre>public&nbsp;org.hibernate.bytecode.enhance.spi.Enhancer&nbsp;getEnhancer(org.hibernate.bytecode.enhance.spi.EnhancementContext&nbsp;enhancementContext)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html?is-external=true#getEnhancer-org.hibernate.bytecode.enhance.spi.EnhancementContext-" title="class or interface in org.hibernate.bytecode.spi">getEnhancer</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html?is-external=true" title="class or interface in org.hibernate.bytecode.spi">BytecodeProvider</a></code></dd>
+<dd><code>getEnhancer</code>&nbsp;in interface&nbsp;<code>org.hibernate.bytecode.spi.BytecodeProvider</code></dd>
 </dl>
 </li>
 </ul>
