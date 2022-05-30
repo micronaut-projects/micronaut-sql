@@ -37,7 +37,6 @@ managed-vertx-pg-client = { module = "io.vertx:vertx-pg-client", version.ref = "
 managed-vertx-rx-java2 = { module = "io.vertx:vertx-rx-java2", version.ref = "managed-vertx" }
 managed-jooq = { module = "org.jooq:jooq", version.ref = "managed-jooq" }
 managed-hibernate-core = { module = "org.hibernate:hibernate-core", version.ref = "managed-hibernate" }
-managed-hibernate-envers = { module = "org.hibernate:hibernate-envers", version.ref = "managed-hibernate" }
 managed-hibernate-jcache = { module = "org.hibernate:hibernate-jcache", version.ref = "managed-hibernate" }
 managed-hibernate-micrometer = { module = "org.hibernate:hibernate-micrometer", version.ref = "managed-hibernate" }
 managed-jasync-mysql = { module = "com.github.jasync-sql:jasync-mysql", version.ref = "managed-jasync" }
