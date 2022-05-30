@@ -132,6 +132,7 @@ import java.util.Properties;
                 "org.hibernate.annotations.common.util.impl.Log_$logger",
                 "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
                 "org.hibernate.bytecode.enhance.spi.interceptor.BytecodeInterceptorLogging_$logger",
+                "org.hibernate.envers.internal.EnversMessageLogger_$logger",
         }
 )
 final class Loggers {
@@ -236,7 +237,17 @@ final class Loggers {
         "org.hibernate.event.spi.ReplicateEventListener[]",
         "org.hibernate.event.spi.ResolveNaturalIdEventListener[]",
         "org.hibernate.event.spi.SaveOrUpdateEventListener[]",
-        "org.hibernate.event.spi.LoadEventListener[]"
+        "org.hibernate.event.spi.LoadEventListener[]",
+        // Hibernate Envers
+        "org.dom4j.DocumentFactory",
+        "org.hibernate.envers.DefaultRevisionEntity",
+        "org.hibernate.envers.boot.internal.LegacyModifiedColumnNamingStrategy",
+        "org.hibernate.envers.configuration.internal.ClassesAuditingData",
+        "org.hibernate.envers.configuration.internal.RevisionInfoConfiguration",
+        "org.hibernate.envers.internal.EnversMessageLogger",
+        "org.hibernate.envers.strategy.DefaultAuditStrategy",
+        "org.hibernate.envers.strategy.internal.DefaultAuditStrategy",
+        "java.util.ServiceLoader$Provider"
 },
    accessType = {TypeHint.AccessType.ALL_PUBLIC})
 final class Hql {
