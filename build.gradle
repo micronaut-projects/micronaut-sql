@@ -6,3 +6,9 @@ plugins {
 micronautBuild {
     sourceCompatibility = "11"
 }
+
+tasks.withType(org.sonarqube.gradle.SonarQubeTask).configureEach {
+    properties {
+        property "sonar.exclusions", "tests/**"
+    }
+}
