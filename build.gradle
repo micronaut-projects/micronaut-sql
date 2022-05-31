@@ -8,7 +8,5 @@ micronautBuild {
 }
 
 tasks.withType(org.sonarqube.gradle.SonarQubeTask).configureEach {
-    properties {
-        property "sonar.exclusions", "tests/**"
-    }
+    properties.put "sonar.exclusions", "tests/**"
 }
