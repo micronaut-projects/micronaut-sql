@@ -10,7 +10,7 @@ micronautBuild {
 if (System.getenv("SONAR_TOKEN") != null) {
     sonarqube {
         properties {
-            property "sonar.exclusions", "**/tests/**"
+            property "sonar.exclusions", "**/example/**"
         }
     }
 }
