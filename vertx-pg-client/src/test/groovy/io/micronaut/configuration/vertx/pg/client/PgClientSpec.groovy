@@ -68,7 +68,7 @@ class PgClientSpec extends Specification {
 
         ApplicationContext applicationContext = ApplicationContext.run(
                 'vertx.pg.client.port': postgres.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT),
-                'vertx.pg.client.host': postgres.getContainerIpAddress(),
+                'vertx.pg.client.host': postgres.getHost(),
                 'vertx.pg.client.database': postgres.databaseName,
                 'vertx.pg.client.user': postgres.username,
                 'vertx.pg.client.password': postgres.password,
