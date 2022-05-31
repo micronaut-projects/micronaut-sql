@@ -65,6 +65,7 @@ public class JooqConfigurationFactory {
             @Parameter @Nullable RecordUnmapperProvider recordUnmapperProvider,
             @Parameter @Nullable MetaProvider metaProvider,
             @Parameter @Nullable ConverterProvider converterProvider,
+            @Parameter @Nullable ConnectionProvider connectionProvider,
             ApplicationContext ctx
     ) {
         DefaultConfiguration configuration = new DefaultConfiguration();
@@ -74,9 +75,13 @@ public class JooqConfigurationFactory {
         DataSourceResolver dataSourceResolver = ctx.findBean(DataSourceResolver.class).orElse(DataSourceResolver.DEFAULT);
         configuration.setSQLDialect(properties.determineSqlDialect(dataSourceResolver.resolve(dataSource)));
 
-        configuration.setDataSource(dataSource);
         if (transactionProvider != null) {
             configuration.setTransactionProvider(transactionProvider);
+        }
+        if (connectionProvider != null) {
+            configuration.setConnectionProvider(connectionProvider);
+        } else {
+            configuration.setDataSource(dataSource);
         }
         if (settings != null) {
             configuration.setSettings(settings);
