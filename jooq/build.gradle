@@ -47,7 +47,8 @@ dependencies {
     testImplementation(mn.micronaut.micrometer.core)
     testImplementation(libs.spring.jdbc)
     testImplementation(mn.micronaut.cache.core)
-
+    txTestAnnotationProcessor(platform(mn.micronaut.bom))
+    txTestImplementation(platform(mn.micronaut.bom))
     txTestRuntimeOnly projects.jdbcTomcat
     txTestRuntimeOnly(libs.managed.h2)
     txTestAnnotationProcessor(mn.micronaut.inject.java)
