@@ -26,7 +26,7 @@ testcontainers = "1.17.2"
 
 # Micronaut
 micronaut = "3.4.3"
-micronaut-test = "3.2.0"
+micronaut-test = "3.3.0"
 micronaut-hibernate-validator = "2.0.0"
 
 
