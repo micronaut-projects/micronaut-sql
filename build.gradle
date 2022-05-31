@@ -7,6 +7,10 @@ micronautBuild {
     sourceCompatibility = "11"
 }
 
-tasks.withType(org.sonarqube.gradle.SonarQubeTask).configureEach {
-    properties.put "sonar.exclusions", "tests/**"
+if (System.getenv("SONAR_TOKEN") != null) {
+    sonarqube {
+        properties {
+            property "sonar.exclusions", "**/tests/**"
+        }
+    }
 }
