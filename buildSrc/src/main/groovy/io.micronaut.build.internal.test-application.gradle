@@ -9,13 +9,6 @@ micronaut {
     testRuntime "spock"
 }
 
-def sonarqubeTask = tasks.findByName("sonarqube")
-if (sonarqubeTask) {
-    sonarqubeTask.configure {
-        skipProject = true
-    }
-}
-
 dependencies {
     runtimeOnly "ch.qos.logback:logback-classic"
     implementation "io.micronaut:micronaut-http-client"

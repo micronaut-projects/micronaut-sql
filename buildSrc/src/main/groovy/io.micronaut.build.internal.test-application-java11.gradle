@@ -6,10 +6,3 @@ micronaut {
     sourceCompatibility = "11"
     targetCompatibility = "11"
 }
-
-def sonarqubeTask = tasks.findByName("sonarqube")
-if (sonarqubeTask) {
-    sonarqubeTask.configure {
-        skipProject = true
-    }
-}
