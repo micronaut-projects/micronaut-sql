@@ -30,18 +30,17 @@ class PostgresAppSpec extends AbstractDBContainerAppSpec {
 
     Map<String, String> provideProperties(JdbcDatabaseContainer databaseContainer) {
         [
-                'vertx.pg.client.port'                    : databaseContainer.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT),
-                'vertx.pg.client.host'                    : databaseContainer.getHost(),
-                'vertx.pg.client.database'                : databaseContainer.databaseName,
-                'vertx.pg.client.user'                    : databaseContainer.username,
-                'vertx.pg.client.password'                : databaseContainer.password,
-                'vertx.pg.client.maxSize'                 : '5',
-                "jpa.default.properties.hibernate.dialect": 'org.hibernate.dialect.PostgreSQL10Dialect',
-                "jpa.default.reactive"                    : 'true'
-
-//                "jpa.default.properties.hibernate.connection.url"     : databaseContainer.getJdbcUrl(),
-//                "jpa.default.properties.hibernate.connection.username": databaseContainer.getUsername(),
-//                "jpa.default.properties.hibernate.connection.password": databaseContainer.getPassword(),
+//                'vertx.pg.client.port'                    : databaseContainer.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT),
+//                'vertx.pg.client.host'                    : databaseContainer.getHost(),
+//                'vertx.pg.client.database'                : databaseContainer.databaseName,
+//                'vertx.pg.client.user'                    : databaseContainer.username,
+//                'vertx.pg.client.password'                : databaseContainer.password,
+//                'vertx.pg.client.maxSize'                 : '5',
+//                "jpa.default.properties.hibernate.dialect": 'org.hibernate.dialect.PostgreSQL10Dialect',
+                "jpa.default.reactive"                    : 'true',
+                "jpa.default.properties.hibernate.connection.url"     : databaseContainer.getJdbcUrl(),
+                "jpa.default.properties.hibernate.connection.username": databaseContainer.getUsername(),
+                "jpa.default.properties.hibernate.connection.password": databaseContainer.getPassword(),
         ] as Map<String, String>
     }
 
