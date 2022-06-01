@@ -66,9 +66,8 @@ class PetController {
     CompletionStage<PetDto> byName(String name) {
         return sessionFactory.withSession(session -> session.createQuery("from Pet where name = :name", Pet.class)
                 .setParameter("name", name)
-                .getResultList()
-                .thenCompose(pets -> {
-                    Pet pet = pets.stream().findFirst().orElse(null);
+                .getSingleResult()
+                .thenCompose(pet -> {
                     if (Hibernate.isInitialized(pet.getOwner())) {
                         throw new IllegalStateException("Expected not initialized owner ref");
                     }
@@ -76,10 +75,8 @@ class PetController {
                     // - use Session.fetch() (entity 'example.domain.Owner' with id '1' was not loaded)
                     return session.fetch(pet.getOwner()).thenApply(owner -> {
                         pet.setOwner(owner);
-                        return pet;
-                    }).thenApply(petWithOwner -> {
-                        PetDto petDto = mapper.toPetDto(petWithOwner);
-                        if (!Hibernate.isInitialized(petWithOwner.getOwner())) {
+                        PetDto petDto = mapper.toPetDto(pet);
+                        if (!Hibernate.isInitialized(pet.getOwner())) {
                             throw new IllegalStateException("Expected initialized owner ref");
                         }
                         return petDto;
