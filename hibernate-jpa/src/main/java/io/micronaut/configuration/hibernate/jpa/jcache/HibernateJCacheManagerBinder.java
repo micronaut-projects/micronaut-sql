@@ -16,10 +16,8 @@
 package io.micronaut.configuration.hibernate.jpa.jcache;
 
 import io.micronaut.configuration.hibernate.jpa.JpaConfiguration;
-import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.event.BeanCreatedEvent;
 import io.micronaut.context.event.BeanCreatedEventListener;
-import jakarta.inject.Singleton;
 import org.hibernate.cache.jcache.ConfigSettings;
 
 import javax.cache.CacheManager;
@@ -30,10 +28,9 @@ import java.util.Map;
  *
  * @author Marcel Overdijk
  * @since 1.1.0
+ * @deprecated Replaced by {@link io.micronaut.configuration.hibernate.jpa.conf.settings.internal.JCacheManagerSettingSupplier}.
  */
-@Singleton
-@Requires(classes = ConfigSettings.class)
-@Requires(beans = CacheManager.class)
+@Deprecated
 public class HibernateJCacheManagerBinder implements BeanCreatedEventListener<JpaConfiguration> {
 
     private final CacheManager cacheManager;

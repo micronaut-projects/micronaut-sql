@@ -3,21 +3,21 @@ plugins {
 }
 
 dependencies {
-    api project(":jdbc")
-    api(libs.micronaut.inject)
+    api projects.jdbc
+    api(mn.micronaut.inject)
     api(libs.managed.commons.dbcp2)
 
     testRuntimeOnly(libs.managed.tomcat.jdbc)
-    testRuntimeOnly(libs.h2)
+    testRuntimeOnly(libs.managed.h2)
 
-    testAnnotationProcessor(libs.micronaut.inject.java)
-    testAnnotationProcessor(libs.micronaut.spring.annotation)
-    testImplementation(libs.micronaut.spring)
-    testImplementation(libs.micronaut.http.server.netty)
-    testImplementation(libs.micronaut.http.client)
-    testImplementation(libs.micronaut.management)
-    testImplementation(libs.micronaut.micrometer.core)
-    testImplementation(libs.micronaut.cache.core)
+    testAnnotationProcessor(mn.micronaut.inject.java)
+    testAnnotationProcessor(mn.micronaut.spring.annotation)
+    testImplementation(mn.micronaut.spring)
+    testImplementation(mn.micronaut.http.server.netty)
+    testImplementation(mn.micronaut.http.client)
+    testImplementation(mn.micronaut.management)
+    testImplementation(mn.micronaut.micrometer.core)
+    testImplementation(mn.micronaut.cache.core)
 
     testImplementation(libs.spring.jdbc)
 }

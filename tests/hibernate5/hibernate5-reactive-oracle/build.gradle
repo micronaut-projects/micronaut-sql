@@ -1,0 +1,11 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application-java11'
+}
+
+dependencies {
+    implementation projects.tests.hibernate5.hibernate5ReactiveCommon
+    testImplementation projects.tests.hibernate5.hibernate5ReactiveCommonTests
+
+    testImplementation libs.testcontainers.oracle.xe
+    implementation libs.managed.vertx.oracle.client
+}

@@ -3,10 +3,12 @@ plugins {
 }
 
 dependencies {
-    api(libs.micronaut.inject)
+    annotationProcessor(mn.micronaut.graal)
 
-    compileOnly(libs.graal)
-    compileOnly(libs.micronaut.spring)
+    api(mn.micronaut.inject)
+
+    compileOnly(mn.graal)
+    compileOnly(mn.micronaut.spring)
 
     compileOnly(libs.spring.jdbc)
     compileOnly(libs.spring.tx)

@@ -1,0 +1,9 @@
+plugins {
+    id 'io.micronaut.build.internal.test-library'
+}
+
+dependencies {
+    implementation mn.micronaut.http.client
+    implementation projects.hibernateJpa
+    runtimeOnly projects.jdbcHikari
+}

@@ -10,17 +10,12 @@ micronaut {
 }
 
 dependencies {
-    runtimeOnly project(":jdbc-hikari")
     runtimeOnly "ch.qos.logback:logback-classic"
-
     implementation "io.micronaut:micronaut-http-client"
-    implementation project(":test-graalvm-hibernate-jpa:common")
-    testImplementation project(":test-graalvm-hibernate-jpa:common-tests")
-
     testImplementation "io.micronaut.test:micronaut-test-core"
-    testImplementation platform("org.testcontainers:testcontainers-bom")
-    testImplementation "org.testcontainers:spock"
-    testImplementation "org.testcontainers:jdbc"
+    testImplementation libs.testcontainers.bom
+    testImplementation libs.testcontainers.spock
+    testImplementation libs.testcontainers.jdbc
 }
 
 application {

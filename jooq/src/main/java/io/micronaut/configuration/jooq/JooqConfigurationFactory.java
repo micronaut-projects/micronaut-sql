@@ -51,6 +51,7 @@ public class JooqConfigurationFactory {
      * @param recordUnmapperProvider The record unmapper provider
      * @param metaProvider           The metadata provider
      * @param converterProvider      The converter provider
+     * @param connectionProvider     The connection provider
      * @param ctx                    The {@link ApplicationContext}
      * @return A {@link Configuration}
      */

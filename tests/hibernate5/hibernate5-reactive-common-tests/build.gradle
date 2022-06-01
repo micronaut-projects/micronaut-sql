@@ -1,0 +1,12 @@
+plugins {
+    id 'io.micronaut.build.internal.test-library-java11'
+}
+
+dependencies {
+    implementation mn.micronaut.http.client
+    implementation mn.micronaut.test.core
+    implementation mn.micronaut.reactor
+    implementation platform(libs.testcontainers.bom)
+    implementation libs.testcontainers.spock
+    implementation libs.testcontainers.jdbc
+}

@@ -1,0 +1,9 @@
+plugins {
+    id 'io.micronaut.build.internal.test-library-java11'
+}
+
+dependencies {
+    implementation mn.micronaut.reactor
+    implementation mn.micronaut.http.client
+    implementation projects.hibernateReactive
+}

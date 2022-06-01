@@ -3,15 +3,15 @@ plugins {
 }
 
 dependencies {
-    api(libs.micronaut.inject)
+    api(mn.micronaut.inject)
     api(libs.managed.vertx.pg.client)
     api(libs.managed.vertx.rx.java2)
 
     implementation(libs.managed.vertx.codegen)
 
-    compileOnly(libs.micronaut.management)
+    compileOnly(mn.micronaut.management)
 
-    testImplementation(libs.micronaut.management)
+    testImplementation(mn.micronaut.management)
     testImplementation(libs.testcontainers.spock)
     testImplementation(libs.testcontainers.postgresql)
 }

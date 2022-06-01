@@ -38,8 +38,7 @@ final class HibernateFeature implements Feature {
                 H2Dialect.class
         );
 
-        registerIfPresent(access, "org.postgresql.Driver",
-                PostgreSQL9Dialect.class,
+        Class<?>[] postgresDialects = {PostgreSQL9Dialect.class,
                 PostgreSQL10Dialect.class,
                 PostgreSQL91Dialect.class,
                 PostgreSQL92Dialect.class,
@@ -47,40 +46,50 @@ final class HibernateFeature implements Feature {
                 PostgreSQL94Dialect.class,
                 PostgreSQL95Dialect.class,
                 PostgreSQL81Dialect.class,
-                PostgreSQL82Dialect.class
-        );
+                PostgreSQL82Dialect.class};
 
-        registerIfPresent(access, "org.mariadb.jdbc.Driver",
-                MariaDBDialect.class,
+        registerIfPresent(access, "org.postgresql.Driver", postgresDialects);
+        registerIfPresent(access, "io.vertx.pgclient.spi.PgDriver", postgresDialects);
+
+        Class<?>[] mariaDialects = {MariaDBDialect.class,
                 MariaDB10Dialect.class,
                 MariaDB102Dialect.class,
                 MariaDB103Dialect.class,
-                MariaDB53Dialect.class);
+                MariaDB53Dialect.class};
 
-        registerIfPresent(access, "oracle.jdbc.OracleDriver",
-                Oracle8iDialect.class,
+        registerIfPresent(access, "org.mariadb.jdbc.Driver", mariaDialects);
+        registerIfPresent(access, "io.vertx.mysqlclient.spi.MySQLDriver", mariaDialects);
+
+        Class<?>[] oracleDialects = {Oracle8iDialect.class,
                 Oracle9iDialect.class,
                 Oracle10gDialect.class,
-                Oracle12cDialect.class);
+                Oracle12cDialect.class};
 
-        registerIfPresent(access, "com.microsoft.sqlserver.jdbc.SQLServerDriver",
-                SQLServerDialect.class,
+        registerIfPresent(access, "oracle.jdbc.OracleDriver", oracleDialects);
+        registerIfPresent(access, "io.vertx.oracleclient.spi.OracleDriver", oracleDialects);
+
+        Class<?>[] sqlServerDialects = {SQLServerDialect.class,
                 SQLServer2005Dialect.class,
                 SQLServer2008Dialect.class,
-                SQLServer2012Dialect.class);
+                SQLServer2012Dialect.class};
 
-        registerIfPresent(access, "com.mysql.cj.jdbc.Driver",
-                MySQL5Dialect.class,
+        registerIfPresent(access, "com.microsoft.sqlserver.jdbc.SQLServerDriver", sqlServerDialects);
+        registerIfPresent(access, "io.vertx.mssqlclient.spi.MSSQLDriver", sqlServerDialects);
+
+        Class<?>[] mysqlDialects = {MySQL5Dialect.class,
                 MySQL55Dialect.class,
                 MySQL57Dialect.class,
-                MySQL8Dialect.class);
+                MySQL8Dialect.class};
+
+        registerIfPresent(access, "com.mysql.cj.jdbc.Driver", mysqlDialects);
+        registerIfPresent(access, "io.vertx.mysqlclient.spi.MySQLDriver", mysqlDialects);
     }
 
-    private void registerIfPresent(BeforeAnalysisAccess access, String name, Class<? extends Dialect>... dialects) {
+    private void registerIfPresent(BeforeAnalysisAccess access, String name, Class<?>... dialects) {
         Class<?> driver = access.findClassByName(name);
         boolean present = driver != null;
         if (present) {
-            for (Class<? extends Dialect> dialect : dialects) {
+            for (Class<?> dialect : dialects) {
                 AutomaticFeatureUtils.registerClassForRuntimeReflectionAndReflectiveInstantiation(access, dialect.getName());
             }
         }

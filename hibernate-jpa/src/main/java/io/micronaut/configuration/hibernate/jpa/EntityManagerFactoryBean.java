@@ -16,21 +16,17 @@
 package io.micronaut.configuration.hibernate.jpa;
 
 
+import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.annotation.Parameter;
+import io.micronaut.context.annotation.Primary;
+import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.util.StringUtils;
-import io.micronaut.transaction.hibernate5.MicronautSessionContext;
-import io.micronaut.context.ApplicationContext;
-import io.micronaut.context.exceptions.ConfigurationException;
-import org.hibernate.integrator.spi.Integrator;
-import org.hibernate.mapping.MetadataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.micronaut.context.annotation.*;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.jdbc.DataSourceResolver;
+import io.micronaut.transaction.hibernate5.MicronautSessionContext;
 import org.hibernate.Interceptor;
 import org.hibernate.MappingException;
 import org.hibernate.SessionFactory;
@@ -39,9 +35,12 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.SessionFactoryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.integrator.spi.Integrator;
 import org.hibernate.resource.beans.container.spi.BeanContainer;
 import org.hibernate.resource.beans.container.spi.ContainedBean;
 import org.hibernate.resource.beans.spi.BeanInstanceProducer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import javax.validation.ValidatorFactory;
@@ -53,8 +52,9 @@ import java.util.Map;
  *
  * @author graemerocher
  * @since 1.0
+ * @deprecated Class is deprecated to be removed.
  */
-@Factory
+@Deprecated
 public class EntityManagerFactoryBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(EntityManagerFactoryBean.class);
@@ -85,7 +85,6 @@ public class EntityManagerFactoryBean {
      * @param dataSource     The data source
      * @return The {@link StandardServiceRegistry}
      */
-    @EachBean(DataSource.class)
     protected StandardServiceRegistry hibernateStandardServiceRegistry(
             @Parameter String dataSourceName,
             DataSource dataSource) {
@@ -140,8 +139,6 @@ public class EntityManagerFactoryBean {
      * @param standardServiceRegistry The standard service registry
      * @return The {@link MetadataSources}
      */
-    @Requires(classes = MetadataSource.class)
-    @EachBean(StandardServiceRegistry.class)
     protected MetadataSources hibernateMetadataSources(
             @Parameter @Nullable JpaConfiguration jpaConfiguration,
             StandardServiceRegistry standardServiceRegistry) {
@@ -177,8 +174,6 @@ public class EntityManagerFactoryBean {
      * @param hibernateInterceptor The {@link Interceptor}
      * @return The {@link SessionFactoryBuilder}
      */
-    @EachBean(MetadataSources.class)
-    @Requires(beans = MetadataSources.class)
     protected SessionFactoryBuilder hibernateSessionFactoryBuilder(
             MetadataSources metadataSources,
             @Nullable ValidatorFactory validatorFactory,
@@ -214,10 +209,6 @@ public class EntityManagerFactoryBean {
      * @param sessionFactoryBuilder The {@link SessionFactoryBuilder}
      * @return The {@link SessionFactory}
      */
-    @Context
-    @Requires(beans = SessionFactoryBuilder.class)
-    @Bean(preDestroy = "close")
-    @EachBean(SessionFactoryBuilder.class)
     protected SessionFactory hibernateSessionFactory(SessionFactoryBuilder sessionFactoryBuilder) {
         return sessionFactoryBuilder.build();
     }
