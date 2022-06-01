@@ -49,8 +49,8 @@ final class ExternalVertxSqlClientPoolSettingSupplier implements SettingsSupplie
 
     private static final class ExternalSqlClientPool extends SqlClientPool implements ServiceRegistryAwareService {
 
-        private final Pool pool;
-        private SqlStatementLogger sqlStatementLogger;
+        private final transient Pool pool;
+        private transient SqlStatementLogger sqlStatementLogger;
 
         private ExternalSqlClientPool(Pool pool) {
             this.pool = pool;
