@@ -39,11 +39,6 @@ class InitController {
     @Get
     CompletionStage<Void> init() {
         return sessionFactory.withTransaction(session -> {
-            if (LOG.isInfoEnabled()) {
-                LOG.info("Running on " + System.getProperty("java.version") + " " + System.getProperty("java.vendor.version"));
-                LOG.info("Populating data");
-            }
-
             Owner fred = new Owner();
             fred.setName("Fred");
             fred.setAge(45);

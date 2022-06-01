@@ -19,6 +19,7 @@ import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import jakarta.inject.Inject
+import reactor.core.publisher.Flux
 import spock.lang.Specification
 import spock.lang.Stepwise
 
@@ -71,6 +72,33 @@ abstract class AbstractAppSpec extends Specification {
         then:
             result.name == "Dino"
             result.owner.name == "Fred"
+    }
+
+    def 'should fetch pets parallel'() {
+        when:
+            def resultsList = Flux.range(1, 1000)
+                    .flatMap { client.retrieve(HttpRequest.GET("/pets"), List) }
+                    .collectList()
+                    .block()
+        then:
+            resultsList.each { results ->
+                results[0].name == "Dino"
+                results[0].owner.name == "Fred"
+                results[1].name == "Baby Puss"
+                results[1].owner.name == "Fred"
+                results[2].name == "Hoppy"
+                results[2].owner.name == "Barney"
+            }
+    }
+
+    def 'should fetch pet by name parallel'() {
+        when:
+            def results = Flux.range(1, 1000)
+                    .flatMap { client.retrieve(HttpRequest.GET("/pets/Dino"), Map) }
+                    .collectList()
+                    .block()
+        then:
+            results.each {assert it.name == "Dino" }
     }
 
 }
