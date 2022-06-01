@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor(mn.graal)
+    annotationProcessor(mn.micronaut.graal)
 
     // included for Java 11
     runtimeOnly(libs.jaxb.api)

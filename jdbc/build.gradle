@@ -3,6 +3,8 @@ plugins {
 }
 
 dependencies {
+    annotationProcessor(mn.micronaut.graal)
+
     api(mn.micronaut.inject)
 
     compileOnly(mn.graal)

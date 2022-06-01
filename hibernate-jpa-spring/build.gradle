@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor(mn.graal)
+    annotationProcessor(mn.micronaut.graal)
 
     compileOnly(mn.graal)
     api(libs.managed.hibernate.core) {

@@ -15,7 +15,7 @@ configurations {
 }
 
 dependencies {
-    annotationProcessor(mn.graal)
+    annotationProcessor(mn.micronaut.graal)
 
     // needed because otherwise IntelliJ integration broken
     compileOnly(mn.micronaut.inject.java)
