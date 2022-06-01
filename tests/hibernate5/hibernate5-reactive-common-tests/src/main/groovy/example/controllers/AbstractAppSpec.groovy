@@ -20,21 +20,19 @@ import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import jakarta.inject.Inject
 import reactor.core.publisher.Flux
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Stepwise
 
-@Stepwise
 abstract class AbstractAppSpec extends Specification {
 
+    @Shared
     @Inject
     @Client("/")
     HttpClient client
 
-    def 'should init'() {
-        when:
-            client.toBlocking().exchange(HttpRequest.GET("/init"))
-        then:
-            noExceptionThrown()
+    def setupSpec() {
+        client.toBlocking().exchange(HttpRequest.GET("/init"))
     }
 
     def 'should fetch owners'() {
@@ -98,7 +96,7 @@ abstract class AbstractAppSpec extends Specification {
                     .collectList()
                     .block()
         then:
-            results.each {assert it.name == "Dino" }
+            results.each { assert it.name == "Dino" }
     }
 
 }
