@@ -2,14 +2,14 @@
 
 # Micronaut
 
-micronaut = "3.4.3"
+micronaut = "3.5.2"
 micronaut-docs = "2.0.0"
 micronaut-gradle-plugin = "3.4.1"
 
 # Frameworks
 
 managed-vertx = "4.3.1"
-managed-jooq = "3.14.12"
+managed-jooq = "3.16.7"
 managed-hibernate = "5.6.9.Final"
 managed-hibernate-reactive = "1.1.6.Final"
 managed-jasync = "1.2.3"

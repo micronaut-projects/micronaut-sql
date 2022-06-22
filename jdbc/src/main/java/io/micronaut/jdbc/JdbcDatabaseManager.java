@@ -58,7 +58,7 @@ public class JdbcDatabaseManager {
      * Searches defined database where the URL prefix matches one of the prefixes defined in a {@link JdbcDatabase}.
      * The prefix is determined by:
      * <p>
-     * jdbc:<prefix>:...
+     * jdbc:prefix:...
      *
      * @param jdbcUrl The connection URL
      * @return An optional {@link JdbcDatabase}

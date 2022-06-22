@@ -60,18 +60,18 @@ class ConverterProviderSpec extends Specification {
         applicationContext.close()
     }
 
-    void "test built-in jackson converter provider"() {
+    void "test built-in json converter provider"() {
         given:
         ApplicationContext applicationContext = new DefaultApplicationContext("test")
         applicationContext.environment.addPropertySource(MapPropertySource.of(
                 'test',
                 ['datasources.default'     : [:],
-                 'jooq.datasources.default.jackson-converter-enabled': true]
+                 'jooq.datasources.default.json-converter-enabled': true]
         ))
         applicationContext.start()
 
         expect:
-        applicationContext.getBean(DSLContext).configuration().converterProvider() instanceof JacksonConverterProvider
+        applicationContext.getBean(DSLContext).configuration().converterProvider() instanceof JsonConverterProvider
 
         cleanup:
         applicationContext.close()

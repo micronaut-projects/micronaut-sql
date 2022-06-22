@@ -1,0 +1,10 @@
+plugins {
+    id 'io.micronaut.build.internal.test-library'
+}
+
+dependencies {
+    implementation mn.micronaut.reactor
+    implementation mn.micronaut.http
+    implementation mn.micronaut.runtime
+    api(mn.micronaut.data.tx)
+}

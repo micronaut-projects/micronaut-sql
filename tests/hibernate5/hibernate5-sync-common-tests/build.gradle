@@ -3,9 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation mn.micronaut.http.client
-    implementation mn.micronaut.test.core
-    implementation platform(libs.testcontainers.bom)
-    implementation libs.testcontainers.spock
-    implementation libs.testcontainers.jdbc
+    api projects.tests.commonTests
 }

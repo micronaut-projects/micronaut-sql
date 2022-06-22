@@ -139,16 +139,7 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        BasicDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource as BasicDataSource
-
-        then: //The default configuration is supplied because H2 is on the classpath
-        dataSource.url == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
-        dataSource.username == 'sa'
-        dataSource.password == ''
-        dataSource.driverClassName == 'org.h2.Driver'
-
-        when:
-        dataSource = applicationContext.getBean(TransactionAwareDataSourceProxy, Qualifiers.byName("foo")).targetDataSource
+        BasicDataSource dataSource = (applicationContext.getBean(DataSource, Qualifiers.byName("foo")) as TransactionAwareDataSourceProxy).targetDataSource
 
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.url == 'jdbc:h2:mem:foo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
