@@ -285,7 +285,7 @@ final class JdbcFeature implements Feature {
                     "com.mysql.cj.exceptions.StatementIsClosedException",
                     "com.mysql.cj.exceptions.UnableToConnectException",
                     "com.mysql.cj.exceptions.UnsupportedConnectionStringException",
-                    "com.mysql.cj.exceptions.WrongArgumentExceptio"
+                    "com.mysql.cj.exceptions.WrongArgumentException"
             ).forEach(name -> {
                 AutomaticFeatureUtils.registerClassForRuntimeReflection(access, name);
                 AutomaticFeatureUtils.registerConstructorsForRuntimeReflection(access, name);
