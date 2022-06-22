@@ -12,7 +12,7 @@ managed-vertx = "4.3.1"
 managed-jooq = "3.14.12"
 managed-hibernate = "5.6.9.Final"
 managed-hibernate-reactive = "1.1.6.Final"
-managed-jasync = "1.2.3"
+managed-jasync = "2.0.8"
 managed-jdbi = "3.30.0"
 
 # JDBC Drivers
