@@ -40,7 +40,7 @@ managed-h2 = "1.4.200"
 
 jaxb-api = "2.3.1"
 sfm-reflect = "8.2.3"
-spring = "5.3.20"
+spring = "5.3.21"
 caffeine = "2.9.3"
 
 # Testing
