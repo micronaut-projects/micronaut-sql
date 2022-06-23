@@ -1,9 +1,8 @@
-package example.jooq.sync;
+package sync;
 
 import example.sync.IPetRepository;
 import example.domain.IPet;
 import jakarta.inject.Singleton;
-import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
@@ -73,7 +72,6 @@ public class PetRepository implements IPetRepository {
         return selectPets().where(PET_NAME.eq(name)).stream().map(this::map).findFirst();
     }
 
-    @NotNull
     private SelectJoinStep<Record4<Long, String, String, Long>> selectPets() {
         return db.select(PET_ID, PET_NAME, PET_TYPE, PET_OWNER).from(PET_TABLE);
     }

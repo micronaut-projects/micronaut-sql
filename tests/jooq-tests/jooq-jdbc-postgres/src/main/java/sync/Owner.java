@@ -1,4 +1,4 @@
-package example.jooq.reactive;
+package sync;
 
 import example.domain.IOwner;
 

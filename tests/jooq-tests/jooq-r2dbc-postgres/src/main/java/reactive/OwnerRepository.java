@@ -1,9 +1,8 @@
-package example.jooq.reactive;
+package reactive;
 
 import example.domain.IOwner;
 import example.reactive.IOwnerRepository;
 import jakarta.inject.Singleton;
-import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Publisher;
@@ -66,7 +65,6 @@ public class OwnerRepository extends AbstractRepository implements IOwnerReposit
         return selectOwners(q -> q.where(OWNER_NAME.eq(name))).next().map(this::map);
     }
 
-    @NotNull
     private Flux<Record3<Long, String, Integer>> selectOwners(Function<SelectJoinStep<Record3<Long, String, Integer>>, Publisher<Record3<Long, String, Integer>>> fn) {
         return withDSLContextFlux(dslContext -> fn.apply(dslContext.select(OWNER_ID, OWNER_NAME, OWNER_AGE).from(OWNER_TABLE)));
     }

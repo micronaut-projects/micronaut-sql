@@ -1,9 +1,8 @@
-package example.jooq.sync;
+package sync;
 
 import example.sync.IOwnerRepository;
 import example.domain.IOwner;
 import jakarta.inject.Singleton;
-import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
@@ -75,7 +74,6 @@ public class OwnerRepository implements IOwnerRepository {
         return selectPets().where(OWNER_NAME.eq(name)).stream().map(this::map).findFirst();
     }
 
-    @NotNull
     private SelectJoinStep<Record3<Long, String, Integer>> selectPets() {
         return db.select(OWNER_ID, OWNER_NAME, OWNER_AGE).from(OWNER_TABLE);
     }

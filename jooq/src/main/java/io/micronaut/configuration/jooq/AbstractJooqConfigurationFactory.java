@@ -60,7 +60,7 @@ abstract class AbstractJooqConfigurationFactory {
      * @return A {@link org.jooq.Configuration}
      */
     @SuppressWarnings("checkstyle:ParameterNumber")
-    public DefaultConfiguration jooqConfiguration(
+    protected DefaultConfiguration jooqConfiguration(
         @Parameter String name,
         @Parameter @Nullable TransactionProvider transactionProvider,
         @Parameter @Nullable Settings settings,

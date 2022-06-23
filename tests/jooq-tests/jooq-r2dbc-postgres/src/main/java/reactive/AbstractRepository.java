@@ -1,8 +1,7 @@
-package example.jooq.reactive;
+package reactive;
 
 import io.micronaut.transaction.reactive.ReactiveTransactionStatus;
 import io.r2dbc.spi.Connection;
-import org.jetbrains.annotations.Nullable;
 import org.jooq.DSLContext;
 import org.jooq.Publisher;
 import org.jooq.impl.DSL;
@@ -40,7 +39,6 @@ public class AbstractRepository {
         });
     }
 
-    @Nullable
     private ReactiveTransactionStatus<Connection> getTransactionStatus(ContextView contextView) {
         // !!! This value is deprecated and will be removed soon replaced by ReactorReactiveTransactionOperations
         return contextView.getOrDefault("io.micronaut.tx.STATUS", null);
