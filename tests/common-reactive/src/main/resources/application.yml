@@ -1,0 +1,6 @@
+micronaut:
+  application:
+    name: graalvm-hibernate-jpa
+  http:
+    client:
+      read-timeout: 60s

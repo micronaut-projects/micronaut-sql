@@ -4,8 +4,6 @@ micronaut:
   http:
     client:
       read-timeout: 60s
-jackson:
-  bean-introspection-module: true
 jpa:
   default:
     properties:

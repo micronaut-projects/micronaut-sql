@@ -1,0 +1,12 @@
+plugins {
+    id 'io.micronaut.build.internal.test-library'
+}
+
+dependencies {
+    api mn.micronaut.http.client
+    api mn.micronaut.test.core
+    api mn.reactor
+    api platform(libs.testcontainers.bom)
+    api libs.testcontainers.spock
+    api libs.testcontainers.jdbc
+}

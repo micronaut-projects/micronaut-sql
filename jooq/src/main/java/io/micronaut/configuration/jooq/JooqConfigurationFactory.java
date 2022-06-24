@@ -19,13 +19,19 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.Nullable;
-import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.jdbc.DataSourceResolver;
-import org.jooq.*;
+import org.jooq.Configuration;
+import org.jooq.ConnectionProvider;
+import org.jooq.ConverterProvider;
+import org.jooq.ExecutorProvider;
+import org.jooq.MetaProvider;
+import org.jooq.RecordMapperProvider;
+import org.jooq.RecordUnmapperProvider;
+import org.jooq.TransactionProvider;
 import org.jooq.conf.Settings;
 import org.jooq.impl.DefaultConfiguration;
-import org.jooq.impl.DefaultDSLContext;
 
 import javax.sql.DataSource;
 
@@ -36,7 +42,8 @@ import javax.sql.DataSource;
  * @since 1.2.0
  */
 @Factory
-public class JooqConfigurationFactory {
+@Internal
+final class JooqConfigurationFactory extends AbstractJooqConfigurationFactory {
 
     /**
      * Creates jOOQ {@link Configuration}.
@@ -52,83 +59,53 @@ public class JooqConfigurationFactory {
      * @param metaProvider           The metadata provider
      * @param converterProvider      The converter provider
      * @param connectionProvider     The connection provider
-     * @param ctx                    The {@link ApplicationContext}
+     * @param properties             The properties
+     * @param dataSourceResolver     The dataSourceResolver
+     * @param ctx                    The context
      * @return A {@link Configuration}
      */
+    @SuppressWarnings("checkstyle:ParameterNumber")
     @EachBean(DataSource.class)
-    public Configuration jooqConfiguration(
-            @Parameter String name,
-            DataSource dataSource,
-            @Parameter @Nullable TransactionProvider transactionProvider,
-            @Parameter @Nullable Settings settings,
-            @Parameter @Nullable ExecutorProvider executorProvider,
-            @Parameter @Nullable RecordMapperProvider recordMapperProvider,
-            @Parameter @Nullable RecordUnmapperProvider recordUnmapperProvider,
-            @Parameter @Nullable MetaProvider metaProvider,
-            @Parameter @Nullable ConverterProvider converterProvider,
-            @Parameter @Nullable ConnectionProvider connectionProvider,
-            ApplicationContext ctx
+    Configuration jooqConfiguration(
+        @Parameter String name,
+        DataSource dataSource,
+        @Parameter @Nullable TransactionProvider transactionProvider,
+        @Parameter @Nullable Settings settings,
+        @Parameter @Nullable ExecutorProvider executorProvider,
+        @Parameter @Nullable RecordMapperProvider recordMapperProvider,
+        @Parameter @Nullable RecordUnmapperProvider recordUnmapperProvider,
+        @Parameter @Nullable MetaProvider metaProvider,
+        @Parameter @Nullable ConverterProvider converterProvider,
+        @Parameter @Nullable ConnectionProvider connectionProvider,
+        @Parameter @Nullable JooqConfigurationProperties properties,
+        @Nullable DataSourceResolver dataSourceResolver,
+        @Nullable ApplicationContext ctx
     ) {
-        DefaultConfiguration configuration = new DefaultConfiguration();
 
-        JooqConfigurationProperties properties = ctx.findBean(JooqConfigurationProperties.class, Qualifiers.byName(name))
-                .orElseGet(JooqConfigurationProperties::new);
-        DataSourceResolver dataSourceResolver = ctx.findBean(DataSourceResolver.class).orElse(DataSourceResolver.DEFAULT);
+        if (properties == null) {
+            properties = new JooqConfigurationProperties();
+        }
+        if (dataSourceResolver == null) {
+            dataSourceResolver = DataSourceResolver.DEFAULT;
+        }
+
+        DefaultConfiguration configuration = super.jooqConfiguration(name, transactionProvider, settings, executorProvider,
+            recordMapperProvider, recordUnmapperProvider, metaProvider, converterProvider, properties, ctx);
+
+        if (connectionProvider != null) {
+            configuration.setConnectionProvider(connectionProvider);
+        }
+
         configuration.setSQLDialect(properties.determineSqlDialect(dataSourceResolver.resolve(dataSource)));
 
         if (transactionProvider != null) {
             configuration.setTransactionProvider(transactionProvider);
         }
-        if (connectionProvider != null) {
-            configuration.setConnectionProvider(connectionProvider);
-        } else {
+        if (connectionProvider == null) {
             configuration.setDataSource(dataSource);
         }
-        if (settings != null) {
-            configuration.setSettings(settings);
-        }
-        if (executorProvider != null) {
-            configuration.setExecutorProvider(executorProvider);
-        }
-        if (recordMapperProvider != null) {
-            configuration.setRecordMapperProvider(recordMapperProvider);
-        }
-        if (recordUnmapperProvider != null) {
-            configuration.setRecordUnmapperProvider(recordUnmapperProvider);
-        }
-        if (metaProvider != null) {
-            configuration.setMetaProvider(metaProvider);
-        }
-        if (converterProvider != null) {
-            configuration.set(converterProvider);
-        } else if (properties.isJacksonConverterEnabled()) {
-            ctx.findBean(JacksonConverterProvider.class).ifPresent(configuration::set);
-        } else if (properties.isJsonConverterEnabled()) {
-            ctx.findBean(JsonConverterProvider.class).ifPresent(configuration::set);
-        }
-        configuration.setExecuteListenerProvider(ctx.getBeansOfType(ExecuteListenerProvider.class, Qualifiers.byName(name))
-                .toArray(new ExecuteListenerProvider[0]));
-        configuration.setRecordListenerProvider(ctx.getBeansOfType(RecordListenerProvider.class, Qualifiers.byName(name))
-                .toArray(new RecordListenerProvider[0]));
-        configuration.setVisitListenerProvider(ctx.getBeansOfType(VisitListenerProvider.class, Qualifiers.byName(name))
-                .toArray(new VisitListenerProvider[0]));
-        configuration.setTransactionListenerProvider(ctx.getBeansOfType(TransactionListenerProvider.class, Qualifiers.byName(name))
-                .toArray(new TransactionListenerProvider[0]));
-        configuration.setDiagnosticsListenerProvider(ctx.getBeansOfType(DiagnosticsListenerProvider.class, Qualifiers.byName(name))
-                .toArray(new DiagnosticsListenerProvider[0]));
 
         return configuration;
-    }
-
-    /**
-     * Created {@link DSLContext} based on {@link Configuration}.
-     *
-     * @param configuration The {@link Configuration}
-     * @return A {@link DSLContext}
-     */
-    @EachBean(Configuration.class)
-    public DSLContext dslContext(Configuration configuration) {
-        return new DefaultDSLContext(configuration);
     }
 
 }

@@ -1,0 +1,17 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application-java11'
+}
+
+dependencies {
+    implementation projects.jooq
+    implementation mn.micronaut.data.tx
+    implementation projects.tests.common
+
+    annotationProcessor mn.micronaut.data.processor
+
+    runtimeOnly libs.managed.postgresql
+    runtimeOnly projects.jdbcHikari
+
+    testImplementation projects.tests.commonTests
+    testImplementation libs.testcontainers.postgresql
+}

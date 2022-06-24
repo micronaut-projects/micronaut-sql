@@ -1,0 +1,18 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application-java11'
+}
+
+dependencies {
+    implementation projects.jooq
+    implementation mn.micronaut.data.tx
+    implementation mn.micronaut.data.r2dbc
+    implementation mn.r2dbc.postgresql
+    implementation mn.r2dbc.pool
+
+    implementation projects.tests.commonReactive
+
+    annotationProcessor mn.micronaut.data.processor
+
+    testImplementation projects.tests.commonTests
+    testImplementation libs.testcontainers.postgresql
+}

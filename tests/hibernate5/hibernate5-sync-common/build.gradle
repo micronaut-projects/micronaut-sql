@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation mn.micronaut.http.client
+    implementation projects.tests.common
     implementation projects.hibernateJpa
     runtimeOnly projects.jdbcHikari
 }

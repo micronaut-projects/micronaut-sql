@@ -3,7 +3,9 @@ plugins {
 }
 
 dependencies {
+    implementation projects.tests.commonReactive
     implementation mn.micronaut.reactor
     implementation mn.micronaut.http.client
     implementation projects.hibernateReactive
+    implementation projects.jdbc
 }

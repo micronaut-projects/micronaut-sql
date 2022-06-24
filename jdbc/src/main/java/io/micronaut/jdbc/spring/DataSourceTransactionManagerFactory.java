@@ -20,6 +20,7 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.event.BeanCreatedEvent;
 import io.micronaut.context.event.BeanCreatedEventListener;
+import io.micronaut.context.event.BeanPreDestroyEventListener;
 import io.micronaut.core.annotation.Internal;
 import jakarta.inject.Singleton;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -60,6 +61,17 @@ public class DataSourceTransactionManagerFactory {
     @Singleton
     TransactionAwareDataSourceListener transactionAwareDataSourceListener() {
         return new TransactionAwareDataSourceListener();
+    }
+
+    @Singleton
+    final BeanPreDestroyEventListener<DataSource> transactionAwareDataSourceListenerUnwrapper() {
+        return event -> {
+            DataSource ds = event.getBean();
+            if (ds instanceof TransactionAwareDataSourceProxy) {
+                return ((TransactionAwareDataSourceProxy) ds).getTargetDataSource();
+            }
+            return ds;
+        };
     }
 
     /**
