@@ -1,4 +1,4 @@
-package sync;
+package example.jooq.sync;
 
 import example.domain.IOwner;
 import example.domain.IPet;

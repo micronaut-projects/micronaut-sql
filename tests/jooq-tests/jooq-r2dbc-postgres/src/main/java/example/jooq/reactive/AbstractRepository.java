@@ -1,4 +1,4 @@
-package reactive;
+package example.jooq.reactive;
 
 import io.micronaut.transaction.reactive.ReactiveTransactionStatus;
 import io.r2dbc.spi.Connection;

@@ -64,14 +64,4 @@ if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_11)) {
     include 'tests:jooq-tests:jooq-r2dbc-postgres'
 }
 
-if (System.getenv("SONAR_TOKEN") != null) {
-    def coverageExcludes = [
-            "**/example/**",
-    ]
-    sonarqube {
-        properties {
-            property "sonar.exclusions", coverageExcludes.join(",")
-        }
-    }
-}
 

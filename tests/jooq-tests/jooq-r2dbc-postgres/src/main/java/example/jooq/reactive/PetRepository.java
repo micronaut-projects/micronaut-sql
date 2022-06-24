@@ -1,4 +1,4 @@
-package reactive;
+package example.jooq.reactive;
 
 import example.domain.IPet;
 import example.reactive.IPetRepository;

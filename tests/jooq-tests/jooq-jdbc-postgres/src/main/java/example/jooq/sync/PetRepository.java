@@ -1,4 +1,4 @@
-package sync;
+package example.jooq.sync;
 
 import example.sync.IPetRepository;
 import example.domain.IPet;
