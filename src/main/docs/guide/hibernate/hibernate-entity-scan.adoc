@@ -1,0 +1,44 @@
+Since 1.2 of this library Entity scan configuration is more flexible and it is possible to do reflection free scanning that works on GraalVM substrate.
+
+The default configuration will look for all classes compiled by Micronaut that include the `@Entity` annotation.
+
+If you wish to limit the packages to include in a particular JPA entity manager you can do so with the `entity-scan` configuration option:
+
+.Limiting Entity Scan
+[source,yaml]
+----
+jpa:
+    default:
+        entity-scan:
+            packages:
+                - 'foo.bar'
+----
+
+The above configuration limits the search to only classes in the `foo.bar` package. Note that if classes are not compiled by Micronaut they will not be found. There are two ways to resolve this, one is to generate introspection metadata for the external classes. For example you can place in this on your `Application` class:
+
+.Generating Introspection Metadata for External Classes
+[source,java]
+----
+@Introspected(packages="foo.bar")
+----
+
+This will generate introspection metadata for all classes in the `foo.bar` package.
+
+If this option doesn't work for you, you can instead enable full classpath scanning using the `classpath` property:
+
+.Enabling Full Classpath Scanning
+[source,yaml]
+----
+jpa:
+    default:
+        entity-scan:
+            classpath: true
+            packages:
+                - 'foo.bar'
+----
+
+Note that this approach has the following disadvantages:
+
+* It is slower, since Micronaut has to search through JAR files and scan class files with ASM
+* It does not work in GraalVM substrate.
+

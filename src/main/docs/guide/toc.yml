@@ -1,10 +1,37 @@
 introduction: Introduction
 releaseHistory: Release History
-jdbc: Configuring JDBC
-hibernate: Configuring Hibernate
-jasync: Configuring JAsync SQL
-jooq: Configuring jOOQ
-jdbi: Configuring Jdbi
-vertxmysqlclient: Configuring Reactive MySQL Client
-vertxpgclient: Configuring Reactive Postgres Client
+jdbc:
+  title: Configuring JDBC
+  jdbc-connection-pools: Configuring JDBC Connection Pools
+  jdbc-multiple-datasources: Configuring Multiple Data Sources
+  jdbc-healthchecks: JDBC Health Checks
+  jdbc-spring-transaction: Using Spring Transaction Management
+hibernate:
+  title: Configuring Hibernate
+  hibernate-inject-session: Injecting an EntityManager or Hibernate Session
+  hibernate-customizing: Customizing Hibernate/JPA Configuration
+  hibernate-entity-scan: Entity Scan Configuration
+  hibernate-reactive: Configuring Hibernate Reactive
+  hibernate-proxies: Using compile-time Hibernate proxies
+  hibernate-spring-transaction: Using Spring Transaction Management
+  hibernate-lazy-initialization: Understanding LazyInitializationException
+jasync:
+  title: Configuring JAsync SQL
+  jasync-client: Configuring jasync-sql Client
+  jasync-healthchecks: Database Health Checks
+jooq:
+  title: Configuring jOOQ
+  jooq-dialect: Configuring SQL dialect
+  jooq-provider-beans: Configuring additional provider beans
+  jooq-jsonb: Using ObjectMapper to convert JSON(B) types
+  jooq-graalvm: GraalVM native image
+jdbi:
+  title: Configuring Jdbi
+  jdbi-provider-beans: Configuring additional provider beans
+vertxmysqlclient:
+  title: Configuring Reactive MySQL Client
+  vertxmysqlclient-healthchecks: MySQL Health Checks
+vertxpgclient:
+  title: Configuring Reactive PostgreSQL Client
+  vertxpgclient-healthchecks: PostgreSQL Health Checks
 repository: Repository

@@ -1,0 +1,7 @@
+Micronaut is built on Netty which is based on a non-blocking, event loop model. JDBC and Hibernate are blocking APIs and hence when they are used in a Micronaut application the work is shifted to a blocking I/O thread pool.
+
+When using https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Transactional.html[@Transactional] the Hibernate `Session` will only be open for the duration of this method execution and then will automatically be closed. This ensures that the blocking operation is kept as short as possible.
+
+There is no notion of OpenSessionInView (OSIV) in Micronaut and never will be, since it is https://vladmihalcea.com/the-open-session-in-view-anti-pattern/[sub-optimal and not recommended]. You should optimize the queries that you write to return all the necessary data Micronaut will need to encode your objects into JSON either by using the appropriate join queries or using a https://vladmihalcea.com/the-best-way-to-map-a-projection-query-to-a-dto-with-jpa-and-hibernate/[data transfer object (DTO)].
+
+If you encounter a `LazyInitializationException` when returning a Hibernate entity from a method it is an indication that your query is suboptimal and you should perform a join.

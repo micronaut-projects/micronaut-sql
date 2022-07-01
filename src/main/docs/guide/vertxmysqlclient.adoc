@@ -1,6 +1,5 @@
 Micronaut supports reactive and non-blocking client to connect to MySQL using https://github.com/eclipse-vertx/vertx-sql-client/tree/master/vertx-mysql-client[vertx-mysql-client], allowing to handle many database connections with a single thread.
 
-== Configuring the MySQL Vertx Client
 [TIP]
 .Using the CLI
 ====
@@ -42,11 +41,3 @@ include::vertx-mysql-client/src/test/groovy/io/micronaut/configuration/vertx/mys
 <1> `client` is an instance of the `io.vertx.reactivex.mysqlclient.MySQLPool` bean.
 
 For more information on running queries on MySQL using the reactive client please read the "Running queries" section in the documentation of https://vertx.io/docs/vertx-mysql-client/java/[vertx-mysql-client].
-
-== MySQL Health Checks
-
-When the `vertx-mysql-client` module is activated a api:configuration.vertx.mysql.client.health.MySQLClientPoolHealthIndicator[] is activated resulting in the `/health` endpoint and api:health.CurrentHealthStatus[] interface resolving the health of the MySQL connection.
-
-The only configuration option supported is to enable or disable the indicator by the `endpoints.health.vertx.mysql.client.enabled` key.
-
-See the section on the <https://docs.micronaut.io/latest/guide/index.html#healthEndpoint[Health Endpoint] for more information.

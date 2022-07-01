@@ -1,0 +1,29 @@
+You can use the `javax.persistence.PersistenceContext` annotation to inject an `EntityManager` (or Hibernate `Session`). To do so you need to make sure the JPA annotations are on the `annotationProcessor` path in your build:
+
+[source,groovy]
+.Adding the JPA dependency to `annotationProcessor` in Gradle
+----
+annotationProcessor "jakarta.persistence:jakarta.persistence-api:2.2"
+----
+
+[source,java]
+.Using `@PersistenceContext`
+----
+@PersistenceContext
+EntityManager entityManager;
+
+@PersistenceContext(name = "other")
+EntityManager otherManager;
+----
+
+Micronaut will inject a compile time scoped proxy that retrieves the `EntityManager` associated with the current transaction when using https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Transactional.html[@Transactional] (see "Using Spring Transaction Management" below).
+
+Note the examples above use field injection, since the `@PersistenceContext` annotation does not support declaration on a parameter of a constructor or method argument. Therefore if you wish to instead use constructor or method injection you must use the ann:configuration.hibernate.jpa.scope.CurrentSession[] instead:
+
+[source,java]
+.Using `@CurrentSession` for constructor injection
+----
+public MyService(@CurrentSession EntityManager entityManager) {
+     this.entityManager = entityManager;
+}
+----

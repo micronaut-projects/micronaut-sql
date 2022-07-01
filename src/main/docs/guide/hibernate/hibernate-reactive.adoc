@@ -1,0 +1,57 @@
+It's possible to use Hibernate Reactive by adding following dependency:
+
+dependency:micronaut-hibernate-reactive[groupId="io.micronaut.sql"]
+
+NOTE: Hibernate Reactive requires Java 11
+
+To enable reactive session factory JPA configuration needs to have `reactive` property set to `true`.
+The reactive implementation doesn't use traditional JDBC drivers, but instead it uses Vertx Drivers.
+
+You can add one of:
+
+dependency:vertx-mysql-client[groupId="io.vertx"]
+
+dependency:vertx-pg-client[groupId="io.vertx"]
+
+dependency:vertx-mssql-client[groupId="io.vertx"]
+
+dependency:vertx-oracle-client[groupId="io.vertx"]
+
+And configure it using properties:
+
+[source,yaml]
+----
+jpa:
+  default:
+    reactive: true
+    properties:
+      hibernate:
+        connection:
+          url: jdbc:postgresql:database # Use JDBC style url
+          username: myUsername
+          password: myPassword
+----
+
+The other option is to include one of the existing Micronaut SQL support libraries:
+
+dependency:vertx-mysql-client[groupId="io.micronaut.sql"]
+
+dependency:vertx-pg-client[groupId="io.micronaut.sql"]
+
+And configure the client:
+
+[source,yaml]
+----
+vertx:
+  pg:
+    client:
+      port: 5432
+      host: 'the-host'
+      database: 'the-db'
+      user: 'user'
+      password: 'secret'
+      max-size:  10
+----
+
+The integration will automatically integrate Vertx driver instance of `io.vertx.sqlclient.Pool` found in the bean context.
+
