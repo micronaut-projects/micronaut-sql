@@ -1,0 +1,3 @@
+Once you have configured a JDBC `DataSource` the https://docs.micronaut.io/latest/api/io/micronaut/management/health/indicator/jdbc/JdbcIndicator.html[JdbcIndicator] is activated resulting in the `/health` endpoint and https://docs.micronaut.io/latest/api/io/micronaut/health/CurrentHealthStatus.html[CurrentHealthStatus] interface resolving the health of the JDBC connection.
+
+See the section on the https://docs.micronaut.io/latest/guide/index.html#healthEndpoint[Health Endpoint] for more information.

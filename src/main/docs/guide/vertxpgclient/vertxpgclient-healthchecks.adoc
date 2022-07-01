@@ -1,0 +1,5 @@
+When the `vertx-pg-client` module is activated a api:configuration.vertx.pg.client.health.PgClientPoolHealthIndicator[] is activated resulting in the `/health` endpoint and api:health.CurrentHealthStatus[] interface resolving the health of the Postgres connection.
+
+The only configuration option supported is to enable or disable the indicator by the `endpoints.health.vertx.pg.client.enabled` key.
+
+See the section on the <https://docs.micronaut.io/latest/guide/index.html#healthEndpoint[Health Endpoint] for more information.

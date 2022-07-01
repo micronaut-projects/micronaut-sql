@@ -1,0 +1,8 @@
+You can define additional beans which will be used when the `Jdbi` object is created.
+Only beans with a `Named` qualifier name with the same name as the data source name will be used.
+
+Micronaut will look for the following bean types:
+
+* link:{jdbiapi}/org/jdbi/v3/core/transaction/TransactionHandler.html[TransactionHandler]
+* link:{jdbiapi}/org/jdbi/v3/core/statement/StatementBuilderFactory.html[StatementBuilderFactory]
+* api:configuration.jdbi.JdbiCustomizer[JdbiCustomizer]

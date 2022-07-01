@@ -1,0 +1,64 @@
+All of the implementation specific parameters can be configured. Effort was made to allow basic configuration to be consistent across the implementations.
+
+* Hikari: The URL is able to be configured through `url` in addition to `jdbcUrl`. The JNDI name can be configured through `jndiName` in addition to `dataSourceJNDI`.
+* Tomcat: The JNDI name can be configured through `jndiName` in addition to `dataSourceJNDI`.
+
+Several configuration options will be calculated if they are not provided.
+
+[cols="20%,80%"]
+|=======
+|URL |The classpath will be searched for an embedded database driver. If found, the URL will be set to the default value for that driver.
+|Driver Class|If the URL is configured, the driver class will be derived from the URL, otherwise the classpath will be searched for an embedded database driver. If found, the default class name for that driver will be used.
+|Username |If the configured database driver is embedded, the username will be set to "sa"
+|Password |If the configured database driver is embedded, the password will be set to an empty string.
+|=======
+
+For example:
+
+[source,yaml]
+.application.yaml
+----
+datasources.default: {}
+----
+
+The above configuration will result in a single link:{jdkapi}/javax/sql/DataSource.html[DataSource] bean being registered with the named qualifier of `default`.
+
+If for example, the H2 driver is on the classpath, it is equivalent to the following:
+
+[source,yaml]
+.application.yaml
+----
+datasources:
+    default:
+        url: jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+        username: sa
+        password: ""
+        driverClassName: org.h2.Driver
+----
+
+To use Oracle UCP, provide a configuration similar to the following:
+
+[source,yaml]
+.application.yaml
+----
+datasources:
+  default:
+    url:
+    connectionFactoryClassName: oracle.jdbc.pool.OracleDataSource
+    username:
+    password:
+    minPoolSize: 1
+    maxPoolSize: 10
+----
+
+The Oracle UCP is managed by the link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/admin/UniversalConnectionPoolManager.html[UniversalConnectionPoolManager]. The manager can be disabled byt setting `ucp-manager.enabled` to `false`. Additionally you can enable the link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/jmx-based-management.html[JMX-Based Management] by setting the `ucp-manager.jmx.enabled` to `true` and providing the `ojdbc8dms.jar` and `dms.jar` dependencies.
+
+For a list of other properties able to be configured, simply refer to the implementation that is being used. All setter methods are candidates for configuration.
+
+[cols="20%,80%"]
+|=======
+|Tomcat |link:https://tomcat.apache.org/tomcat-9.0-doc/api/org/apache/tomcat/jdbc/pool/PoolProperties.html[PoolProperties]
+|Hikari |link:http://static.javadoc.io/com.zaxxer/HikariCP/2.7.1/com/zaxxer/hikari/HikariConfig.html[HikariConfig]
+|Apache DBCP |link:http://commons.apache.org/proper/commons-dbcp/api-2.1.1/org/apache/commons/dbcp2/BasicDataSource.html[BasicDataSource]
+|Oracle UCP|link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/jdbc/PoolDataSource.html[PoolDataSource]
+|=======

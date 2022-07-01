@@ -1,0 +1,19 @@
+To register more than one data source, simply configure them under different names.
+
+[source,yaml]
+.application.yaml
+----
+datasources:
+    default:
+        ...
+    warehouse:
+        ...
+----
+
+When injecting link:{jdkapi}/javax/sql/DataSource.html[DataSource] beans, the one with the name "default" will be injected unless the injection is qualified with the configured name. If no configuration is named "default", none of the beans will be primary and thus all injections must be qualified. For example:
+
+[source,java]
+----
+@Inject DataSource dataSource // "default" will be injected
+@Inject @Named("warehouse") DataSource dataSource // "warehouse" will be injected
+----

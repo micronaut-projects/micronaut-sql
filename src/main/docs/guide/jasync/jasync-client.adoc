@@ -1,0 +1,40 @@
+[TIP]
+.Using the CLI
+====
+If you are creating your project using the Micronaut CLI, supply the `jasync-sql` feature to configure the Jasync PostgreSQL and MySQL client in your project:
+----
+$ mn create-app my-app --features jasync-sql
+----
+====
+
+To configure the Jasync client you should first add `jasync-sql` module to your classpath:
+
+dependency:micronaut-jasync-sql[groupId="io.micronaut.sql"]
+
+You should then configure the https://github.com/jasync-sql/jasync-sql/wiki/Configuring-and-Managing-Connections[`PoolOptions`] of the database server you wish to communicate with in `application.yml`:
+
+[source,yaml]
+.application.yml
+----
+jasync:
+    client:
+        port: 5432
+        host: the-host
+        database: the-db
+        username: test
+        password: test
+        maxActiveConnections: 5
+----
+
+Once you have the above configuration in place then you can inject the `com.github.jasync.sql.db.Connection` bean. The following is the simplest way to connect:
+
+[source,groovy]
+----
+include::jasync-sql/src/test/groovy/io/micronaut/configuration/jasync/JasyncSpec.groovy[tags=query,indent=0]
+----
+
+<1> `client` is an instance of the `com.github.jasync.sql.db.Connection` bean.
+
+For more information on running queries on using the client please read the "Running queries" section in the documentation of https://github.com/jasync-sql/jasync-sql/wiki/Executing-Statements[jasync-sql].
+
+To use https://github.com/jasync-sql/jasync-sql/wiki/Interceptors[Jasync query interceptors] register beans of type `com.github.jasync.sql.db.interceptor.QueryInterceptor`.
