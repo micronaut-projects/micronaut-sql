@@ -24,6 +24,8 @@ managed-mssql-driver = "9.4.1.jre8"
 managed-mysql-driver = "8.0.29"
 
 # JDBC Pools
+# Required to keep catalog compatibility with 3.4.x.  Can be removed for 4.0.0
+managed-commons-dbcp-compat = "2.9.0"
 
 managed-hikari = "4.0.3"
 managed-commons-dbcp = "2.9.0"
@@ -81,6 +83,8 @@ jdbi3-sqlobject = { module = "org.jdbi:jdbi3-sqlobject", version.ref = "managed-
 jdbi3-core = { module = "org.jdbi:jdbi3-core", version.ref = "managed-jdbi" }
 
 # JDBC pools
+# Duplicated to keep catalog compatibility with 3.4.x.  Can be removed for 4.0.0
+managed-commons-dbcp = { module = "org.apache.commons:commons-dbcp2", version.ref = "managed-commons-dbcp-compat" }
 
 managed-hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "managed-hikari" }
 managed-commons-dbcp2 = { module = "org.apache.commons:commons-dbcp2", version.ref = "managed-commons-dbcp" }
