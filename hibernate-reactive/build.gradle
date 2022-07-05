@@ -21,6 +21,7 @@ dependencies {
     api mn.micronaut.runtime
 
     compileOnly mn.graal
+    compileOnly libs.managed.vertx.sql.client
 
     testAnnotationProcessor mn.micronaut.inject.java
     testRuntimeOnly mn.micronaut.hibernate.validator
@@ -34,5 +35,5 @@ dependencies {
     testImplementation libs.testcontainers.spock
     testImplementation libs.testcontainers.jdbc
     testImplementation libs.testcontainers.postgresql
-    implementation libs.managed.vertx.pg.client
+    testImplementation libs.managed.vertx.pg.client
 }

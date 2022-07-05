@@ -53,6 +53,7 @@ sonar-gradle-plugin = "3.4.0.2513"
 
 # Vertx
 
+managed-vertx-sql-client = { module = "io.vertx:vertx-sql-client", version.ref = "managed-vertx" }
 managed-vertx-codegen = { module = "io.vertx:vertx-codegen", version.ref = "managed-vertx" }
 managed-vertx-mysql-client = { module = "io.vertx:vertx-mysql-client", version.ref = "managed-vertx" }
 managed-vertx-pg-client = { module = "io.vertx:vertx-pg-client", version.ref = "managed-vertx" }
