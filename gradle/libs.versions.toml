@@ -10,7 +10,7 @@ micronaut-gradle-plugin = "3.4.1"
 
 managed-vertx = "4.3.1"
 managed-jooq = "3.15.11"
-managed-hibernate = "5.6.9.Final"
+managed-hibernate = "5.6.10.Final"
 managed-hibernate-reactive = "1.1.7.Final"
 managed-jasync = "2.0.8"
 managed-jdbi = "3.30.0"
