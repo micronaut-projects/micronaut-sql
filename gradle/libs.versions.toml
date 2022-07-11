@@ -5,6 +5,8 @@ managed-hibernate = "5.6.9.Final"
 managed-jasync = "1.2.3"
 managed-hikari = "4.0.3"
 managed-commons-dbcp = "2.9.0"
+# Required to keep catalog compatibility with 3.4.x.  Can be removed for 4.0.0
+managed-commons-dbcp-compat = "2.9.0"
 managed-tomcat-jdbc = "10.0.21"
 managed-ojdbc = "21.5.0.0"
 managed-postgres-driver = "42.3.6"
@@ -43,6 +45,8 @@ managed-jasync-mysql = { module = "com.github.jasync-sql:jasync-mysql", version.
 managed-jasync-postgresql = { module = "com.github.jasync-sql:jasync-postgresql", version.ref = "managed-jasync" }
 managed-hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "managed-hikari" }
 managed-commons-dbcp2 = { module = "org.apache.commons:commons-dbcp2", version.ref = "managed-commons-dbcp" }
+# Duplicated to keep catalog compatibility with 3.4.x.  Can be removed for 4.0.0
+managed-commons-dbcp = { module = "org.apache.commons:commons-dbcp2", version.ref = "managed-commons-dbcp-compat" }
 managed-tomcat-jdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "managed-tomcat-jdbc" }
 managed-ucp = { module = "com.oracle.database.jdbc:ucp", version.ref = "managed-ojdbc" }
 managed-postgresql = { module = "org.postgresql:postgresql", version.ref = "managed-postgres-driver" }
