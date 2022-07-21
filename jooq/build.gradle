@@ -2,14 +2,6 @@ plugins {
     id 'io.micronaut.build.internal.sql-module'
 }
 
-micronautBuild {
-    sourceCompatibility = "11"
-    targetCompatibility = "11"
-    binaryCompatibility {
-        enabled.set(false)
-    }
-}
-
 sourceSets {
     txTest {
         compileClasspath += main.output
