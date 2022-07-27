@@ -15,20 +15,16 @@
  */
 package io.micronaut.jdbc.nativeimage;
 
-import com.oracle.svm.core.annotate.AutomaticFeature;
-import com.oracle.svm.core.configure.ResourcesRegistry;
-import io.micronaut.core.annotation.Internal;
-import io.micronaut.core.graal.AutomaticFeatureUtils;
-import org.graalvm.nativeimage.ImageSingletons;
-import org.graalvm.nativeimage.hosted.Feature;
-import org.graalvm.nativeimage.hosted.RuntimeClassInitialization;
-import org.graalvm.nativeimage.impl.RuntimeClassInitializationSupport;
-
-import java.security.Provider;
-import java.security.Security;
 import java.util.Arrays;
 import java.util.Collections;
 
+import org.graalvm.nativeimage.hosted.Feature;
+
+import com.oracle.svm.core.annotate.AutomaticFeature;
+import com.oracle.svm.core.configure.ResourcesRegistry;
+
+import io.micronaut.core.annotation.Internal;
+import io.micronaut.core.graal.AutomaticFeatureUtils;
 import static io.micronaut.core.graal.AutomaticFeatureUtils.addResourceBundles;
 import static io.micronaut.core.graal.AutomaticFeatureUtils.addResourcePatterns;
 import static io.micronaut.core.graal.AutomaticFeatureUtils.initializeAtBuildTime;
@@ -69,8 +65,6 @@ final class JdbcFeature implements Feature {
         handlePostgres(access);
 
         handleMariadb(access);
-
-        handleOracle(access);
 
         handleSqlServer(access);
 
@@ -152,89 +146,6 @@ final class JdbcFeature implements Feature {
         }
     }
 
-    private void handleOracle(BeforeAnalysisAccess access) {
-        Class<?> oracleDriver = access.findClassByName(ORACLE_DRIVER);
-        if (oracleDriver != null) {
-            Arrays.asList(
-                    "oracle.jdbc.driver.T4CDriverExtension",
-                    "oracle.jdbc.driver.T2CDriverExtension",
-                    "oracle.net.ano.Ano",
-                    "oracle.net.ano.AuthenticationService",
-                    "oracle.net.ano.DataIntegrityService",
-                    "oracle.net.ano.EncryptionService",
-                    "oracle.net.ano.SupervisorService"
-            ).forEach(c -> registerFieldsAndMethodsWithReflectiveAccess(access, c));
-
-            registerAllForRuntimeReflection(access, "oracle.jdbc.logging.annotations.Supports");
-            registerAllForRuntimeReflection(access, "oracle.jdbc.logging.annotations.Feature");
-
-            addResourcePatterns(
-                    "META-INF/services/java.sql.Driver",
-                    "oracle/sql/converter_xcharset/lx20002.glb",
-                    "oracle/sql/converter_xcharset/lx2001f.glb",
-                    "oracle/sql/converter_xcharset/lx200b2.glb"
-            );
-
-            addResourceBundles(
-                    "oracle.net.jdbc.nl.mesg.NLSR",
-                    "oracle.net.mesg.Message"
-            );
-
-            initializeAtBuildTime(
-                    access,
-                    "oracle.net.jdbc.nl.mesg.NLSR_en",
-                    "oracle.jdbc.driver.DynamicByteArray",
-                    "oracle.jdbc.logging.annotations.Supports",
-                    "oracle.sql.ConverterArchive",
-                    "oracle.sql.converter.CharacterConverterJDBC",
-                    "oracle.sql.converter.CharacterConverter1Byte",
-                    "com.sun.jmx.mbeanserver.MBeanInstantiator",
-                    "com.sun.jmx.mbeanserver.MXBeanLookup",
-                    "com.sun.jmx.mbeanserver.Introspector",
-                    "com.sun.jmx.defaults.JmxProperties"
-            );
-
-            initializeAtRunTime(access, "java.sql.DriverManager");
-
-            try {
-                String oraclePkiProvider = "oracle.security.pki.OraclePKIProvider";
-                if (access.findClassByName(oraclePkiProvider) != null) {
-                    /* Register the security provider and make it available to the image at runtime */
-                    Class<?> providerClazz = Class.forName(oraclePkiProvider);
-                    RuntimeClassInitialization.initializeAtBuildTime("oracle.security");
-                    Provider provider = (Provider) providerClazz.getConstructor().newInstance();
-                    Security.addProvider(provider);
-
-                    Class<?> loginClazz = access.findClassByName("oracle.security.o5logon.O5Logon");
-                    if (loginClazz != null) {
-
-                        ImageSingletons.lookup(RuntimeClassInitializationSupport.class)
-                                .rerunInitialization(loginClazz, "Required for Secure Connectivity");
-                    }
-                }
-                Arrays.asList(
-                        "oracle.security.crypto.cert.ext.AuthorityInfoAccessExtension",
-                        "oracle.security.crypto.cert.ext.AuthorityKeyIDExtension",
-                        "oracle.security.crypto.cert.ext.BasicConstraintsExtension",
-                        "oracle.security.crypto.cert.ext.CRLDistPointExtension",
-                        "oracle.security.crypto.cert.ext.CertificatePoliciesExtension",
-                        "oracle.security.crypto.cert.ext.KeyUsageExtension",
-                        "oracle.security.crypto.cert.ext.SubjectKeyIDExtension",
-                        "oracle.security.crypto.core.DES_EDE",
-                        "oracle.security.crypto.core.PKCS12PBE",
-                        "oracle.security.crypto.core.RSAPrivateKey",
-                        "oracle.security.crypto.core.RSAPublicKey",
-                        "oracle.security.crypto.core.SHA",
-                        "oracle.security.pki.OraclePKIProvider",
-                        "oracle.security.pki.OracleSSOKeyStoreSpi"
-                ).forEach(n ->
-                        registerClassForRuntimeReflectionAndReflectiveInstantiation(access, n)
-                );
-            } catch (Exception e) {
-                throw new RuntimeException("Unable to register OraclePKIProvider: " + e.getMessage(), e);
-            }
-        }
-    }
 
     private void handleSqlServer(BeforeAnalysisAccess access) {
         Class<?> sqlServerDriver = access.findClassByName(SQL_SERVER_DRIVER);
