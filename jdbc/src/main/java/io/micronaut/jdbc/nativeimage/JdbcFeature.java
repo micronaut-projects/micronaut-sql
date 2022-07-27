@@ -21,7 +21,6 @@ import java.util.Collections;
 import org.graalvm.nativeimage.hosted.Feature;
 
 import com.oracle.svm.core.annotate.AutomaticFeature;
-import com.oracle.svm.core.configure.ResourcesRegistry;
 
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.graal.AutomaticFeatureUtils;
@@ -53,10 +52,7 @@ final class JdbcFeature implements Feature {
     private static final String POSTGRESQL_DRIVER = "org.postgresql.Driver";
     private static final String SQL_SERVER_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     private static final String MARIADB_DRIVER = "org.mariadb.jdbc.Driver";
-    private static final String ORACLE_DRIVER = "oracle.jdbc.OracleDriver";
     private static final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
-
-    private ResourcesRegistry resourcesRegistry;
 
     @Override
     public void beforeAnalysis(BeforeAnalysisAccess access) {
@@ -145,7 +141,6 @@ final class JdbcFeature implements Feature {
             initializeAtBuildTime(access, "java.sql.DriverManager");
         }
     }
-
 
     private void handleSqlServer(BeforeAnalysisAccess access) {
         Class<?> sqlServerDriver = access.findClassByName(SQL_SERVER_DRIVER);
