@@ -244,7 +244,8 @@ final class JdbcFeature implements Feature {
             initializeAtBuildTime(access,
                     SQL_SERVER_DRIVER,
                     "com.microsoft.sqlserver.jdbc.Util",
-                    "com.microsoft.sqlserver.jdbc.SQLServerException"
+                    "com.microsoft.sqlserver.jdbc.SQLServerException",
+                    "com.microsoft.sqlserver.jdbc.SQLServerDriverStringProperty"
             );
 
             addResourcePatterns(
