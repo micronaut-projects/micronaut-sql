@@ -137,7 +137,7 @@ final class JdbcFeature implements Feature {
             initializePackagesAtRunTime("org.mariadb.jdbc.credential.aws");
             initializePackagesAtRunTime("org.mariadb.jdbc.internal.failover.impl");
             initializeAtRunTime(access, "org.mariadb.jdbc.internal.com.send.authentication.SendPamAuthPacket");
-
+            initializeAtBuildTime(access, "javax.sql.rowset.serial.SerialException");
             initializeAtBuildTime(access, "java.sql.DriverManager");
         }
     }
