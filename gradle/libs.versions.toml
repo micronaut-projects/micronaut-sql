@@ -29,7 +29,7 @@ managed-commons-dbcp-compat = "2.9.0"
 
 managed-hikari = "4.0.3"
 managed-commons-dbcp = "2.9.0"
-managed-tomcat-jdbc = "10.0.22"
+managed-tomcat-jdbc = "10.0.23"
 
 # JPA
 
