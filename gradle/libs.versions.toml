@@ -18,7 +18,7 @@ managed-jdbi = "3.30.0"
 # JDBC Drivers
 
 managed-ojdbc = "21.6.0.0.1"
-managed-postgres-driver = "42.4.0"
+managed-postgres-driver = "42.5.0"
 managed-mariadb-driver = "2.7.6"
 managed-mssql-driver = "9.4.1.jre8"
 managed-mysql-driver = "8.0.29"
