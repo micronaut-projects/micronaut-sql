@@ -292,8 +292,8 @@ public class JpaConfiguration {
      */
     public JpaConfiguration copy(String name) {
         JpaConfiguration jpaConfiguration = new JpaConfiguration(name, integrator, applicationContext, entityScanConfiguration);
-        jpaConfiguration.setProperties(new HashMap<>(jpaConfiguration.getProperties()));
-        jpaConfiguration.setMappingResources(new ArrayList<>(jpaConfiguration.getMappingResources()));
+        jpaConfiguration.setProperties(new HashMap<>(this.getProperties()));
+        jpaConfiguration.setMappingResources(new ArrayList<>(this.getMappingResources()));
         jpaConfiguration.setCompileTimeHibernateProxies(compileTimeHibernateProxies);
         jpaConfiguration.setReactive(reactive);
         return jpaConfiguration;
