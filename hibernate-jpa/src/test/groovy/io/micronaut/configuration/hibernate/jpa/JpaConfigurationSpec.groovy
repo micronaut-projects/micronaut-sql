@@ -20,6 +20,71 @@ import spock.lang.Specification
 
 class JpaConfigurationSpec extends Specification {
 
+    void "test copy of JPA configuration contains all properties"() {
+        given:
+        def ctx = ApplicationContext.run(
+                'jpa.default.packages-to-scan':'my.package',
+                'jpa.default.compileTimeHibernateProxies':'true',
+                'jpa.default.reactive':'true',
+                'jpa.default.properties.hibernate.dialect':'org.hibernate.dialect.PostgreSQL95Dialect',
+                'jpa.default.properties.hibernate.hbm2ddl.auto':'none',
+                'jpa.default.mapping-resources':'hibernate/MyMapping.hbm.xml'
+        )
+
+        def config = ctx.getBean(JpaConfiguration)
+        def configCopy = config.copy('configCopy')
+
+        expect:
+        config.entityScanConfiguration.enabled
+        config.packagesToScan == ['my.package'] as String[]
+        config.properties.get('hibernate.dialect') == 'org.hibernate.dialect.PostgreSQL95Dialect'
+        config.properties.get('hibernate.hbm2ddl.auto') == 'none'
+        config.mappingResources == ['hibernate/MyMapping.hbm.xml'] as List<String>
+        config.reactive
+        config.compileTimeHibernateProxies
+
+        configCopy.entityScanConfiguration.enabled
+        configCopy.packagesToScan == ['my.package'] as String[]
+        configCopy.properties.get('hibernate.dialect') == 'org.hibernate.dialect.PostgreSQL95Dialect'
+        configCopy.properties.get('hibernate.hbm2ddl.auto') == 'none'
+        configCopy.mappingResources == ['hibernate/MyMapping.hbm.xml'] as List<String>
+
+        config.compileTimeHibernateProxies == configCopy.compileTimeHibernateProxies
+        config.reactive == configCopy.reactive
+
+        cleanup:
+        ctx?.close()
+    }
+
+    void "test copy operation of JPA configuration without all properties"() {
+        given:
+        def ctx = ApplicationContext.run(
+                'jpa.default.packages-to-scan':'my.package'
+        )
+
+        def config = ctx.getBean(JpaConfiguration)
+        def configCopy = config.copy('configCopy')
+
+        expect:
+        config.entityScanConfiguration.enabled
+        config.packagesToScan == ['my.package'] as String[]
+        config.properties.isEmpty()
+        config.mappingResources.isEmpty()
+        !config.reactive
+        !config.compileTimeHibernateProxies
+
+        configCopy.entityScanConfiguration.enabled
+        configCopy.packagesToScan == ['my.package'] as String[]
+        configCopy.properties.isEmpty()
+        configCopy.mappingResources.isEmpty()
+
+        config.compileTimeHibernateProxies == configCopy.compileTimeHibernateProxies
+        config.reactive == configCopy.reactive
+
+        cleanup:
+        ctx?.close()
+    }
+
     void "test JPA entity scan configuration for packages-to-scan"() {
         given:
         def ctx = ApplicationContext.run(
