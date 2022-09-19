@@ -2,7 +2,7 @@
 
 # Micronaut
 
-micronaut = "3.5.2"
+micronaut = "4.0.0-SNAPSHOT"
 micronaut-docs = "2.0.0"
 micronaut-gradle-plugin = "3.6.0"
 
@@ -47,7 +47,7 @@ caffeine = "2.9.3"
 
 # Testing
 
-groovy = "3.0.10"
+groovy = "3.0.12"
 testcontainers = "1.17.3"
 sonar-gradle-plugin = "3.4.0.2513"
 

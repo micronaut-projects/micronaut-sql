@@ -188,5 +188,55 @@
     "type": "io.micronaut.configuration.hibernate.jpa.jcache.$HibernateJCacheManagerBinder$Definition$Reference",
     "member": "Constructor io.micronaut.configuration.hibernate.jpa.jcache.$HibernateJCacheManagerBinder$Definition$Reference()",
     "reason": "Not a bean anymore"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.condition.$EntitiesInPackageCondition$IntrospectionRef",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Removed deprecations for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.condition.$EntitiesInPackageCondition$IntrospectionRef",
+    "member": "Constructor io.micronaut.configuration.hibernate.jpa.condition.$EntitiesInPackageCondition$IntrospectionRef()",
+    "reason": "Removed deprecations for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.condition.EntitiesInPackageCondition",
+    "member": "Constructor io.micronaut.configuration.hibernate.jpa.condition.EntitiesInPackageCondition()",
+    "reason": "Removed deprecated constructor for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.condition.RequiresHibernateEntities",
+    "member": "Implemented interface java.lang.annotation.Annotation",
+    "reason": "Removed deprecated annotation for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.EntityManagerFactoryBean",
+    "member": "Constructor io.micronaut.configuration.hibernate.jpa.EntityManagerFactoryBean(io.micronaut.configuration.hibernate.jpa.JpaConfiguration,org.hibernate.integrator.spi.Integrator,io.micronaut.context.ApplicationContext)",
+    "reason": "Removed deprecated constructor for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.jcache.$BeanConfiguration",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Removed deprecations for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.jcache.$BeanConfiguration",
+    "member": "Constructor io.micronaut.configuration.hibernate.jpa.jcache.$BeanConfiguration()",
+    "reason": "Removed deprecations for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.jcache.HibernateJCacheManagerBinder",
+    "member": "Constructor io.micronaut.configuration.hibernate.jpa.jcache.HibernateJCacheManagerBinder(javax.cache.CacheManager)",
+    "reason": "Removed deprecated constructor for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.jasync.JasyncPoolConfiguration",
+    "member": "Constructor io.micronaut.configuration.jasync.JasyncPoolConfiguration(io.micronaut.configuration.jasync.JasyncPoolConfiguration$JasyncSslConfiguration)",
+    "reason": "Removed deprecated constructor for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.jasync.JasyncPoolConfiguration",
+    "member": "Constructor io.micronaut.configuration.jasync.JasyncPoolConfiguration()",
+    "reason": "Removed deprecated constructor for Micronaut 4"
   }
 ]

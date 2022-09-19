@@ -26,7 +26,6 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.bind.annotation.Bindable;
-import jakarta.inject.Inject;
 
 import java.io.File;
 import java.util.List;
@@ -46,27 +45,10 @@ public class JasyncPoolConfiguration {
     protected ConnectionPoolConfigurationBuilder jasyncOptions = new ConnectionPoolConfigurationBuilder();
 
     /**
-     * Default constructor.
-     */
-    @Deprecated
-    public JasyncPoolConfiguration() {
-    }
-
-    /**
-     * @param sslConfiguration The SSL config
-     * @deprecated Use {@link JasyncPoolConfiguration(JasyncPoolConfiguration, List) instead
-     */
-    @Deprecated
-    protected JasyncPoolConfiguration(@Nullable JasyncSslConfiguration sslConfiguration) {
-        this(sslConfiguration, null);
-    }
-
-    /**
      * Injected constructor.
      * @param sslConfiguration The SSL config
      * @param queryInterceptors Query Interceptors
      */
-    @Inject
     protected JasyncPoolConfiguration(@Nullable JasyncSslConfiguration sslConfiguration,
                                       @Nullable List<QueryInterceptor> queryInterceptors) {
         if (sslConfiguration != null) {
