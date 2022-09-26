@@ -119,7 +119,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">java.lang.Object</a></li>
+<li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
 <li>io.micronaut.configuration.jooq.JsonConverterProvider</li>
@@ -137,7 +137,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>@Singleton
 @Requires(beans=io.micronaut.json.JsonMapper.class)
 public class <span class="typeNameLabel">JsonConverterProvider</span>
-extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>
+extends java.lang.Object
 implements <a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/ConverterProvider.html?is-external=true" title="class or interface in org.jooq" class="externalLink">ConverterProvider</a></pre>
 <div class="block">jOOQ ConverterProvider integrating the micronaut-json-core <code>JsonMapper</code> to convert JSON and JSONB types.</div>
 <dl>
@@ -189,8 +189,8 @@ implements <a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/Conver
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>&lt;T,&#8203;U&gt;<br><a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/Converter.html?is-external=true" title="class or interface in org.jooq" class="externalLink">Converter</a>&lt;T,&#8203;U&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#provide(java.lang.Class,java.lang.Class)">provide</a></span>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang" class="externalLink">Class</a>&lt;T&gt;&nbsp;tType,
-       <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang" class="externalLink">Class</a>&lt;U&gt;&nbsp;uType)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#provide(java.lang.Class,java.lang.Class)">provide</a></span>&#8203;(java.lang.Class&lt;T&gt;&nbsp;tType,
+       java.lang.Class&lt;U&gt;&nbsp;uType)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -198,8 +198,8 @@ implements <a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/Conver
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a></h3>
-<code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang" class="externalLink">clone</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink">equals</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang" class="externalLink">finalize</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang" class="externalLink">getClass</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang" class="externalLink">hashCode</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang" class="externalLink">notify</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang" class="externalLink">notifyAll</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang" class="externalLink">toString</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang" class="externalLink">wait</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang" class="externalLink">wait</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait(long,int)" title="class or interface in java.lang" class="externalLink">wait</a></code></li>
+<h3>Methods inherited from class&nbsp;java.lang.Object</h3>
+<code>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait</code></li>
 </ul>
 </li>
 </ul>
@@ -243,8 +243,8 @@ implements <a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/Conver
 <li class="blockList">
 <h4>provide</h4>
 <pre class="methodSignature">@Nullable
-public&nbsp;&lt;T,&#8203;U&gt;&nbsp;<a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/Converter.html?is-external=true" title="class or interface in org.jooq" class="externalLink">Converter</a>&lt;T,&#8203;U&gt;&nbsp;provide&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang" class="externalLink">Class</a>&lt;T&gt;&nbsp;tType,
-                                                <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang" class="externalLink">Class</a>&lt;U&gt;&nbsp;uType)</pre>
+public&nbsp;&lt;T,&#8203;U&gt;&nbsp;<a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/Converter.html?is-external=true" title="class or interface in org.jooq" class="externalLink">Converter</a>&lt;T,&#8203;U&gt;&nbsp;provide&#8203;(java.lang.Class&lt;T&gt;&nbsp;tType,
+                                                java.lang.Class&lt;U&gt;&nbsp;uType)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/ConverterProvider.html?is-external=true#provide(java.lang.Class,java.lang.Class)" title="class or interface in org.jooq" class="externalLink">provide</a></code>&nbsp;in interface&nbsp;<code><a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/ConverterProvider.html?is-external=true" title="class or interface in org.jooq" class="externalLink">ConverterProvider</a></code></dd>

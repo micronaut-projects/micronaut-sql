@@ -119,7 +119,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">java.lang.Object</a></li>
+<li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
 <li>io.micronaut.configuration.jdbi.JdbiFactory</li>
@@ -132,7 +132,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>@Factory
 public class <span class="typeNameLabel">JdbiFactory</span>
-extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a></pre>
+extends java.lang.Object</pre>
 <div class="block">Sets up Jdbi library integration.</div>
 <dl>
 <dt><span class="simpleTagLabel">Since:</span></dt>
@@ -183,7 +183,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Jdbi.html?is-external=true" title="class or interface in org.jdbi.v3.core" class="externalLink">Jdbi</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#jdbi(javax.sql.DataSource,org.jdbi.v3.core.transaction.TransactionHandler,org.jdbi.v3.core.statement.StatementBuilderFactory,io.micronaut.configuration.jdbi.JdbiCustomizer)">jdbi</a></span>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql" class="externalLink">DataSource</a>&nbsp;dataSource,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#jdbi(javax.sql.DataSource,org.jdbi.v3.core.transaction.TransactionHandler,org.jdbi.v3.core.statement.StatementBuilderFactory,io.micronaut.configuration.jdbi.JdbiCustomizer)">jdbi</a></span>&#8203;(javax.sql.DataSource&nbsp;dataSource,
     <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html?is-external=true" title="class or interface in org.jdbi.v3.core.transaction" class="externalLink">TransactionHandler</a>&nbsp;transactionHandler,
     <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/statement/StatementBuilderFactory.html?is-external=true" title="class or interface in org.jdbi.v3.core.statement" class="externalLink">StatementBuilderFactory</a>&nbsp;statementBuilderFactory,
     <a href="JdbiCustomizer.html" title="interface in io.micronaut.configuration.jdbi">JdbiCustomizer</a>&nbsp;jdbiCustomizer)</code></th>
@@ -196,8 +196,8 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a></h3>
-<code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang" class="externalLink">clone</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink">equals</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang" class="externalLink">finalize</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang" class="externalLink">getClass</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang" class="externalLink">hashCode</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang" class="externalLink">notify</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang" class="externalLink">notifyAll</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang" class="externalLink">toString</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang" class="externalLink">wait</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang" class="externalLink">wait</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait(long,int)" title="class or interface in java.lang" class="externalLink">wait</a></code></li>
+<h3>Methods inherited from class&nbsp;java.lang.Object</h3>
+<code>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait</code></li>
 </ul>
 </li>
 </ul>
@@ -240,8 +240,8 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockListLast">
 <li class="blockList">
 <h4>jdbi</h4>
-<pre class="methodSignature">@EachBean(<a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql" class="externalLink">javax.sql.DataSource.class</a>)
-public&nbsp;<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Jdbi.html?is-external=true" title="class or interface in org.jdbi.v3.core" class="externalLink">Jdbi</a>&nbsp;jdbi&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql" class="externalLink">DataSource</a>&nbsp;dataSource,
+<pre class="methodSignature">@EachBean(javax.sql.DataSource.class)
+public&nbsp;<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Jdbi.html?is-external=true" title="class or interface in org.jdbi.v3.core" class="externalLink">Jdbi</a>&nbsp;jdbi&#8203;(javax.sql.DataSource&nbsp;dataSource,
                  @Parameter @Nullable
                  <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html?is-external=true" title="class or interface in org.jdbi.v3.core.transaction" class="externalLink">TransactionHandler</a>&nbsp;transactionHandler,
                  @Parameter @Nullable
@@ -251,10 +251,10 @@ public&nbsp;<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Jdbi.html?is-exte
 <div class="block">Creates a Jdbi <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Jdbi.html?is-external=true" title="class or interface in org.jdbi.v3.core" class="externalLink"><code>Jdbi</code></a> instance.
  It will configure it with available Jdbi provider beans with the same qualifier.
  <p>
- Plugins will be installed automatically from the classpath using the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html?is-external=true" title="class or interface in java.util" class="externalLink"><code>ServiceLoader</code></a> mechanism</div>
+ Plugins will be installed automatically from the classpath using the <code>ServiceLoader</code> mechanism</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>dataSource</code> - The <a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql" class="externalLink"><code>DataSource</code></a></dd>
+<dd><code>dataSource</code> - The <code>DataSource</code></dd>
 <dd><code>transactionHandler</code> - The <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html?is-external=true" title="class or interface in org.jdbi.v3.core.transaction" class="externalLink"><code>TransactionHandler</code></a></dd>
 <dd><code>statementBuilderFactory</code> - The <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/statement/StatementBuilderFactory.html?is-external=true" title="class or interface in org.jdbi.v3.core.statement" class="externalLink"><code>StatementBuilderFactory</code></a></dd>
 <dd><code>jdbiCustomizer</code> - The <a href="JdbiCustomizer.html" title="interface in io.micronaut.configuration.jdbi"><code>JdbiCustomizer</code></a></dd>

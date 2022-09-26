@@ -114,9 +114,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <hr>
-<pre><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Documented.html?is-external=true" title="class or interface in java.lang.annotation" class="externalLink">@Documented</a>
-<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Retention.html?is-external=true" title="class or interface in java.lang.annotation" class="externalLink">@Retention</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/RetentionPolicy.html?is-external=true#RUNTIME" title="class or interface in java.lang.annotation" class="externalLink">RUNTIME</a>)
-<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Target.html?is-external=true" title="class or interface in java.lang.annotation" class="externalLink">@Target</a>({<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/ElementType.html?is-external=true#PACKAGE" title="class or interface in java.lang.annotation" class="externalLink">PACKAGE</a>,<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/ElementType.html?is-external=true#TYPE" title="class or interface in java.lang.annotation" class="externalLink">TYPE</a>})
+<pre>@Documented
+@Retention(RUNTIME)
+@Target({PACKAGE,TYPE})
 @Requires(property="vertx.pg.client") @Requires(classes={io.vertx.pgclient.PgConnectOptions.class,io.vertx.sqlclient.PoolOptions.class})
 public @interface <span class="memberNameLabel">RequiresVertxPgClient</span></pre>
 <div class="block">Custom condition to indicate a bean requires the vertx pg client.</div>
