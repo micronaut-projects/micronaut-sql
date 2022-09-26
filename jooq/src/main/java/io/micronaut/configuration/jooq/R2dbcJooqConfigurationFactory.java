@@ -20,7 +20,6 @@ import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.Nullable;
 import io.r2dbc.spi.ConnectionFactory;
 import org.jooq.Configuration;
@@ -41,9 +40,8 @@ import org.jooq.impl.DefaultConfiguration;
  * @since 4.5.0
  */
 @Requires(classes = ConnectionFactory.class)
-@Internal
 @Factory
-final class R2dbcJooqConfigurationFactory extends AbstractJooqConfigurationFactory {
+public class R2dbcJooqConfigurationFactory extends AbstractJooqConfigurationFactory {
 
     /**
      * Creates jOOQ {@link Configuration}. It will configure it with available jOOQ provider beans with the same
