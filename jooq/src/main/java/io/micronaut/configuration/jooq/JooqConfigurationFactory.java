@@ -19,7 +19,6 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
-import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.jdbc.DataSourceResolver;
 import org.jooq.Configuration;
@@ -42,8 +41,7 @@ import javax.sql.DataSource;
  * @since 1.2.0
  */
 @Factory
-@Internal
-final class JooqConfigurationFactory extends AbstractJooqConfigurationFactory {
+public class JooqConfigurationFactory extends AbstractJooqConfigurationFactory {
 
     /**
      * Creates jOOQ {@link Configuration}.

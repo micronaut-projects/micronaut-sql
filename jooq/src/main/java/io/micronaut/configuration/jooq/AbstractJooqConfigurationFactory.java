@@ -17,7 +17,6 @@ package io.micronaut.configuration.jooq;
 
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Parameter;
-import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import org.jooq.ConverterProvider;
@@ -40,8 +39,7 @@ import org.jooq.impl.DefaultConfiguration;
  * @author Vladimir Kulev
  * @since 1.2.0
  */
-@Internal
-abstract class AbstractJooqConfigurationFactory {
+public class AbstractJooqConfigurationFactory {
 
     /**
      * Creates jOOQ {@link org.jooq.Configuration}.
