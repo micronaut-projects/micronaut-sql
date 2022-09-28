@@ -21,9 +21,11 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.jdbc.DataSourceResolver;
+import jdk.jshell.spi.ExecutionControl;
 import org.jooq.Configuration;
 import org.jooq.ConnectionProvider;
 import org.jooq.ConverterProvider;
+import org.jooq.DSLContext;
 import org.jooq.ExecutorProvider;
 import org.jooq.MetaProvider;
 import org.jooq.RecordMapperProvider;
@@ -104,6 +106,18 @@ public class JooqConfigurationFactory extends AbstractJooqConfigurationFactory {
         }
 
         return configuration;
+    }
+
+    /**
+     * Created {@link DSLContext} based on {@link Configuration}.
+     *
+     * @param configuration The {@link Configuration}
+     * @return A {@link DSLContext}
+     * @deprecated Handled via the {@link DSLContextFactory} instead.
+     */
+    @Deprecated
+    public DSLContext dslContext(Configuration configuration) {
+        throw new UnsupportedOperationException("Moved to DSLContextFactory");
     }
 
 }
