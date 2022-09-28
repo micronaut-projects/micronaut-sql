@@ -17,7 +17,6 @@ package io.micronaut.configuration.jooq;
 
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
-import io.micronaut.core.annotation.Internal;
 import org.jooq.Configuration;
 import org.jooq.DSLContext;
 import org.jooq.impl.DefaultDSLContext;
@@ -29,8 +28,7 @@ import org.jooq.impl.DefaultDSLContext;
  * @since 4.5.0
  */
 @Factory
-@Internal
-final class DSLContextFactory {
+public class DSLContextFactory {
 
     /**
      * Created {@link DSLContext} based on {@link Configuration}.
