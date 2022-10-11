@@ -30,7 +30,6 @@ import io.micronaut.core.bind.annotation.Bindable;
 import java.io.File;
 import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * The configuration class for Jasync Client.
@@ -59,7 +58,7 @@ public class JasyncPoolConfiguration {
             jasyncOptions.setInterceptors(queryInterceptors
                     .stream()
                     .map(x -> (Supplier<QueryInterceptor>) () -> x)
-                    .collect(Collectors.toList())
+                    .toList()
             );
         }
     }
