@@ -21,7 +21,7 @@ import org.testcontainers.containers.JdbcDatabaseContainer
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.utility.DockerImageName
 
-@MicronautTest
+@MicronautTest(transactional = false)
 class PostgresAppSpec extends AbstractR2DBCContainerAppSpec {
 
     @Override

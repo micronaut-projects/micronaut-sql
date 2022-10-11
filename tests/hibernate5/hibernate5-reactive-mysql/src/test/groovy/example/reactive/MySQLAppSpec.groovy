@@ -43,6 +43,6 @@ class MySQLAppSpec extends AbstractHibernateReactiveAppSpec implements TestPrope
 
     @Override
     JdbcDatabaseContainer getJdbcDatabaseContainer() {
-        return new MySQLContainer(DockerImageName.parse("mysql:8.0.11"))
+        return new MySQLContainer(DockerImageName.parse("mysql:8.0.30"))
     }
 }

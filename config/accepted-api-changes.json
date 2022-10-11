@@ -238,5 +238,65 @@
     "type": "io.micronaut.configuration.jasync.JasyncPoolConfiguration",
     "member": "Constructor io.micronaut.configuration.jasync.JasyncPoolConfiguration()",
     "reason": "Removed deprecated constructor for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.condition.$EntitiesInPackageCondition$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Removed deprecated EntitiesInPackageCondition class for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.condition.$EntitiesInPackageCondition$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Removed deprecated EntitiesInPackageCondition class for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.condition.$EntitiesInPackageCondition$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Removed deprecated EntitiesInPackageCondition class for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.condition.$EntitiesInPackageCondition$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Removed deprecated EntitiesInPackageCondition class for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.condition.EntitiesInPackageCondition",
+    "member": "Implemented interface io.micronaut.context.condition.Condition",
+    "reason": "Removed deprecated EntitiesInPackageCondition class for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.condition.EntitiesInPackageCondition",
+    "member": "Implemented interface java.util.function.Predicate",
+    "reason": "Removed deprecated EntitiesInPackageCondition class for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.jcache.$BeanConfiguration",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Removed deprecated HibernateJCacheManagerBinder class for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.jcache.$BeanConfiguration",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Removed deprecated HibernateJCacheManagerBinder class for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.jcache.$BeanConfiguration",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Removed deprecated HibernateJCacheManagerBinder class for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.jcache.$BeanConfiguration",
+    "member": "Implemented interface io.micronaut.inject.BeanConfiguration",
+    "reason": "Removed deprecated HibernateJCacheManagerBinder class for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.jcache.HibernateJCacheManagerBinder",
+    "member": "Implemented interface java.util.EventListener",
+    "reason": "Removed deprecated HibernateJCacheManagerBinder class for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.jcache.HibernateJCacheManagerBinder",
+    "member": "Implemented interface io.micronaut.context.event.BeanCreatedEventListener",
+    "reason": "Removed deprecated HibernateJCacheManagerBinder class for Micronaut 4"
   }
 ]

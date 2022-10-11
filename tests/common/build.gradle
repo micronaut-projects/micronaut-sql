@@ -6,4 +6,6 @@ dependencies {
     implementation mn.micronaut.http
     implementation mn.micronaut.runtime
     api(mn.micronaut.data.tx)
+
+    runtimeOnly(mn.snakeyaml)
 }

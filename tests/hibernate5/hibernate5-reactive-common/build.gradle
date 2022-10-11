@@ -1,5 +1,5 @@
 plugins {
-    id 'io.micronaut.build.internal.test-library-java11'
+    id 'io.micronaut.build.internal.test-library'
 }
 
 dependencies {
@@ -8,4 +8,6 @@ dependencies {
     implementation mn.micronaut.http.client
     implementation projects.hibernateReactive
     implementation projects.jdbc
+
+    runtimeOnly(mn.snakeyaml)
 }

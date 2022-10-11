@@ -7,9 +7,6 @@ plugins {
 
 group "io.micronaut.example"
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
 tasks.register("testExamples") {
     dependsOn "test"
 }

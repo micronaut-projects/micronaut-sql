@@ -6,4 +6,6 @@ dependencies {
     implementation projects.tests.common
     implementation projects.hibernateJpa
     runtimeOnly projects.jdbcHikari
+
+    runtimeOnly(mn.snakeyaml)
 }
