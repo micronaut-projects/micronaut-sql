@@ -78,10 +78,8 @@ public class DatasourceFactory implements AutoCloseable {
 
         TomcatDataSourcePoolMetadata dataSourcePoolMetadata = null;
 
-        DataSource resolved = dataSourceResolver.resolve(dataSource);
-
-        if (resolved instanceof org.apache.tomcat.jdbc.pool.DataSource resolvedDataSource) {
-            dataSourcePoolMetadata = new TomcatDataSourcePoolMetadata(resolvedDataSource);
+        if (dataSourceResolver.resolve(dataSource) instanceof org.apache.tomcat.jdbc.pool.DataSource resolved) {
+            dataSourcePoolMetadata = new TomcatDataSourcePoolMetadata(resolved);
         }
         return dataSourcePoolMetadata;
     }

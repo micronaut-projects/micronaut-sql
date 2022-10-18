@@ -45,7 +45,7 @@ caffeine = "3.1.1"
 
 # Testing
 
-groovy = "4.0.4"
+groovy = "4.0.6"
 testcontainers = "1.17.5"
 sonar-gradle-plugin = "3.4.0.2513"
 
