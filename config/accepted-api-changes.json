@@ -298,5 +298,40 @@
     "type": "io.micronaut.configuration.hibernate.jpa.jcache.HibernateJCacheManagerBinder",
     "member": "Implemented interface io.micronaut.context.event.BeanCreatedEventListener",
     "reason": "Removed deprecated HibernateJCacheManagerBinder class for Micronaut 4"
+  },
+  {
+    "type": "io.micronaut.configuration.jdbc.ucp.$DatasourceConfiguration$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Micronaut 4 Bean Definition changes"
+  },
+  {
+    "type": "io.micronaut.configuration.jdbc.ucp.$DatasourceConfiguration$Definition$Reference",
+    "member": "Constructor io.micronaut.configuration.jdbc.ucp.$DatasourceConfiguration$Definition$Reference()",
+    "reason": "Micronaut 4 Bean Definition changes"
+  },
+  {
+    "type": "io.micronaut.configuration.jdbc.ucp.$DatasourceConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Micronaut 4 Bean Definition changes"
+  },
+  {
+    "type": "io.micronaut.configuration.jdbc.ucp.$DatasourceConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Micronaut 4 Bean Definition changes"
+  },
+  {
+    "type": "io.micronaut.configuration.jdbc.ucp.$DatasourceConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Micronaut 4 Bean Definition changes"
+  },
+  {
+    "type": "io.micronaut.configuration.jdbc.ucp.$DatasourceConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Micronaut 4 Bean Definition changes"
+  },
+  {
+    "type": "io.micronaut.configuration.jdbc.ucp.$DatasourceConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Micronaut 4 Bean Definition changes"
   }
 ]
