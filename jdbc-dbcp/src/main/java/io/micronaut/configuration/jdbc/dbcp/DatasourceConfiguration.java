@@ -18,6 +18,7 @@ package io.micronaut.configuration.jdbc.dbcp;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
+import io.micronaut.context.annotation.Property;
 import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
@@ -149,6 +150,10 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     @Override
     public String getValidationQuery() {
         return calculatedSettings.getValidationQuery();
+    }
+
+    public void setConnectionPropertiesString(@Property(name = "datasources.*.connection-properties") String connectionProperties) {
+        setConnectionProperties(connectionProperties);
     }
 
     @Override
