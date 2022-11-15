@@ -83,6 +83,29 @@ final class HibernateFeature implements Feature {
 
         registerIfPresent(access, "com.mysql.cj.jdbc.Driver", mysqlDialects);
         registerIfPresent(access, "io.vertx.mysqlclient.spi.MySQLDriver", mysqlDialects);
+
+        AutomaticFeatureUtils.registerConstructorsForRuntimeReflection(
+            access, "org.hibernate.persister.entity.JoinedSubclassEntityPersister");
+        AutomaticFeatureUtils.registerConstructorsForRuntimeReflection(
+            access, "org.hibernate.persister.entity.SingleTableEntityPersister");
+        AutomaticFeatureUtils.registerConstructorsForRuntimeReflection(
+            access, "org.hibernate.persister.entity.UnionSubclassEntityPersister");
+        AutomaticFeatureUtils.registerConstructorsForRuntimeReflection(
+            access, "org.hibernate.persister.collection.OneToManyPersister");
+        AutomaticFeatureUtils.registerConstructorsForRuntimeReflection(
+            access, "org.hibernate.persister.collection.BasicCollectionPersister");
+
+        AutomaticFeatureUtils.registerConstructorsForRuntimeReflection(
+            access, "org.hibernate.sql.ordering.antlr.NodeSupport");
+        AutomaticFeatureUtils.registerConstructorsForRuntimeReflection(
+            access, "org.hibernate.sql.ordering.antlr.SortKey");
+        AutomaticFeatureUtils.registerConstructorsForRuntimeReflection(
+            access, "org.hibernate.sql.ordering.antlr.OrderingSpecification");
+        AutomaticFeatureUtils.registerConstructorsForRuntimeReflection(
+            access, "org.hibernate.sql.ordering.antlr.SortSpecification");
+        AutomaticFeatureUtils.registerClassForRuntimeReflectionAndReflectiveInstantiation(
+            access, "org.hibernate.sql.ordering.antlr.OrderByFragment");
+        AutomaticFeatureUtils.registerConstructorsForRuntimeReflection(access, "antlr.CommonToken");
     }
 
     private void registerIfPresent(BeforeAnalysisAccess access, String name, Class<?>... dialects) {
