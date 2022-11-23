@@ -19,7 +19,7 @@ import example.domain.IPet;
 import io.micronaut.serde.annotation.Serdeable;
 
 @Serdeable
-public class  PetDto {
+public class PetDto {
 
     private Long id;
     private String name;
