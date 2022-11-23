@@ -22,6 +22,16 @@ import io.micronaut.test.support.TestPropertyProvider
 class H2AppSpec extends AbstractAppSpec implements TestPropertyProvider {
 
     @Override
+    Class<?> getOwnerClass() {
+        return Owner
+    }
+
+    @Override
+    Class<?> getPetClass() {
+        return Pet
+    }
+
+    @Override
     Map<String, String> getProperties() {
         return [
                 "jpa.default.properties.hibernate.dialect"  : "org.hibernate.dialect.H2Dialect",

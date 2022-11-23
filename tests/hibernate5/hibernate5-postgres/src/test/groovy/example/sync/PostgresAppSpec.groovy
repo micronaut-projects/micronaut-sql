@@ -24,6 +24,16 @@ import org.testcontainers.utility.DockerImageName
 class PostgresAppSpec extends AbstractHibernateAppSpec {
 
     @Override
+    Class<?> getOwnerClass() {
+        Owner
+    }
+
+    @Override
+    Class<?> getPetClass() {
+        Pet
+    }
+
+    @Override
     JdbcDatabaseContainer getJdbcDatabaseContainer() {
         return new PostgreSQLContainer(DockerImageName.parse("postgres:9.6.12"))
     }

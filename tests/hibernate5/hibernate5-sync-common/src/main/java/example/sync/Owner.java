@@ -17,12 +17,14 @@ package example.sync;
 
 import example.domain.IOwner;
 import io.micronaut.configuration.hibernate.jpa.proxy.GenerateProxy;
+import io.micronaut.serde.annotation.Serdeable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
+@Serdeable
 @GenerateProxy
 public class Owner implements IOwner {
 

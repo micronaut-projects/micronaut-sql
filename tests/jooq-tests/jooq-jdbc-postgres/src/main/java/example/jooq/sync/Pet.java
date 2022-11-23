@@ -2,7 +2,11 @@ package example.jooq.sync;
 
 import example.domain.IOwner;
 import example.domain.IPet;
+import io.micronaut.core.annotation.Creator;
+import io.micronaut.core.annotation.Nullable;
+import io.micronaut.serde.annotation.Serdeable;
 
+@Serdeable
 public class Pet implements IPet {
 
     private Long id;
@@ -10,10 +14,11 @@ public class Pet implements IPet {
     private PetType type;
     private Owner owner;
 
-    public Pet() {
+    Pet() {
     }
 
-    public Pet(Long id, String name, PetType type, Owner owner) {
+    @Creator
+    public Pet(Long id, String name, @Nullable PetType type, Owner owner) {
         this.id = id;
         this.name = name;
         this.type = type;

@@ -15,6 +15,7 @@
  */
 package example.sync
 
+import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
@@ -30,6 +31,9 @@ abstract class AbstractAppSpec extends Specification {
     @Client("/")
     HttpClient client
 
+    abstract Class<?> getOwnerClass()
+    abstract Class<?> getPetClass()
+
     def 'should init'() {
         when:
             client.toBlocking().exchange(HttpRequest.GET("/init"))
@@ -39,7 +43,7 @@ abstract class AbstractAppSpec extends Specification {
 
     def 'should fetch owners'() {
         when:
-            def results = client.toBlocking().retrieve(HttpRequest.GET("/owners"), List)
+            def results = client.toBlocking().retrieve(HttpRequest.GET("/owners"), Argument.listOf(ownerClass))
         then:
             results.size() == 2
             results[0].name == "Fred"
@@ -55,7 +59,7 @@ abstract class AbstractAppSpec extends Specification {
 
     def 'should fetch pets'() {
         when:
-            def results = client.toBlocking().retrieve(HttpRequest.GET("/pets"), List)
+            def results = client.toBlocking().retrieve(HttpRequest.GET("/pets"), Argument.listOf(petClass))
         then:
             results.size() == 3
             results[0].name == "Dino"
@@ -84,7 +88,7 @@ abstract class AbstractAppSpec extends Specification {
         }
         when:
             def resultsList = Flux.range(1, 1000)
-                    .flatMap { client.retrieve(HttpRequest.GET("/pets"), List) }
+                    .flatMap { client.retrieve(HttpRequest.GET("/pets"), Argument.listOf(petClass)) }
                     .collectList()
                     .block()
         then:

@@ -5,6 +5,7 @@ plugins {
 dependencies {
     implementation mn.micronaut.http
     implementation mn.micronaut.runtime
+    api(mnSerde.micronaut.serde.api)
     api(mnData.micronaut.data.tx)
 
     runtimeOnly(mn.snakeyaml)
