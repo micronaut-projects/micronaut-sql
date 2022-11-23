@@ -11,5 +11,5 @@ configurations.all {
 }
 
 dependencies {
-    testImplementation mn.micronaut.serde.jackson
+    testImplementation mnSerde.micronaut.serde.jackson
 }

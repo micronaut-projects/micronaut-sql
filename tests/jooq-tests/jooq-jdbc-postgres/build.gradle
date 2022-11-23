@@ -4,10 +4,10 @@ plugins {
 
 dependencies {
     implementation projects.jooq
-    implementation mn.micronaut.data.tx
+    implementation mnData.micronaut.data.tx
     implementation projects.tests.common
 
-    annotationProcessor mn.micronaut.data.processor
+    annotationProcessor mnData.micronaut.data.processor
 
     runtimeOnly libs.managed.postgresql
     runtimeOnly projects.jdbcHikari

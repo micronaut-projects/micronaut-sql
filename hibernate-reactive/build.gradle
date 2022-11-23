@@ -18,18 +18,18 @@ dependencies {
     api libs.managed.hibernate.reactive.core
     api mn.micronaut.runtime
 
-    compileOnly mn.graal
+    compileOnly libs.graal.svm
     compileOnly libs.managed.vertx.sql.client
 
     testAnnotationProcessor mn.micronaut.inject.java
-    testRuntimeOnly mn.micronaut.hibernate.validator
+    testRuntimeOnly libs.micronaut.hibernate.validator
     testImplementation mn.micronaut.inject.java
     testImplementation mn.micronaut.inject.groovy
     testImplementation projects.jdbc
     testRuntimeOnly projects.jdbcTomcat
     testRuntimeOnly(libs.managed.h2)
 
-    testImplementation libs.testcontainers.bom
+    testImplementation(platform(libs.testcontainers.bom))
     testImplementation libs.testcontainers.spock
     testImplementation libs.testcontainers.jdbc
     testImplementation libs.testcontainers.postgresql

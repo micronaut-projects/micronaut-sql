@@ -19,7 +19,7 @@ dependencies {
 
     // needed because otherwise IntelliJ integration broken
     compileOnly(mn.micronaut.inject.java)
-    compileOnly(mn.graal)
+    compileOnly(libs.graal.svm)
     testCompileOnly(mn.micronaut.inject.java)
 
     // needed for native image (adding @Entity annotation to UpdatableRecords for reflection registration)
@@ -30,7 +30,7 @@ dependencies {
     api(libs.managed.jooq)
 
     compileOnly(libs.spring.jdbc)
-    compileOnly(mn.micronaut.data.tx)
+    compileOnly(mnData.micronaut.data.tx)
     compileOnly(libs.sfm.reflect)
     compileOnly(mn.jackson.databind)
     compileOnly(mn.micronaut.json.core)
@@ -38,24 +38,22 @@ dependencies {
     testRuntimeOnly projects.jdbcTomcat
     testRuntimeOnly(libs.managed.h2)
     testAnnotationProcessor(mn.micronaut.inject.java)
-    testAnnotationProcessor(mn.micronaut.spring.annotation)
-    testImplementation(mn.micronaut.spring)
+    testAnnotationProcessor(mnSpring.micronaut.spring.annotation)
+    testImplementation(mnSpring.micronaut.spring)
     testImplementation(mn.micronaut.http.server.netty)
     testImplementation(mn.micronaut.http.client)
     testImplementation(mn.micronaut.management)
 
-    testImplementation(mn.micronaut.micrometer.core)
+    testImplementation(mnMicrometer.micronaut.micrometer.core)
     testImplementation(libs.spring.jdbc)
-    testImplementation(mn.micronaut.cache.core)
-    txTestAnnotationProcessor(platform(mn.micronaut.bom))
-    txTestImplementation(platform(mn.micronaut.bom))
+    testImplementation(mnCache.micronaut.cache.core)
     txTestRuntimeOnly projects.jdbcTomcat
     txTestRuntimeOnly(libs.managed.h2)
     txTestAnnotationProcessor(mn.micronaut.inject.java)
-    txTestAnnotationProcessor(mn.micronaut.data.processor)
-    txTestImplementation(mn.micronaut.data.tx)
+    txTestAnnotationProcessor(mnData.micronaut.data.processor)
+    txTestImplementation(mnData.micronaut.data.tx)
     txTestImplementation(mn.micronaut.inject.groovy)
-    txTestImplementation(mn.micronaut.test.spock)
+    txTestImplementation(mnTest.micronaut.test.spock)
 }
 
 task txTest(type: Test) {

@@ -12,7 +12,7 @@ micronaut {
 dependencies {
     runtimeOnly "ch.qos.logback:logback-classic"
     implementation mn.micronaut.http.client
-    testImplementation mn.micronaut.test.core
+    testImplementation mnTest.micronaut.test.core
     testImplementation libs.testcontainers.bom
     testImplementation libs.testcontainers.spock
     testImplementation libs.testcontainers.jdbc

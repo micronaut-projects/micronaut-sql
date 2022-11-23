@@ -3,10 +3,10 @@ plugins {
 }
 
 dependencies {
-    implementation mn.micronaut.reactor
+    implementation mnReactor.micronaut.reactor
     implementation mn.micronaut.http
     implementation mn.micronaut.runtime
-    api(mn.micronaut.data.tx)
+    api(mnData.micronaut.data.tx)
 
     runtimeOnly(mn.snakeyaml)
 }
