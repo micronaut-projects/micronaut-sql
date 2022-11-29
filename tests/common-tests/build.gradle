@@ -5,7 +5,7 @@ plugins {
 dependencies {
     api mn.micronaut.http.client
     api mnTest.micronaut.test.core
-    api mnReactor.reactor.core
+    api mnReactor.micronaut.reactor
     api platform(libs.testcontainers.bom)
     api libs.testcontainers.spock
     api libs.testcontainers.jdbc
