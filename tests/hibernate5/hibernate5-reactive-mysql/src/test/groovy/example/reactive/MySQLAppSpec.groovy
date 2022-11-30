@@ -25,6 +25,16 @@ import org.testcontainers.utility.DockerImageName
 @MicronautTest(packages = "example.domain", transactional = false)
 class MySQLAppSpec extends AbstractHibernateReactiveAppSpec implements TestPropertyProvider {
 
+    @Override
+    Class<?> getOwnerClass() {
+        Owner
+    }
+
+    @Override
+    Class<?> getPetClass() {
+        Pet
+    }
+
     Map<String, String> provideProperties(JdbcDatabaseContainer databaseContainer) {
         [
 //                'vertx.mysql.client.port'                 : databaseContainer.getMappedPort(MySQLContainer.MYSQL_PORT),
@@ -43,6 +53,6 @@ class MySQLAppSpec extends AbstractHibernateReactiveAppSpec implements TestPrope
 
     @Override
     JdbcDatabaseContainer getJdbcDatabaseContainer() {
-        return new MySQLContainer(DockerImageName.parse("mysql:8.0.11"))
+        return new MySQLContainer(DockerImageName.parse("mysql:8.0.30"))
     }
 }

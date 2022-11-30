@@ -9,10 +9,18 @@ micronaut {
     testRuntime "spock"
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == 'org.codehaus.groovy') {
+            details.useTarget "org.apache.groovy:$details.requested.name:${libs.versions.groovy.get()}"
+        }
+    }
+}
+
 dependencies {
-    runtimeOnly "ch.qos.logback:logback-classic"
-    implementation "io.micronaut:micronaut-http-client"
-    testImplementation "io.micronaut.test:micronaut-test-core"
+    runtimeOnly mn.logback.classic
+    implementation mn.micronaut.http.client
+    testImplementation mnTest.micronaut.test.core
     testImplementation libs.testcontainers.bom
     testImplementation libs.testcontainers.spock
     testImplementation libs.testcontainers.jdbc
@@ -20,4 +28,22 @@ dependencies {
 
 application {
     mainClass = "example.Application"
+}
+
+// TODO: Re-enable native tests once we have Micronaut data for 4.0.0
+project.afterEvaluate {
+    tasks.named("testNativeImage") {
+        onlyIf { false }
+    }
+    tasks.named("nativeCompile") {
+        onlyIf { false }
+    }
+}
+
+graalvmNative {
+    binaries {
+        main {
+            buildArgs("--report-unsupported-elements-at-runtime")
+        }
+    }
 }

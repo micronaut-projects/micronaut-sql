@@ -12,7 +12,7 @@ import org.jooq.Table;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Optional;

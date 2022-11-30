@@ -24,8 +24,18 @@ import org.testcontainers.utility.DockerImageName
 class MariaDBAppSpec extends AbstractHibernateAppSpec {
 
     @Override
+    Class<?> getOwnerClass() {
+        Owner
+    }
+
+    @Override
+    Class<?> getPetClass() {
+        Pet
+    }
+
+    @Override
     JdbcDatabaseContainer getJdbcDatabaseContainer() {
-        return new MariaDBContainer(DockerImageName.parse("mariadb:10.3.6"))
+        return new MariaDBContainer(DockerImageName.parse("mariadb:10.9.3"))
     }
 
     @Override

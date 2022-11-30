@@ -7,3 +7,16 @@ micronautBom {
         p.path.startsWith(':test')
     } as Spec<Project>)
 }
+
+micronautBom {
+    suppressions {
+        acceptedLibraryRegressions.add("commons-dbcp-compat")
+        acceptedVersionRegressions.add("commons-dbcp-compat")
+        acceptedLibraryRegressions.add("commons-dbcp")
+        dependencies.addAll([
+                "org.jdbi:jdbi3-core:3.34.0",
+                "org.jdbi:jdbi3-sqlobject:3.34.0",
+                "org.jdbi:jdbi3-json:3.34.0",
+        ])
+    }
+}

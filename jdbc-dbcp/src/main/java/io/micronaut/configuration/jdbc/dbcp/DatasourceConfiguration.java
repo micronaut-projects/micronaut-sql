@@ -18,6 +18,7 @@ package io.micronaut.configuration.jdbc.dbcp;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
+import io.micronaut.context.annotation.Property;
 import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
@@ -26,8 +27,8 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import java.util.Map;
 
 /**
@@ -149,6 +150,15 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     @Override
     public String getValidationQuery() {
         return calculatedSettings.getValidationQuery();
+    }
+
+    /**
+     * A helper method to allow setting the connectionProperties via a single String.
+     *
+     * @param connectionProperties The connection properties
+     */
+    public void setConnectionPropertiesString(@Property(name = "datasources.*.connection-properties") String connectionProperties) {
+        setConnectionProperties(connectionProperties);
     }
 
     @Override

@@ -5,5 +5,10 @@ plugins {
 dependencies {
     implementation mn.micronaut.http
     implementation mn.micronaut.runtime
-    api(mn.micronaut.data.tx)
+    api(mnSerde.micronaut.serde.api)
+    api(mnData.micronaut.data.tx)
+
+    testImplementation(mnSerde.micronaut.serde.jackson)
+
+    runtimeOnly(mn.snakeyaml)
 }
