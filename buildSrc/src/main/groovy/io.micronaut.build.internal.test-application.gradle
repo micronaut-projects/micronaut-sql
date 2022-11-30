@@ -21,3 +21,21 @@ dependencies {
 application {
     mainClass = "example.Application"
 }
+
+// TODO: Re-enable native tests once we have Micronaut data for 4.0.0
+project.afterEvaluate {
+    tasks.named("testNativeImage") {
+        onlyIf { false }
+    }
+    tasks.named("nativeCompile") {
+        onlyIf { false }
+    }
+}
+
+graalvmNative {
+    binaries {
+        main {
+            buildArgs("--report-unsupported-elements-at-runtime")
+        }
+    }
+}
