@@ -9,5 +9,7 @@ dependencies {
     api(mnData.micronaut.data.tx)
     api(mnSerde.micronaut.serde.api)
 
+    testImplementation(mnSerde.micronaut.serde.jackson)
+
     runtimeOnly(mn.snakeyaml)
 }
