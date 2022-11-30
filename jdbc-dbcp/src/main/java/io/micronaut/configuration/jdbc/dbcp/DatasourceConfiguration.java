@@ -153,7 +153,7 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     }
 
     /**
-     * A helper method to allow setting the connectionProperties via a single String
+     * A helper method to allow setting the connectionProperties via a single String.
      *
      * @param connectionProperties The connection properties
      */
