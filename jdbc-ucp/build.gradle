@@ -5,6 +5,7 @@ plugins {
 dependencies {
     api projects.jdbc
     api(mn.micronaut.inject)
+    api(mn.micronaut.context)
     api(libs.managed.ucp)
     api(libs.managed.ojdbc8)
 
