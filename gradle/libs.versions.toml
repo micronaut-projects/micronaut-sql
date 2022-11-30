@@ -21,9 +21,9 @@ micronaut-test = "4.0.0-SNAPSHOT"
 
 managed-vertx = "4.3.4"
 managed-jooq = "3.17.4"
-managed-hibernate = "5.6.12.Final"
+managed-hibernate = "5.6.14.Final"
 managed-hibernate-reactive = "1.1.8.Final"
-managed-jasync = "2.1.1"
+managed-jasync = "2.1.7"
 managed-jdbi = "3.34.0"
 
 # JDBC Drivers
