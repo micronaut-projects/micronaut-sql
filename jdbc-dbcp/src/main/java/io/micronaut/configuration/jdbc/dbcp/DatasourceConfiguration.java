@@ -152,6 +152,11 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
         return calculatedSettings.getValidationQuery();
     }
 
+    /**
+     * A helper method to allow setting the connectionProperties via a single String
+     *
+     * @param connectionProperties The connection properties
+     */
     public void setConnectionPropertiesString(@Property(name = "datasources.*.connection-properties") String connectionProperties) {
         setConnectionProperties(connectionProperties);
     }
