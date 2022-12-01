@@ -2,12 +2,10 @@ plugins {
     id 'java'
     id 'groovy'
     id 'jacoco'
+    id 'io.micronaut.build.internal.sql-base'
 }
 
 group "io.micronaut.example"
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 tasks.register("testExamples") {
     dependsOn "test"

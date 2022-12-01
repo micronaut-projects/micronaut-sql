@@ -16,10 +16,10 @@
 package example.sync.dto;
 
 import example.domain.IPet;
-import io.micronaut.core.annotation.Introspected;
+import io.micronaut.serde.annotation.Serdeable;
 
-@Introspected
-public class  PetDto {
+@Serdeable
+public class PetDto {
 
     private Long id;
     private String name;

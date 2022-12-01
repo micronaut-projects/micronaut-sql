@@ -23,10 +23,8 @@ import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
 
+import jakarta.annotation.PostConstruct;
 import java.util.Map;
-import java.util.Properties;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Allows the configuration of Hikari JDBC data sources. All properties on
@@ -177,16 +175,6 @@ public class DatasourceConfiguration extends HikariConfig implements BasicJdbcCo
     @Override
     public void setDataSourceProperties(@MapFormat(transformation = MapFormat.MapTransformation.FLAT, keyFormat = StringConvention.RAW) Map<String, ?> dsProperties) {
         super.getDataSourceProperties().putAll(dsProperties);
-    }
-
-    /**
-     * @param dsProperties The data source properties
-     * @deprecated Use {@link #setDataSourceProperties(Map)} instead
-     */
-    @Override
-    @Deprecated
-    public void setDataSourceProperties(Properties dsProperties) {
-        // otherwise properties will be added twice
     }
 
     /**

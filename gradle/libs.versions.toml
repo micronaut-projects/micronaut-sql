@@ -2,56 +2,81 @@
 
 # Micronaut
 
-micronaut = "3.5.2"
+micronaut = "4.0.0-SNAPSHOT"
 micronaut-docs = "2.0.0"
-micronaut-gradle-plugin = "3.6.4"
+micronaut-gradle-plugin = "3.6.2"
+
+# Platform dependencies
+micronaut-cache = "4.0.0-SNAPSHOT"
+micronaut-data = "3.8.1" # TODO update once 4.0.0-SNAPSHOT is out
+micronaut-hibernate-validator = "4.0.0-SNAPSHOT"
+micronaut-micrometer = "4.6.1" # TODO update once 5.0.0-SNAPSHOT is out
+micronaut-r2dbc = "4.0.0" # TODO update once 5.0.0-SNAPSHOT is out
+micronaut-reactor = "3.0.0-SNAPSHOT"
+micronaut-serde = "2.0.0-SNAPSHOT"
+micronaut-spring = "5.0.0-SNAPSHOT"
+micronaut-test = "4.0.0-SNAPSHOT"
 
 # Frameworks
 
 managed-vertx = "4.3.4"
-managed-jooq = "3.15.11"
+managed-jooq = "3.17.4"
 managed-hibernate = "5.6.14.Final"
-managed-hibernate-reactive = "1.1.7.Final"
+managed-hibernate-reactive = "1.1.8.Final"
 managed-jasync = "2.1.7"
-managed-jdbi = "3.30.0"
+managed-jdbi = "3.34.0"
 
 # JDBC Drivers
 
 managed-ojdbc = "21.7.0.0"
 managed-postgres-driver = "42.5.0"
-managed-mariadb-driver = "2.7.6"
-managed-mssql-driver = "9.4.1.jre8"
+managed-mariadb-driver = "3.0.8"
+managed-mssql-driver = "9.4.1.jre16"
 managed-mysql-driver = "8.0.30"
 
 # JDBC Pools
-# Required to keep catalog compatibility with 3.4.x.  Can be removed for 4.0.0
-managed-commons-dbcp-compat = "2.9.0"
 
-managed-hikari = "4.0.3"
+managed-hikari = "5.0.1"
 managed-commons-dbcp = "2.9.0"
-managed-tomcat-jdbc = "10.0.23"
+managed-tomcat-jdbc = "10.1.0"
 
 # JPA
 
-jakarta-persistence-api = "2.2.3"
-jakarta-transaction-api = "1.3.3"
+jakarta-persistence-api = "3.1.0"
+jakarta-transaction-api = "2.0.1"
 
-managed-h2 = "1.4.200"
+managed-h2 = "2.1.214"
 
 # Other
 
 jaxb-api = "2.3.1"
 sfm-reflect = "8.2.3"
 spring = "5.3.23"
-caffeine = "2.9.3"
+caffeine = "3.1.1"
+graal-svm = "22.0.0.2"
+logback = "1.4.5"
 
 # Testing
 
-groovy = "3.0.10"
+groovy = "4.0.6"
 testcontainers = "1.17.5"
 sonar-gradle-plugin = "3.4.0.2513"
 
 [libraries]
+
+# Platform catalogs
+
+micronaut-cache = { module = "io.micronaut.cache:micronaut-cache-bom", version.ref = "micronaut-cache" }
+micronaut-data = { module = "io.micronaut.data:micronaut-data-bom", version.ref = "micronaut-data" }
+micronaut-micrometer = { module = "io.micronaut.micrometer:micronaut-micrometer-bom", version.ref = "micronaut-micrometer" }
+micronaut-reactor = { module = "io.micronaut.reactor:micronaut-reactor-bom", version.ref = "micronaut-reactor" }
+micronaut-r2dbc = { module = "io.micronaut.r2dbc:micronaut-r2dbc-bom", version.ref = "micronaut-r2dbc" }
+micronaut-serde = { module = "io.micronaut.serde:micronaut-serde-bom", version.ref = "micronaut-serde" }
+micronaut-spring = { module = "io.micronaut.spring:micronaut-spring-bom", version.ref = "micronaut-spring" }
+micronaut-test = { module = "io.micronaut.test:micronaut-test-bom", version.ref = "micronaut-test" }
+
+# Switch to BOM and catalog import when there's a bom
+micronaut-hibernate-validator = { module = "io.micronaut.beanvalidation:micronaut-hibernate-validator", version.ref = "micronaut-hibernate-validator" }
 
 # Vertx
 
@@ -84,8 +109,6 @@ jdbi3-sqlobject = { module = "org.jdbi:jdbi3-sqlobject", version.ref = "managed-
 jdbi3-core = { module = "org.jdbi:jdbi3-core", version.ref = "managed-jdbi" }
 
 # JDBC pools
-# Duplicated to keep catalog compatibility with 3.4.x.  Can be removed for 4.0.0
-managed-commons-dbcp = { module = "org.apache.commons:commons-dbcp2", version.ref = "managed-commons-dbcp-compat" }
 
 managed-hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "managed-hikari" }
 managed-commons-dbcp2 = { module = "org.apache.commons:commons-dbcp2", version.ref = "managed-commons-dbcp" }
@@ -123,6 +146,8 @@ jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transaction-ap
 jaxb-api = { module = "javax.xml.bind:jaxb-api", version.ref = "jaxb-api" }
 sfm-reflect = { module = "org.simpleflatmapper:sfm-reflect", version.ref = "sfm-reflect" }
 caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "caffeine" }
+graal-svm = { module = "org.graalvm.nativeimage:svm", version.ref = "graal-svm" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
 # Testcontainers
 

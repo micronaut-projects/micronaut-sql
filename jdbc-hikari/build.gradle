@@ -7,19 +7,19 @@ dependencies {
     api(mn.micronaut.inject)
     api(libs.managed.hikaricp)
 
-    compileOnly(mn.micronaut.micrometer.core)
+    compileOnly(mnMicrometer.micronaut.micrometer.core)
 
     testRuntimeOnly(libs.managed.tomcat.jdbc)
     testRuntimeOnly(libs.managed.h2)
 
     testAnnotationProcessor(mn.micronaut.inject.java)
-    testImplementation(mn.micronaut.spring)
+    testImplementation(mnSpring.micronaut.spring)
     testImplementation(mn.micronaut.http.server.netty)
     testImplementation(mn.micronaut.http.client)
     testImplementation(mn.micronaut.management)
 
-    testImplementation(mn.micronaut.micrometer.core)
-    testImplementation(mn.micronaut.cache.core)
+    testImplementation(mnMicrometer.micronaut.micrometer.core)
+    testImplementation(mnCache.micronaut.cache.core)
 
     testImplementation(libs.spring.jdbc)
 }

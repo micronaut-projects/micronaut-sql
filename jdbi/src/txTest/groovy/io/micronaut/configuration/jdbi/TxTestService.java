@@ -19,7 +19,7 @@ import io.micronaut.transaction.annotation.ReadOnly;
 import jakarta.inject.Singleton;
 import org.jdbi.v3.core.Jdbi;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 @Singleton

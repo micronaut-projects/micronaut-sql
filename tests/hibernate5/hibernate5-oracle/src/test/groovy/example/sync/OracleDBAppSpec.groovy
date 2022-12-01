@@ -24,6 +24,16 @@ import org.testcontainers.utility.DockerImageName
 class OracleDBAppSpec extends AbstractHibernateAppSpec {
 
     @Override
+    Class<?> getOwnerClass() {
+        Owner
+    }
+
+    @Override
+    Class<?> getPetClass() {
+        Pet
+    }
+
+    @Override
     JdbcDatabaseContainer getJdbcDatabaseContainer() {
         return new OracleContainer(DockerImageName.parse("gvenzl/oracle-xe:slim"))
     }

@@ -30,6 +30,16 @@ class PostgresAppSpec extends AbstractJDBCContainerAppSpec {
     }
 
     @Override
+    Class<?> getOwnerClass() {
+        Owner
+    }
+
+    @Override
+    Class<?> getPetClass() {
+        Pet
+    }
+
+    @Override
     Map<String, String> provideProperties(JdbcDatabaseContainer databaseContainer) {
         super.provideProperties(databaseContainer) + [
                 "jooq.datasources.default.sql-dialect": 'POSTGRES'

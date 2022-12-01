@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @Controller("/pets")
 class PetController {
 
@@ -41,13 +43,13 @@ class PetController {
         return petRepository.findAll()
                 .stream()
                 .map(mapper::toPetDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @TransactionalAdvice(readOnly = true)
     @Get("/{name}")
     Optional<PetDto> byName(String name) {
-        return petRepository.findByName(name).map(pet -> mapper.toPetDto(pet));
+        return petRepository.findByName(name).map(mapper::toPetDto);
     }
 
 }

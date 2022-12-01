@@ -1,7 +1,4 @@
 pluginManagement {
-    plugins {
-        id 'io.micronaut.build.shared.settings' version getProperty("micronautSharedSettingVersion")
-    }
     repositories {
         gradlePluginPortal()
         mavenCentral()
@@ -9,13 +6,22 @@ pluginManagement {
 }
 
 plugins {
-    id 'io.micronaut.build.shared.settings'
+    id 'io.micronaut.build.shared.settings' version '6.1.0'
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 micronautBuild {
+    addSnapshotRepository()
     importMicronautCatalog()
+    importMicronautCatalog("micronaut-cache")
+    importMicronautCatalog("micronaut-data")
+    importMicronautCatalog("micronaut-micrometer")
+    importMicronautCatalog("micronaut-reactor")
+    importMicronautCatalog("micronaut-r2dbc")
+    importMicronautCatalog("micronaut-serde")
+    importMicronautCatalog("micronaut-spring")
+    importMicronautCatalog("micronaut-test")
 }
 
 rootProject.name = 'sql-parent'
@@ -30,10 +36,8 @@ include 'jasync-sql'
 include 'hibernate-jpa'
 include 'hibernate-jpa-spring'
 
-if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_11)) {
-    include 'hibernate-reactive'
-    include 'jooq'
-}
+include 'hibernate-reactive'
+include 'jooq'
 
 include 'vertx-mysql-client'
 include 'vertx-pg-client'
@@ -52,16 +56,14 @@ include 'tests:hibernate5:hibernate5-oracle'
 include 'tests:hibernate5:hibernate5-h2'
 include 'tests:hibernate5:hibernate5-mssql'
 
-if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_11)) {
-    include 'tests:hibernate5:hibernate5-reactive-common'
-    include 'tests:hibernate5:hibernate5-reactive-common-tests'
-    include 'tests:hibernate5:hibernate5-reactive-postgres'
-    include 'tests:hibernate5:hibernate5-reactive-mysql'
-    include 'tests:hibernate5:hibernate5-reactive-mssql'
-    include 'tests:hibernate5:hibernate5-reactive-oracle'
+include 'tests:hibernate5:hibernate5-reactive-common'
+include 'tests:hibernate5:hibernate5-reactive-common-tests'
+include 'tests:hibernate5:hibernate5-reactive-postgres'
+include 'tests:hibernate5:hibernate5-reactive-mysql'
+include 'tests:hibernate5:hibernate5-reactive-mssql'
+include 'tests:hibernate5:hibernate5-reactive-oracle'
 
-    include 'tests:jooq-tests:jooq-jdbc-postgres'
-    include 'tests:jooq-tests:jooq-r2dbc-postgres'
-}
+include 'tests:jooq-tests:jooq-jdbc-postgres'
+include 'tests:jooq-tests:jooq-r2dbc-postgres'
 
 

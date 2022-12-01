@@ -27,20 +27,10 @@ import io.micronaut.core.beans.BeanIntrospector;
 import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.core.util.ArrayUtils;
-import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.core.util.Toggleable;
 import jakarta.inject.Inject;
-import org.hibernate.boot.registry.BootstrapServiceRegistry;
-import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
-import org.hibernate.boot.registry.StandardServiceInitiator;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.bytecode.spi.BytecodeProvider;
 import org.hibernate.integrator.spi.Integrator;
-import org.hibernate.service.spi.ServiceRegistryImplementor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.persistence.Entity;
 import java.util.ArrayList;
@@ -122,44 +112,6 @@ public class JpaConfiguration {
     }
 
     /**
-     * Builds the standard service registry.
-     *
-     * @param additionalSettings Additional settings for the service registry
-     * @return The standard service registry
-     * @deprecated Deprecated and scheduled to be removed.
-     */
-    @SuppressWarnings("WeakerAccess")
-    @Deprecated
-    public StandardServiceRegistry buildStandardServiceRegistry(@Nullable Map<String, Object> additionalSettings) {
-        Map<String, Object> jpaProperties = getProperties();
-        BootstrapServiceRegistryBuilder bootstrapServiceRegistryBuilder =
-                createBootstrapServiceRegistryBuilder(integrator, applicationContext.getClassLoader());
-        StandardServiceRegistryBuilder standardServiceRegistryBuilder = createStandServiceRegistryBuilder(bootstrapServiceRegistryBuilder.build());
-        if (compileTimeHibernateProxies) {
-            // It would be enough to add `ProxyFactoryFactory` by providing `BytecodeProvider` we eliminate bytecode Enhancer
-            standardServiceRegistryBuilder.addInitiator(new StandardServiceInitiator<BytecodeProvider>() {
-                @Override
-                public BytecodeProvider initiateService(Map configurationValues, ServiceRegistryImplementor registry) {
-                    return applicationContext.getBean(BytecodeProvider.class);
-                }
-
-                @Override
-                public Class<BytecodeProvider> getServiceInitiated() {
-                    return BytecodeProvider.class;
-                }
-            });
-        }
-
-        if (CollectionUtils.isNotEmpty(jpaProperties)) {
-            standardServiceRegistryBuilder.applySettings(jpaProperties);
-        }
-        if (additionalSettings != null) {
-            standardServiceRegistryBuilder.applySettings(additionalSettings);
-        }
-        return standardServiceRegistryBuilder.build();
-    }
-
-    /**
      * Sets the packages to scan.
      *
      * @param packagesToScan The packages to scan
@@ -167,7 +119,6 @@ public class JpaConfiguration {
     public void setPackagesToScan(String... packagesToScan) {
         if (ArrayUtils.isNotEmpty(packagesToScan)) {
             EntityScanConfiguration entityScanConfiguration = new EntityScanConfiguration(applicationContext.getEnvironment());
-            entityScanConfiguration.setClasspath(true);
             entityScanConfiguration.setPackages(packagesToScan);
             this.entityScanConfiguration = entityScanConfiguration;
         }
@@ -196,41 +147,6 @@ public class JpaConfiguration {
     @NonNull
     public Map<String, Object> getProperties() {
         return jpaProperties;
-    }
-
-    /**
-     * Creates the default {@link BootstrapServiceRegistryBuilder}.
-     *
-     * @param integrator  The integrator to use. Can be null
-     * @param classLoader The class loade rto use
-     * @return The BootstrapServiceRegistryBuilder
-     * @deprecated Deprecated and scheduled to be removed.
-     */
-    @SuppressWarnings("WeakerAccess")
-    @Deprecated
-    protected BootstrapServiceRegistryBuilder createBootstrapServiceRegistryBuilder(@Nullable Integrator integrator,
-                                                                                    ClassLoader classLoader) {
-        BootstrapServiceRegistryBuilder bootstrapServiceRegistryBuilder = new BootstrapServiceRegistryBuilder();
-        bootstrapServiceRegistryBuilder.applyClassLoader(classLoader);
-        if (integrator != null) {
-            bootstrapServiceRegistryBuilder.applyIntegrator(integrator);
-        }
-        return bootstrapServiceRegistryBuilder;
-    }
-
-    /**
-     * Creates the standard service registry builder.
-     *
-     * @param bootstrapServiceRegistry The {@link BootstrapServiceRegistry} instance
-     * @return The {@link StandardServiceRegistryBuilder} instance
-     * @deprecated Deprecated and scheduled to be removed.
-     */
-    @Deprecated
-    @SuppressWarnings("WeakerAccess")
-    protected StandardServiceRegistryBuilder createStandServiceRegistryBuilder(BootstrapServiceRegistry bootstrapServiceRegistry) {
-        return new StandardServiceRegistryBuilder(
-                bootstrapServiceRegistry
-        );
     }
 
     /**
@@ -304,9 +220,7 @@ public class JpaConfiguration {
      */
     @ConfigurationProperties("entity-scan")
     public static class EntityScanConfiguration implements Toggleable {
-        private static final Logger LOG = LoggerFactory.getLogger(EntityScanConfiguration.class);
         private boolean enabled = true;
-        private boolean classpath = false;
         private String[] packages = StringUtils.EMPTY_STRING_ARRAY;
 
         private final Environment environment;
@@ -323,31 +237,6 @@ public class JpaConfiguration {
         @Override
         public boolean isEnabled() {
             return enabled;
-        }
-
-        /**
-         * @return Whether to scan the whole classpath or just look for introspected beans compiled by this application.
-         * @deprecated Runtime classpath scanning is no longer supported. Use {@link io.micronaut.core.annotation.Introspected} to declare the packages you
-         * want to index at build time. Example {@code @Introspected(packages="foo.bar", includedAnnotations=Entity.class)}
-         */
-        @Deprecated
-        public boolean isClasspath() {
-            return classpath;
-        }
-
-        /**
-         * Sets whether to scan the whole classpath including external JAR files using classpath scanning or just look for introspected beans compiled by this application.
-         *
-         * @param classpath True if extensive classpath scanning should be used
-         * @deprecated Runtime classpath scanning is no longer supported. Use {@link io.micronaut.core.annotation.Introspected} to declare the packages you
-         * want to index at build time. Example {@code @Introspected(packages="foo.bar", includedAnnotations=Entity.class)}
-         */
-        @Deprecated
-        public void setClasspath(boolean classpath) {
-            if (LOG.isWarnEnabled()) {
-                LOG.warn("Runtime classpath scanning is no longer supported. Use @Introspected to declare the packages you want to index at build time. Example @Introspected(packages=\"foo.bar\", includedAnnotations=Entity.class)");
-            }
-            this.classpath = classpath;
         }
 
         /**
