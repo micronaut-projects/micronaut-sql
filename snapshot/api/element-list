@@ -1,8 +1,10 @@
 io.micronaut.configuration.hibernate.jpa
+io.micronaut.configuration.hibernate.jpa.condition
 io.micronaut.configuration.hibernate.jpa.conf.serviceregistry.builder.configures
 io.micronaut.configuration.hibernate.jpa.conf.serviceregistry.builder.supplier
 io.micronaut.configuration.hibernate.jpa.conf.sessionfactory.configure
 io.micronaut.configuration.hibernate.jpa.conf.settings
+io.micronaut.configuration.hibernate.jpa.jcache
 io.micronaut.configuration.hibernate.jpa.metrics
 io.micronaut.configuration.hibernate.jpa.proxy
 io.micronaut.configuration.hibernate.jpa.spring
