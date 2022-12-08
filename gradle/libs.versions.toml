@@ -18,7 +18,7 @@ managed-jasync = "2.1.7"
 # JDBC Drivers
 
 managed-ojdbc = "21.7.0.0"
-managed-postgres-driver = "42.5.0"
+managed-postgres-driver = "42.5.1"
 managed-mariadb-driver = "2.7.6"
 managed-mssql-driver = "9.4.1.jre8"
 managed-mysql-driver = "8.0.31"
