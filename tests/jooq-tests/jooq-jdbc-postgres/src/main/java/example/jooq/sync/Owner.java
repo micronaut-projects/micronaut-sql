@@ -1,16 +1,20 @@
 package example.jooq.sync;
 
 import example.domain.IOwner;
+import io.micronaut.core.annotation.Creator;
+import io.micronaut.serde.annotation.Serdeable;
 
+@Serdeable
 public class Owner implements IOwner {
 
     private Long id;
     private String name;
     private int age;
 
-    public Owner() {
+    Owner() {
     }
 
+    @Creator
     public Owner(Long id, String name, int age) {
         this.id = id;
         this.name = name;

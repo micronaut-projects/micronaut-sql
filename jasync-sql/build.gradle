@@ -11,6 +11,7 @@ dependencies {
     compileOnly(libs.managed.jasync.postgresql)
     compileOnly(mn.micronaut.management)
 
+    testImplementation(platform(libs.testcontainers.bom))
     testImplementation(mn.micronaut.management)
     testImplementation(libs.testcontainers.spock)
     testImplementation(libs.testcontainers.postgresql)

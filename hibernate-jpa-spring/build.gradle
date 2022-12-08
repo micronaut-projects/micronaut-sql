@@ -5,7 +5,7 @@ plugins {
 dependencies {
     annotationProcessor(mn.micronaut.graal)
 
-    compileOnly(mn.graal)
+    compileOnly(libs.graal.svm)
     api(libs.managed.hibernate.core) {
         exclude group:'org.javassist', module:'javassist'
     }
@@ -14,6 +14,6 @@ dependencies {
     api projects.hibernateJpa
 
     api projects.jdbc
-    api(mn.micronaut.spring)
+    api(mnSpring.micronaut.spring)
     api(libs.spring.orm)
 }

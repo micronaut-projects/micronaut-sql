@@ -25,6 +25,16 @@ import org.testcontainers.containers.MSSQLServerContainer
 class MSSQLAppSpec extends AbstractHibernateReactiveAppSpec implements TestPropertyProvider {
 
     @Override
+    Class<?> getOwnerClass() {
+        Owner
+    }
+
+    @Override
+    Class<?> getPetClass() {
+        Pet
+    }
+
+    @Override
     JdbcDatabaseContainer getJdbcDatabaseContainer() {
         return new MSSQLServerContainer().acceptLicense()
     }

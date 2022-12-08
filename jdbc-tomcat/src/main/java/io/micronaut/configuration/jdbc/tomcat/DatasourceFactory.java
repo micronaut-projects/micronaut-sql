@@ -22,10 +22,10 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.jdbc.DataSourceResolver;
+import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,10 +78,8 @@ public class DatasourceFactory implements AutoCloseable {
 
         TomcatDataSourcePoolMetadata dataSourcePoolMetadata = null;
 
-        DataSource resolved = dataSourceResolver.resolve(dataSource);
-
-        if (resolved instanceof org.apache.tomcat.jdbc.pool.DataSource) {
-            dataSourcePoolMetadata = new TomcatDataSourcePoolMetadata((org.apache.tomcat.jdbc.pool.DataSource) resolved);
+        if (dataSourceResolver.resolve(dataSource) instanceof org.apache.tomcat.jdbc.pool.DataSource resolved) {
+            dataSourcePoolMetadata = new TomcatDataSourcePoolMetadata(resolved);
         }
         return dataSourcePoolMetadata;
     }

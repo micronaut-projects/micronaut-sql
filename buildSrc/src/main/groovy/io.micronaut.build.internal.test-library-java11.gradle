@@ -1,8 +1,0 @@
-plugins {
-    id 'io.micronaut.build.internal.test-library'
-}
-
-micronaut {
-    sourceCompatibility = "11"
-    targetCompatibility = "11"
-}

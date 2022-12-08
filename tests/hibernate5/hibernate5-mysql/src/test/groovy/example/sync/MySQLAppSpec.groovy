@@ -25,8 +25,18 @@ import org.testcontainers.utility.DockerImageName
 class MySQLAppSpec extends AbstractHibernateAppSpec implements TestPropertyProvider {
 
     @Override
+    Class<?> getOwnerClass() {
+        Owner
+    }
+
+    @Override
+    Class<?> getPetClass() {
+        Pet
+    }
+
+    @Override
     JdbcDatabaseContainer getJdbcDatabaseContainer() {
-        return new MySQLContainer(DockerImageName.parse("mysql:8.0.11"))
+        return new MySQLContainer(DockerImageName.parse("mysql:8.0.30"))
     }
 
     @Override

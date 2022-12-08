@@ -17,6 +17,9 @@ package example.sync;
 
 import example.domain.IOwner;
 import example.domain.IPet;
+import io.micronaut.core.annotation.Creator;
+import io.micronaut.core.annotation.Nullable;
+import io.micronaut.serde.annotation.Serdeable;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,6 +28,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
+@Serdeable
 public class Pet implements IPet {
 
     @Id
@@ -37,6 +41,17 @@ public class Pet implements IPet {
     private Owner owner;
 
     private PetType type = PetType.DOG;
+
+    Pet() {
+    }
+
+    @Creator
+    public Pet(Long id, String name, Owner owner, @Nullable PetType type) {
+        this.id = id;
+        this.name = name;
+        this.owner = owner;
+        this.type = type;
+    }
 
     public PetType getType() {
         return type;
