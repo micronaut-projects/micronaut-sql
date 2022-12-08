@@ -21,7 +21,7 @@ managed-ojdbc = "21.7.0.0"
 managed-postgres-driver = "42.5.0"
 managed-mariadb-driver = "2.7.6"
 managed-mssql-driver = "9.4.1.jre8"
-managed-mysql-driver = "8.0.30"
+managed-mysql-driver = "8.0.31"
 
 # JDBC Pools
 # Required to keep catalog compatibility with 3.4.x.  Can be removed for 4.0.0
