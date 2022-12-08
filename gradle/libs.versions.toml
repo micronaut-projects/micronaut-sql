@@ -4,7 +4,7 @@
 
 micronaut = "4.0.0-SNAPSHOT"
 micronaut-docs = "2.0.0"
-micronaut-gradle-plugin = "3.6.2"
+micronaut-gradle-plugin = "3.6.6"
 
 # Platform dependencies
 micronaut-cache = "4.0.0-SNAPSHOT"
@@ -19,26 +19,26 @@ micronaut-test = "4.0.0-SNAPSHOT"
 
 # Frameworks
 
-managed-vertx = "4.3.4"
+managed-vertx = "4.3.6"
 managed-jooq = "3.17.6"
 managed-hibernate = "5.6.14.Final"
-managed-hibernate-reactive = "1.1.8.Final"
+managed-hibernate-reactive = "1.1.9.Final"
 managed-jasync = "2.1.7"
-managed-jdbi = "3.34.0"
+managed-jdbi = "3.35.0"
 
 # JDBC Drivers
 
 managed-ojdbc = "21.7.0.0"
-managed-postgres-driver = "42.5.0"
-managed-mariadb-driver = "3.0.8"
+managed-postgres-driver = "42.5.1"
+managed-mariadb-driver = "3.1.0"
 managed-mssql-driver = "9.4.1.jre16"
-managed-mysql-driver = "8.0.30"
+managed-mysql-driver = "8.0.31"
 
 # JDBC Pools
 
 managed-hikari = "5.0.1"
 managed-commons-dbcp = "2.9.0"
-managed-tomcat-jdbc = "10.1.0"
+managed-tomcat-jdbc = "10.1.2"
 
 # JPA
 
@@ -51,15 +51,15 @@ managed-h2 = "2.1.214"
 
 jaxb-api = "2.3.1"
 sfm-reflect = "8.2.3"
-spring = "5.3.23"
-caffeine = "3.1.1"
+spring = "5.3.24"
+caffeine = "3.1.2"
 graal-svm = "22.0.0.2"
 logback = "1.4.5"
 
 # Testing
 
 groovy = "4.0.6"
-testcontainers = "1.17.5"
+testcontainers = "1.17.6"
 sonar-gradle-plugin = "3.4.0.2513"
 
 [libraries]
