@@ -8,7 +8,7 @@ micronaut-gradle-plugin = "3.6.6"
 
 # Platform dependencies
 micronaut-cache = "4.0.0-SNAPSHOT"
-micronaut-data = "3.8.1" # TODO update once 4.0.0-SNAPSHOT is out
+micronaut-data = "3.9.3" # TODO update once 4.0.0-SNAPSHOT is out
 micronaut-hibernate-validator = "4.0.0-SNAPSHOT"
 micronaut-micrometer = "4.6.1" # TODO update once 5.0.0-SNAPSHOT is out
 micronaut-r2dbc = "4.0.0" # TODO update once 5.0.0-SNAPSHOT is out
