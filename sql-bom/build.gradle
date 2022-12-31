@@ -16,7 +16,7 @@ micronautBom {
         dependencies.addAll([
                 "org.jdbi:jdbi3-core:3.34.0",
                 "org.jdbi:jdbi3-sqlobject:3.34.0",
-                "org.jdbi:jdbi3-json:3.34.0",
+                "org.jdbi:jdbi3-json:3.36.0",
         ])
     }
 }
