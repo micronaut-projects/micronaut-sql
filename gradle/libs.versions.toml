@@ -118,7 +118,7 @@ managed-ucp = { module = "com.oracle.database.jdbc:ucp", version.ref = "managed-
 # UCP
 
 dms = { module = "com.oracle.database.observability:dms", version.ref = "managed-ojdbc" }
-ojdbc11dms = { module = "com.oracle.database.observability:ojdbc8dms", version.ref = "managed-ojdbc" }
+ojdbc11dms = { module = "com.oracle.database.observability:ojdbc11dms", version.ref = "managed-ojdbc" }
 
 # JDBC drivers
 
