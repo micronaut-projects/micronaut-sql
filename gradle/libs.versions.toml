@@ -8,9 +8,9 @@ micronaut-gradle-plugin = "3.6.6"
 
 # Platform dependencies
 micronaut-cache = "4.0.0-SNAPSHOT"
-micronaut-data = "3.8.1" # TODO update once 4.0.0-SNAPSHOT is out
+micronaut-data = "4.0.0-SNAPSHOT"
 micronaut-hibernate-validator = "4.0.0-SNAPSHOT"
-micronaut-micrometer = "4.6.1" # TODO update once 5.0.0-SNAPSHOT is out
+micronaut-micrometer = "5.0.0-SNAPSHOT"
 micronaut-r2dbc = "4.0.0" # TODO update once 5.0.0-SNAPSHOT is out
 micronaut-reactor = "3.0.0-SNAPSHOT"
 micronaut-serde = "2.0.0-SNAPSHOT"
@@ -28,7 +28,7 @@ managed-jdbi = "3.34.0"
 
 # JDBC Drivers
 
-managed-ojdbc = "21.7.0.0"
+managed-ojdbc = "21.8.0.0"
 managed-postgres-driver = "42.5.1"
 managed-mariadb-driver = "3.1.0"
 managed-mssql-driver = "9.4.1.jre16"
@@ -118,7 +118,7 @@ managed-ucp = { module = "com.oracle.database.jdbc:ucp", version.ref = "managed-
 # UCP
 
 dms = { module = "com.oracle.database.observability:dms", version.ref = "managed-ojdbc" }
-ojdbc8dms = { module = "com.oracle.database.observability:ojdbc8dms", version.ref = "managed-ojdbc" }
+ojdbc11dms = { module = "com.oracle.database.observability:ojdbc11dms", version.ref = "managed-ojdbc" }
 
 # JDBC drivers
 
@@ -127,6 +127,7 @@ managed-mariadb-java-client = { module = "org.mariadb.jdbc:mariadb-java-client",
 managed-mssql-jdbc = { module = "com.microsoft.sqlserver:mssql-jdbc", version.ref = "managed-mssql-driver" }
 managed-mysql-connector-java = { module = "mysql:mysql-connector-java", version.ref = "managed-mysql-driver" }
 managed-ojdbc8 = { module = "com.oracle.database.jdbc:ojdbc8", version.ref = "managed-ojdbc" }
+managed-ojdbc11 = { module = "com.oracle.database.jdbc:ojdbc11", version.ref = "managed-ojdbc" }
 
 managed-h2 = { module = "com.h2database:h2", version.ref = "managed-h2" }
 

@@ -7,7 +7,7 @@ dependencies {
     api(mn.micronaut.inject)
     api(mn.micronaut.context)
     api(libs.managed.ucp)
-    api(libs.managed.ojdbc8)
+    api(libs.managed.ojdbc11)
 
     testRuntimeOnly(libs.managed.h2)
 
@@ -20,6 +20,6 @@ dependencies {
     testImplementation(mnCache.micronaut.cache.core)
 
     testImplementation(libs.spring.jdbc)
-    testImplementation(libs.ojdbc8dms)
+    testImplementation(libs.ojdbc11dms)
     testImplementation(libs.dms)
 }
