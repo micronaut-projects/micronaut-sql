@@ -28,13 +28,12 @@ import org.hibernate.type.CompositeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Set;
 
 /**
- * Implementation of Hibernate's {@link ProxyFactory}.
+ * Implementation of Hibernate {@link ProxyFactory}.
  * Compile time proxy will be used if one is added by annotating an entity with {@link GenerateProxy}.
  *
  * @author Denis Stepanov
@@ -103,9 +102,9 @@ final class IntroducedHibernateProxyFactory implements ProxyFactory {
             int params = parameterValues.length;
             if (params == 0 && getIdentifierMethod != null && methodName.equals(getIdentifierMethod.getName()) && lazyInitializer.isUninitialized()) {
                 return lazyInitializer.getIdentifier();
-            } else if (params == 1 && setIdentifierMethod != null & methodName.equals(setIdentifierMethod.getName())) {
+            } else if (params == 1 && setIdentifierMethod != null && methodName.equals(setIdentifierMethod.getName())) {
                 lazyInitializer.initialize();
-                lazyInitializer.setIdentifier((Serializable) parameterValues[0]);
+                lazyInitializer.setIdentifier(parameterValues[0]);
             }
 
             // Equals/hashcode should work as other Hibernate proxy implementations:
