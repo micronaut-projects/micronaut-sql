@@ -13,21 +13,11 @@ micronautBuild {
 dependencies {
     annotationProcessor(mn.micronaut.graal)
 
-    // included for Java 11
-    runtimeOnly(libs.jaxb.api)
-
-    api(libs.managed.hibernate6.core) {
-        exclude group:'org.jboss.spec.javax.transaction', module:'jboss-transaction-api_1.2_spec'
-        exclude group:'org.javassist', module:'javassist'
-        exclude group:'org.jboss:jandex', module:'jar'
-    }
+    api(libs.managed.hibernate6.core)
     api(libs.jakarta.transaction.api)
     api(mn.micronaut.validation)
-    // TODO: This would pull in hibernate5 so we want to exclude it for now
-    // Later will include mnData.micronaut.data.tx.hibernate6 after micronaut-data supports Hibernate6
-    api(mnData.micronaut.data.tx.hibernate) {
-        exclude group: 'org.hibernate'
-    }
+    // TODO: Later will include mnData.micronaut.data.tx.hibernate6 after micronaut-data supports Hibernate6
+    //api(mnData.micronaut.data.tx.hibernate6)
     api(mn.micronaut.aop)
     api projects.jdbc
     api(mn.micronaut.runtime)
@@ -53,7 +43,4 @@ dependencies {
     testRuntimeOnly(libs.micronaut.hibernate.validator)
     testRuntimeOnly projects.jdbcTomcat
     testRuntimeOnly(libs.managed.h2)
-
-    // TODO: Temporary just to be able to compile tests
-    testCompileOnly(mnData.micronaut.data.tx.hibernate)
 }
