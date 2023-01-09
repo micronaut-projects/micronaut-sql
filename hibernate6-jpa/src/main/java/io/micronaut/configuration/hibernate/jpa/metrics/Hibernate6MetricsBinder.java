@@ -47,9 +47,9 @@ import static io.micronaut.configuration.metrics.micrometer.MeterRegistryFactory
  */
 @Singleton
 @RequiresMetrics
-@Requires(property = HibernateMetricsBinder.HIBERNATE_METRICS_ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
+@Requires(property = Hibernate6MetricsBinder.HIBERNATE_METRICS_ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 @Requires(classes = HibernateMetrics.class)
-public class HibernateMetricsBinder implements BeanCreatedEventListener<EntityManagerFactory> {
+public class Hibernate6MetricsBinder implements BeanCreatedEventListener<EntityManagerFactory> {
 
     public static final String HIBERNATE_METRICS_ENABLED = MICRONAUT_METRICS_BINDERS + ".hibernate.enabled";
     private final BeanProvider<MeterRegistry> meterRegistryProvider;
@@ -60,7 +60,7 @@ public class HibernateMetricsBinder implements BeanCreatedEventListener<EntityMa
      * @param meterRegistryProvider The meter registry provider
      * @param tags The tags
      */
-    public HibernateMetricsBinder(
+    public Hibernate6MetricsBinder(
             BeanProvider<MeterRegistry> meterRegistryProvider,
             @Property(name = MICRONAUT_METRICS_BINDERS + ".hibernate.tags")
             @MapFormat(transformation = MapFormat.MapTransformation.FLAT)
