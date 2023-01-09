@@ -34,6 +34,7 @@ include 'jdbc-tomcat'
 include 'jdbc-ucp'
 include 'jasync-sql'
 include 'hibernate-jpa'
+include 'hibernate6-jpa'
 include 'hibernate-jpa-spring'
 
 include 'hibernate-reactive'

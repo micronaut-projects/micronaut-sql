@@ -22,6 +22,7 @@ micronaut-test = "4.0.0-SNAPSHOT"
 managed-vertx = "4.3.6"
 managed-jooq = "3.17.6"
 managed-hibernate = "5.6.14.Final"
+managed-hibernate6 = "6.1.6.Final"
 managed-hibernate-reactive = "1.1.9.Final"
 managed-jasync = "2.1.7"
 managed-jdbi = "3.34.0"
@@ -96,6 +97,12 @@ managed-hibernate-core = { module = "org.hibernate:hibernate-core", version.ref 
 managed-hibernate-jcache = { module = "org.hibernate:hibernate-jcache", version.ref = "managed-hibernate" }
 managed-hibernate-micrometer = { module = "org.hibernate:hibernate-micrometer", version.ref = "managed-hibernate" }
 managed-hibernate-reactive-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version.ref = "managed-hibernate-reactive" }
+
+# Hibernate6
+
+managed-hibernate6-core = { module = "org.hibernate.orm:hibernate-core", version.ref = "managed-hibernate6" }
+managed-hibernate6-jcache = { module = "org.hibernate.orm:hibernate-jcache", version.ref = "managed-hibernate6" }
+managed-hibernate6-micrometer = { module = "org.hibernate.orm:hibernate-micrometer", version.ref = "managed-hibernate6" }
 
 # Jasync
 
