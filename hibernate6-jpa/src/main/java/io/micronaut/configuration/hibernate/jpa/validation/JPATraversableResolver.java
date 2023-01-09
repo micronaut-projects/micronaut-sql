@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.io.micronaut.configuration.hibernate.jpa.validation;
+package io.micronaut.configuration.hibernate.jpa.validation;
 
 import jakarta.inject.Singleton;
+import jakarta.persistence.Persistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.persistence.Persistence;
 import javax.validation.Path;
 import javax.validation.TraversableResolver;
 import java.lang.annotation.ElementType;

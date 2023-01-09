@@ -19,8 +19,6 @@ import io.micronaut.core.annotation.Internal;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.proxy.AbstractLazyInitializer;
 
-import java.io.Serializable;
-
 /**
  * Basic {@link org.hibernate.proxy.LazyInitializer}.
  *
