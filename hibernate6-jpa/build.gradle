@@ -11,7 +11,7 @@ micronautBuild {
 }
 
 // TODO: Temp disable this task due to duplicate class names
-tasks.named("testCodeCoverageReport") {
+tasks.named("jacocoTestReport") {
     onlyIf { false }
 }
 
