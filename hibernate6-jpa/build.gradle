@@ -10,11 +10,6 @@ micronautBuild {
     }
 }
 
-// TODO: Temp disable this task due to duplicate class names
-tasks.named("jacocoTestReport") {
-    onlyIf { false }
-}
-
 dependencies {
     annotationProcessor(mn.micronaut.graal)
 
