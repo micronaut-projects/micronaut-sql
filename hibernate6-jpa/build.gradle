@@ -10,6 +10,12 @@ micronautBuild {
     }
 }
 
+tasks.whenTaskAdded {task ->
+    if(task.name.contains("testCodeCoverageReport")) {
+        task.enabled = false
+    }
+}
+
 dependencies {
     annotationProcessor(mn.micronaut.graal)
 

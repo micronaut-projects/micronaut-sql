@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.hibernate6.jpa.validation;
+package io.micronaut.io.micronaut.configuration.hibernate.jpa.validation;
 
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
