@@ -138,7 +138,15 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab7">
 <div class="block">Annotated Entity class will have a compile time Hibernate proxy.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/hibernate/jpa/HibernateCurrentSessionContextClassProvider.html" title="interface in io.micronaut.configuration.hibernate.jpa">HibernateCurrentSessionContextClassProvider</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab7"><a href="io/micronaut/configuration/hibernate6/jpa/proxy/GenerateProxy.html" title="annotation interface in io.micronaut.configuration.hibernate6.jpa.proxy">GenerateProxy</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab7">
+<div class="block">Annotated Entity class will have a compile time Hibernate proxy.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/hibernate/jpa/HibernateCurrentSessionContextClassProvider.html" title="interface in io.micronaut.configuration.hibernate.jpa">HibernateCurrentSessionContextClassProvider</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab1">
+<div class="block">Provides the value for <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/cfg/AvailableSettings.html#CURRENT_SESSION_CONTEXT_CLASS" title="class or interface in org.hibernate.cfg" class="external-link"><code>AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS</code></a>.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/hibernate6/jpa/HibernateCurrentSessionContextClassProvider.html" title="interface in io.micronaut.configuration.hibernate6.jpa">HibernateCurrentSessionContextClassProvider</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab1">
 <div class="block">Provides the value for <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/cfg/AvailableSettings.html#CURRENT_SESSION_CONTEXT_CLASS" title="class or interface in org.hibernate.cfg" class="external-link"><code>AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS</code></a>.</div>
 </div>
@@ -146,20 +154,28 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Binds metrics for Micrometer for each configured <code>EntityManagerFactory</code>.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/jdbc/spring/HibernatePresenceCondition.html" title="class in io.micronaut.jdbc.spring">HibernatePresenceCondition</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/hibernate6/jpa/metrics/HibernateMetricsBinder.html" title="class in io.micronaut.configuration.hibernate6.jpa.metrics">HibernateMetricsBinder</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Binds metrics for Micrometer for each configured <code>EntityManagerFactory</code>.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/jdbc/spring/HibernatePresenceCondition.html" title="class in io.micronaut.jdbc.spring">HibernatePresenceCondition</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Disables the datasource configuration if Hibernate is present.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/hibernate/jpa/spring/HibernateTransactionManagerFactory.html" title="class in io.micronaut.configuration.hibernate.jpa.spring">HibernateTransactionManagerFactory</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/hibernate/jpa/spring/HibernateTransactionManagerFactory.html" title="class in io.micronaut.configuration.hibernate.jpa.spring">HibernateTransactionManagerFactory</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Sets up the default hibernate transaction manager.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/jdbc/hikari/HikariUrlDataSource.html" title="class in io.micronaut.configuration.jdbc.hikari">HikariUrlDataSource</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/jdbc/hikari/HikariUrlDataSource.html" title="class in io.micronaut.configuration.jdbc.hikari">HikariUrlDataSource</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Extends the Hikari data source to add getUrl/setUrl to be
  more compliant with the other datasource types.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/hibernate/jpa/proxy/IntroducedHibernateProxy.html" title="interface in io.micronaut.configuration.hibernate.jpa.proxy">IntroducedHibernateProxy</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/hibernate/jpa/proxy/IntroducedHibernateProxy.html" title="interface in io.micronaut.configuration.hibernate.jpa.proxy">IntroducedHibernateProxy</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab1">
+<div class="block">Introduced <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/proxy/HibernateProxy.html" title="class or interface in org.hibernate.proxy" class="external-link"><code>HibernateProxy</code></a> interface to register an interceptor.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/hibernate6/jpa/proxy/IntroducedHibernateProxy.html" title="interface in io.micronaut.configuration.hibernate6.jpa.proxy">IntroducedHibernateProxy</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab1">
 <div class="block">Introduced <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/proxy/HibernateProxy.html" title="class or interface in org.hibernate.proxy" class="external-link"><code>HibernateProxy</code></a> interface to register an interceptor.</div>
 </div>
@@ -167,7 +183,15 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Default delegating interceptor for all <a href="io/micronaut/configuration/hibernate/jpa/proxy/GenerateProxy.html" title="annotation interface in io.micronaut.configuration.hibernate.jpa.proxy"><code>GenerateProxy</code></a> proxies.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/hibernate/jpa/proxy/IntrospectedHibernateBytecodeProvider.html" title="class in io.micronaut.configuration.hibernate.jpa.proxy">IntrospectedHibernateBytecodeProvider</a></div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/hibernate6/jpa/proxy/IntroducedHibernateProxyAdvice.html" title="class in io.micronaut.configuration.hibernate6.jpa.proxy">IntroducedHibernateProxyAdvice</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Default delegating interceptor for all <a href="io/micronaut/configuration/hibernate6/jpa/proxy/GenerateProxy.html" title="annotation interface in io.micronaut.configuration.hibernate6.jpa.proxy"><code>GenerateProxy</code></a> proxies.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/hibernate/jpa/proxy/IntrospectedHibernateBytecodeProvider.html" title="class in io.micronaut.configuration.hibernate.jpa.proxy">IntrospectedHibernateBytecodeProvider</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Compile-time proxies implementation of Hibernate's <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html" title="class or interface in org.hibernate.bytecode.spi" class="external-link"><code>BytecodeProvider</code></a>.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/hibernate6/jpa/proxy/IntrospectedHibernateBytecodeProvider.html" title="class in io.micronaut.configuration.hibernate6.jpa.proxy">IntrospectedHibernateBytecodeProvider</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Compile-time proxies implementation of Hibernate's <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html" title="class or interface in org.hibernate.bytecode.spi" class="external-link"><code>BytecodeProvider</code></a>.</div>
 </div>
@@ -228,7 +252,15 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Configuration for JPA and Hibernate.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/hibernate6/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate6.jpa">JpaConfiguration</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Configuration for JPA and Hibernate.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">The entity scan configuration.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/hibernate6/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate6.jpa">JpaConfiguration.EntityScanConfiguration</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The entity scan configuration.</div>
 </div>
@@ -237,13 +269,22 @@ loadScripts(document, 'script');</script>
 <div class="block">An implementation of <code>TraversableResolver</code> which is aware of JPA 2 and utilizes <code>PersistenceUtil</code> to
  query the reachability of a property.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/jooq/JsonConverterProvider.html" title="class in io.micronaut.configuration.jooq">JsonConverterProvider</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/hibernate6/jpa/validation/JPATraversableResolver.html" title="class in io.micronaut.configuration.hibernate6.jpa.validation">JPATraversableResolver</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">An implementation of <code>TraversableResolver</code> which is aware of JPA 3 and utilizes <code>PersistenceUtil</code> to
+ query the reachability of a property.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/jooq/JsonConverterProvider.html" title="class in io.micronaut.configuration.jooq">JsonConverterProvider</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">jOOQ ConverterProvider integrating the micronaut-json-core <code>JsonMapper</code> to convert JSON and JSONB types.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.micronaut">MicronautDataTransactionHandler</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/jdbi/transaction/micronaut/MicronautDataTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction.micronaut">MicronautDataTransactionHandler</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Allows Micronaut data Transaction to be used with Jdbi.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/transaction/hibernate6/MicronautSessionContext.html" title="class in io.micronaut.transaction.hibernate6">MicronautSessionContext</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">TODO: This is added temporary just to be able to avoid dependency on hibernate tx dependency in micronaut-data.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html" title="class in io.micronaut.configuration.jooq">MicronautTransactionProvider</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
@@ -299,9 +340,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab1">
 <div class="block">Configure <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/SessionFactoryBuilder.html" title="class or interface in org.hibernate.boot" class="external-link"><code>SessionFactoryBuilder</code></a> using <a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa"><code>JpaConfiguration</code></a>.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/hibernate/jpa/conf/settings/SettingsSupplier.html" title="interface in io.micronaut.configuration.hibernate.jpa.conf.settings">SettingsSupplier</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/hibernate6/jpa/conf/sessionfactory/configure/SessionFactoryBuilderConfigurer.html" title="interface in io.micronaut.configuration.hibernate6.jpa.conf.sessionfactory.configure">SessionFactoryBuilderConfigurer</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab1">
+<div class="block">Configure <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/SessionFactoryBuilder.html" title="class or interface in org.hibernate.boot" class="external-link"><code>SessionFactoryBuilder</code></a> using <a href="io/micronaut/configuration/hibernate6/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate6.jpa"><code>JpaConfiguration</code></a>.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/hibernate/jpa/conf/settings/SettingsSupplier.html" title="interface in io.micronaut.configuration.hibernate.jpa.conf.settings">SettingsSupplier</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab1">
 <div class="block">Supply additional settings for <a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa"><code>JpaConfiguration</code></a>.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/hibernate6/jpa/conf/settings/SettingsSupplier.html" title="interface in io.micronaut.configuration.hibernate6.jpa.conf.settings">SettingsSupplier</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab1">
+<div class="block">Supply additional settings for <a href="io/micronaut/configuration/hibernate6/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate6.jpa"><code>JpaConfiguration</code></a>.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/jooq/graal/SimpleFlatMapperAvailable.html" title="class in io.micronaut.configuration.jooq.graal">SimpleFlatMapperAvailable</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
@@ -327,9 +376,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab1">
 <div class="block">Configure <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/registry/StandardServiceRegistryBuilder.html" title="class or interface in org.hibernate.boot.registry" class="external-link"><code>StandardServiceRegistryBuilder</code></a> using <a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa"><code>JpaConfiguration</code></a>.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/hibernate/jpa/conf/serviceregistry/builder/supplier/StandardServiceRegistryBuilderCreator.html" title="interface in io.micronaut.configuration.hibernate.jpa.conf.serviceregistry.builder.supplier">StandardServiceRegistryBuilderCreator</a></div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/hibernate6/jpa/conf/serviceregistry/builder/configures/StandardServiceRegistryBuilderConfigurer.html" title="interface in io.micronaut.configuration.hibernate6.jpa.conf.serviceregistry.builder.configures">StandardServiceRegistryBuilderConfigurer</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab1">
+<div class="block">Configure <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/boot/registry/StandardServiceRegistryBuilder.html" title="class or interface in org.hibernate.boot.registry" class="external-link"><code>StandardServiceRegistryBuilder</code></a> using <a href="io/micronaut/configuration/hibernate6/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate6.jpa"><code>JpaConfiguration</code></a>.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/hibernate/jpa/conf/serviceregistry/builder/supplier/StandardServiceRegistryBuilderCreator.html" title="interface in io.micronaut.configuration.hibernate.jpa.conf.serviceregistry.builder.supplier">StandardServiceRegistryBuilderCreator</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab1">
 <div class="block">Creator of <a href="io/micronaut/configuration/hibernate/jpa/conf/serviceregistry/builder/supplier/StandardServiceRegistryBuilderCreator.html" title="interface in io.micronaut.configuration.hibernate.jpa.conf.serviceregistry.builder.supplier"><code>StandardServiceRegistryBuilderCreator</code></a>.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/hibernate6/jpa/conf/serviceregistry/builder/supplier/StandardServiceRegistryBuilderCreator.html" title="interface in io.micronaut.configuration.hibernate6.jpa.conf.serviceregistry.builder.supplier">StandardServiceRegistryBuilderCreator</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab1">
+<div class="block">Creator of <a href="io/micronaut/configuration/hibernate6/jpa/conf/serviceregistry/builder/supplier/StandardServiceRegistryBuilderCreator.html" title="interface in io.micronaut.configuration.hibernate6.jpa.conf.serviceregistry.builder.supplier"><code>StandardServiceRegistryBuilderCreator</code></a>.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.tomcat.metadata">TomcatDataSourcePoolMetadata</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
@@ -339,16 +396,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab1">
 <div class="block">Represents a transaction aware session that can be dependency injected.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerConfiguration.html" title="interface in io.micronaut.configuration.jdbc.ucp">UniversalConnectionPoolManagerConfiguration</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/hibernate6/jpa/TransactionalSession.html" title="interface in io.micronaut.configuration.hibernate6.jpa">TransactionalSession</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab1">
+<div class="block">Represents a transaction aware session that can be dependency injected.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerConfiguration.html" title="interface in io.micronaut.configuration.jdbc.ucp">UniversalConnectionPoolManagerConfiguration</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab1">
 <div class="block">Configuration of <code>UniversalConnectionPoolManager</code>.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration.html" title="interface in io.micronaut.configuration.jdbc.ucp">UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab1">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration.html" title="interface in io.micronaut.configuration.jdbc.ucp">UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab1">
 <div class="block">MX Bean configuration.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerFactory.html" title="class in io.micronaut.configuration.jdbc.ucp">UniversalConnectionPoolManagerFactory</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerFactory.html" title="class in io.micronaut.configuration.jdbc.ucp">UniversalConnectionPoolManagerFactory</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Factory for <code>UniversalConnectionPoolManager</code>.</div>
 </div>
 </div>
