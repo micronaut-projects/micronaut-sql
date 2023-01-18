@@ -10,6 +10,5 @@ dependencies {
 }
 
 configurations {
-    all*.exclude module: "byte-buddy"
     all*.exclude module: "javassist"
 }
