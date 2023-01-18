@@ -23,7 +23,7 @@ abstract class AbstractHibernateAppSpec extends AbstractJDBCContainerAppSpec {
     @Override
     Map<String, String> provideProperties(JdbcDatabaseContainer databaseContainer) {
         return super.provideProperties(databaseContainer) + [
-                "jpa.default.compile-time-hibernate-proxies": "true",
+                "jpa.default.compile-time-hibernate-proxies": "false",
                 "jpa.default.properties.hibernate.dialect"  : getHibernateDialect(),
         ]
     }
