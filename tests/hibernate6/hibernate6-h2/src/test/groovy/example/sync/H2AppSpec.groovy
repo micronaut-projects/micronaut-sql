@@ -35,7 +35,6 @@ class H2AppSpec extends AbstractAppSpec implements TestPropertyProvider {
     Map<String, String> getProperties() {
         return [
                 "jpa.default.properties.hibernate.dialect"  : "org.hibernate.dialect.H2Dialect",
-                "jpa.default.compile-time-hibernate-proxies": "false",
                 "datasources.default.url"                   : "jdbc:h2:mem:devDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE",
                 "datasources.default.driverClassName"       : "org.h2.Driver",
                 "datasources.default.username"              : "sa",

@@ -60,7 +60,6 @@ public class JpaConfiguration {
     private List<String> mappingResources = new ArrayList<>();
     private EntityScanConfiguration entityScanConfiguration;
 
-    private boolean compileTimeHibernateProxies;
     private boolean reactive;
 
     /**
@@ -169,24 +168,6 @@ public class JpaConfiguration {
     }
 
     /**
-     * Compile time Hibernate proxies.
-     *
-     * @return true if compile time proxies enabled
-     */
-    public boolean isCompileTimeHibernateProxies() {
-        return compileTimeHibernateProxies;
-    }
-
-    /**
-     * Enable compile time Hibernate proxies.
-     *
-     * @param compileTimeHibernateProxies true to enable compile time proxies
-     */
-    public void setCompileTimeHibernateProxies(boolean compileTimeHibernateProxies) {
-        this.compileTimeHibernateProxies = compileTimeHibernateProxies;
-    }
-
-    /**
      * @return is reactive
      */
     public boolean isReactive() {
@@ -210,7 +191,6 @@ public class JpaConfiguration {
         JpaConfiguration jpaConfiguration = new JpaConfiguration(name, integrator, applicationContext, entityScanConfiguration);
         jpaConfiguration.setProperties(new HashMap<>(this.getProperties()));
         jpaConfiguration.setMappingResources(new ArrayList<>(this.getMappingResources()));
-        jpaConfiguration.setCompileTimeHibernateProxies(compileTimeHibernateProxies);
         jpaConfiguration.setReactive(reactive);
         return jpaConfiguration;
     }
