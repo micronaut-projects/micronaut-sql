@@ -1,0 +1,16 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application'
+}
+
+dependencies {
+    implementation projects.tests.hibernate6.hibernate6SyncCommon
+    testImplementation projects.tests.hibernate6.hibernate6SyncCommonTests
+
+    runtimeOnly libs.managed.mysql.connector.java
+    testImplementation libs.testcontainers.mysql
+}
+
+configurations {
+    all*.exclude module: "byte-buddy"
+    all*.exclude module: "javassist"
+}
