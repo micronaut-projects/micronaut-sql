@@ -68,7 +68,7 @@ class JpaSetupSpec extends Specification {
         em.persist(new Book(title: ""))
         em.flush()
         // TODO: persist/flush don't throw validation exception so do it manually
-        //throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>())
+        throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>())
         tx.commit()
 
         then:
