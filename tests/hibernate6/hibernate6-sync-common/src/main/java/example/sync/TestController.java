@@ -25,9 +25,9 @@ class TestController {
     void init() {
         try {
             Class.forName("net.bytebuddy.ByteBuddy");
-            throw new IllegalStateException("ByteBuddy shouldn't be present on classpath");
+            // ignore
         } catch (ClassNotFoundException e) {
-            // Ignore
+            throw new IllegalStateException("ByteBuddy should be present on classpath");
         }
         try {
             Class.forName("javassist.util.proxy.ProxyFactory");
