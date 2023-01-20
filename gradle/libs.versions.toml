@@ -33,7 +33,7 @@ managed-ojdbc = "21.8.0.0"
 managed-postgres-driver = "42.5.1"
 managed-mariadb-driver = "3.1.0"
 managed-mssql-driver = "9.4.1.jre16"
-managed-mysql-driver = "8.0.31"
+managed-mysql-driver = "8.0.32"
 
 # JDBC Pools
 
