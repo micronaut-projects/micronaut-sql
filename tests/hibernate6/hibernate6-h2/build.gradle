@@ -1,0 +1,14 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application'
+}
+
+dependencies {
+    implementation projects.tests.hibernate6.hibernate6SyncCommon
+    testImplementation projects.tests.hibernate6.hibernate6SyncCommonTests
+
+    runtimeOnly libs.managed.h2
+}
+
+configurations {
+    all*.exclude module: "javassist"
+}

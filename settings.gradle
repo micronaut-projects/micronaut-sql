@@ -6,7 +6,7 @@ pluginManagement {
 }
 
 plugins {
-    id 'io.micronaut.build.shared.settings' version '6.1.1'
+    id 'io.micronaut.build.shared.settings' version '6.2.0'
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -63,6 +63,15 @@ include 'tests:hibernate5:hibernate5-reactive-postgres'
 include 'tests:hibernate5:hibernate5-reactive-mysql'
 include 'tests:hibernate5:hibernate5-reactive-mssql'
 include 'tests:hibernate5:hibernate5-reactive-oracle'
+
+include 'tests:hibernate6:hibernate6-sync-common'
+include 'tests:hibernate6:hibernate6-sync-common-tests'
+include 'tests:hibernate6:hibernate6-h2'
+include 'tests:hibernate6:hibernate6-mariadb'
+include 'tests:hibernate6:hibernate6-mysql'
+include 'tests:hibernate6:hibernate6-mssql'
+include 'tests:hibernate6:hibernate6-oracle'
+include 'tests:hibernate6:hibernate6-postgres'
 
 include 'tests:jooq-tests:jooq-jdbc-postgres'
 include 'tests:jooq-tests:jooq-r2dbc-postgres'
