@@ -1,7 +1,7 @@
-There are several different ways you can customize and configure how the `SessionFactory` is built. The easiest way is via configuration in `application.yml`. The following configuration demonstrates an example:
+There are several different ways you can customize and configure how the `SessionFactory` is built. The easiest way is via configuration. The following configuration demonstrates an example:
 
+[configuration]
 .Configuring Hibernate Properties
-[source,yaml]
 ----
 datasources:
     default:
