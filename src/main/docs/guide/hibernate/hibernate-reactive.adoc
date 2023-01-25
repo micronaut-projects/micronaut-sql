@@ -19,7 +19,7 @@ dependency:vertx-oracle-client[groupId="io.vertx"]
 
 And configure it using properties:
 
-[source,yaml]
+[configuration]
 ----
 jpa:
   default:
@@ -40,7 +40,7 @@ dependency:vertx-pg-client[groupId="io.micronaut.sql"]
 
 And configure the client:
 
-[source,yaml]
+[configuration]
 ----
 vertx:
   pg:
