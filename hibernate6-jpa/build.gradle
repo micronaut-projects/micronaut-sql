@@ -1,0 +1,42 @@
+plugins {
+    id 'io.micronaut.build.internal.sql-module'
+}
+
+// TODO: Temporary disabled binary compatibility check
+micronautBuild {
+    binaryCompatibility {
+        enabled = false
+    }
+}
+
+dependencies {
+    annotationProcessor(mn.micronaut.graal)
+
+    api(libs.managed.hibernate6.core)
+    api(libs.jakarta.transaction.api)
+    api(mn.micronaut.validation)
+    api(mnData.micronaut.data.tx.hibernate6)
+    api(mn.micronaut.aop)
+    api projects.jdbc
+    api(mn.micronaut.runtime)
+
+    compileOnly(libs.graal.svm)
+    compileOnly(libs.managed.hibernate6.micrometer)
+    compileOnly(libs.managed.hibernate6.jcache)
+    compileOnly(mn.micronaut.management)
+    compileOnly(mnMicrometer.micronaut.micrometer.core)
+
+    testAnnotationProcessor(mn.micronaut.inject.java)
+    testRuntimeOnly(libs.micronaut.hibernate.validator)
+    testImplementation(mn.micronaut.inject.java)
+    testImplementation(libs.managed.hibernate6.jcache)
+    testImplementation(mn.micronaut.management)
+    testImplementation(mn.micronaut.inject.groovy)
+    testImplementation(mn.micronaut.function.web)
+    testImplementation(mnCache.micronaut.cache.core)
+    testImplementation(mnMicrometer.micronaut.micrometer.core)
+    testImplementation(libs.managed.hibernate6.micrometer)
+
+    testRuntimeOnly projects.jdbcTomcat
+    testRuntimeOnly(libs.managed.h2)
+}

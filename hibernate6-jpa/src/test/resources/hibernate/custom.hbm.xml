@@ -1,0 +1,6 @@
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <database-object>
+        <definition class="io.micronaut.configuration.hibernate6.jpa.mapping.CustomIndexesDatabaseObject"/>
+        <dialect-scope name="org.hibernate.dialect.H2Dialect"/>
+    </database-object>
+</hibernate-mapping>

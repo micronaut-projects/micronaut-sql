@@ -1,0 +1,11 @@
+plugins {
+    id 'io.micronaut.build.internal.test-library'
+}
+
+dependencies {
+    implementation projects.tests.common
+    implementation projects.hibernate6Jpa
+    runtimeOnly projects.jdbcHikari
+
+    runtimeOnly(mn.snakeyaml)
+}
