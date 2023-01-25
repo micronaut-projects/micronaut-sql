@@ -53,6 +53,8 @@ jobs:
           if [ ${{ matrix.java }} == 16 ]; then export GRADLE_OPTS="-Dorg.gradle.jvmargs=--illegal-access=permit"; fi
           ./gradlew check --no-daemon --parallel --continue
         env:
+           GH_TOKEN_PUBLIC_REPOS_READONLY: ${{ secrets.GH_TOKEN_PUBLIC_REPOS_READONLY }}
+           GH_USERNAME: ${{ secrets.GH_USERNAME }}
            TESTCONTAINERS_RYUK_DISABLED: true
            GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
            GRADLE_ENTERPRISE_CACHE_USERNAME: ${{ secrets.GRADLE_ENTERPRISE_CACHE_USERNAME }}
@@ -74,6 +76,8 @@ jobs:
       - name: Publish to Sonatype Snapshots
         if: success() && github.event_name == 'push' && matrix.java == '11'
         env:
+          GH_TOKEN_PUBLIC_REPOS_READONLY: ${{ secrets.GH_TOKEN_PUBLIC_REPOS_READONLY }}
+          GH_USERNAME: ${{ secrets.GH_USERNAME }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}

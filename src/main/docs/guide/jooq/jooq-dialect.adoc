@@ -2,8 +2,8 @@ Micronaut will attempt to detect database link:{jooqapi}/org/jooq/SQLDialect.htm
 
 If this does not work as desired, SQL dialect can be provided manually via configuration properties. The following example configures dialect for `default` datasource:
 
+[configuration]
 .Configuring SQL dialect
-[source,yaml]
 ----
 jooq:
     datasources:

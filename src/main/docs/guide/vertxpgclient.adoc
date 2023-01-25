@@ -13,20 +13,19 @@ To configure the PostgreSQL Vertx client you should first add `vertx-pg-client` 
 
 dependency:micronaut-vertx-pg-client[groupId="io.micronaut.sql"]
 
-You should then configure the URI or https://vertx.io/docs/vertx-pg-client/java/[`PgConnectOptions`,`PoolOptions`] of the PostgreSQL server you wish to communicate with in `application.yml`:
+You should then configure the URI or https://vertx.io/docs/vertx-pg-client/java/[`PgConnectOptions`,`PoolOptions`] of the PostgreSQL server you wish to communicate with:
 
-[source,yaml]
-.application.yml
+[configuration]
 ----
 vertx:
-	pg:
-	    client:
-            port: 3306
-            host: the-host
-            database: the-db
-            user: test
-            password: test
-            maxSize: 5
+  pg:
+    client:
+      port: 3306
+      host: the-host
+      database: the-db
+      user: test
+      password: test
+      maxSize: 5
 ----
 
 TIP: You can also connect to PostgreSQL using `uri` instead of the other properties.

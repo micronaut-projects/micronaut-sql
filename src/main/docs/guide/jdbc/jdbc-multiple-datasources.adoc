@@ -1,7 +1,6 @@
 To register more than one data source, simply configure them under different names.
 
-[source,yaml]
-.application.yaml
+[configuration]
 ----
 datasources:
     default:
