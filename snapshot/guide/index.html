@@ -369,10 +369,37 @@
 <div class="paragraph">
 <p>For example:</p>
 </div>
-<div class="listingblock">
-<div class="title">application.yaml</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">datasources.default: {}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">["datasources.default"]</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">datasources.default {
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  "datasources.default" {
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -381,8 +408,17 @@
 <div class="paragraph">
 <p>If for example, the H2 driver is on the classpath, it is equivalent to the following:</p>
 </div>
-<div class="listingblock">
-<div class="title">application.yaml</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">datasources.default.url=jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+datasources.default.username=sa
+datasources.default.password=
+datasources.default.driverClassName=org.h2.Driver</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">datasources:
     default:
@@ -392,11 +428,60 @@
         driverClassName: org.h2.Driver</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources]
+  [datasources.default]
+    url="jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
+    username="sa"
+    password=""
+    driverClassName="org.h2.Driver"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">datasources {
+  'default' {
+    url = "jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
+    username = "sa"
+    password = ""
+    driverClassName = "org.h2.Driver"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  datasources {
+    default {
+      url = "jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
+      username = "sa"
+      password = ""
+      driverClassName = "org.h2.Driver"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
 <div class="paragraph">
 <p>To use Oracle UCP, provide a configuration similar to the following:</p>
 </div>
-<div class="listingblock">
-<div class="title">application.yaml</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">datasources.default.url=null
+datasources.default.connectionFactoryClassName=oracle.jdbc.pool.OracleDataSource
+datasources.default.username=null
+datasources.default.password=null
+datasources.default.minPoolSize=1
+datasources.default.maxPoolSize=10</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">datasources:
   default:
@@ -406,6 +491,47 @@
     password:
     minPoolSize: 1
     maxPoolSize: 10</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources]
+  [datasources.default]
+    connectionFactoryClassName="oracle.jdbc.pool.OracleDataSource"
+    minPoolSize=1
+    maxPoolSize=10</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">datasources {
+  'default' {
+    url = null
+    connectionFactoryClassName = "oracle.jdbc.pool.OracleDataSource"
+    username = null
+    password = null
+    minPoolSize = 1
+    maxPoolSize = 10
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  datasources {
+    default {
+      url = null
+      connectionFactoryClassName = "oracle.jdbc.pool.OracleDataSource"
+      username = null
+      password = null
+      minPoolSize = 1
+      maxPoolSize = 10
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -451,14 +577,48 @@
 <div class="paragraph">
 <p>To register more than one data source, simply configure them under different names.</p>
 </div>
-<div class="listingblock">
-<div class="title">application.yaml</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">datasources.default=...
+datasources.warehouse=...</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">datasources:
     default:
         ...
     warehouse:
         ...</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources]
+  default="..."
+  warehouse="..."</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">datasources {
+  'default' = "..."
+  warehouse = "..."
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  datasources {
+    default = "..."
+    warehouse = "..."
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -666,10 +826,21 @@ EntityManager otherManager;</code></pre>
 
 
 <div class="paragraph">
-<p>There are several different ways you can customize and configure how the <code>SessionFactory</code> is built. The easiest way is via configuration in <code>application.yml</code>. The following configuration demonstrates an example:</p>
+<p>There are several different ways you can customize and configure how the <code>SessionFactory</code> is built. The easiest way is via configuration. The following configuration demonstrates an example:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
 <div class="title">Configuring Hibernate Properties</div>
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">datasources.default.name=mydb
+jpa.default.entity-scan.packages[0]=foo.bar
+jpa.default.entity-scan.packages[1]=foo.baz
+jpa.default.properties.hibernate.hbm2ddl.auto=update
+jpa.default.properties.hibernate.show_sql=true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">datasources:
     default:
@@ -685,6 +856,77 @@ jpa:
                 hbm2ddl:
                     auto: update
                 show_sql: true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources]
+  [datasources.default]
+    name="mydb"
+[jpa]
+  [jpa.default]
+    [jpa.default.entity-scan]
+      packages=[
+        "foo.bar",
+        "foo.baz"
+      ]
+    [jpa.default.properties]
+      [jpa.default.properties.hibernate]
+        [jpa.default.properties.hibernate.hbm2ddl]
+          auto="update"
+        show_sql=true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">datasources {
+  'default' {
+    name = "mydb"
+  }
+}
+jpa {
+  'default' {
+    entityScan {
+      packages = ["foo.bar", "foo.baz"]
+    }
+    properties {
+      hibernate {
+        hbm2ddl {
+          auto = "update"
+        }
+        show_sql = true
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  datasources {
+    default {
+      name = "mydb"
+    }
+  }
+  jpa {
+    default {
+      entity-scan {
+        packages = ["foo.bar", "foo.baz"]
+      }
+      properties {
+        hibernate {
+          hbm2ddl {
+            auto = "update"
+          }
+          show_sql = true
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -715,14 +957,57 @@ jpa:
 <div class="paragraph">
 <p>If you wish to limit the packages to include in a particular JPA entity manager you can do so with the <code>entity-scan</code> configuration option:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
 <div class="title">Limiting Entity Scan</div>
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">jpa.default.entity-scan.packages[0]=foo.bar</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">jpa:
     default:
         entity-scan:
             packages:
                 - 'foo.bar'</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa]
+  [jpa.default]
+    [jpa.default.entity-scan]
+      packages=[
+        "foo.bar"
+      ]</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">jpa {
+  'default' {
+    entityScan {
+      packages = ["foo.bar"]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  jpa {
+    default {
+      entity-scan {
+        packages = ["foo.bar"]
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -740,8 +1025,16 @@ jpa:
 <div class="paragraph">
 <p>If this option doesn&#8217;t work for you, you can instead enable full classpath scanning using the <code>classpath</code> property:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
 <div class="title">Enabling Full Classpath Scanning</div>
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">jpa.default.entity-scan.classpath=true
+jpa.default.entity-scan.packages[0]=foo.bar</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">jpa:
     default:
@@ -749,6 +1042,45 @@ jpa:
             classpath: true
             packages:
                 - 'foo.bar'</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa]
+  [jpa.default]
+    [jpa.default.entity-scan]
+      classpath=true
+      packages=[
+        "foo.bar"
+      ]</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">jpa {
+  'default' {
+    entityScan {
+      classpath = true
+      packages = ["foo.bar"]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  jpa {
+    default {
+      entity-scan {
+        classpath = true
+        packages = ["foo.bar"]
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -879,7 +1211,17 @@ The reactive implementation doesn&#8217;t use traditional JDBC drivers, but inst
 <div class="paragraph">
 <p>And configure it using properties:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">jpa.default.reactive=true
+jpa.default.properties.hibernate.connection.url=jdbc:postgresql:database
+jpa.default.properties.hibernate.connection.username=myUsername
+jpa.default.properties.hibernate.connection.password=myPassword</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">jpa:
   default:
@@ -890,6 +1232,59 @@ The reactive implementation doesn&#8217;t use traditional JDBC drivers, but inst
           url: jdbc:postgresql:database # Use JDBC style url
           username: myUsername
           password: myPassword</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa]
+  [jpa.default]
+    reactive=true
+    [jpa.default.properties]
+      [jpa.default.properties.hibernate]
+        [jpa.default.properties.hibernate.connection]
+          url="jdbc:postgresql:database"
+          username="myUsername"
+          password="myPassword"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">jpa {
+  'default' {
+    reactive = true
+    properties {
+      hibernate {
+        connection {
+          url = "jdbc:postgresql:database"
+          username = "myUsername"
+          password = "myPassword"
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  jpa {
+    default {
+      reactive = true
+      properties {
+        hibernate {
+          connection {
+            url = "jdbc:postgresql:database"
+            username = "myUsername"
+            password = "myPassword"
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -930,7 +1325,19 @@ The reactive implementation doesn&#8217;t use traditional JDBC drivers, but inst
 <div class="paragraph">
 <p>And configure the client:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">vertx.pg.client.port=5432
+vertx.pg.client.host=the-host
+vertx.pg.client.database=the-db
+vertx.pg.client.user=user
+vertx.pg.client.password=secret
+vertx.pg.client.max-size=10</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">vertx:
   pg:
@@ -941,6 +1348,55 @@ The reactive implementation doesn&#8217;t use traditional JDBC drivers, but inst
       user: 'user'
       password: 'secret'
       max-size:  10</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[vertx]
+  [vertx.pg]
+    [vertx.pg.client]
+      port=5432
+      host="the-host"
+      database="the-db"
+      user="user"
+      password="secret"
+      max-size=10</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">vertx {
+  pg {
+    client {
+      port = 5432
+      host = "the-host"
+      database = "the-db"
+      user = "user"
+      password = "secret"
+      maxSize = 10
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  vertx {
+    pg {
+      client {
+        port = 5432
+        host = "the-host"
+        database = "the-db"
+        user = "user"
+        password = "secret"
+        max-size = 10
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -1147,10 +1603,21 @@ Compile-time proxies are enabled by default for GraalVM environment.
 </div></p>
 </div>
 <div class="paragraph">
-<p>You should then configure the <a href="https://github.com/jasync-sql/jasync-sql/wiki/Configuring-and-Managing-Connections"><code>PoolOptions</code></a> of the database server you wish to communicate with in <code>application.yml</code>:</p>
+<p>You should then configure the <a href="https://github.com/jasync-sql/jasync-sql/wiki/Configuring-and-Managing-Connections"><code>PoolOptions</code></a> of the database server you wish to communicate with:</p>
 </div>
-<div class="listingblock">
-<div class="title">application.yml</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">jasync.client.port=5432
+jasync.client.host=the-host
+jasync.client.database=the-db
+jasync.client.username=test
+jasync.client.password=test
+jasync.client.maxActiveConnections=5</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">jasync:
     client:
@@ -1160,6 +1627,50 @@ Compile-time proxies are enabled by default for GraalVM environment.
         username: test
         password: test
         maxActiveConnections: 5</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jasync]
+  [jasync.client]
+    port=5432
+    host="the-host"
+    database="the-db"
+    username="test"
+    password="test"
+    maxActiveConnections=5</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">jasync {
+  client {
+    port = 5432
+    host = "the-host"
+    database = "the-db"
+    username = "test"
+    password = "test"
+    maxActiveConnections = 5
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  jasync {
+    client {
+      port = 5432
+      host = "the-host"
+      database = "the-db"
+      username = "test"
+      password = "test"
+      maxActiveConnections = 5
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -1280,13 +1791,54 @@ For each registered <code>DataSource</code>, Micronaut will configure the follow
 <div class="paragraph">
 <p>If this does not work as desired, SQL dialect can be provided manually via configuration properties. The following example configures dialect for <code>default</code> datasource:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
 <div class="title">Configuring SQL dialect</div>
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">jooq.datasources.default.sql-dialect=POSTGRES</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">jooq:
     datasources:
         default:
             sql-dialect: 'POSTGRES'</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jooq]
+  [jooq.datasources]
+    [jooq.datasources.default]
+      sql-dialect="POSTGRES"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">jooq {
+  datasources {
+    'default' {
+      sqlDialect = "POSTGRES"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  jooq {
+    datasources {
+      default {
+        sql-dialect = "POSTGRES"
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 
@@ -1708,20 +2260,80 @@ You can also connect to MySQL using <code>uri</code> instead of the other proper
 </div></p>
 </div>
 <div class="paragraph">
-<p>You should then configure the URI or <a href="https://vertx.io/docs/vertx-pg-client/java/"><code>PgConnectOptions</code>,<code>PoolOptions</code></a> of the PostgreSQL server you wish to communicate with in <code>application.yml</code>:</p>
+<p>You should then configure the URI or <a href="https://vertx.io/docs/vertx-pg-client/java/"><code>PgConnectOptions</code>,<code>PoolOptions</code></a> of the PostgreSQL server you wish to communicate with:</p>
 </div>
-<div class="listingblock">
-<div class="title">application.yml</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">vertx.pg.client.port=3306
+vertx.pg.client.host=the-host
+vertx.pg.client.database=the-db
+vertx.pg.client.user=test
+vertx.pg.client.password=test
+vertx.pg.client.maxSize=5</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">vertx:
-	pg:
-	    client:
-            port: 3306
-            host: the-host
-            database: the-db
-            user: test
-            password: test
-            maxSize: 5</code></pre>
+  pg:
+    client:
+      port: 3306
+      host: the-host
+      database: the-db
+      user: test
+      password: test
+      maxSize: 5</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[vertx]
+  [vertx.pg]
+    [vertx.pg.client]
+      port=3306
+      host="the-host"
+      database="the-db"
+      user="test"
+      password="test"
+      maxSize=5</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">vertx {
+  pg {
+    client {
+      port = 3306
+      host = "the-host"
+      database = "the-db"
+      user = "test"
+      password = "test"
+      maxSize = 5
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  vertx {
+    pg {
+      client {
+        port = 3306
+        host = "the-host"
+        database = "the-db"
+        user = "test"
+        password = "test"
+        maxSize = 5
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="admonitionblock tip">
