@@ -6,7 +6,7 @@ dependencies {
     implementation projects.tests.hibernate5.hibernate5SyncCommon
     testImplementation projects.tests.hibernate5.hibernate5SyncCommonTests
 
-    runtimeOnly libs.managed.ojdbc8
+    runtimeOnly libs.managed.ojdbc11
     testImplementation libs.testcontainers.oracle.xe
 }
 

@@ -1,0 +1,15 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application'
+}
+
+dependencies {
+    implementation projects.tests.hibernate6.hibernate6SyncCommon
+    testImplementation projects.tests.hibernate6.hibernate6SyncCommonTests
+
+    runtimeOnly libs.managed.mariadb.java.client
+    testImplementation libs.testcontainers.mariadb
+}
+
+configurations {
+    all*.exclude module: "javassist"
+}
