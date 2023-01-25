@@ -4,8 +4,8 @@ The default configuration will look for all classes compiled by Micronaut that i
 
 If you wish to limit the packages to include in a particular JPA entity manager you can do so with the `entity-scan` configuration option:
 
+[configuration]
 .Limiting Entity Scan
-[source,yaml]
 ----
 jpa:
     default:
@@ -26,8 +26,8 @@ This will generate introspection metadata for all classes in the `foo.bar` packa
 
 If this option doesn't work for you, you can instead enable full classpath scanning using the `classpath` property:
 
+[configuration]
 .Enabling Full Classpath Scanning
-[source,yaml]
 ----
 jpa:
     default:

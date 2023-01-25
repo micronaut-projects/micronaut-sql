@@ -7,3 +7,8 @@ micronautBom {
         p.path.startsWith(':test')
     } as Spec<Project>)
 }
+tasks.named("checkVersionCatalogCompatibility") {
+    onlyIf {
+        JavaVersion.current().isJava11Compatible()
+    }
+}
