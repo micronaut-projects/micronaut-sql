@@ -4,7 +4,7 @@
 
 micronaut = "3.5.7"
 micronaut-docs = "2.0.0"
-micronaut-gradle-plugin = "3.6.6"
+micronaut-gradle-plugin = "3.7.0"
 
 # Frameworks
 
