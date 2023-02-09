@@ -27,11 +27,11 @@ import com.oracle.svm.core.annotate.TargetClass;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.annotation.TypeHint.AccessType;
 import io.micronaut.jdbc.spring.HibernatePresenceCondition;
+import org.hibernate.boot.ResourceStreamLocator;
 import org.hibernate.boot.archive.spi.InputStreamAccess;
 import org.hibernate.boot.jaxb.internal.MappingBinder;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
-import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.hibernate.id.Assigned;
 import org.hibernate.id.ForeignGenerator;
 import org.hibernate.id.GUIDGenerator;
@@ -86,7 +86,6 @@ final class Loggers {
         ImplicitNamingStrategyJpaCompliantImpl.class
 }, typeNames = {
         "org.hibernate.event.spi.AutoFlushEventListener[]",
-        "org.hibernate.event.spi.PersistEventListener[]",
         "org.hibernate.event.spi.ClearEventListener[]",
         "org.hibernate.event.spi.DeleteEventListener[]",
         "org.hibernate.event.spi.DirtyCheckEventListener[]",
@@ -212,7 +211,7 @@ final class NoopXmlMappingBinderAccess {
 @Substitute
 final class NoopSchemaResolver implements XMLResolver {
     @Substitute
-    public NoopSchemaResolver(ClassLoaderService classLoaderService) {
+    public NoopSchemaResolver(ResourceStreamLocator resourceStreamLocator) {
     }
 
     @Override

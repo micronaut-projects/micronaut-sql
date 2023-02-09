@@ -204,7 +204,6 @@ final class Loggers {
         ImplicitNamingStrategyJpaCompliantImpl.class
 }, typeNames = {
         "org.hibernate.event.spi.AutoFlushEventListener[]",
-        "org.hibernate.event.spi.PersistEventListener[]",
         "org.hibernate.event.spi.ClearEventListener[]",
         "org.hibernate.event.spi.DeleteEventListener[]",
         "org.hibernate.event.spi.DirtyCheckEventListener[]",
