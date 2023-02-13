@@ -15,6 +15,9 @@
  */
 package example.domain;
 
+import io.micronaut.serde.annotation.Serdeable;
+
+@Serdeable
 public interface IOwner {
 
     void setId(Long id);

@@ -28,8 +28,6 @@ import static io.micronaut.core.graal.AutomaticFeatureUtils.addResourceBundles;
 import static io.micronaut.core.graal.AutomaticFeatureUtils.addResourcePatterns;
 import static io.micronaut.core.graal.AutomaticFeatureUtils.initializeAtBuildTime;
 import static io.micronaut.core.graal.AutomaticFeatureUtils.initializeAtRunTime;
-import static io.micronaut.core.graal.AutomaticFeatureUtils.initializePackagesAtBuildTime;
-import static io.micronaut.core.graal.AutomaticFeatureUtils.initializePackagesAtRunTime;
 import static io.micronaut.core.graal.AutomaticFeatureUtils.registerAllForRuntimeReflection;
 import static io.micronaut.core.graal.AutomaticFeatureUtils.registerClassForRuntimeReflection;
 import static io.micronaut.core.graal.AutomaticFeatureUtils.registerClassForRuntimeReflectionAndReflectiveInstantiation;
@@ -51,7 +49,6 @@ final class JdbcFeature implements Feature {
     private static final String H2_DRIVER = "org.h2.Driver";
     private static final String POSTGRESQL_DRIVER = "org.postgresql.Driver";
     private static final String SQL_SERVER_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private static final String MARIADB_DRIVER = "org.mariadb.jdbc.Driver";
     private static final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
 
     @Override
@@ -59,8 +56,6 @@ final class JdbcFeature implements Feature {
         handleH2(access);
 
         handlePostgres(access);
-
-        handleMariadb(access);
 
         handleSqlServer(access);
 
@@ -119,24 +114,6 @@ final class JdbcFeature implements Feature {
             registerAllForRuntimeReflection(access, "org.postgresql.PGProperty");
 
             addResourcePatterns("META-INF/services/java.sql.Driver");
-
-            initializeAtBuildTime(access, "java.sql.DriverManager");
-        }
-    }
-
-    private void handleMariadb(BeforeAnalysisAccess access) {
-        Class<?> mariaDriver = access.findClassByName(MARIADB_DRIVER);
-        if (mariaDriver != null) {
-            registerFieldsAndMethodsWithReflectiveAccess(access, MARIADB_DRIVER);
-
-            addResourcePatterns("META-INF/services/java.sql.Driver");
-
-            registerFieldsAndMethodsWithReflectiveAccess(access, "org.mariadb.jdbc.util.Options");
-
-            initializePackagesAtBuildTime("org.mariadb");
-            initializePackagesAtRunTime("org.mariadb.jdbc.credential.aws");
-            initializePackagesAtRunTime("org.mariadb.jdbc.internal.failover.impl");
-            initializeAtRunTime(access, "org.mariadb.jdbc.internal.com.send.authentication.SendPamAuthPacket");
 
             initializeAtBuildTime(access, "java.sql.DriverManager");
         }

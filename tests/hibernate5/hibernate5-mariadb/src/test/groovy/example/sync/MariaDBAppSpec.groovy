@@ -16,12 +16,13 @@
 package example.sync
 
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
+import io.micronaut.test.support.TestPropertyProvider
 import org.testcontainers.containers.JdbcDatabaseContainer
 import org.testcontainers.containers.MariaDBContainer
 import org.testcontainers.utility.DockerImageName
 
 @MicronautTest(packages = "example.domain")
-class MariaDBAppSpec extends AbstractHibernateAppSpec {
+class MariaDBAppSpec extends AbstractHibernateAppSpec implements TestPropertyProvider {
 
     @Override
     Class<?> getOwnerClass() {
@@ -35,7 +36,7 @@ class MariaDBAppSpec extends AbstractHibernateAppSpec {
 
     @Override
     JdbcDatabaseContainer getJdbcDatabaseContainer() {
-        return new MariaDBContainer(DockerImageName.parse("mariadb:10.9.3"))
+        return new MariaDBContainer(DockerImageName.parse("mariadb:10.8.2"))
     }
 
     @Override
