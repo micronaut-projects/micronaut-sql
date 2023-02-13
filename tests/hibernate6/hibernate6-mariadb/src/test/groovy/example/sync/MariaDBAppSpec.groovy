@@ -35,7 +35,7 @@ class MariaDBAppSpec extends AbstractHibernateAppSpec {
 
     @Override
     JdbcDatabaseContainer getJdbcDatabaseContainer() {
-        return new MariaDBContainer(DockerImageName.parse("mariadb:10.9.3"))
+        return new MariaDBContainer(DockerImageName.parse("mariadb:10.8.2"))
     }
 
     @Override

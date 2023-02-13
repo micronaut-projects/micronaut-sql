@@ -16,8 +16,3 @@ dependencies {
     testImplementation projects.tests.commonTests
     testImplementation libs.testcontainers.postgresql
 }
-
-tasks.withType(Test).configureEach {
-    // TODO: Re-enable this once we have a Micronaut Data snapshot for 4.0.0
-    enabled = false
-}
