@@ -1,0 +1,16 @@
+[
+  {
+    "name": "org.hibernate.internal.log.ConnectionPoolingLogger_$logger",
+    "condition": {
+      "typeReachable": "org.hibernate.internal.log.ConnectionPoolingLogger"
+    },
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "org.jboss.logging.Logger"
+        ]
+      }
+    ]
+  }
+]
