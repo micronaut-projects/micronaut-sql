@@ -4,13 +4,18 @@ plugins {
 
 dependencies {
     implementation projects.tests.hibernate5.hibernate5SyncCommon
-    testImplementation projects.tests.hibernate5.hibernate5SyncCommonTests
+    testImplementation projects.tests.commonTests
 
     runtimeOnly libs.managed.mariadb.java.client
-    testImplementation libs.testcontainers.mariadb
 }
 
 configurations {
     all*.exclude module: "byte-buddy"
     all*.exclude module: "javassist"
+}
+
+micronaut {
+    testResources {
+        additionalModules.add(JDBC_MARIADB)
+    }
 }

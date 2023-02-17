@@ -13,22 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package example.sync;
+package example.dto;
 
-import example.domain.IPet;
+import io.micronaut.serde.annotation.Serdeable;
 
-import java.util.Collection;
-import java.util.Optional;
+@Serdeable
+public class OwnerDto {
 
-public interface IPetRepository {
+    private Long id;
+    private String name;
+    private int age;
 
-    IPet create();
+    public Long getId() {
+        return id;
+    }
 
-    void save(IPet pet);
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    void delete(IPet pet);
+    public String getName() {
+        return name;
+    }
 
-    Collection<? extends IPet> findAll();
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    Optional<? extends IPet> findByName(String name);
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
 }

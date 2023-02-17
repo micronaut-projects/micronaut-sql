@@ -15,40 +15,29 @@
  */
 package example.sync;
 
-import example.dto.OwnerDto;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.transaction.annotation.TransactionalAdvice;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-@Controller("/owners")
-class OwnerController {
+@Controller("/destroy")
+class DestroyController {
+    private static final Logger LOG = LoggerFactory.getLogger(DestroyController.class);
 
     private final IOwnerRepository ownerRepository;
-    private final Mapper mapper;
+    private final IPetRepository petRepository;
 
-    OwnerController(IOwnerRepository ownerRepository, Mapper mapper) {
+    DestroyController(IOwnerRepository ownerRepository, IPetRepository petRepository) {
         this.ownerRepository = ownerRepository;
-        this.mapper = mapper;
+        this.petRepository = petRepository;
     }
 
     @Get
-    @TransactionalAdvice(readOnly = true)
-    List<OwnerDto> all() {
-        return ownerRepository.findAll()
-                .stream()
-                .map(mapper::toOwnerDto)
-                .collect(Collectors.toList());
-    }
-
-    @Get("/{name}")
-    @TransactionalAdvice(readOnly = true)
-    Optional<OwnerDto> byName(String name) {
-        return ownerRepository.findByName(name)
-                .map(mapper::toOwnerDto);
+    @TransactionalAdvice
+    void destroy() {
+        petRepository.findAll().forEach(it -> petRepository.delete(it));
+        ownerRepository.findAll().forEach(it -> ownerRepository.delete(it));
     }
 
 }

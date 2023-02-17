@@ -4,15 +4,20 @@ plugins {
 
 dependencies {
     implementation projects.tests.hibernate5.hibernate5SyncCommon
-    testImplementation projects.tests.hibernate5.hibernate5SyncCommonTests
+    testImplementation projects.tests.commonTests
 
     runtimeOnly libs.managed.mssql.jdbc
-    testImplementation libs.testcontainers.mssqlserver
 }
 
 configurations {
     all*.exclude module: "byte-buddy"
     all*.exclude module: "javassist"
+}
+
+micronaut {
+    testResources {
+        additionalModules.add(JDBC_MSSQL)
+    }
 }
 
 graalvmNative {
