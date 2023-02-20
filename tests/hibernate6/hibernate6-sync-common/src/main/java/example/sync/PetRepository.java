@@ -45,6 +45,12 @@ class PetRepository implements IPetRepository {
         entityManager.persist(pet);
     }
 
+    @TransactionalAdvice(propagation = TransactionDefinition.Propagation.MANDATORY)
+    @Override
+    public void delete(IPet pet) {
+        entityManager.remove(pet);
+    }
+
     @Override
     public Collection<Pet> findAll() {
         return entityManager.createQuery("from Pet", Pet.class).getResultList();

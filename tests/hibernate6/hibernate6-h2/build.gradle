@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     implementation projects.tests.hibernate6.hibernate6SyncCommon
-    testImplementation projects.tests.hibernate6.hibernate6SyncCommonTests
+    testImplementation projects.tests.commonTests
 
     runtimeOnly libs.managed.h2
 }

@@ -4,14 +4,19 @@ plugins {
 
 dependencies {
     implementation projects.tests.hibernate6.hibernate6SyncCommon
-    testImplementation projects.tests.hibernate6.hibernate6SyncCommonTests
+    testImplementation projects.tests.commonTests
 
     runtimeOnly libs.managed.mysql.connector.java
-    testImplementation libs.testcontainers.mysql
 }
 
 configurations {
     all*.exclude module: "javassist"
+}
+
+micronaut {
+    testResources {
+        additionalModules.add(JDBC_MYSQL)
+    }
 }
 
 // TODO: Enable native tests once javax.validation gets replaced with jakarta.validation which is required for hibernate6

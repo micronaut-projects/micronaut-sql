@@ -45,6 +45,12 @@ class OwnerRepository implements IOwnerRepository {
         entityManager.persist(entity);
     }
 
+    @TransactionalAdvice(propagation = TransactionDefinition.Propagation.MANDATORY)
+    @Override
+    public void delete(IOwner entity) {
+        entityManager.remove(entity);
+    }
+
     @Override
     public IOwner findById(Long id) {
         return null;

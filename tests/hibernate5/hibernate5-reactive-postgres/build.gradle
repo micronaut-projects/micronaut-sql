@@ -4,11 +4,16 @@ plugins {
 
 dependencies {
     implementation projects.tests.hibernate5.hibernate5ReactiveCommon
-    testImplementation projects.tests.hibernate5.hibernate5ReactiveCommonTests
+    testImplementation projects.tests.commonTests
 
-    testImplementation libs.testcontainers.postgresql
 //    implementation projects.vertxPgClient
     implementation libs.managed.vertx.pg.client
+}
+
+micronaut {
+    testResources {
+        additionalModules.add(HIBERNATE_REACTIVE_POSTGRESQL)
+    }
 }
 
 // TODO: Enable the native image test when https://github.com/oracle/graal/issues/5510 gets fixed
