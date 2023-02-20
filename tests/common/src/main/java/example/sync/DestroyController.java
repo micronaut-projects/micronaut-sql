@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 
 @Controller("/destroy")
 class DestroyController {
-    private static final Logger LOG = LoggerFactory.getLogger(DestroyController.class);
 
     private final IOwnerRepository ownerRepository;
     private final IPetRepository petRepository;

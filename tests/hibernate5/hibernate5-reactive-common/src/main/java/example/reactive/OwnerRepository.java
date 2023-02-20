@@ -44,6 +44,11 @@ class OwnerRepository implements IOwnerRepository {
     }
 
     @Override
+    public Mono<Void> delete(IOwner entity) {
+        return withSessionMono(session -> Mono.fromCompletionStage(() -> session.remove(entity)));
+    }
+
+    @Override
     public Mono<? extends IOwner> findById(Long id) {
         return withSessionMono(session -> Mono.fromCompletionStage(() -> session.find(Owner.class, id)));
     }

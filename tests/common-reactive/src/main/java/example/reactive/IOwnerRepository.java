@@ -32,6 +32,9 @@ public interface IOwnerRepository {
     @Transactional(Transactional.TxType.MANDATORY)
     Mono<Void> save(IOwner entity);
 
+    @Transactional(Transactional.TxType.MANDATORY)
+    Mono<Void> delete(IOwner entity);
+
     Mono<? extends IOwner> findById(Long id);
 
     Mono<? extends IOwner> findByName(String name);

@@ -32,6 +32,9 @@ public interface IPetRepository {
     @Transactional(Transactional.TxType.MANDATORY)
     Mono<Void> save(IPet pet);
 
+    @Transactional(Transactional.TxType.MANDATORY)
+    Mono<Void> delete(IPet pet);
+
     Mono<? extends IPet> findByName(String name);
 
     Flux<? extends IPet> findAll();

@@ -48,6 +48,11 @@ class PetRepository implements IPetRepository {
     }
 
     @Override
+    public Mono<Void> delete(IPet entity) {
+        return withSessionMono(session -> Mono.fromCompletionStage(() -> session.remove(entity)));
+    }
+
+    @Override
     public Mono<? extends Pet> findByName(String name) {
         return withSessionMono(session -> Mono.fromCompletionStage(() -> session.createQuery("from Pet where name = :name", Pet.class)
                 .setParameter("name", name)

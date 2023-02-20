@@ -6,8 +6,8 @@ dependencies {
     implementation mnReactor.micronaut.reactor
     implementation mn.micronaut.http
     implementation mn.micronaut.runtime
+    api(projects.tests.commonEntity)
     api(mnData.micronaut.data.tx)
-    api(mnSerde.micronaut.serde.api)
 
     implementation(mnSerde.micronaut.serde.jackson)
     testImplementation(mnSerde.micronaut.serde.jackson)
