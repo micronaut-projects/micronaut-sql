@@ -50,6 +50,12 @@ public class OwnerRepository extends AbstractRepository implements IOwnerReposit
         ).doOnNext(q -> owner.setId(q.get(OWNER_ID))).then();
     }
 
+    @Transactional(Transactional.TxType.MANDATORY)
+    @Override
+    public Mono<Void> delete(IOwner owner) {
+        return withDSLContextMono(db -> db.deleteFrom(OWNER_TABLE).where(OWNER_ID.eq(owner.getId()))).then();
+    }
+
     @Override
     public Mono<IOwner> findById(Long id) {
         return selectOwners(q -> q.where(OWNER_ID.eq(id))).next().map(this::map);

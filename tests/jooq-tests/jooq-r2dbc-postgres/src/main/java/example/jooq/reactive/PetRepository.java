@@ -1,5 +1,6 @@
 package example.jooq.reactive;
 
+import example.domain.IOwner;
 import example.domain.IPet;
 import example.reactive.IPetRepository;
 import jakarta.inject.Singleton;
@@ -54,6 +55,12 @@ public class PetRepository extends AbstractRepository implements IPetRepository 
             .returning(PET_ID)).map(q -> q.get(PET_ID))
             .doOnNext(pet::setId)
             .then();
+    }
+
+    @Transactional(Transactional.TxType.MANDATORY)
+    @Override
+    public Mono<Void> delete(IPet pet) {
+        return withDSLContextMono(db -> db.deleteFrom(PET_TABLE).where(PET_ID.eq(pet.getId()))).then();
     }
 
     @Override

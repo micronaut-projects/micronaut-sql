@@ -59,6 +59,12 @@ public class OwnerRepository implements IOwnerRepository {
         owner.setId(id);
     }
 
+    @Transactional(Transactional.TxType.MANDATORY)
+    @Override
+    public void delete(IOwner owner) {
+        db.deleteFrom(OWNER_TABLE).where(OWNER_ID.eq(owner.getId())).execute();
+    }
+
     @Override
     public IOwner findById(Long id) {
         return selectPets().where(OWNER_ID.eq(id)).stream().map(this::map).findFirst().get();

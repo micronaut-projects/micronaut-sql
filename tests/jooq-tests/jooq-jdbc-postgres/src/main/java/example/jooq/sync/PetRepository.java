@@ -1,5 +1,6 @@
 package example.jooq.sync;
 
+import example.domain.IOwner;
 import example.sync.IPetRepository;
 import example.domain.IPet;
 import jakarta.inject.Singleton;
@@ -60,6 +61,12 @@ public class PetRepository implements IPetRepository {
                 .fetchOne()
                 .get(PET_ID);
         pet.setId(id);
+    }
+
+    @Transactional(Transactional.TxType.MANDATORY)
+    @Override
+    public void delete(IPet pet) {
+        db.deleteFrom(PET_TABLE).where(PET_ID.eq(pet.getId())).execute();
     }
 
     @Override
