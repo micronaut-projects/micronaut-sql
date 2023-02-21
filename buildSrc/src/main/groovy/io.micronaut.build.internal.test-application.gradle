@@ -8,6 +8,9 @@ micronaut {
     version project.ext.micronautVersion
     runtime "netty"
     testRuntime "junit"
+    testResources {
+        clientTimeout = 180
+    }
 }
 
 dependencies {
