@@ -38,6 +38,11 @@ class PetRepository implements IPetRepository {
     }
 
     @Override
+    public Mono<Void> destroy() {
+        return findAll().flatMap(it -> delete(it)).then();
+    }
+
+    @Override
     public IPet create() {
         return new Pet();
     }

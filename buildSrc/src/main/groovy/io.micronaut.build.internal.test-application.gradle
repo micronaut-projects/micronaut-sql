@@ -33,9 +33,10 @@ tasks.named("check") { task ->
 }
 
 graalvmNative {
+    toolchainDetection = false
     binaries {
-        main {
-            buildArgs("--report-unsupported-elements-at-runtime")
+        all {
+            buildArgs.add("--report-unsupported-elements-at-runtime")
         }
     }
 }

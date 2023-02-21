@@ -27,6 +27,10 @@ public interface IPetRepository {
         return Mono.empty();
     }
 
+    default Mono<Void> destroy() {
+        return Mono.empty();
+    }
+
     IPet create();
 
     @Transactional(Transactional.TxType.MANDATORY)

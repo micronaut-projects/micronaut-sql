@@ -27,6 +27,10 @@ public interface IOwnerRepository {
         return Mono.empty();
     }
 
+    default Mono<Void> destroy() {
+        return Mono.empty();
+    }
+
     IOwner create();
 
     @Transactional(Transactional.TxType.MANDATORY)

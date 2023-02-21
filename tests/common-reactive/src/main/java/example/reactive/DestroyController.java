@@ -21,8 +21,8 @@ class DestroyController {
     @TransactionalAdvice
     Mono<Void> destroy() {
         return Flux.concat(
-            petRepository.findAll().flatMap(it -> petRepository.delete(it)),
-            ownerRepository.findAll().flatMap(it -> ownerRepository.delete(it))
+            petRepository.destroy(),
+            ownerRepository.destroy()
         ).then();
     }
 }

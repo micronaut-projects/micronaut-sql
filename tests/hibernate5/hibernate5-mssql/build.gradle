@@ -22,11 +22,8 @@ micronaut {
 
 graalvmNative {
     binaries {
-        main {
-            buildArgs.addAll(
-                    "--report-unsupported-elements-at-runtime",
-                    "-H:+AddAllCharsets"
-            )
+        all {
+            buildArgs.add("-H:+AddAllCharsets")
         }
     }
 }

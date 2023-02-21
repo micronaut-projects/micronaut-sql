@@ -42,6 +42,11 @@ public class PetRepository extends AbstractRepository implements IPetRepository 
     }
 
     @Override
+    public Mono<Void> destroy() {
+        return Mono.from(ctx.dropTable(PET_TABLE)).then();
+    }
+
+    @Override
     public IPet create() {
         return new Pet();
     }

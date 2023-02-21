@@ -36,6 +36,11 @@ public class OwnerRepository extends AbstractRepository implements IOwnerReposit
     }
 
     @Override
+    public Mono<Void> destroy() {
+        return Mono.from(ctx.dropTable(OWNER_TABLE)).then();
+    }
+
+    @Override
     public Owner create() {
         return new Owner();
     }

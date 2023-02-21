@@ -34,6 +34,11 @@ class OwnerRepository implements IOwnerRepository {
     }
 
     @Override
+    public Mono<Void> destroy() {
+        return findAll().flatMap(it -> delete(it)).then();
+    }
+
+    @Override
     public IOwner create() {
         return new Owner();
     }
