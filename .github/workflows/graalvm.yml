@@ -21,9 +21,9 @@ jobs:
       matrix:
         graalvm: [ 'latest', 'dev' ]
         java: [ '17' ]
-        include:
-          - graalvm: 'dev'
-            java: 'dev'
+        #include:
+        #  - graalvm: 'dev'
+        #    java: 'dev'
         exclude:
           - graalvm: 'dev'
             java: '17'
