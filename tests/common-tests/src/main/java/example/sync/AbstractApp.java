@@ -86,17 +86,9 @@ public abstract class AbstractApp {
         assertEquals("Fred", ((Map) result.get("owner")).get("name"));
     }
 
-    private boolean runParallelTest() {
-        return true;
-    }
-
     @Test
     @Order(6)
     void shouldFetchPetsParallel() {
-        if (!runParallelTest()) {
-            return;
-        }
-
         List<List<PetDto>> resultsList = Flux.range(1, 1000)
             .flatMap(it -> client.retrieve(HttpRequest.GET("/pets"), Argument.listOf(PetDto.class)))
             .collectList()
@@ -116,10 +108,6 @@ public abstract class AbstractApp {
     @Test
     @Order(7)
     void shouldFetchPetByNameParallel() {
-        if (!runParallelTest()) {
-            return;
-        }
-
         List<Map> resultsList = Flux.range(1, 1000)
             .flatMap(it -> client.retrieve(HttpRequest.GET("/pets/Dino"), Map.class))
             .collectList()
