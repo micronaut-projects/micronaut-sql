@@ -17,7 +17,6 @@ micronaut {
 }
 
 // TODO: Enable the native image test when https://github.com/oracle/graal/issues/5510 gets fixed
-project.afterEvaluate {
-    nativeCompile.enabled = false
-    testNativeImage.enabled = false
+graalvmNative {
+    testSupport = false
 }

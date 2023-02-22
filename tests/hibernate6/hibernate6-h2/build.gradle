@@ -14,7 +14,6 @@ configurations {
 }
 
 // TODO: Enable native tests once javax.validation gets replaced with jakarta.validation which is required for hibernate6
-project.afterEvaluate {
-    nativeCompile.enabled = false
-    testNativeImage.enabled = false
+graalvmNative {
+    testSupport = false
 }
