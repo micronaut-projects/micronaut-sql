@@ -23,7 +23,7 @@ jobs:
         java: [ '17' ]
         include:
           - graalvm: 'dev'
-            java: '19'
+            java: 'dev'
         exclude:
           - graalvm: 'dev'
             java: '17'
