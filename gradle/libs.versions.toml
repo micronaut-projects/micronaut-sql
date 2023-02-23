@@ -5,6 +5,7 @@
 micronaut = "4.0.0-SNAPSHOT"
 micronaut-docs = "2.0.0"
 micronaut-gradle-plugin = "3.7.0"
+micronaut-testresources = "1.2.3"
 
 # Platform dependencies
 micronaut-cache = "4.0.0-SNAPSHOT"
@@ -167,6 +168,10 @@ testcontainers-mysql = { module = "org.testcontainers:mysql" }
 testcontainers-oracle-xe = { module = "org.testcontainers:oracle-xe" }
 testcontainers-postgresql = { module = "org.testcontainers:postgresql" }
 testcontainers-spock = { module = "org.testcontainers:spock" }
+
+# Testresources
+
+micronaut-testresources-client = { module = 'io.micronaut.testresources:micronaut-test-resources-client', version.ref = "micronaut-testresources" }
 
 #PLUGINS
 

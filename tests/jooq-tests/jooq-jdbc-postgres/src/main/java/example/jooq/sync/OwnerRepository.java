@@ -3,7 +3,6 @@ package example.jooq.sync;
 import example.domain.IOwner;
 import example.sync.IOwnerRepository;
 import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 import jakarta.inject.Singleton;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -41,16 +40,6 @@ public class OwnerRepository implements IOwnerRepository {
     @Transactional
     public void runInit() {
         db.createTable(OWNER_TABLE).column(OWNER_ID).column(OWNER_NAME).column(OWNER_AGE).execute();
-    }
-
-    @PreDestroy
-    public void destroy() {
-        runDestroy();
-    }
-
-    @Transactional
-    public void runDestroy() {
-        db.dropTable(OWNER_TABLE).execute();
     }
 
     @Override

@@ -17,30 +17,58 @@ package example.sync;
 
 import example.dto.OwnerDto;
 import example.dto.PetDto;
+import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
+import io.micronaut.test.support.TestPropertyProvider;
+import io.micronaut.testresources.client.TestResourcesClient;
+import io.micronaut.testresources.client.TestResourcesClientFactory;
 import jakarta.inject.Inject;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import reactor.core.publisher.Flux;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(OrderAnnotation.class)
-public abstract class AbstractApp {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public abstract class AbstractApp implements TestPropertyProvider {
 
     @Inject
     @Client("/")
     HttpClient client;
+
+    @Inject
+    ApplicationContext context;
+
+    @Override
+    public Map<String, String> getProperties() {
+        Map<String, String> properties = new HashMap<>();
+        properties.put("micronaut.test.resources.scope", getClass().getName());
+        return properties;
+    }
+
+    @AfterAll
+    public void cleanup() {
+        try {
+            TestResourcesClient testResourcesClient = TestResourcesClientFactory.extractFrom(context);
+            testResourcesClient.closeScope(getClass().getName());
+        } catch (Exception e) {
+            // ignore
+        }
+    }
 
     @Test
     @Order(1)

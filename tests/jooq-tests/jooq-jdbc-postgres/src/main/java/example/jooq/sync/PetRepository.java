@@ -3,7 +3,6 @@ package example.jooq.sync;
 import example.domain.IPet;
 import example.sync.IPetRepository;
 import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 import jakarta.inject.Singleton;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -44,16 +43,6 @@ public class PetRepository implements IPetRepository {
     @Transactional
     public void runInit() {
         db.createTable(PET_TABLE).column(PET_ID).column(PET_NAME).column(PET_TYPE).column(PET_OWNER).execute();
-    }
-
-    @PreDestroy
-    public void destroy() {
-        runDestroy();
-    }
-
-    @Transactional
-    public void runDestroy() {
-        db.dropTable(PET_TABLE).execute();
     }
 
     @Override

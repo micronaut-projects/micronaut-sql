@@ -7,4 +7,5 @@ dependencies {
     api mnTest.micronaut.test.junit5
     api mnReactor.micronaut.reactor
     api projects.tests.commonEntity
+    api libs.micronaut.testresources.client
 }
