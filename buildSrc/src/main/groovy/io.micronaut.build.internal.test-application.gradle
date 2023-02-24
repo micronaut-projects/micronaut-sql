@@ -39,14 +39,11 @@ tasks.named("check") { task ->
 project.afterEvaluate {
     // Disabled since native tests are executed by 'nativeTest' task from Native Build Tools plugin
     nativeCompile.enabled = false
-    testNativeImage.enabled = false
 }
 
 graalvmNative {
     toolchainDetection = false
-    binaries {
-        all {
-            buildArgs.add("--report-unsupported-elements-at-runtime")
-        }
+    metadataRepository {
+        enabled = true
     }
 }
