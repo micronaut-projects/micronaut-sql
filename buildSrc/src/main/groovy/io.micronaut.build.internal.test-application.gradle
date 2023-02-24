@@ -43,6 +43,11 @@ project.afterEvaluate {
 
 graalvmNative {
     toolchainDetection = false
+    binaries {
+        all {
+            buildArgs.add("--report-unsupported-elements-at-runtime")
+        }
+    }
     metadataRepository {
         enabled = true
     }
