@@ -1,19 +1,15 @@
 plugins {
     id 'io.micronaut.build.internal.testing-base'
     id 'io.micronaut.application'
+    id 'io.micronaut.test-resources'
 }
 
 micronaut {
     version project.ext.micronautVersion
     runtime "netty"
-    testRuntime "spock"
-}
-
-configurations.all {
-    resolutionStrategy.eachDependency { details ->
-        if (details.requested.group == 'org.codehaus.groovy') {
-            details.useTarget "org.apache.groovy:$details.requested.name:${libs.versions.groovy.get()}"
-        }
+    testRuntime "junit"
+    testResources {
+        clientTimeout = 180
     }
 }
 
@@ -22,7 +18,6 @@ dependencies {
     implementation mn.micronaut.http.client
     testImplementation mnTest.micronaut.test.core
     testImplementation libs.testcontainers.bom
-    testImplementation libs.testcontainers.spock
     testImplementation libs.testcontainers.jdbc
 }
 
@@ -30,10 +25,28 @@ application {
     mainClass = "example.Application"
 }
 
+tasks.named("check") { task ->
+    def graal = ["jvmci.Compiler", "java.vendor.version", "java.vendor"].any {
+        println "$it ${System.getProperty(it)}"
+        System.getProperty(it)?.toLowerCase(Locale.ENGLISH)?.contains("graal")
+    }
+    if (graal) {
+        task.dependsOn("nativeTest")
+    }
+}
+
+// TODO: Remove when micronaut-gradle-plugin gets upgraded to 4.0.0 version
+project.afterEvaluate {
+    // Disabled since native tests are executed by 'nativeTest' task from Native Build Tools plugin
+    nativeCompile.enabled = false
+    testNativeImage.enabled = false
+}
+
 graalvmNative {
+    toolchainDetection = false
     binaries {
-        main {
-            buildArgs("--report-unsupported-elements-at-runtime")
+        all {
+            buildArgs.add("--report-unsupported-elements-at-runtime")
         }
     }
 }

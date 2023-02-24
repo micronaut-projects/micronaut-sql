@@ -1,7 +1,8 @@
 package example.jooq.sync;
 
-import example.sync.IPetRepository;
 import example.domain.IPet;
+import example.sync.IPetRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Singleton;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -12,7 +13,6 @@ import org.jooq.Table;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 
-import jakarta.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Optional;
@@ -60,6 +60,12 @@ public class PetRepository implements IPetRepository {
                 .fetchOne()
                 .get(PET_ID);
         pet.setId(id);
+    }
+
+    @Transactional(Transactional.TxType.MANDATORY)
+    @Override
+    public void delete(IPet pet) {
+        db.deleteFrom(PET_TABLE).where(PET_ID.eq(pet.getId())).execute();
     }
 
     @Override

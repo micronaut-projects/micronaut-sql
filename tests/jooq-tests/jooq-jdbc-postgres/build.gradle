@@ -13,5 +13,10 @@ dependencies {
     runtimeOnly projects.jdbcHikari
 
     testImplementation projects.tests.commonTests
-    testImplementation libs.testcontainers.postgresql
+}
+
+micronaut {
+    testResources {
+        additionalModules.add(JDBC_POSTGRESQL)
+    }
 }

@@ -15,7 +15,7 @@
  */
 package example.sync;
 
-import example.sync.dto.OwnerDto;
+import example.dto.OwnerDto;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.transaction.annotation.TransactionalAdvice;

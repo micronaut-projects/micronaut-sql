@@ -26,6 +26,8 @@ public interface IPetRepository {
 
     void save(IPet pet);
 
+    void delete(IPet pet);
+
     Collection<? extends IPet> findAll();
 
     Optional<? extends IPet> findByName(String name);

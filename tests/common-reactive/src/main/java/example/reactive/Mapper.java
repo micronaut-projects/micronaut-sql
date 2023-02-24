@@ -15,8 +15,8 @@
  */
 package example.reactive;
 
-import example.reactive.dto.OwnerDto;
-import example.reactive.dto.PetDto;
+import example.dto.OwnerDto;
+import example.dto.PetDto;
 import example.domain.IOwner;
 import example.domain.IPet;
 import jakarta.inject.Singleton;

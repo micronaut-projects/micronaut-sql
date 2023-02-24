@@ -27,10 +27,17 @@ public interface IPetRepository {
         return Mono.empty();
     }
 
+    default Mono<Void> destroy() {
+        return Mono.empty();
+    }
+
     IPet create();
 
     @Transactional(Transactional.TxType.MANDATORY)
     Mono<Void> save(IPet pet);
+
+    @Transactional(Transactional.TxType.MANDATORY)
+    Mono<Void> delete(IPet pet);
 
     Mono<? extends IPet> findByName(String name);
 

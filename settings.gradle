@@ -49,7 +49,6 @@ include 'tests:common-reactive'
 include 'tests:common-tests'
 
 include 'tests:hibernate5:hibernate5-sync-common'
-include 'tests:hibernate5:hibernate5-sync-common-tests'
 include 'tests:hibernate5:hibernate5-postgres'
 include 'tests:hibernate5:hibernate5-mysql'
 include 'tests:hibernate5:hibernate5-mariadb'
@@ -58,14 +57,12 @@ include 'tests:hibernate5:hibernate5-h2'
 include 'tests:hibernate5:hibernate5-mssql'
 
 include 'tests:hibernate5:hibernate5-reactive-common'
-include 'tests:hibernate5:hibernate5-reactive-common-tests'
 include 'tests:hibernate5:hibernate5-reactive-postgres'
 include 'tests:hibernate5:hibernate5-reactive-mysql'
 include 'tests:hibernate5:hibernate5-reactive-mssql'
 include 'tests:hibernate5:hibernate5-reactive-oracle'
 
 include 'tests:hibernate6:hibernate6-sync-common'
-include 'tests:hibernate6:hibernate6-sync-common-tests'
 include 'tests:hibernate6:hibernate6-h2'
 include 'tests:hibernate6:hibernate6-mariadb'
 include 'tests:hibernate6:hibernate6-mysql'
@@ -75,5 +72,5 @@ include 'tests:hibernate6:hibernate6-postgres'
 
 include 'tests:jooq-tests:jooq-jdbc-postgres'
 include 'tests:jooq-tests:jooq-r2dbc-postgres'
-
+include 'tests:common-entity'
 

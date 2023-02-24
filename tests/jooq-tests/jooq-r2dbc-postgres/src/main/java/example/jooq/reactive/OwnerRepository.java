@@ -36,6 +36,11 @@ public class OwnerRepository extends AbstractRepository implements IOwnerReposit
     }
 
     @Override
+    public Mono<Void> destroy() {
+        return Mono.from(ctx.dropTable(OWNER_TABLE)).then();
+    }
+
+    @Override
     public Owner create() {
         return new Owner();
     }
@@ -48,6 +53,12 @@ public class OwnerRepository extends AbstractRepository implements IOwnerReposit
                 .values(owner.getName(), owner.getAge())
                 .returning(OWNER_ID)
         ).doOnNext(q -> owner.setId(q.get(OWNER_ID))).then();
+    }
+
+    @Transactional(Transactional.TxType.MANDATORY)
+    @Override
+    public Mono<Void> delete(IOwner owner) {
+        return withDSLContextMono(db -> db.deleteFrom(OWNER_TABLE).where(OWNER_ID.eq(owner.getId()))).then();
     }
 
     @Override

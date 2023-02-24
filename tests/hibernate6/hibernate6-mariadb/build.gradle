@@ -4,18 +4,22 @@ plugins {
 
 dependencies {
     implementation projects.tests.hibernate6.hibernate6SyncCommon
-    testImplementation projects.tests.hibernate6.hibernate6SyncCommonTests
+    testImplementation projects.tests.commonTests
 
     runtimeOnly libs.managed.mariadb.java.client
-    testImplementation libs.testcontainers.mariadb
 }
 
 configurations {
     all*.exclude module: "javassist"
 }
 
+micronaut {
+    testResources {
+        additionalModules.add(JDBC_MARIADB)
+    }
+}
+
 // TODO: Enable native tests once javax.validation gets replaced with jakarta.validation which is required for hibernate6
-project.afterEvaluate {
-    nativeCompile.enabled = false
-    testNativeImage.enabled = false
+graalvmNative {
+    testSupport = false
 }

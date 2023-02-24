@@ -26,6 +26,8 @@ public interface IOwnerRepository {
 
     void save(IOwner entity);
 
+    void delete(IOwner entity);
+
     IOwner findById(Long id);
 
     Collection<? extends IOwner> findAll();

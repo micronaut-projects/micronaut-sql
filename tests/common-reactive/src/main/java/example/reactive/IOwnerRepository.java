@@ -27,10 +27,17 @@ public interface IOwnerRepository {
         return Mono.empty();
     }
 
+    default Mono<Void> destroy() {
+        return Mono.empty();
+    }
+
     IOwner create();
 
     @Transactional(Transactional.TxType.MANDATORY)
     Mono<Void> save(IOwner entity);
+
+    @Transactional(Transactional.TxType.MANDATORY)
+    Mono<Void> delete(IOwner entity);
 
     Mono<? extends IOwner> findById(Long id);
 

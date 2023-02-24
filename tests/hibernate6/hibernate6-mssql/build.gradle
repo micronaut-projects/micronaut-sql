@@ -4,29 +4,27 @@ plugins {
 
 dependencies {
     implementation projects.tests.hibernate6.hibernate6SyncCommon
-    testImplementation projects.tests.hibernate6.hibernate6SyncCommonTests
+    testImplementation projects.tests.commonTests
 
     runtimeOnly libs.managed.mssql.jdbc
-    testImplementation libs.testcontainers.mssqlserver
 }
 
 configurations {
     all*.exclude module: "javassist"
 }
 
-graalvmNative {
-    binaries {
-        main {
-            buildArgs.addAll(
-                    "--report-unsupported-elements-at-runtime",
-                    "-H:+AddAllCharsets"
-            )
-        }
+micronaut {
+    testResources {
+        additionalModules.add(JDBC_MSSQL)
     }
 }
 
-// TODO: Enable native tests once javax.validation gets replaced with jakarta.validation which is required for hibernate6
-project.afterEvaluate {
-    nativeCompile.enabled = false
-    testNativeImage.enabled = false
+graalvmNative {
+    // TODO: Enable native tests once javax.validation gets replaced with jakarta.validation which is required for hibernate6
+    testSupport = false
+    binaries {
+        all {
+            buildArgs.add("-H:+AddAllCharsets")
+        }
+    }
 }

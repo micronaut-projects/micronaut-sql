@@ -15,8 +15,8 @@
  */
 package example.sync;
 
-import example.sync.dto.OwnerDto;
-import example.sync.dto.PetDto;
+import example.dto.OwnerDto;
+import example.dto.PetDto;
 import example.domain.IOwner;
 import example.domain.IPet;
 import jakarta.inject.Singleton;

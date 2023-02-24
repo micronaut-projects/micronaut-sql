@@ -5,7 +5,7 @@ plugins {
 dependencies {
     implementation mn.micronaut.http
     implementation mn.micronaut.runtime
-    api(mnSerde.micronaut.serde.api)
+    api(projects.tests.commonEntity)
     api(mnData.micronaut.data.tx)
 
     implementation(mnSerde.micronaut.serde.jackson)

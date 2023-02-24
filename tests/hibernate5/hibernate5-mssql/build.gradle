@@ -4,10 +4,9 @@ plugins {
 
 dependencies {
     implementation projects.tests.hibernate5.hibernate5SyncCommon
-    testImplementation projects.tests.hibernate5.hibernate5SyncCommonTests
+    testImplementation projects.tests.commonTests
 
     runtimeOnly libs.managed.mssql.jdbc
-    testImplementation libs.testcontainers.mssqlserver
 }
 
 configurations {
@@ -15,13 +14,16 @@ configurations {
     all*.exclude module: "javassist"
 }
 
+micronaut {
+    testResources {
+        additionalModules.add(JDBC_MSSQL)
+    }
+}
+
 graalvmNative {
     binaries {
-        main {
-            buildArgs.addAll(
-                    "--report-unsupported-elements-at-runtime",
-                    "-H:+AddAllCharsets"
-            )
+        all {
+            buildArgs.add("-H:+AddAllCharsets")
         }
     }
 }

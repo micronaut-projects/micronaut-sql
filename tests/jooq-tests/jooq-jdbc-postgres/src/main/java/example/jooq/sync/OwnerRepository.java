@@ -1,7 +1,8 @@
 package example.jooq.sync;
 
-import example.sync.IOwnerRepository;
 import example.domain.IOwner;
+import example.sync.IOwnerRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Singleton;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -12,7 +13,6 @@ import org.jooq.Table;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 
-import jakarta.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Optional;
@@ -57,6 +57,12 @@ public class OwnerRepository implements IOwnerRepository {
                 .fetchOne()
                 .get(OWNER_ID);
         owner.setId(id);
+    }
+
+    @Transactional(Transactional.TxType.MANDATORY)
+    @Override
+    public void delete(IOwner owner) {
+        db.deleteFrom(OWNER_TABLE).where(OWNER_ID.eq(owner.getId())).execute();
     }
 
     @Override
