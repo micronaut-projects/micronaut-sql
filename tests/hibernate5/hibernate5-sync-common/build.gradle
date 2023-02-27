@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation projects.tests.common
+    implementation projects.tests.commonSync
     implementation projects.hibernateJpa
     runtimeOnly projects.jdbcHikari
 

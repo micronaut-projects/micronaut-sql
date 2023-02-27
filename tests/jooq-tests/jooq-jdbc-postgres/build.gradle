@@ -5,7 +5,7 @@ plugins {
 dependencies {
     implementation projects.jooq
     implementation mnData.micronaut.data.tx
-    implementation projects.tests.common
+    implementation projects.tests.commonSync
 
     annotationProcessor mnData.micronaut.data.processor
 

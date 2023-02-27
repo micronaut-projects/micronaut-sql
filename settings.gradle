@@ -44,8 +44,9 @@ include 'vertx-mysql-client'
 include 'vertx-pg-client'
 include 'jdbi'
 
-include 'tests:common'
+include 'tests:common-entity'
 include 'tests:common-reactive'
+include 'tests:common-sync'
 include 'tests:common-tests'
 
 include 'tests:hibernate5:hibernate5-sync-common'
@@ -72,5 +73,3 @@ include 'tests:hibernate6:hibernate6-postgres'
 
 include 'tests:jooq-tests:jooq-jdbc-postgres'
 include 'tests:jooq-tests:jooq-r2dbc-postgres'
-include 'tests:common-entity'
-
