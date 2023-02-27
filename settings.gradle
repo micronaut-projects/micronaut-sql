@@ -44,7 +44,7 @@ include 'vertx-mysql-client'
 include 'vertx-pg-client'
 include 'jdbi'
 
-include 'tests:common-entity'
+include 'tests:common'
 include 'tests:common-reactive'
 include 'tests:common-sync'
 include 'tests:common-tests'

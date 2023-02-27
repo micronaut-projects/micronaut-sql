@@ -22,9 +22,6 @@ import io.micronaut.transaction.annotation.TransactionalAdvice;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Controller("/pets")
 class PetController {
