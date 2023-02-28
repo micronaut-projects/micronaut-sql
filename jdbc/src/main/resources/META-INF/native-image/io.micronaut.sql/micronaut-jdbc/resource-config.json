@@ -1,13 +1,10 @@
 {
-  "bundles": [],
-  "resources": {
-    "includes": [
-      {
-        "condition": {
-          "typeReachable": "org.mariadb.jdbc.util.VersionFactory"
-        },
-        "pattern": "\\Qmariadb.properties\\E"
-      }
-    ]
-  }
+  "bundles": [
+    {
+      "condition": {
+        "typeReachable": "com.microsoft.sqlserver.jdbc.SQLServerResource"
+      },
+      "name": "com.microsoft.sqlserver.jdbc.SQLServerResource"
+    }
+  ]
 }
