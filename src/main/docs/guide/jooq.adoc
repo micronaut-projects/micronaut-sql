@@ -1,5 +1,7 @@
 Micronaut supports automatically configuring http://www.jooq.org/[jOOQ] library for fluent, typesafe SQL query construction.
 
+NOTE: Since v4.5.0 of this library, the micronaut-jooq module requires Java 11 or higher.
+
 To configure jOOQ library you should first add `jooq` module to your classpath:
 
 dependency:micronaut-jooq[groupId="io.micronaut.sql"]
