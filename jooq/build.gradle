@@ -2,6 +2,11 @@ plugins {
     id 'io.micronaut.build.internal.sql-module'
 }
 
+micronautBuild {
+    sourceCompatibility = "11"
+    targetCompatibility = "11"
+}
+
 sourceSets {
     txTest {
         compileClasspath += main.output
