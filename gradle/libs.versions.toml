@@ -2,7 +2,7 @@
 
 # Micronaut
 
-micronaut = "3.8.3"
+micronaut = "3.8.6"
 micronaut-docs = "2.0.0"
 micronaut-gradle-plugin = "3.7.0"
 
