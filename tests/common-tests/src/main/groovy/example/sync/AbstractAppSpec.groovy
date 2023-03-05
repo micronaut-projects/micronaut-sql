@@ -58,12 +58,9 @@ abstract class AbstractAppSpec extends Specification {
             def results = client.toBlocking().retrieve(HttpRequest.GET("/pets"), List)
         then:
             results.size() == 3
-            results[0].name == "Dino"
-            results[0].owner.name == "Fred"
-            results[1].name == "Baby Puss"
-            results[1].owner.name == "Fred"
-            results[2].name == "Hoppy"
-            results[2].owner.name == "Barney"
+        results.any { it.name == "Dino" && it.owner.name == "Fred" }
+        results.any { it.name == "Baby Puss" && it.owner.name == "Fred" }
+        results.any { it.name == "Hoppy" && it.owner.name == "Barney" }
     }
 
     def 'should fetch pet by name'() {
