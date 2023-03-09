@@ -35,12 +35,6 @@ tasks.named("check") { task ->
     }
 }
 
-// TODO: Remove when micronaut-gradle-plugin gets upgraded to 4.0.0 version
-project.afterEvaluate {
-    // Disabled since native tests are executed by 'nativeTest' task from Native Build Tools plugin
-    nativeCompile.enabled = false
-}
-
 graalvmNative {
     toolchainDetection = false
     binaries {

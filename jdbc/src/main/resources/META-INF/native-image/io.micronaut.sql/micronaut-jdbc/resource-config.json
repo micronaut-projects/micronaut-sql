@@ -2,7 +2,7 @@
   "bundles": [
     {
       "condition": {
-        "typeReachable": "com.microsoft.sqlserver.jdbc.SQLServerResource"
+        "typeReachable": "com.microsoft.sqlserver.jdbc.SQLServerDriver"
       },
       "name": "com.microsoft.sqlserver.jdbc.SQLServerResource"
     }
