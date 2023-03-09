@@ -14,12 +14,11 @@ dependencies {
         exclude group:'org.jboss:jandex', module:'jar'
     }
     api(libs.jakarta.transaction.api)
-    api(mn.micronaut.validation)
+    api(mnValidation.micronaut.validation)
     api(mnData.micronaut.data.tx.hibernate)
     api(mn.micronaut.aop)
     api projects.jdbc
     api(mn.micronaut.runtime)
-    api(mn.micronaut.validation)
 
     compileOnly(libs.graal.svm)
     compileOnly(libs.managed.hibernate.micrometer)

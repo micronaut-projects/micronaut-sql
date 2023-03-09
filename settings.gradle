@@ -22,6 +22,7 @@ micronautBuild {
     importMicronautCatalog("micronaut-serde")
     importMicronautCatalog("micronaut-spring")
     importMicronautCatalog("micronaut-test")
+    importMicronautCatalog("micronaut-validation")
 }
 
 rootProject.name = 'sql-parent'
