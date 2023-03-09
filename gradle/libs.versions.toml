@@ -23,17 +23,17 @@ micronaut-validation = "4.0.0-SNAPSHOT"
 
 managed-vertx = "4.3.7"
 managed-jooq = "3.17.7"
-managed-hibernate = "5.6.14.Final"
+managed-hibernate = "5.6.15.Final"
 managed-hibernate6 = "6.1.6.Final"
 managed-hibernate-reactive = "1.1.9.Final"
-managed-jasync = "2.1.16"
+managed-jasync = "2.1.23"
 managed-jdbi = "3.36.0"
 
 # JDBC Drivers
 
 managed-ojdbc = "21.8.0.0"
-managed-postgres-driver = "42.5.1"
-managed-mariadb-driver = "3.1.1"
+managed-postgres-driver = "42.5.4"
+managed-mariadb-driver = "3.1.2"
 managed-mssql-driver = "9.4.1.jre16"
 managed-mysql-driver = "8.0.32"
 
@@ -55,7 +55,7 @@ managed-h2 = "2.1.214"
 jaxb-api = "2.3.1"
 sfm-reflect = "8.2.3"
 spring = "5.3.25"
-caffeine = "3.1.2"
+caffeine = "3.1.4"
 graal-svm = "22.3.1"
 logback = "1.4.5"
 
