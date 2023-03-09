@@ -15,7 +15,7 @@ micronautBom {
         acceptedLibraryRegressions.add("commons-dbcp")
         dependencies.addAll([
                 "org.jdbi:jdbi3-core:3.36.0",
-                "org.jdbi:jdbi3-sqlobject:3.36.0",
+                "org.jdbi:jdbi3-sqlobject:3.37.1",
                 "org.jdbi:jdbi3-json:3.36.0",
         ])
     }

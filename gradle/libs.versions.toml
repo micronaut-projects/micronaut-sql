@@ -17,22 +17,23 @@ micronaut-reactor = "3.0.0-SNAPSHOT"
 micronaut-serde = "2.0.0-SNAPSHOT"
 micronaut-spring = "5.0.0-SNAPSHOT"
 micronaut-test = "4.0.0-SNAPSHOT"
+micronaut-validation = "4.0.0-SNAPSHOT"
 
 # Frameworks
 
 managed-vertx = "4.3.7"
 managed-jooq = "3.17.7"
-managed-hibernate = "5.6.14.Final"
+managed-hibernate = "5.6.15.Final"
 managed-hibernate6 = "6.1.6.Final"
 managed-hibernate-reactive = "1.1.9.Final"
-managed-jasync = "2.1.16"
+managed-jasync = "2.1.23"
 managed-jdbi = "3.36.0"
 
 # JDBC Drivers
 
 managed-ojdbc = "21.8.0.0"
-managed-postgres-driver = "42.5.1"
-managed-mariadb-driver = "3.1.1"
+managed-postgres-driver = "42.5.4"
+managed-mariadb-driver = "3.1.2"
 managed-mssql-driver = "9.4.1.jre16"
 managed-mysql-driver = "8.0.32"
 
@@ -40,7 +41,7 @@ managed-mysql-driver = "8.0.32"
 
 managed-hikari = "5.0.1"
 managed-commons-dbcp = "2.9.0"
-managed-tomcat-jdbc = "10.1.5"
+managed-tomcat-jdbc = "10.1.6"
 
 # JPA
 
@@ -54,7 +55,7 @@ managed-h2 = "2.1.214"
 jaxb-api = "2.3.1"
 sfm-reflect = "8.2.3"
 spring = "5.3.25"
-caffeine = "3.1.2"
+caffeine = "3.1.4"
 graal-svm = "22.3.1"
 logback = "1.4.5"
 
@@ -76,6 +77,7 @@ micronaut-r2dbc = { module = "io.micronaut.r2dbc:micronaut-r2dbc-bom", version.r
 micronaut-serde = { module = "io.micronaut.serde:micronaut-serde-bom", version.ref = "micronaut-serde" }
 micronaut-spring = { module = "io.micronaut.spring:micronaut-spring-bom", version.ref = "micronaut-spring" }
 micronaut-test = { module = "io.micronaut.test:micronaut-test-bom", version.ref = "micronaut-test" }
+micronaut-validation = { module = "io.micronaut.validation:micronaut-validation-bom", version.ref = "micronaut-validation" }
 
 # Switch to BOM and catalog import when there's a bom
 micronaut-hibernate-validator = { module = "io.micronaut.beanvalidation:micronaut-hibernate-validator", version.ref = "micronaut-hibernate-validator" }
