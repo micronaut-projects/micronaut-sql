@@ -36,8 +36,8 @@ import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
-import javax.validation.ConstraintViolationException
-import javax.validation.constraints.NotBlank
+import jakarta.validation.ConstraintViolationException
+import jakarta.validation.constraints.NotBlank
 
 /**
  * @author graemerocher

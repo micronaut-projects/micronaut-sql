@@ -38,9 +38,9 @@ import jakarta.persistence.EntityManagerFactory
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 
-import javax.validation.ConstraintViolation
-import javax.validation.ConstraintViolationException
-import javax.validation.constraints.NotBlank
+import jakarta.validation.ConstraintViolation
+import jakarta.validation.ConstraintViolationException
+import jakarta.validation.constraints.NotBlank
 
 /**
  * @author graemerocher

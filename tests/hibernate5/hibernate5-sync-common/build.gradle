@@ -3,9 +3,9 @@ plugins {
 }
 
 dependencies {
-    implementation projects.tests.common
-    implementation projects.hibernateJpa
-    runtimeOnly projects.jdbcHikari
+    implementation projects.micronautTests.micronautCommon
+    implementation projects.micronautHibernateJpa
+    runtimeOnly projects.micronautJdbcHikari
 
     runtimeOnly(mn.snakeyaml)
 }

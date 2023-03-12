@@ -17,7 +17,7 @@ dependencies {
     api(mnValidation.micronaut.validation)
     api(mnData.micronaut.data.tx.hibernate)
     api(mn.micronaut.aop)
-    api projects.jdbc
+    api projects.micronautJdbc
     api(mn.micronaut.runtime)
 
     compileOnly(libs.graal.svm)
@@ -38,6 +38,6 @@ dependencies {
     testImplementation(libs.managed.hibernate.micrometer)
 
     testRuntimeOnly(libs.micronaut.hibernate.validator)
-    testRuntimeOnly projects.jdbcTomcat
+    testRuntimeOnly projects.micronautJdbcTomcat
     testRuntimeOnly(libs.managed.h2)
 }

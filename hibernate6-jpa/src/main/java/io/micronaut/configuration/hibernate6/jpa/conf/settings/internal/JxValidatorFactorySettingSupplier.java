@@ -20,9 +20,9 @@ import io.micronaut.configuration.hibernate6.jpa.conf.settings.SettingsSupplier;
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Internal;
+import jakarta.validation.ValidatorFactory;
 import org.hibernate.cfg.AvailableSettings;
 
-import javax.validation.ValidatorFactory;
 import java.util.Collections;
 import java.util.Map;
 

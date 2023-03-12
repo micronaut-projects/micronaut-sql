@@ -21,8 +21,8 @@ import jakarta.inject.Singleton;
 
 import jakarta.persistence.EntityManager;
 import javax.transaction.Transactional;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.Optional;
 
 @Transactional

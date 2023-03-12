@@ -17,11 +17,11 @@ package io.micronaut.configuration.hibernate6.jpa.validation;
 
 import jakarta.inject.Singleton;
 import jakarta.persistence.Persistence;
+import jakarta.validation.Path;
+import jakarta.validation.TraversableResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.Path;
-import javax.validation.TraversableResolver;
 import java.lang.annotation.ElementType;
 
 /**

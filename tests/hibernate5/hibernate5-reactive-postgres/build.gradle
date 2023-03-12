@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    implementation projects.tests.hibernate5.hibernate5ReactiveCommon
-    testImplementation projects.tests.commonTests
+    implementation projects.micronautTests.micronautHibernate5.micronautHibernate5ReactiveCommon
+    testImplementation projects.micronautTests.micronautCommonTests
 
 //    implementation projects.vertxPgClient
     implementation libs.managed.vertx.pg.client

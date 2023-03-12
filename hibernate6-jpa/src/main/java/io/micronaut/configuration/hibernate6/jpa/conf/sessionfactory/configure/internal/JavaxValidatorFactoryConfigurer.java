@@ -20,9 +20,9 @@ import io.micronaut.configuration.hibernate6.jpa.conf.sessionfactory.configure.S
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Internal;
+import jakarta.validation.ValidatorFactory;
 import org.hibernate.boot.SessionFactoryBuilder;
 
-import javax.validation.ValidatorFactory;
 
 /**
  * Configure of {@link ValidatorFactory}.

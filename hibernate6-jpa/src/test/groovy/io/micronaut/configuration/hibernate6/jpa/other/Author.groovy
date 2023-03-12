@@ -18,7 +18,7 @@ package io.micronaut.configuration.hibernate6.jpa.other
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
-import javax.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotBlank
 
 @Entity
 class Author {

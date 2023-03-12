@@ -18,7 +18,7 @@ package io.micronaut.configuration.hibernate.reactive.multiple.xyz
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
-import javax.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotBlank
 
 @Entity
 class Book {

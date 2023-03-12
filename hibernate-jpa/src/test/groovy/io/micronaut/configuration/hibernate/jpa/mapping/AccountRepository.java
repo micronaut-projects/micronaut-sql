@@ -20,7 +20,7 @@ import io.micronaut.transaction.annotation.TransactionalAdvice;
 import jakarta.inject.Singleton;
 
 import javax.persistence.EntityManager;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 @TransactionalAdvice
 @Singleton

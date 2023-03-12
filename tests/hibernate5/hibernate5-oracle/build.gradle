@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    implementation projects.tests.hibernate5.hibernate5SyncCommon
-    testImplementation projects.tests.commonTests
+    implementation projects.micronautTests.micronautHibernate5.micronautHibernate5SyncCommon
+    testImplementation projects.micronautTests.micronautCommonTests
 
     runtimeOnly libs.managed.ojdbc11
 }

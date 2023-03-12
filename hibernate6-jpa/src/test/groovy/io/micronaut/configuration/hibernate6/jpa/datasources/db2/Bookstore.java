@@ -17,7 +17,7 @@ package io.micronaut.configuration.hibernate6.jpa.datasources.db2;
 
 
 import jakarta.persistence.*;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "bookstore")

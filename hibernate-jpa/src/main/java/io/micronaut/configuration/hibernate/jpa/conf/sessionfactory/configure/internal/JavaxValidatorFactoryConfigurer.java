@@ -20,12 +20,12 @@ import io.micronaut.configuration.hibernate.jpa.conf.sessionfactory.configure.Se
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Internal;
+import jakarta.validation.ValidatorFactory;
 import org.hibernate.boot.SessionFactoryBuilder;
 
-import javax.validation.ValidatorFactory;
 
 /**
- * Configure of {@link javax.validation.ValidatorFactory}.
+ * Configure of {@link jakarta.validation.ValidatorFactory}.
  *
  * @author Denis Stepanov
  * @since 4.5.0
