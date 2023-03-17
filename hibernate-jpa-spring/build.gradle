@@ -11,7 +11,7 @@ dependencies {
     }
 
     api(mn.micronaut.aop)
-    api projects.micronautHibernateJpa
+    api projects.micronautHibernate6Jpa
 
     api projects.micronautJdbc
     api(mnSpring.micronaut.spring)

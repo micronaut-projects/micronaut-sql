@@ -16,9 +16,6 @@
 package io.micronaut.configuration.hibernate6.jpa.proxy;
 
 import io.micronaut.core.annotation.Internal;
-import io.micronaut.core.beans.BeanIntrospection;
-import io.micronaut.core.beans.BeanIntrospector;
-import io.micronaut.core.beans.BeanProperty;
 import jakarta.inject.Singleton;
 import org.hibernate.bytecode.enhance.spi.EnhancementContext;
 import org.hibernate.bytecode.enhance.spi.Enhancer;
@@ -27,9 +24,7 @@ import org.hibernate.bytecode.spi.ProxyFactoryFactory;
 import org.hibernate.bytecode.spi.ReflectionOptimizer;
 import org.hibernate.property.access.spi.PropertyAccess;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Compile-time proxies implementation of Hibernate's {@link BytecodeProvider}.
@@ -51,92 +46,15 @@ public final class IntrospectedHibernateBytecodeProvider implements BytecodeProv
 
     @Override
     public ReflectionOptimizer getReflectionOptimizer(Class clazz, String[] getterNames, String[] setterNames, Class[] types) {
-        Optional<BeanIntrospection<?>> optionalBeanIntrospection = BeanIntrospector.SHARED.findIntrospection(clazz);
-        return optionalBeanIntrospection.map(beanIntrospection -> new ReflectionOptimizer() {
-            @Override
-            public InstantiationOptimizer getInstantiationOptimizer() {
-                return beanIntrospection::instantiate;
-            }
-
-            @Override
-            public AccessOptimizer getAccessOptimizer() {
-                BeanProperty[] beanProperties = beanIntrospection.getBeanProperties().toArray(new BeanProperty[0]);
-                return new AccessOptimizer() {
-
-                    private final String[] propertyNames = Arrays.stream(beanProperties)
-                            .map(BeanProperty::getName)
-                            .toArray(String[]::new);
-
-                    @Override
-                    public String[] getPropertyNames() {
-                        return propertyNames;
-                    }
-
-                    @Override
-                    public Object[] getPropertyValues(Object object) {
-                        Object[] values = new Object[beanProperties.length];
-                        for (int i = 0; i < beanProperties.length; i++) {
-                            BeanProperty beanProperty = beanProperties[i];
-                            values[i] = beanProperty.get(i);
-                        }
-                        return values;
-                    }
-
-                    @Override
-                    public void setPropertyValues(Object object, Object[] values) {
-                        for (int i = 0; i < beanProperties.length; i++) {
-                            BeanProperty beanProperty = beanProperties[i];
-                            beanProperty.set(object, values[i]);
-                        }
-                    }
-                };
-            }
-        }).orElse(null);
+        // This is deprecated and no longer used
+        return null;
     }
 
     @Override
     public ReflectionOptimizer getReflectionOptimizer(Class<?> clazz, Map<String, PropertyAccess> propertyAccessMap) {
-        Optional<BeanIntrospection<?>> optionalBeanIntrospection = BeanIntrospector.SHARED.findIntrospection((Class) clazz);
-        return optionalBeanIntrospection.map(beanIntrospection -> new ReflectionOptimizer() {
-            @Override
-            public InstantiationOptimizer getInstantiationOptimizer() {
-                return beanIntrospection::instantiate;
-            }
-
-            @Override
-            public AccessOptimizer getAccessOptimizer() {
-                BeanProperty[] beanProperties = beanIntrospection.getBeanProperties().toArray(new BeanProperty[0]);
-                return new AccessOptimizer() {
-
-                    private final String[] propertyNames = Arrays.stream(beanProperties)
-                        .map(BeanProperty::getName)
-                        .toArray(String[]::new);
-
-                    @Override
-                    public String[] getPropertyNames() {
-                        return propertyNames;
-                    }
-
-                    @Override
-                    public Object[] getPropertyValues(Object object) {
-                        Object[] values = new Object[beanProperties.length];
-                        for (int i = 0; i < beanProperties.length; i++) {
-                            BeanProperty beanProperty = beanProperties[i];
-                            values[i] = beanProperty.get(object);
-                        }
-                        return values;
-                    }
-
-                    @Override
-                    public void setPropertyValues(Object object, Object[] values) {
-                        for (int i = 0; i < beanProperties.length; i++) {
-                            BeanProperty beanProperty = beanProperties[i];
-                            beanProperty.set(object, values[i]);
-                        }
-                    }
-                };
-            }
-        }).orElse(null);
+        // Prev implementation doesn't return accurate optimizer and bean properties
+        // So some tests are failing. Returning null fixes some failing tests for now
+        return null;
     }
 
     @Override
