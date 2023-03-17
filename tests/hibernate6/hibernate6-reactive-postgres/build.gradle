@@ -1,0 +1,22 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application'
+}
+
+dependencies {
+    implementation projects.micronautTests.micronautHibernate6.micronautHibernate6ReactiveCommon
+    testImplementation projects.micronautTests.micronautCommonTests
+
+//    implementation projects.vertxPgClient
+    implementation libs.managed.vertx.pg.client
+}
+
+micronaut {
+    testResources {
+        additionalModules.add(HIBERNATE_REACTIVE_POSTGRESQL)
+    }
+}
+
+// TODO: Enable the native image test when https://github.com/oracle/graal/issues/5510 gets fixed
+graalvmNative {
+    testSupport = false
+}

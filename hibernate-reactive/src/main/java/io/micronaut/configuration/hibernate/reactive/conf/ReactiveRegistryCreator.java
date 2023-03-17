@@ -15,8 +15,8 @@
  */
 package io.micronaut.configuration.hibernate.reactive.conf;
 
-import io.micronaut.configuration.hibernate.jpa.JpaConfiguration;
-import io.micronaut.configuration.hibernate.jpa.conf.serviceregistry.builder.supplier.StandardServiceRegistryBuilderCreator;
+import io.micronaut.configuration.hibernate6.jpa.JpaConfiguration;
+import io.micronaut.configuration.hibernate6.jpa.conf.serviceregistry.builder.supplier.StandardServiceRegistryBuilderCreator;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Prototype;

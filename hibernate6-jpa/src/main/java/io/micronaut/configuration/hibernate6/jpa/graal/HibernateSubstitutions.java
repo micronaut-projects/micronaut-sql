@@ -24,6 +24,7 @@ package io.micronaut.configuration.hibernate6.jpa.graal;
 
 import com.oracle.svm.core.annotate.Substitute;
 import com.oracle.svm.core.annotate.TargetClass;
+import io.micronaut.configuration.hibernate6.jpa.proxy.IntrospectedHibernateBytecodeProvider;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.annotation.TypeHint.AccessType;
 import io.micronaut.jdbc.spring.HibernatePresenceCondition;
@@ -32,6 +33,8 @@ import org.hibernate.boot.archive.spi.InputStreamAccess;
 import org.hibernate.boot.jaxb.internal.MappingBinder;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
+import org.hibernate.bytecode.spi.BytecodeProvider;
+import org.hibernate.event.spi.EventType;
 import org.hibernate.id.Assigned;
 import org.hibernate.id.ForeignGenerator;
 import org.hibernate.id.GUIDGenerator;
@@ -53,12 +56,14 @@ import org.hibernate.persister.collection.OneToManyPersister;
 import org.hibernate.persister.entity.SingleTableEntityPersister;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tuple.entity.EntityMetamodel;
+import org.hibernate.type.EnumType;
 
 import javax.xml.stream.XMLResolver;
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Properties;
 
 // Additional classes
 @TypeHint(
@@ -136,6 +141,19 @@ final class Hql {
 
 @TypeHint(typeNames = "org.hibernate.cfg.beanvalidation.TypeSafeActivator", accessType = {AccessType.ALL_PUBLIC})
 final class Cfg {
+}
+
+// Disable Runtime Byte Code Enhancement
+@TargetClass(className = "org.hibernate.cfg.Environment")
+@TypeHint(
+    value = {EventType.class, EnumType.class},
+    accessType = {AccessType.ALL_DECLARED_FIELDS, AccessType.ALL_DECLARED_METHODS, AccessType.ALL_DECLARED_CONSTRUCTORS}
+)
+final class EnvironmentSubs {
+    @Substitute
+    public static BytecodeProvider buildBytecodeProvider(Properties properties) {
+        return new IntrospectedHibernateBytecodeProvider();
+    }
 }
 
 // ID Generators
