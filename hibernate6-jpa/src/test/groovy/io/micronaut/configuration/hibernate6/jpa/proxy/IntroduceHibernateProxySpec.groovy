@@ -19,15 +19,12 @@ import io.micronaut.aop.Introduced
 import io.micronaut.context.ApplicationContext
 import org.hibernate.proxy.HibernateProxy
 import spock.lang.AutoCleanup
-import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
 import jakarta.persistence.EntityManager
 import jakarta.persistence.EntityManagerFactory
 
-// TODO: Re-enable test again when there is a solution for injecting our bytecode provider
-//@Ignore("Currently it's not possible to provide custom bytecode provider in Hibernate6")
 class IntroduceHibernateProxySpec extends Specification {
 
     @Shared
