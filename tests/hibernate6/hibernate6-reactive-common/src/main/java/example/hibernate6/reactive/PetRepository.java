@@ -81,21 +81,25 @@ class PetRepository implements IPetRepository {
     }
 
     @Override
-    public Flux<? extends Pet> findAll() {
+    public Flux<Pet> findAll() {
         return withSessionFlux(session -> Mono.fromCompletionStage(() -> session.createQuery("from Pet", Pet.class)
                 .getResultList()
                 .thenCompose(pets -> {
                     // HR000037: Reactive sessions do not support transparent lazy fetching
                     // - use Session.fetch() (entity 'example.domain.Owner' with id '1' was not loaded)
-                    CompletableFuture<List<Pet>> result = CompletableFuture.completedFuture(new ArrayList<>());
+                    CompletableFuture<List<Pet>> resultStage = CompletableFuture.completedFuture(new ArrayList<>());
                     for (Pet pet : pets) {
-                        result = result.thenCombine(session.fetch(pet.getOwner()), (newPets, owner) -> {
-                            pet.setOwner(owner);
-                            newPets.add(pet);
-                            return newPets;
-                        });
+                        resultStage = resultStage
+                            .thenCompose(newPets -> session
+                                .fetch(pet.getOwner())
+                                .thenApply(owner -> {
+                                    pet.setOwner(owner);
+                                    newPets.add(pet);
+                                    return newPets;
+                                })
+                            );
                     }
-                    return result;
+                    return resultStage;
                 }))
             .flatMapMany(Flux::fromIterable));
     }

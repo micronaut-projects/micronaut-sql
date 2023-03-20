@@ -91,7 +91,6 @@ public abstract class AbstractApp implements TestPropertyProvider {
 
     @Test
     @Order(4)
-    @Disabled("Getting Flux (findAll) is failing using hibernate-reactive 2.0")
     void shouldFetchPets() {
         List<PetDto> results = client.toBlocking().retrieve(HttpRequest.GET("/pets"), Argument.listOf(PetDto.class));
         assertEquals(3, results.size());
@@ -113,7 +112,6 @@ public abstract class AbstractApp implements TestPropertyProvider {
 
     @Test
     @Order(6)
-    @Disabled("Getting Flux (findAll) is failing using hibernate-reactive 2.0")
     void shouldFetchPetsParallel() {
         List<List<PetDto>> resultsList = Flux.range(1, 1000)
             .flatMap(it -> client.retrieve(HttpRequest.GET("/pets"), Argument.listOf(PetDto.class)))
@@ -144,7 +142,6 @@ public abstract class AbstractApp implements TestPropertyProvider {
 
     @Test
     @Order(8)
-    @Disabled("Getting Flux (findAll) is failing using hibernate-reactive 2.0")
     void shouldDestroy() {
         HttpResponse<Void> response = client.toBlocking().exchange(HttpRequest.GET("/destroy"));
         assertEquals(HttpStatus.OK, response.getStatus());
