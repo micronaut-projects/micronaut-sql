@@ -54,7 +54,7 @@ managed-h2 = "2.1.214"
 
 jaxb-api = "2.3.1"
 sfm-reflect = "8.2.3"
-spring = "5.3.25"
+spring = "6.0.7"
 caffeine = "3.1.4"
 graal-svm = "22.3.1"
 logback = "1.4.5"
