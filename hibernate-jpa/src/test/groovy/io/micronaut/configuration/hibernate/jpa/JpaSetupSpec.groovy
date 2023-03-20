@@ -55,8 +55,6 @@ class JpaSetupSpec extends Specification {
             'micronaut.metrics.binders.hibernate.tags.some':'bar'
     )
 
-    // TODO: Temporary ignore since validation class jakarta.validation.ConstraintViolation is not available
-    @Ignore
     void "test setup entity manager with validation"() {
         when:
         EntityManagerFactory entityManagerFactory = applicationContext.getBean(EntityManagerFactory)

@@ -210,6 +210,7 @@ public class JpaConfiguration {
         JpaConfiguration jpaConfiguration = new JpaConfiguration(name, integrator, applicationContext, entityScanConfiguration);
         jpaConfiguration.setProperties(new HashMap<>(this.getProperties()));
         jpaConfiguration.setMappingResources(new ArrayList<>(this.getMappingResources()));
+        jpaConfiguration.setCompileTimeHibernateProxies(compileTimeHibernateProxies);
         jpaConfiguration.setReactive(reactive);
         return jpaConfiguration;
     }
