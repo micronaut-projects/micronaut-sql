@@ -1,0 +1,20 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application'
+}
+
+dependencies {
+    implementation projects.micronautTests.micronautHibernate6.micronautHibernate6ReactiveCommon
+    testImplementation projects.micronautTests.micronautCommonTests
+
+//    implementation projects.vertxMysqlClient
+    implementation libs.managed.vertx.mysql.client
+
+    // Testcontainers wait function needs the driver
+    runtimeOnly libs.managed.mysql.connector.java
+}
+
+micronaut {
+    testResources {
+        additionalModules.add(HIBERNATE_REACTIVE_MYSQL)
+    }
+}

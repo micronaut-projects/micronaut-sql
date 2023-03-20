@@ -11,7 +11,7 @@ micronautBuild {
 dependencies {
     annotationProcessor(mn.micronaut.graal)
 
-    api(projects.micronautHibernateJpa) {
+    api(projects.micronautHibernate6Jpa) {
         exclude module: 'jdbc'
         exclude group: 'micronaut-data'
     }

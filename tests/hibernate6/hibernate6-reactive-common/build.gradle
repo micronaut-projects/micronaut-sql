@@ -1,0 +1,13 @@
+plugins {
+    id 'io.micronaut.build.internal.test-library'
+}
+
+dependencies {
+    implementation projects.micronautTests.micronautCommonReactive
+    implementation mnReactor.micronaut.reactor
+    implementation mn.micronaut.http.client
+    implementation projects.micronautHibernateReactive
+    implementation projects.micronautJdbc
+
+    runtimeOnly(mn.snakeyaml)
+}

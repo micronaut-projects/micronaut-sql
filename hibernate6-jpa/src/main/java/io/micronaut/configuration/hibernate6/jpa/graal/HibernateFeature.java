@@ -38,47 +38,30 @@ final class HibernateFeature implements Feature {
                 H2Dialect.class
         );
 
-        Class<?>[] postgresDialects = {PostgreSQL9Dialect.class,
-                PostgreSQLDialect.class,
-                PostgreSQL91Dialect.class,
-                PostgreSQL92Dialect.class,
-                PostgreSQL93Dialect.class,
-                PostgreSQL94Dialect.class,
-                PostgreSQL95Dialect.class,
-                PostgreSQL81Dialect.class,
-                PostgreSQL82Dialect.class};
+        Class<?>[] postgresDialects = {PostgreSQLDialect.class};
 
         registerIfPresent(access, "org.postgresql.Driver", postgresDialects);
         registerIfPresent(access, "io.vertx.pgclient.spi.PgDriver", postgresDialects);
 
         Class<?>[] mariaDialects = {MariaDBDialect.class,
-                MariaDB10Dialect.class,
-                MariaDB102Dialect.class,
-                MariaDB103Dialect.class,
-                MariaDB53Dialect.class};
+                MariaDB103Dialect.class};
 
         registerIfPresent(access, "org.mariadb.jdbc.Driver", mariaDialects);
         registerIfPresent(access, "io.vertx.mysqlclient.spi.MySQLDriver", mariaDialects);
 
-        Class<?>[] oracleDialects = {Oracle8iDialect.class,
-                Oracle9iDialect.class,
-                Oracle10gDialect.class,
-                Oracle12cDialect.class};
+        Class<?>[] oracleDialects = {Oracle12cDialect.class};
 
         registerIfPresent(access, "oracle.jdbc.OracleDriver", oracleDialects);
         registerIfPresent(access, "io.vertx.oracleclient.spi.OracleDriver", oracleDialects);
 
         Class<?>[] sqlServerDialects = {SQLServerDialect.class,
-                SQLServer2005Dialect.class,
                 SQLServer2008Dialect.class,
                 SQLServer2012Dialect.class};
 
         registerIfPresent(access, "com.microsoft.sqlserver.jdbc.SQLServerDriver", sqlServerDialects);
         registerIfPresent(access, "io.vertx.mssqlclient.spi.MSSQLDriver", sqlServerDialects);
 
-        Class<?>[] mysqlDialects = {MySQL5Dialect.class,
-                MySQL55Dialect.class,
-                MySQL57Dialect.class,
+        Class<?>[] mysqlDialects = {MySQL57Dialect.class,
                 MySQL8Dialect.class};
 
         registerIfPresent(access, "com.mysql.cj.jdbc.Driver", mysqlDialects);

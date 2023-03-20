@@ -1,0 +1,4 @@
+test-resources:
+  containers:
+    mssql:
+      accept-license: true

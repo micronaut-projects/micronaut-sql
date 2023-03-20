@@ -13,21 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.hibernate6.jpa.conf.settings.internal;
+package io.micronaut.configuration.hibernate6.jpa.conf.sessionfactory.configure.internal;
 
 import io.micronaut.configuration.hibernate6.jpa.JpaConfiguration;
-import io.micronaut.configuration.hibernate6.jpa.conf.settings.SettingsSupplier;
+import io.micronaut.configuration.hibernate6.jpa.conf.sessionfactory.configure.SessionFactoryBuilderConfigurer;
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Internal;
 import jakarta.validation.ValidatorFactory;
-import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.boot.SessionFactoryBuilder;
 
-import java.util.Collections;
-import java.util.Map;
 
 /**
- * Validation factory settings supplier.
+ * Configure of {@link ValidatorFactory}.
  *
  * @author Denis Stepanov
  * @since 4.5.0
@@ -35,16 +33,16 @@ import java.util.Map;
 @Internal
 @Requires(classes = ValidatorFactory.class, bean = ValidatorFactory.class)
 @Prototype
-final class JxValidatorFactorySettingSupplier implements SettingsSupplier {
+final class ValidatorFactoryConfigurer implements SessionFactoryBuilderConfigurer {
 
     private final ValidatorFactory validatorFactory;
 
-    JxValidatorFactorySettingSupplier(ValidatorFactory validatorFactory) {
+    ValidatorFactoryConfigurer(ValidatorFactory validatorFactory) {
         this.validatorFactory = validatorFactory;
     }
 
     @Override
-    public Map<String, Object> supply(JpaConfiguration jpaConfiguration) {
-        return Collections.singletonMap(AvailableSettings.JPA_VALIDATION_FACTORY, validatorFactory);
+    public void configure(JpaConfiguration jpaConfiguration, SessionFactoryBuilder sessionFactoryBuilder) {
+        sessionFactoryBuilder.applyValidatorFactory(validatorFactory);
     }
 }

@@ -16,7 +16,7 @@
 package io.micronaut.configuration.hibernate.reactive.datasources.db2;
 
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity

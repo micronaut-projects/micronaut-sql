@@ -72,6 +72,12 @@ include 'tests:hibernate6:hibernate6-mssql'
 include 'tests:hibernate6:hibernate6-oracle'
 include 'tests:hibernate6:hibernate6-postgres'
 
+include 'tests:hibernate6:hibernate6-reactive-common'
+include 'tests:hibernate6:hibernate6-reactive-mssql'
+include 'tests:hibernate6:hibernate6-reactive-mysql'
+include 'tests:hibernate6:hibernate6-reactive-oracle'
+include 'tests:hibernate6:hibernate6-reactive-postgres'
+
 include 'tests:jooq-tests:jooq-jdbc-postgres'
 include 'tests:jooq-tests:jooq-r2dbc-postgres'
 include 'tests:common-entity'

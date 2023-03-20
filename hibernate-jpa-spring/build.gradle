@@ -6,12 +6,12 @@ dependencies {
     annotationProcessor(mn.micronaut.graal)
 
     compileOnly(libs.graal.svm)
-    api(libs.managed.hibernate.core) {
+    api(libs.managed.hibernate6.core) {
         exclude group:'org.javassist', module:'javassist'
     }
 
     api(mn.micronaut.aop)
-    api projects.micronautHibernateJpa
+    api projects.micronautHibernate6Jpa
 
     api projects.micronautJdbc
     api(mnSpring.micronaut.spring)

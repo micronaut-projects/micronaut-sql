@@ -28,12 +28,8 @@ import io.micronaut.test.support.TestPropertyProvider;
 import io.micronaut.testresources.client.TestResourcesClient;
 import io.micronaut.testresources.client.TestResourcesClientFactory;
 import jakarta.inject.Inject;
-import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestMethodOrder;
 import reactor.core.publisher.Flux;
 
 import java.util.HashMap;
