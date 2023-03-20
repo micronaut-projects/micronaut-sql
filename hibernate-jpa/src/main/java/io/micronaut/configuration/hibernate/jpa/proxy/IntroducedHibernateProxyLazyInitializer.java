@@ -19,8 +19,6 @@ import io.micronaut.core.annotation.Internal;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.proxy.AbstractLazyInitializer;
 
-import java.io.Serializable;
-
 /**
  * Basic {@link org.hibernate.proxy.LazyInitializer}.
  *
@@ -34,7 +32,7 @@ final class IntroducedHibernateProxyLazyInitializer extends AbstractLazyInitiali
 
     protected IntroducedHibernateProxyLazyInitializer(String entityName,
                                                       Class<?> persistentClass,
-                                                      Serializable id,
+                                                      Object id,
                                                       SharedSessionContractImplementor session) {
         super(entityName, id, session);
         this.persistentClass = persistentClass;

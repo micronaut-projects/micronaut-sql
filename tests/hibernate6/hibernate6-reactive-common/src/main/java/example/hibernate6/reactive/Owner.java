@@ -16,7 +16,7 @@
 package example.hibernate6.reactive;
 
 import example.domain.IOwner;
-import io.micronaut.configuration.hibernate6.jpa.proxy.GenerateProxy;
+import io.micronaut.configuration.hibernate.jpa.proxy.GenerateProxy;
 import io.micronaut.serde.annotation.Serdeable;
 
 import jakarta.persistence.Entity;

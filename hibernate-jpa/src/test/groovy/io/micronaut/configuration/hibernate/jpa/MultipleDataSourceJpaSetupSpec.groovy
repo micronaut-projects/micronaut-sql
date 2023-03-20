@@ -19,7 +19,7 @@ import io.micronaut.configuration.hibernate.jpa.other.Author
 import io.micronaut.context.ApplicationContext
 import io.micronaut.inject.qualifiers.Qualifiers
 import io.micronaut.transaction.annotation.TransactionalAdvice
-import io.micronaut.transaction.hibernate5.HibernateTransactionManager
+import io.micronaut.transaction.hibernate6.HibernateTransactionManager
 import io.micronaut.transaction.jdbc.DelegatingDataSource
 import jakarta.inject.Inject
 import jakarta.inject.Named
@@ -30,8 +30,8 @@ import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
-import javax.persistence.EntityManager
-import javax.persistence.PersistenceContext
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
 import javax.sql.DataSource
 
 /**

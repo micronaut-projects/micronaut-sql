@@ -16,18 +16,18 @@
 package io.micronaut.configuration.hibernate.jpa.validation;
 
 import jakarta.inject.Singleton;
+import jakarta.persistence.Persistence;
 import jakarta.validation.Path;
 import jakarta.validation.TraversableResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.Persistence;
 import java.lang.annotation.ElementType;
 
 /**
- * An implementation of {@code TraversableResolver} which is aware of JPA 2 and utilizes {@code PersistenceUtil} to
+ * An implementation of {@code TraversableResolver} which is aware of JPA 3 and utilizes {@code PersistenceUtil} to
  * query the reachability of a property.
- * This resolver will be automatically enabled if JPA 2 is on the classpath and the default {@code TraversableResolver} is
+ * This resolver will be automatically enabled if JPA 3 is on the classpath and the default {@code TraversableResolver} is
  * used.
  * <p>
  * This class needs to be public as it's instantiated via a privileged action that is not in this package.

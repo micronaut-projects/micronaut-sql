@@ -13,33 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.hibernate6.jpa.conf.sessionfactory.configure.internal;
+package io.micronaut.configuration.hibernate.jpa.conf.sessionfactory.configure.internal;
 
-import io.micronaut.configuration.hibernate6.jpa.JpaConfiguration;
-import io.micronaut.configuration.hibernate6.jpa.conf.sessionfactory.configure.SessionFactoryBuilderConfigurer;
+import io.micronaut.configuration.hibernate.jpa.JpaConfiguration;
+import io.micronaut.configuration.hibernate.jpa.conf.sessionfactory.configure.SessionFactoryBuilderConfigurer;
+import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Internal;
-import org.hibernate.Interceptor;
+import jakarta.validation.ValidatorFactory;
 import org.hibernate.boot.SessionFactoryBuilder;
 
+
 /**
- * Interceptor configure.
+ * Configure of {@link ValidatorFactory}.
  *
  * @author Denis Stepanov
  * @since 4.5.0
  */
 @Internal
-@Requires(bean = Interceptor.class)
-final class InterceptorConfigurer implements SessionFactoryBuilderConfigurer {
+@Requires(classes = ValidatorFactory.class, bean = ValidatorFactory.class)
+@Prototype
+final class ValidatorFactoryConfigurer implements SessionFactoryBuilderConfigurer {
 
-    private final Interceptor interceptor;
+    private final ValidatorFactory validatorFactory;
 
-    InterceptorConfigurer(Interceptor interceptor) {
-        this.interceptor = interceptor;
+    ValidatorFactoryConfigurer(ValidatorFactory validatorFactory) {
+        this.validatorFactory = validatorFactory;
     }
 
     @Override
     public void configure(JpaConfiguration jpaConfiguration, SessionFactoryBuilder sessionFactoryBuilder) {
-        sessionFactoryBuilder.applyInterceptor(interceptor);
+        sessionFactoryBuilder.applyValidatorFactory(validatorFactory);
     }
 }

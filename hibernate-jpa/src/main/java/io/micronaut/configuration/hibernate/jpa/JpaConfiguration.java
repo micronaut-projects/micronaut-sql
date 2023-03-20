@@ -32,7 +32,7 @@ import io.micronaut.core.util.Toggleable;
 import jakarta.inject.Inject;
 import org.hibernate.integrator.spi.Integrator;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -210,7 +210,6 @@ public class JpaConfiguration {
         JpaConfiguration jpaConfiguration = new JpaConfiguration(name, integrator, applicationContext, entityScanConfiguration);
         jpaConfiguration.setProperties(new HashMap<>(this.getProperties()));
         jpaConfiguration.setMappingResources(new ArrayList<>(this.getMappingResources()));
-        jpaConfiguration.setCompileTimeHibernateProxies(compileTimeHibernateProxies);
         jpaConfiguration.setReactive(reactive);
         return jpaConfiguration;
     }

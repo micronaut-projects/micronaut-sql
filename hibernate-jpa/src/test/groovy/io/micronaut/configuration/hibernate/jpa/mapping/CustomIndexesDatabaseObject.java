@@ -16,18 +16,17 @@
 package io.micronaut.configuration.hibernate.jpa.mapping;
 
 import org.hibernate.boot.model.relational.AbstractAuxiliaryDatabaseObject;
-import org.hibernate.dialect.Dialect;
+import org.hibernate.boot.model.relational.SqlStringGenerationContext;
 
 public class CustomIndexesDatabaseObject extends AbstractAuxiliaryDatabaseObject {
 
     @Override
-    public String[] sqlCreateStrings(Dialect dialect) {
+    public String[] sqlCreateStrings(SqlStringGenerationContext context) {
         return new String[]{"CREATE VIEW custom_view AS SELECT * FROM account"};
     }
 
     @Override
-    public String[] sqlDropStrings(Dialect dialect) {
+    public String[] sqlDropStrings(SqlStringGenerationContext context) {
         return new String[]{"DROP VIEW IF EXISTS custom_view"};
     }
-
 }

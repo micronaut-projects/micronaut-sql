@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.hibernate6.jpa.conf.settings.internal;
+package io.micronaut.configuration.hibernate.jpa.conf.settings.internal;
 
-import io.micronaut.configuration.hibernate6.jpa.JpaConfiguration;
-import io.micronaut.configuration.hibernate6.jpa.conf.settings.SettingsSupplier;
+import io.micronaut.configuration.hibernate.jpa.JpaConfiguration;
+import io.micronaut.configuration.hibernate.jpa.conf.settings.SettingsSupplier;
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Internal;

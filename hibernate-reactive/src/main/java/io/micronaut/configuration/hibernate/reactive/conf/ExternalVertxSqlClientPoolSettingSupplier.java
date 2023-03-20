@@ -15,8 +15,8 @@
  */
 package io.micronaut.configuration.hibernate.reactive.conf;
 
-import io.micronaut.configuration.hibernate6.jpa.JpaConfiguration;
-import io.micronaut.configuration.hibernate6.jpa.conf.settings.SettingsSupplier;
+import io.micronaut.configuration.hibernate.jpa.JpaConfiguration;
+import io.micronaut.configuration.hibernate.jpa.conf.settings.SettingsSupplier;
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.annotation.Requires;
 import io.vertx.sqlclient.Pool;

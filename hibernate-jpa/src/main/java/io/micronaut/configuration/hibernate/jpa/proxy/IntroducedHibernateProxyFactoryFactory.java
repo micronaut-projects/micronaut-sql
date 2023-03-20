@@ -27,9 +27,7 @@ import org.hibernate.proxy.ProxyFactory;
 import org.hibernate.resource.beans.spi.ManagedBeanRegistry;
 import org.hibernate.type.CompositeType;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Set;
 
 /**
@@ -43,12 +41,12 @@ final class IntroducedHibernateProxyFactoryFactory implements ProxyFactoryFactor
 
     private static final ProxyFactory NO_PROXY_FACTORY = new ProxyFactory() {
         @Override
-        public void postInstantiate(String entityName, Class persistentClass, Set<Class> interfaces, Method getIdentifierMethod, Method setIdentifierMethod, CompositeType componentIdType) throws HibernateException {
+        public void postInstantiate(String entityName, Class<?> persistentClass, Set<Class<?>> interfaces, Method getIdentifierMethod, Method setIdentifierMethod, CompositeType componentIdType) throws HibernateException {
             // no-op
         }
 
         @Override
-        public HibernateProxy getProxy(Serializable id, SharedSessionContractImplementor session) throws HibernateException {
+        public HibernateProxy getProxy(Object id, SharedSessionContractImplementor session) throws HibernateException {
             throw new HibernateException("Generation of HibernateProxy instances at runtime is not allowed when the configured BytecodeProvider is 'none'; your model requires a more advanced BytecodeProvider to be enabled.");
         }
     };
@@ -66,13 +64,6 @@ final class IntroducedHibernateProxyFactoryFactory implements ProxyFactoryFactor
         } catch (org.hibernate.InstantiationException e) {
             return NO_PROXY_FACTORY;
         }
-    }
-
-    @Override
-    public BasicProxyFactory buildBasicProxyFactory(Class superClass, Class[] interfaces) {
-        return () -> {
-            throw new HibernateException("NoneBasicProxyFactory is unable to generate a BasicProxy for type " + superClass + " and interfaces " + Arrays.toString(interfaces) + ". Enable a different BytecodeProvider.");
-        };
     }
 
     @Override
