@@ -21,7 +21,7 @@ micronaut-validation = "4.0.0-SNAPSHOT"
 
 # Frameworks
 
-managed-vertx = "4.3.7"
+managed-vertx = "4.3.8"
 managed-jooq = "3.17.7"
 managed-hibernate = "5.6.15.Final"
 managed-hibernate6 = "6.2.0.CR4"
