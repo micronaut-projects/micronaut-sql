@@ -83,8 +83,8 @@ final class ExternalVertxSqlClientPoolSettingSupplier implements SettingsSupplie
         @Override
         public void injectServices(ServiceRegistryImplementor serviceRegistry) {
             sqlStatementLogger = serviceRegistry.getService(JdbcServices.class).getSqlStatementLogger();
-            final Dialect dialect = serviceRegistry.getService( JdbcEnvironment.class ).getDialect();
-            parameters = Parameters.instance( dialect );
+            final Dialect dialect = serviceRegistry.getService(JdbcEnvironment.class).getDialect();
+            parameters = Parameters.instance(dialect);
         }
     }
 
