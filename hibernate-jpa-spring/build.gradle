@@ -6,6 +6,7 @@ dependencies {
     annotationProcessor(mn.micronaut.graal)
 
     compileOnly(libs.graal.svm)
+    // TODO: Switch to hibernate6
     api(libs.managed.hibernate.core) {
         exclude group:'org.javassist', module:'javassist'
     }
