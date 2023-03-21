@@ -132,11 +132,15 @@ implements <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hi
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProxyFactoryFactory()" class="member-name-link">getProxyFactoryFactory</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/ReflectionOptimizer.html" title="class or interface in org.hibernate.bytecode.spi" class="external-link">ReflectionOptimizer</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getReflectionOptimizer(java.lang.Class,java.lang.String%5B%5D,java.lang.String%5B%5D,java.lang.Class%5B%5D)" class="member-name-link">getReflectionOptimizer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&nbsp;clazz,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getReflectionOptimizer(java.lang.Class,java.util.Map)" class="member-name-link">getReflectionOptimizer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;clazz,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/property/access/spi/PropertyAccess.html" title="class or interface in org.hibernate.property.access.spi" class="external-link">PropertyAccess</a>&gt;&nbsp;propertyAccessMap)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/ReflectionOptimizer.html" title="class or interface in org.hibernate.bytecode.spi" class="external-link">ReflectionOptimizer</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getReflectionOptimizer(java.lang.Class,java.lang.String%5B%5D,java.lang.String%5B%5D,java.lang.Class%5B%5D)" class="member-name-link">getReflectionOptimizer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&nbsp;clazz,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;getterNames,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;setterNames,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>[]&nbsp;types)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -191,6 +195,17 @@ implements <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hi
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html#getReflectionOptimizer(java.lang.Class,java.lang.String%5B%5D,java.lang.String%5B%5D,java.lang.Class%5B%5D)" title="class or interface in org.hibernate.bytecode.spi" class="external-link">getReflectionOptimizer</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html" title="class or interface in org.hibernate.bytecode.spi" class="external-link">BytecodeProvider</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getReflectionOptimizer(java.lang.Class,java.util.Map)">
+<h3>getReflectionOptimizer</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/ReflectionOptimizer.html" title="class or interface in org.hibernate.bytecode.spi" class="external-link">ReflectionOptimizer</a></span>&nbsp;<span class="element-name">getReflectionOptimizer</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;clazz,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/property/access/spi/PropertyAccess.html" title="class or interface in org.hibernate.property.access.spi" class="external-link">PropertyAccess</a>&gt;&nbsp;propertyAccessMap)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html#getReflectionOptimizer(java.lang.Class,java.util.Map)" title="class or interface in org.hibernate.bytecode.spi" class="external-link">getReflectionOptimizer</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/bytecode/spi/BytecodeProvider.html" title="class or interface in org.hibernate.bytecode.spi" class="external-link">BytecodeProvider</a></code></dd>
 </dl>
 </section>
 </li>

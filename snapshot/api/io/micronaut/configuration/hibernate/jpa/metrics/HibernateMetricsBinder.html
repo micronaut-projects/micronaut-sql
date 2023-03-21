@@ -76,7 +76,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code>io.micronaut.context.event.BeanCreatedEventListener&lt;javax.persistence.EntityManagerFactory&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/EventListener.html" title="class or interface in java.util" class="external-link">EventListener</a></code></dd>
+<dd><code>io.micronaut.context.event.BeanCreatedEventListener&lt;jakarta.persistence.EntityManagerFactory&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/EventListener.html" title="class or interface in java.util" class="external-link">EventListener</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="annotations">@Singleton
@@ -84,7 +84,7 @@ loadScripts(document, 'script');</script>
 @Requires(property="micronaut.metrics.binders.hibernate.enabled",value="true",defaultValue="true") @Requires(classes=<a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/stat/HibernateMetrics.html" title="class or interface in org.hibernate.stat" class="external-link">org.hibernate.stat.HibernateMetrics.class</a>)
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">HibernateMetricsBinder</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements io.micronaut.context.event.BeanCreatedEventListener&lt;javax.persistence.EntityManagerFactory&gt;</span></div>
+implements io.micronaut.context.event.BeanCreatedEventListener&lt;jakarta.persistence.EntityManagerFactory&gt;</span></div>
 <div class="block">Binds metrics for Micrometer for each configured <code>EntityManagerFactory</code>.</div>
 <dl class="notes">
 <dt>Since:</dt>
@@ -137,8 +137,8 @@ implements io.micronaut.context.event.BeanCreatedEventListener&lt;javax.persiste
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>javax.persistence.EntityManagerFactory</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onCreated(io.micronaut.context.event.BeanCreatedEvent)" class="member-name-link">onCreated</a><wbr>(io.micronaut.context.event.BeanCreatedEvent&lt;javax.persistence.EntityManagerFactory&gt;&nbsp;event)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>jakarta.persistence.EntityManagerFactory</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onCreated(io.micronaut.context.event.BeanCreatedEvent)" class="member-name-link">onCreated</a><wbr>(io.micronaut.context.event.BeanCreatedEvent&lt;jakarta.persistence.EntityManagerFactory&gt;&nbsp;event)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -204,10 +204,10 @@ implements io.micronaut.context.event.BeanCreatedEventListener&lt;javax.persiste
 <li>
 <section class="detail" id="onCreated(io.micronaut.context.event.BeanCreatedEvent)">
 <h3>onCreated</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">javax.persistence.EntityManagerFactory</span>&nbsp;<span class="element-name">onCreated</span><wbr><span class="parameters">(io.micronaut.context.event.BeanCreatedEvent&lt;javax.persistence.EntityManagerFactory&gt;&nbsp;event)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">jakarta.persistence.EntityManagerFactory</span>&nbsp;<span class="element-name">onCreated</span><wbr><span class="parameters">(io.micronaut.context.event.BeanCreatedEvent&lt;jakarta.persistence.EntityManagerFactory&gt;&nbsp;event)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code>onCreated</code>&nbsp;in interface&nbsp;<code>io.micronaut.context.event.BeanCreatedEventListener&lt;javax.persistence.EntityManagerFactory&gt;</code></dd>
+<dd><code>onCreated</code>&nbsp;in interface&nbsp;<code>io.micronaut.context.event.BeanCreatedEventListener&lt;jakarta.persistence.EntityManagerFactory&gt;</code></dd>
 </dl>
 </section>
 </li>
