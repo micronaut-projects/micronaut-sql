@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api projects.jdbc
+    api projects.micronautJdbc
     api(mn.micronaut.inject)
     api(libs.managed.commons.dbcp2)
 

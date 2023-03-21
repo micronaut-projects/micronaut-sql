@@ -30,7 +30,7 @@ import jakarta.inject.Singleton;
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.HibernateMetrics;
 
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.util.Collections;
 import java.util.List;

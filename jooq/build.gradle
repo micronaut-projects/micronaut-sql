@@ -25,7 +25,7 @@ dependencies {
     // needed for native image (adding @Entity annotation to UpdatableRecords for reflection registration)
     api(libs.jakarta.persistence.api)
 
-    api projects.jdbc
+    api projects.micronautJdbc
     api(mn.micronaut.inject)
     api(libs.managed.jooq)
 
@@ -35,7 +35,7 @@ dependencies {
     compileOnly(mn.jackson.databind)
     compileOnly(mn.micronaut.json.core)
 
-    testRuntimeOnly projects.jdbcTomcat
+    testRuntimeOnly projects.micronautJdbcTomcat
     testRuntimeOnly(libs.managed.h2)
     testAnnotationProcessor(mn.micronaut.inject.java)
     testAnnotationProcessor(mnSpring.micronaut.spring.annotation)
@@ -47,7 +47,7 @@ dependencies {
     testImplementation(mnMicrometer.micronaut.micrometer.core)
     testImplementation(libs.spring.jdbc)
     testImplementation(mnCache.micronaut.cache.core)
-    txTestRuntimeOnly projects.jdbcTomcat
+    txTestRuntimeOnly projects.micronautJdbcTomcat
     txTestRuntimeOnly(libs.managed.h2)
     txTestAnnotationProcessor(mn.micronaut.inject.java)
     txTestAnnotationProcessor(mnData.micronaut.data.processor)

@@ -1,5 +1,4 @@
-enableFeaturePreview("VERSION_CATALOGS")
-
+rootProject.name = 'sql-parent'
 dependencyResolutionManagement {
     versionCatalogs {
         libs {

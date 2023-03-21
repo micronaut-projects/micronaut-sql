@@ -18,7 +18,7 @@ package io.micronaut.configuration.hibernate.jpa;
 
 import io.micronaut.transaction.annotation.TransactionalAdvice;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 @Transactional

@@ -1,0 +1,22 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application'
+}
+
+dependencies {
+    implementation projects.micronautTests.micronautHibernate6.micronautHibernate6ReactiveCommon
+    testImplementation projects.micronautTests.micronautCommonTests
+
+    implementation libs.managed.vertx.oracle.client
+}
+
+micronaut {
+    testResources {
+        // TODO: This is temporary removed from testresources, add once we have sql and data modules fixed
+        // additionalModules.add(HIBERNATE_REACTIVE_ORACLE_XE)
+    }
+}
+
+graalvmNative {
+    // TODO: Enable native tests in separate PR
+    testSupport = false
+}

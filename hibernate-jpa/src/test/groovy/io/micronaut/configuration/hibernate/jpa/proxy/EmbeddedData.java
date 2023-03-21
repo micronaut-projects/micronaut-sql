@@ -1,6 +1,6 @@
 package io.micronaut.configuration.hibernate.jpa.proxy;
 
-import javax.persistence.Embeddable;
+import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class EmbeddedData {

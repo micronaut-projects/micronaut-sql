@@ -19,8 +19,8 @@ import io.micronaut.transaction.annotation.TransactionalAdvice;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Singleton
 public class JavaBookService {

@@ -27,4 +27,4 @@ import io.micronaut.context.annotation.Configuration;
 import io.micronaut.context.annotation.Requires;
 import org.hibernate.SessionFactory;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;

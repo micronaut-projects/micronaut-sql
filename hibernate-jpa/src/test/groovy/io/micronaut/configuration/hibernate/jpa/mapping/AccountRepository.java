@@ -19,8 +19,8 @@ import io.micronaut.core.annotation.Nullable;
 import io.micronaut.transaction.annotation.TransactionalAdvice;
 import jakarta.inject.Singleton;
 
-import javax.persistence.EntityManager;
-import javax.validation.constraints.NotBlank;
+import jakarta.persistence.EntityManager;
+import jakarta.validation.constraints.NotBlank;
 
 @TransactionalAdvice
 @Singleton

@@ -28,64 +28,13 @@ import io.micronaut.configuration.hibernate.jpa.proxy.IntrospectedHibernateBytec
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.annotation.TypeHint.AccessType;
 import io.micronaut.jdbc.spring.HibernatePresenceCondition;
+import org.hibernate.boot.ResourceStreamLocator;
 import org.hibernate.boot.archive.spi.InputStreamAccess;
 import org.hibernate.boot.jaxb.internal.MappingBinder;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
-import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.hibernate.bytecode.spi.BytecodeProvider;
 import org.hibernate.event.spi.EventType;
-import org.hibernate.hql.internal.ast.HqlToken;
-import org.hibernate.hql.internal.ast.tree.AggregateNode;
-import org.hibernate.hql.internal.ast.tree.AssignmentSpecification;
-import org.hibernate.hql.internal.ast.tree.BetweenOperatorNode;
-import org.hibernate.hql.internal.ast.tree.BinaryArithmeticOperatorNode;
-import org.hibernate.hql.internal.ast.tree.BinaryLogicOperatorNode;
-import org.hibernate.hql.internal.ast.tree.BooleanLiteralNode;
-import org.hibernate.hql.internal.ast.tree.CastFunctionNode;
-import org.hibernate.hql.internal.ast.tree.CollectionFunction;
-import org.hibernate.hql.internal.ast.tree.ComponentJoin;
-import org.hibernate.hql.internal.ast.tree.ConstructorNode;
-import org.hibernate.hql.internal.ast.tree.CountNode;
-import org.hibernate.hql.internal.ast.tree.DeleteStatement;
-import org.hibernate.hql.internal.ast.tree.DotNode;
-import org.hibernate.hql.internal.ast.tree.EntityJoinFromElement;
-import org.hibernate.hql.internal.ast.tree.FromClause;
-import org.hibernate.hql.internal.ast.tree.FromElement;
-import org.hibernate.hql.internal.ast.tree.FromElementFactory;
-import org.hibernate.hql.internal.ast.tree.FromReferenceNode;
-import org.hibernate.hql.internal.ast.tree.HqlSqlWalkerNode;
-import org.hibernate.hql.internal.ast.tree.IdentNode;
-import org.hibernate.hql.internal.ast.tree.ImpliedFromElement;
-import org.hibernate.hql.internal.ast.tree.InLogicOperatorNode;
-import org.hibernate.hql.internal.ast.tree.IndexNode;
-import org.hibernate.hql.internal.ast.tree.InsertStatement;
-import org.hibernate.hql.internal.ast.tree.IntoClause;
-import org.hibernate.hql.internal.ast.tree.IsNotNullLogicOperatorNode;
-import org.hibernate.hql.internal.ast.tree.IsNullLogicOperatorNode;
-import org.hibernate.hql.internal.ast.tree.JavaConstantNode;
-import org.hibernate.hql.internal.ast.tree.LiteralNode;
-import org.hibernate.hql.internal.ast.tree.MapEntryNode;
-import org.hibernate.hql.internal.ast.tree.MapKeyEntityFromElement;
-import org.hibernate.hql.internal.ast.tree.MapKeyNode;
-import org.hibernate.hql.internal.ast.tree.MapValueNode;
-import org.hibernate.hql.internal.ast.tree.MethodNode;
-import org.hibernate.hql.internal.ast.tree.Node;
-import org.hibernate.hql.internal.ast.tree.NullNode;
-import org.hibernate.hql.internal.ast.tree.OrderByClause;
-import org.hibernate.hql.internal.ast.tree.ParameterNode;
-import org.hibernate.hql.internal.ast.tree.QueryNode;
-import org.hibernate.hql.internal.ast.tree.ResultVariableRefNode;
-import org.hibernate.hql.internal.ast.tree.SearchedCaseNode;
-import org.hibernate.hql.internal.ast.tree.SelectClause;
-import org.hibernate.hql.internal.ast.tree.SelectExpressionImpl;
-import org.hibernate.hql.internal.ast.tree.SelectExpressionList;
-import org.hibernate.hql.internal.ast.tree.SimpleCaseNode;
-import org.hibernate.hql.internal.ast.tree.SqlFragment;
-import org.hibernate.hql.internal.ast.tree.SqlNode;
-import org.hibernate.hql.internal.ast.tree.UnaryArithmeticNode;
-import org.hibernate.hql.internal.ast.tree.UnaryLogicOperatorNode;
-import org.hibernate.hql.internal.ast.tree.UpdateStatement;
 import org.hibernate.id.Assigned;
 import org.hibernate.id.ForeignGenerator;
 import org.hibernate.id.GUIDGenerator;
@@ -102,26 +51,18 @@ import org.hibernate.id.enhanced.PooledLoThreadLocalOptimizer;
 import org.hibernate.id.enhanced.PooledOptimizer;
 import org.hibernate.id.enhanced.SequenceStyleGenerator;
 import org.hibernate.id.enhanced.TableGenerator;
-import org.hibernate.jmx.spi.JmxService;
 import org.hibernate.persister.collection.BasicCollectionPersister;
 import org.hibernate.persister.collection.OneToManyPersister;
 import org.hibernate.persister.entity.SingleTableEntityPersister;
-import org.hibernate.service.Service;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.spi.Manageable;
-import org.hibernate.service.spi.Stoppable;
-import org.hibernate.tuple.component.PojoComponentTuplizer;
 import org.hibernate.tuple.entity.EntityMetamodel;
-import org.hibernate.tuple.entity.PojoEntityTuplizer;
 import org.hibernate.type.EnumType;
 
-import javax.management.ObjectName;
 import javax.xml.stream.XMLResolver;
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Map;
 import java.util.Properties;
 
 // Additional classes
@@ -144,62 +85,8 @@ final class Loggers {
         HibernatePresenceCondition.class,
         SingleTableEntityPersister.class,
         EntityMetamodel.class,
-        PojoComponentTuplizer.class,
-        PojoEntityTuplizer.class,
         BasicCollectionPersister.class,
-        HqlToken.class,
         OneToManyPersister.class,
-        // Hibernate AST
-        AggregateNode.class,
-        AssignmentSpecification.class,
-        BetweenOperatorNode.class,
-        BinaryArithmeticOperatorNode.class,
-        BinaryLogicOperatorNode.class,
-        BooleanLiteralNode.class,
-        CastFunctionNode.class,
-        CollectionFunction.class,
-        ComponentJoin.class,
-        ConstructorNode.class,
-        CountNode.class,
-        DeleteStatement.class,
-        DotNode.class,
-        EntityJoinFromElement.class,
-        FromClause.class,
-        FromElement.class,
-        FromElementFactory.class,
-        FromReferenceNode.class,
-        HqlSqlWalkerNode.class,
-        IdentNode.class,
-        ImpliedFromElement.class,
-        IndexNode.class,
-        InLogicOperatorNode.class,
-        InsertStatement.class,
-        IntoClause.class,
-        IsNotNullLogicOperatorNode.class,
-        IsNullLogicOperatorNode.class,
-        JavaConstantNode.class,
-        LiteralNode.class,
-        MapEntryNode.class,
-        MapKeyEntityFromElement.class,
-        MapKeyNode.class,
-        MapValueNode.class,
-        MethodNode.class,
-        Node.class,
-        NullNode.class,
-        OrderByClause.class,
-        ParameterNode.class,
-        QueryNode.class,
-        ResultVariableRefNode.class,
-        SearchedCaseNode.class,
-        SelectClause.class,
-        SelectExpressionImpl.class,
-        SelectExpressionList.class,
-        SimpleCaseNode.class,
-        SqlFragment.class,
-        SqlNode.class,
-        UnaryArithmeticNode.class,
-        UnaryLogicOperatorNode.class,
-        UpdateStatement.class,
         // Others
         ImplicitNamingStrategyJpaCompliantImpl.class
 }, typeNames = {
@@ -248,12 +135,25 @@ final class Loggers {
         "org.hibernate.envers.strategy.internal.DefaultAuditStrategy",
         "java.util.ServiceLoader$Provider"
 },
-   accessType = {TypeHint.AccessType.ALL_PUBLIC})
+   accessType = {AccessType.ALL_PUBLIC})
 final class Hql {
 }
 
-@TypeHint(typeNames = "org.hibernate.cfg.beanvalidation.TypeSafeActivator", accessType = {TypeHint.AccessType.ALL_PUBLIC})
+@TypeHint(typeNames = "org.hibernate.cfg.beanvalidation.TypeSafeActivator", accessType = {AccessType.ALL_PUBLIC})
 final class Cfg {
+}
+
+// Disable Runtime Byte Code Enhancement
+@TargetClass(className = "org.hibernate.cfg.Environment")
+@TypeHint(
+    value = {EventType.class, EnumType.class},
+    accessType = {AccessType.ALL_DECLARED_FIELDS, AccessType.ALL_DECLARED_METHODS, AccessType.ALL_DECLARED_CONSTRUCTORS}
+)
+final class EnvironmentSubs {
+    @Substitute
+    public static BytecodeProvider buildBytecodeProvider(Properties properties) {
+        return new IntrospectedHibernateBytecodeProvider();
+    }
 }
 
 // ID Generators
@@ -282,44 +182,6 @@ final class IdGenerators {
         PooledLoThreadLocalOptimizer.class
 })
 final class IdOptimizers {
-}
-
-// Disable Runtime Byte Code Enhancement
-@TargetClass(className = "org.hibernate.cfg.Environment")
-@TypeHint(
-        value = {EventType.class, EnumType.class},
-        accessType = {AccessType.ALL_DECLARED_FIELDS, AccessType.ALL_DECLARED_METHODS, AccessType.ALL_DECLARED_CONSTRUCTORS}
-)
-final class EnvironmentSubs {
-    @Substitute
-    public static BytecodeProvider buildBytecodeProvider(Properties properties) {
-        return new IntrospectedHibernateBytecodeProvider();
-    }
-}
-
-// Disable JMX support
-@TargetClass(className = "org.hibernate.jmx.internal.JmxServiceImpl")
-@Substitute
-final class NoopJmxService implements JmxService, Stoppable {
-
-    @Substitute
-    public NoopJmxService(Map configValues) {
-    }
-
-    @Override
-    public void stop() {
-
-    }
-
-    @Override
-    public void registerService(Manageable service, Class<? extends Service> serviceRole) {
-
-    }
-
-    @Override
-    public void registerMBean(ObjectName objectName, Object mBean) {
-
-    }
 }
 
 // Disable XML support
@@ -367,7 +229,7 @@ final class NoopXmlMappingBinderAccess {
 @Substitute
 final class NoopSchemaResolver implements XMLResolver {
     @Substitute
-    public NoopSchemaResolver(ClassLoaderService classLoaderService) {
+    public NoopSchemaResolver(ResourceStreamLocator resourceStreamLocator) {
     }
 
     @Override

@@ -19,10 +19,10 @@ import io.micronaut.transaction.annotation.TransactionalAdvice;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.Optional;
 
 @Singleton

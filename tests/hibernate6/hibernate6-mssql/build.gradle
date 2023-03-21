@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    implementation projects.tests.hibernate6.hibernate6SyncCommon
-    testImplementation projects.tests.commonTests
+    implementation projects.micronautTests.micronautHibernate6.micronautHibernate6SyncCommon
+    testImplementation projects.micronautTests.micronautCommonTests
 
     runtimeOnly libs.managed.mssql.jdbc
 }
@@ -20,7 +20,7 @@ micronaut {
 }
 
 graalvmNative {
-    // TODO: Enable native tests once javax.validation gets replaced with jakarta.validation which is required for hibernate6
+    // TODO: Enable native tests once jakarta.validation gets replaced with jakarta.validation which is required for hibernate6
     testSupport = false
     binaries {
         all {
