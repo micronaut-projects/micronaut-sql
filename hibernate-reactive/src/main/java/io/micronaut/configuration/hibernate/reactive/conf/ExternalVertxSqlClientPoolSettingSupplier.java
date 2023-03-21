@@ -54,7 +54,7 @@ final class ExternalVertxSqlClientPoolSettingSupplier implements SettingsSupplie
 
         private final transient Pool pool;
         private transient SqlStatementLogger sqlStatementLogger;
-        private Parameters parameters;
+        private transient Parameters parameters;
 
         private ExternalSqlClientPool(Pool pool) {
             this.pool = pool;

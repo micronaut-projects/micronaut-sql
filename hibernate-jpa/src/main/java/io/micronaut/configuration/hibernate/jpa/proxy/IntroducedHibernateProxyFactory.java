@@ -105,7 +105,7 @@ final class IntroducedHibernateProxyFactory implements ProxyFactory {
                 return lazyInitializer.getIdentifier();
             } else if (params == 1 && setIdentifierMethod != null & methodName.equals(setIdentifierMethod.getName())) {
                 lazyInitializer.initialize();
-                lazyInitializer.setIdentifier((Serializable) parameterValues[0]);
+                lazyInitializer.setIdentifier(parameterValues[0]);
             }
 
             // Equals/hashcode should work as other Hibernate proxy implementations:
