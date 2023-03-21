@@ -11,7 +11,8 @@ dependencies {
 
 micronaut {
     testResources {
-        additionalModules.add(HIBERNATE_REACTIVE_ORACLE_XE)
+        // TODO: This is temporary removed from testresources, add once we have sql and data modules fixed
+        // additionalModules.add(HIBERNATE_REACTIVE_ORACLE_XE)
     }
 }
 
