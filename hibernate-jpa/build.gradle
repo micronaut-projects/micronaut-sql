@@ -2,22 +2,22 @@ plugins {
     id 'io.micronaut.build.internal.sql-module'
 }
 
+// TODO: Temporary disabled binary compatibility check
+micronautBuild {
+    binaryCompatibility {
+        enabled = false
+    }
+}
+
 dependencies {
     annotationProcessor(mn.micronaut.graal)
 
-    // included for Java 11
-    runtimeOnly(libs.jaxb.api)
-
-    api(libs.managed.hibernate.core) {
-        exclude group:'org.jboss.spec.javax.transaction', module:'jboss-transaction-api_1.2_spec'
-        exclude group:'org.javassist', module:'javassist'
-        exclude group:'org.jboss:jandex', module:'jar'
-    }
+    api(libs.managed.hibernate.core)
     api(libs.jakarta.transaction.api)
     api(mnValidation.micronaut.validation)
-    api(mnData.micronaut.data.tx.hibernate)
+    api(mnData.micronaut.data.tx.hibernate6)
     api(mn.micronaut.aop)
-    api projects.jdbc
+    api projects.micronautJdbc
     api(mn.micronaut.runtime)
 
     compileOnly(libs.graal.svm)
@@ -37,7 +37,6 @@ dependencies {
     testImplementation(mnMicrometer.micronaut.micrometer.core)
     testImplementation(libs.managed.hibernate.micrometer)
 
-    testRuntimeOnly(libs.micronaut.hibernate.validator)
-    testRuntimeOnly projects.jdbcTomcat
+    testRuntimeOnly projects.micronautJdbcTomcat
     testRuntimeOnly(libs.managed.h2)
 }

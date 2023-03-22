@@ -28,7 +28,6 @@ import org.hibernate.type.CompositeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Set;
@@ -63,8 +62,8 @@ final class IntroducedHibernateProxyFactory implements ProxyFactory {
 
     @Override
     public void postInstantiate(String entityName,
-                                Class persistentClass,
-                                Set<Class> interfaces,
+                                Class<?> persistentClass,
+                                Set<Class<?>> interfaces,
                                 Method getIdentifierMethod,
                                 Method setIdentifierMethod,
                                 CompositeType componentIdType) throws HibernateException {
@@ -79,7 +78,7 @@ final class IntroducedHibernateProxyFactory implements ProxyFactory {
     }
 
     @Override
-    public HibernateProxy getProxy(Serializable id, SharedSessionContractImplementor session) throws HibernateException {
+    public HibernateProxy getProxy(Object id, SharedSessionContractImplementor session) throws HibernateException {
         if (beanDefinition == null) {
             beanDefinition = beanContext.findBeanDefinition(persistentClass, null)
                     .orElseThrow(() -> new HibernateException("Cannot find a proxy class, please annotate " + persistentClass + " with @GenerateProxy."));
@@ -105,7 +104,7 @@ final class IntroducedHibernateProxyFactory implements ProxyFactory {
                 return lazyInitializer.getIdentifier();
             } else if (params == 1 && setIdentifierMethod != null & methodName.equals(setIdentifierMethod.getName())) {
                 lazyInitializer.initialize();
-                lazyInitializer.setIdentifier((Serializable) parameterValues[0]);
+                lazyInitializer.setIdentifier(parameterValues[0]);
             }
 
             // Equals/hashcode should work as other Hibernate proxy implementations:

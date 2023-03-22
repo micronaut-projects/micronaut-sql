@@ -11,9 +11,9 @@ dependencies {
     }
 
     api(mn.micronaut.aop)
-    api projects.hibernateJpa
+    api projects.micronautHibernateJpa
 
-    api projects.jdbc
+    api projects.micronautJdbc
     api(mnSpring.micronaut.spring)
     api(libs.spring.orm)
 }

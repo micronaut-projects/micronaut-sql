@@ -32,7 +32,7 @@ import io.micronaut.core.util.Toggleable;
 import jakarta.inject.Inject;
 import org.hibernate.integrator.spi.Integrator;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

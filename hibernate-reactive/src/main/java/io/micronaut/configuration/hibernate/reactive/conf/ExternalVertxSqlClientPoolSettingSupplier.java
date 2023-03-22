@@ -20,8 +20,11 @@ import io.micronaut.configuration.hibernate.jpa.conf.settings.SettingsSupplier;
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.annotation.Requires;
 import io.vertx.sqlclient.Pool;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.engine.jdbc.spi.SqlStatementLogger;
+import org.hibernate.reactive.pool.impl.Parameters;
 import org.hibernate.reactive.pool.impl.SqlClientPool;
 import org.hibernate.reactive.provider.Settings;
 import org.hibernate.reactive.util.impl.CompletionStages;
@@ -51,6 +54,7 @@ final class ExternalVertxSqlClientPoolSettingSupplier implements SettingsSupplie
 
         private final transient Pool pool;
         private transient SqlStatementLogger sqlStatementLogger;
+        private transient Parameters parameters;
 
         private ExternalSqlClientPool(Pool pool) {
             this.pool = pool;
@@ -59,6 +63,11 @@ final class ExternalVertxSqlClientPoolSettingSupplier implements SettingsSupplie
         @Override
         protected Pool getPool() {
             return pool;
+        }
+
+        @Override
+        protected Parameters getParameters() {
+            return parameters;
         }
 
         @Override
@@ -74,6 +83,8 @@ final class ExternalVertxSqlClientPoolSettingSupplier implements SettingsSupplie
         @Override
         public void injectServices(ServiceRegistryImplementor serviceRegistry) {
             sqlStatementLogger = serviceRegistry.getService(JdbcServices.class).getSqlStatementLogger();
+            final Dialect dialect = serviceRegistry.getService(JdbcEnvironment.class).getDialect();
+            parameters = Parameters.instance(dialect);
         }
     }
 

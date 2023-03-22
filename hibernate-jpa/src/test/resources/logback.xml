@@ -11,5 +11,5 @@
     <root level="error">
         <appender-ref ref="STDOUT" />
     </root>
-<!--    <logger name="org.springframework.transaction" level="TRACE"/>-->
+    <!--    <logger name="org.springframework.transaction" level="TRACE"/>-->
 </configuration>

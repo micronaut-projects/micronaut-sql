@@ -11,7 +11,7 @@ micronautBuild {
 dependencies {
     annotationProcessor(mn.micronaut.graal)
 
-    api(projects.hibernateJpa) {
+    api(projects.micronautHibernateJpa) {
         exclude module: 'jdbc'
         exclude group: 'micronaut-data'
     }
@@ -25,8 +25,8 @@ dependencies {
     testRuntimeOnly libs.micronaut.hibernate.validator
     testImplementation mn.micronaut.inject.java
     testImplementation mn.micronaut.inject.groovy
-    testImplementation projects.jdbc
-    testRuntimeOnly projects.jdbcTomcat
+    testImplementation projects.micronautJdbc
+    testRuntimeOnly projects.micronautJdbcTomcat
     testRuntimeOnly(libs.managed.h2)
 
     testImplementation(platform(libs.testcontainers.bom))
