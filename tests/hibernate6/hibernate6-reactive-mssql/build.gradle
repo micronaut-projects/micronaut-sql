@@ -19,8 +19,6 @@ micronaut {
 }
 
 graalvmNative {
-    // TODO: Enable native tests in separate PR
-    testSupport = false
     binaries.all {
         buildArgs.addAll("-H:+AddAllCharsets")
     }

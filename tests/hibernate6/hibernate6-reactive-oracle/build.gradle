@@ -14,8 +14,3 @@ micronaut {
         additionalModules.add(HIBERNATE_REACTIVE_ORACLE_XE)
     }
 }
-
-graalvmNative {
-    // TODO: Enable native tests in separate PR
-    testSupport = false
-}

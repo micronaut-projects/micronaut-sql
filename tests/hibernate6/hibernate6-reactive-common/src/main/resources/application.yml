@@ -14,3 +14,4 @@ jpa:
         hbm2ddl:
           auto: update
         show_sql: true
+    compileTimeHibernateProxies: true
