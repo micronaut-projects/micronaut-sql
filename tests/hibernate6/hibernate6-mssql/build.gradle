@@ -20,8 +20,6 @@ micronaut {
 }
 
 graalvmNative {
-    // TODO: Enable native tests once jakarta.validation gets replaced with jakarta.validation which is required for hibernate6
-    testSupport = false
     binaries {
         all {
             buildArgs.add("-H:+AddAllCharsets")

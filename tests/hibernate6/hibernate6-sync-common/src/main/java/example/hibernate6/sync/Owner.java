@@ -16,6 +16,7 @@
 package example.hibernate6.sync;
 
 import example.domain.IOwner;
+import io.micronaut.configuration.hibernate.jpa.proxy.GenerateProxy;
 import io.micronaut.serde.annotation.Serdeable;
 
 import jakarta.persistence.Entity;
@@ -24,6 +25,7 @@ import jakarta.persistence.Id;
 
 @Entity
 @Serdeable
+@GenerateProxy
 public class Owner implements IOwner {
 
     @Id

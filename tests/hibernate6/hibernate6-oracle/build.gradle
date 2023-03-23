@@ -18,8 +18,3 @@ micronaut {
         additionalModules.add(JDBC_ORACLE_XE)
     }
 }
-
-// TODO: Enable native tests once jakarta.validation gets replaced with jakarta.validation which is required for hibernate6
-graalvmNative {
-    testSupport = false
-}
