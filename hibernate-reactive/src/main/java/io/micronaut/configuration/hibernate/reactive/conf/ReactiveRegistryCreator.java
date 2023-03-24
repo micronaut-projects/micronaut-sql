@@ -22,25 +22,12 @@ import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Nullable;
-import io.micronaut.core.annotation.TypeHint;
 import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.integrator.spi.Integrator;
-import org.hibernate.reactive.persister.entity.impl.ReactiveSingleTableEntityPersister;
 import org.hibernate.reactive.provider.ReactiveServiceRegistryBuilder;
 
-import java.util.ServiceLoader;
-
-@TypeHint(value = ServiceLoader.Provider.class, accessType = {TypeHint.AccessType.ALL_PUBLIC})
-final class Provider {
-}
-
-@TypeHint({
-        org.hibernate.reactive.logging.impl.Log_$logger.class,
-        ReactiveServiceRegistryBuilder.class,
-        ReactiveSingleTableEntityPersister.class
-})
 @Requires(classes = ReactiveServiceRegistryBuilder.class)
 @Prototype
 final class ReactiveRegistryCreator implements StandardServiceRegistryBuilderCreator {
