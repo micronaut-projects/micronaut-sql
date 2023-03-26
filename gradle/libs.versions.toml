@@ -13,9 +13,9 @@ micronaut-data = "4.0.0-SNAPSHOT"
 micronaut-hibernate-validator = "4.0.0-M1"
 micronaut-micrometer = "5.0.0-M1"
 micronaut-r2dbc = "4.0.0" # TODO update once 5.0.0-SNAPSHOT is out
-micronaut-spring = "5.0.0-SNAPSHOT"
 micronaut-reactor = "3.0.0-M1"
 micronaut-serde = "2.0.0-M1"
+micronaut-spring = "5.0.0-M1"
 micronaut-test = "4.0.0-SNAPSHOT"
 micronaut-validation = "4.0.0-SNAPSHOT"
 
