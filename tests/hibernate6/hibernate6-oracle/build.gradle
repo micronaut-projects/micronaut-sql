@@ -1,5 +1,5 @@
 plugins {
-    id 'io.micronaut.build.internal.test-application'
+    id("io.micronaut.build.internal.test-application-hibernate6")
 }
 
 dependencies {

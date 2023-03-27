@@ -34,4 +34,5 @@ dependencies {
     testImplementation libs.testcontainers.jdbc
     testImplementation libs.testcontainers.postgresql
     testImplementation libs.managed.vertx.pg.client
+    testImplementation(mnData.micronaut.data.tx.hibernate)
 }
