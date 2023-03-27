@@ -2,6 +2,10 @@ It's possible to use Hibernate Reactive by adding following dependency:
 
 dependency:micronaut-hibernate-reactive[groupId="io.micronaut.sql"]
 
+and the Micronaut Data Transaction Hibernate dependency:
+
+dependency:micronaut-data-tx-hibernate="io.micronaut.data"]
+
 NOTE: Hibernate Reactive requires Java 11
 
 To enable reactive session factory JPA configuration needs to have `reactive` property set to `true`.
