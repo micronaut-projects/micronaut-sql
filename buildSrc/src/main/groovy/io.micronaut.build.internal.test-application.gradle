@@ -5,7 +5,7 @@ plugins {
 }
 
 micronaut {
-    version project.ext.micronautVersion
+    version '4.0.0-SNAPSHOT'//project.ext.micronautVersion
     runtime "netty"
     testRuntime "junit"
     testResources {

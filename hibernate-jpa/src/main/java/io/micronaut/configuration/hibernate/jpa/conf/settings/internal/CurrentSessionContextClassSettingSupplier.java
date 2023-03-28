@@ -20,6 +20,7 @@ import io.micronaut.configuration.hibernate.jpa.JpaConfiguration;
 import io.micronaut.configuration.hibernate.jpa.conf.settings.SettingsSupplier;
 import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.transaction.hibernate6.MicronautSessionContext;
 import org.hibernate.cfg.AvailableSettings;
@@ -33,6 +34,7 @@ import java.util.Map;
  * @author Denis Stepanov
  * @since 4.5.0
  */
+@Requires(classes = MicronautSessionContext.class)
 @Internal
 @Prototype
 final class CurrentSessionContextClassSettingSupplier implements SettingsSupplier {

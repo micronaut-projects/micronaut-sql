@@ -15,7 +15,8 @@ dependencies {
     api(libs.managed.hibernate.core)
     api(libs.jakarta.transaction.api)
     api(mnValidation.micronaut.validation)
-    api(mnData.micronaut.data.tx.hibernate)
+    compileOnly(mnData.micronaut.data.tx.hibernate)
+    testImplementation(mnData.micronaut.data.tx.hibernate)
     api(mn.micronaut.aop)
     api projects.micronautJdbc
     api(mn.micronaut.runtime)
