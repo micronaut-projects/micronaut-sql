@@ -19,7 +19,6 @@ dependencies {
 
     // needed because otherwise IntelliJ integration broken
     compileOnly(mn.micronaut.inject.java)
-    compileOnly(libs.graal.svm)
     testCompileOnly(mn.micronaut.inject.java)
 
     // needed for native image (adding @Entity annotation to UpdatableRecords for reflection registration)

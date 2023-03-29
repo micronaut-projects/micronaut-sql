@@ -21,7 +21,6 @@ dependencies {
     api projects.micronautJdbc
     api(mn.micronaut.runtime)
 
-    compileOnly(libs.graal.svm)
     compileOnly(libs.managed.hibernate.micrometer)
     compileOnly(libs.managed.hibernate.jcache)
     compileOnly(mn.micronaut.management)

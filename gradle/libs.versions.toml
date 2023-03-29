@@ -55,7 +55,6 @@ jaxb-api = "2.3.1"
 sfm-reflect = "8.2.3"
 spring = "5.3.25"
 caffeine = "3.1.4"
-graal-svm = "22.3.1"
 logback = "1.4.5"
 
 # Testing
@@ -150,7 +149,6 @@ jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transaction-ap
 jaxb-api = { module = "javax.xml.bind:jaxb-api", version.ref = "jaxb-api" }
 sfm-reflect = { module = "org.simpleflatmapper:sfm-reflect", version.ref = "sfm-reflect" }
 caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "caffeine" }
-graal-svm = { module = "org.graalvm.nativeimage:svm", version.ref = "graal-svm" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
 # Testcontainers
