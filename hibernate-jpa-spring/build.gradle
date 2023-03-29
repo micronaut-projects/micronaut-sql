@@ -15,5 +15,5 @@ dependencies {
 
     api projects.micronautJdbc
     api(mnSpring.micronaut.spring)
-    api(libs.spring.orm)
+    api(mnSpring.spring.orm)
 }
