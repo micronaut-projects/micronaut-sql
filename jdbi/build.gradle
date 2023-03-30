@@ -23,7 +23,7 @@ dependencies {
     }
     compileOnly(libs.managed.h2)
     compileOnly(mnData.micronaut.data.tx)
-    compileOnly(libs.spring.jdbc)
+    compileOnly(mnSpring.spring.jdbc)
     runtimeOnly(mnCache.micronaut.cache.caffeine)
     runtimeOnly(libs.caffeine) {
         version {
@@ -33,7 +33,7 @@ dependencies {
 
     testRuntimeOnly projects.micronautJdbcHikari
     testRuntimeOnly(libs.managed.h2)
-    testRuntimeOnly(libs.spring.jdbc)
+    testRuntimeOnly(mnSpring.spring.jdbc)
 
     testAnnotationProcessor(mn.micronaut.inject.java)
     testAnnotationProcessor(mnSpring.micronaut.spring.annotation)
