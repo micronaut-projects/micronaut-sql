@@ -19,7 +19,7 @@ dependencies {
     testImplementation(mnMicrometer.micronaut.micrometer.core)
     testImplementation(mnCache.micronaut.cache.core)
 
-    testImplementation(libs.spring.jdbc)
+    testImplementation(mnSpring.spring.jdbc)
     testImplementation(libs.ojdbc11dms)
     testImplementation(libs.dms)
 }

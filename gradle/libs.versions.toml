@@ -53,7 +53,6 @@ managed-h2 = "2.1.214"
 
 jaxb-api = "2.3.1"
 sfm-reflect = "8.2.3"
-spring = "5.3.25"
 caffeine = "3.1.4"
 logback = "1.4.5"
 
@@ -132,12 +131,6 @@ managed-ojdbc8 = { module = "com.oracle.database.jdbc:ojdbc8", version.ref = "ma
 managed-ojdbc11 = { module = "com.oracle.database.jdbc:ojdbc11", version.ref = "managed-ojdbc" }
 
 managed-h2 = { module = "com.h2database:h2", version.ref = "managed-h2" }
-
-# Spring
-
-spring-jdbc = { module = "org.springframework:spring-jdbc", version.ref = "spring" }
-spring-orm = { module = "org.springframework:spring-orm", version.ref = "spring" }
-spring-tx = { module = "org.springframework:spring-tx" }
 
 # JPA
 

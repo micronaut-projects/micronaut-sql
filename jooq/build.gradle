@@ -28,7 +28,7 @@ dependencies {
     api(mn.micronaut.inject)
     api(libs.managed.jooq)
 
-    compileOnly(libs.spring.jdbc)
+    compileOnly(mnSpring.spring.jdbc)
     compileOnly(mnData.micronaut.data.tx)
     compileOnly(libs.sfm.reflect)
     compileOnly(mn.jackson.databind)
@@ -44,7 +44,7 @@ dependencies {
     testImplementation(mn.micronaut.management)
 
     testImplementation(mnMicrometer.micronaut.micrometer.core)
-    testImplementation(libs.spring.jdbc)
+    testImplementation(mnSpring.spring.jdbc)
     testImplementation(mnCache.micronaut.cache.core)
     txTestRuntimeOnly projects.micronautJdbcTomcat
     txTestRuntimeOnly(libs.managed.h2)

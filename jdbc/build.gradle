@@ -9,6 +9,6 @@ dependencies {
 
     compileOnly(mnSpring.micronaut.spring)
 
-    compileOnly(libs.spring.jdbc)
-    compileOnly(libs.spring.tx)
+    compileOnly(mnSpring.spring.jdbc)
+    compileOnly(mnSpring.spring.tx)
 }
