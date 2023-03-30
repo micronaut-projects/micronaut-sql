@@ -12,7 +12,7 @@ micronaut-cache = "4.0.0-M1"
 micronaut-data = "4.0.0-SNAPSHOT"
 micronaut-hibernate-validator = "4.0.0-M1"
 micronaut-micrometer = "5.0.0-M1"
-micronaut-r2dbc = "4.0.0" # TODO update once 5.0.0-SNAPSHOT is out
+micronaut-r2dbc = "5.0.0-SNAPSHOT"
 micronaut-reactor = "3.0.0-M1"
 micronaut-serde = "2.0.0-M1"
 micronaut-spring = "5.0.0-M1"
@@ -51,14 +51,11 @@ managed-h2 = "2.1.214"
 
 # Other
 
-jaxb-api = "2.3.1"
 sfm-reflect = "8.2.3"
-caffeine = "3.1.4"
-logback = "1.4.5"
 
 # Testing
 
-groovy = "4.0.6"
+groovy = "4.0.10"
 testcontainers = "1.17.6"
 sonar-gradle-plugin = "3.5.0.2730"
 
@@ -139,10 +136,7 @@ jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transaction-ap
 
 # Others
 
-jaxb-api = { module = "javax.xml.bind:jaxb-api", version.ref = "jaxb-api" }
 sfm-reflect = { module = "org.simpleflatmapper:sfm-reflect", version.ref = "sfm-reflect" }
-caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "caffeine" }
-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
 # Testcontainers
 
