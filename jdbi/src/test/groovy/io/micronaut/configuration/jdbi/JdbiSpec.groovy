@@ -83,7 +83,7 @@ class JdbiSpec extends Specification {
         Jdbi jdbi = applicationContext.getBean(Jdbi)
 
         then:
-        jdbi.getConfig(OnDemandExtensions).factory instanceof SqlObjectFactory
+        jdbi.getConfig(OnDemandExtensions).onDemandExtensionFactory instanceof SqlObjectFactory
 
         cleanup:
         applicationContext.close()
