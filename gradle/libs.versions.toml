@@ -30,7 +30,7 @@ managed-jdbi = "3.36.0"
 
 # JDBC Drivers
 
-managed-ojdbc = "21.8.0.0"
+managed-ojdbc = "21.9.0.0"
 managed-postgres-driver = "42.6.0"
 managed-mariadb-driver = "3.1.3"
 managed-mssql-driver = "12.2.0.jre11"
