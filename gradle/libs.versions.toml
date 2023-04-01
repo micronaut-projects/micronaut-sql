@@ -8,7 +8,7 @@ micronaut-gradle-plugin = "4.0.0-SNAPSHOT"
 micronaut-testresources = "2.0.0-SNAPSHOT"
 
 # Platform dependencies
-micronaut-cache = "4.0.0-M1"
+micronaut-cache = "4.0.0-SNAPSHOT"
 micronaut-data = "4.0.0-SNAPSHOT"
 micronaut-hibernate-validator = "4.0.0-M1"
 micronaut-micrometer = "5.0.0-M1"
