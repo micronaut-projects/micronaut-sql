@@ -42,7 +42,8 @@ class TxJdbiSpec extends Specification {
         Jdbi jdbi = applicationContext.getBean(Jdbi)
 
         then:
-        jdbi.getConfig(OnDemandExtensions).factory instanceof SqlObjectFactory
+        def config = jdbi.getConfig(OnDemandExtensions)
+        config.onDemandExtensionFactory instanceof SqlObjectFactory
 
         cleanup:
         applicationContext.close()
