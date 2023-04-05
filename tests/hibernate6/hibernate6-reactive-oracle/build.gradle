@@ -14,8 +14,3 @@ micronaut {
         additionalModules.add(HIBERNATE_REACTIVE_ORACLE_XE)
     }
 }
-
-// TODO: Enable when the `Registering type as reachable after analysis` issue gets fixed
-graalvmNative {
-    testSupport = false
-}

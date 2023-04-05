@@ -23,8 +23,3 @@ graalvmNative {
         buildArgs.addAll("-H:+AddAllCharsets")
     }
 }
-
-// TODO: Enable when the `Registering type as reachable after analysis` issue gets fixed
-graalvmNative {
-    testSupport = false
-}

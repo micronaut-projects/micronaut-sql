@@ -35,6 +35,10 @@ tasks.named("check") { task ->
     }
 }
 
+configurations.all {
+    resolutionStrategy.preferProjectModules()
+}
+
 graalvmNative {
     toolchainDetection = false
     binaries {
