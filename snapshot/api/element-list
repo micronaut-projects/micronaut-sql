@@ -21,7 +21,6 @@ io.micronaut.configuration.jdbi.transaction
 io.micronaut.configuration.jdbi.transaction.micronaut
 io.micronaut.configuration.jdbi.transaction.spring
 io.micronaut.configuration.jooq
-io.micronaut.configuration.jooq.graal
 io.micronaut.configuration.jooq.spring
 io.micronaut.configuration.vertx.mysql.client
 io.micronaut.configuration.vertx.mysql.client.condition
