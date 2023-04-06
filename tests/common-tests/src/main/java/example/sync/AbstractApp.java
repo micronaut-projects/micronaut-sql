@@ -28,8 +28,10 @@ import io.micronaut.test.support.TestPropertyProvider;
 import io.micronaut.testresources.client.TestResourcesClient;
 import io.micronaut.testresources.client.TestResourcesClientFactory;
 import jakarta.inject.Inject;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import reactor.core.publisher.Flux;
 
 import java.util.HashMap;
@@ -38,7 +40,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@TestMethodOrder(OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class AbstractApp implements TestPropertyProvider {
 
@@ -56,25 +57,29 @@ public abstract class AbstractApp implements TestPropertyProvider {
         return properties;
     }
 
-    @AfterAll
-    public void cleanup() {
-        try {
-            TestResourcesClient testResourcesClient = TestResourcesClientFactory.extractFrom(context);
-            testResourcesClient.closeScope(getClass().getName());
-        } catch (Exception e) {
-            // ignore
-        }
-    }
-
-    @Test
-    @Order(1)
-    void shouldInit() {
+    @BeforeAll
+    public void init() {
         HttpResponse<Void> response = client.toBlocking().exchange(HttpRequest.GET("/init"));
         assertEquals(HttpStatus.OK, response.getStatus());
     }
 
+    @AfterAll
+    public void cleanup() {
+        try {
+            HttpResponse<Void> response = client.toBlocking().exchange(HttpRequest.GET("/destroy"));
+            assertEquals(HttpStatus.OK, response.getStatus());
+        } finally {
+            // always close scope
+            try {
+                TestResourcesClient testResourcesClient = TestResourcesClientFactory.extractFrom(context);
+                testResourcesClient.closeScope(getClass().getName());
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+    }
+
     @Test
-    @Order(2)
     void shouldFetchOwners() {
         List<OwnerDto> results = client.toBlocking().retrieve(HttpRequest.GET("/owners"), Argument.listOf(OwnerDto.class));
         assertEquals(2, results.size());
@@ -83,14 +88,12 @@ public abstract class AbstractApp implements TestPropertyProvider {
     }
 
     @Test
-    @Order(3)
     void shouldFetchOwnerByName() {
         Map result = client.toBlocking().retrieve(HttpRequest.GET("/owners/Fred"), Map.class);
         assertEquals("Fred", result.get("name"));
     }
 
     @Test
-    @Order(4)
     void shouldFetchPets() {
         List<PetDto> results = client.toBlocking().retrieve(HttpRequest.GET("/pets"), Argument.listOf(PetDto.class));
         assertEquals(3, results.size());
@@ -103,7 +106,6 @@ public abstract class AbstractApp implements TestPropertyProvider {
     }
 
     @Test
-    @Order(5)
     void shouldFetchPetByName() {
         Map result = client.toBlocking().retrieve(HttpRequest.GET("/pets/Dino"), Map.class);
         assertEquals("Dino", result.get("name"));
@@ -111,7 +113,6 @@ public abstract class AbstractApp implements TestPropertyProvider {
     }
 
     @Test
-    @Order(6)
     void shouldFetchPetsParallel() {
         List<List<PetDto>> resultsList = Flux.range(1, 1000)
             .flatMap(it -> client.retrieve(HttpRequest.GET("/pets"), Argument.listOf(PetDto.class)))
@@ -130,7 +131,6 @@ public abstract class AbstractApp implements TestPropertyProvider {
     }
 
     @Test
-    @Order(7)
     void shouldFetchPetByNameParallel() {
         List<Map> resultsList = Flux.range(1, 1000)
             .flatMap(it -> client.retrieve(HttpRequest.GET("/pets/Dino"), Map.class))
@@ -138,12 +138,5 @@ public abstract class AbstractApp implements TestPropertyProvider {
             .block();
 
         resultsList.forEach(it -> assertEquals("Dino", it.get("name")));
-    }
-
-    @Test
-    @Order(8)
-    void shouldDestroy() {
-        HttpResponse<Void> response = client.toBlocking().exchange(HttpRequest.GET("/destroy"));
-        assertEquals(HttpStatus.OK, response.getStatus());
     }
 }

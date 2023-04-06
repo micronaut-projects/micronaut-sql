@@ -1,7 +1,0 @@
-plugins {
-    id 'io.micronaut.build.internal.test-library'
-}
-
-dependencies {
-    api(mnSerde.micronaut.serde.api)
-}

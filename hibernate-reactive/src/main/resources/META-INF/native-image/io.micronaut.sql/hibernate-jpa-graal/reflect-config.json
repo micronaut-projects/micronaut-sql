@@ -1,16 +1,116 @@
 [
-  {
-    "name": "org.hibernate.internal.log.ConnectionPoolingLogger_$logger",
-    "condition": {
-      "typeReachable": "org.hibernate.internal.log.ConnectionPoolingLogger"
+    {
+        "name": "org.hibernate.reactive.context.impl.VertxContext",
+        "queryAllPublicMethods": true,
+        "condition": {
+            "typeReachable": "org.hibernate.reactive.stage.impl.StageSessionFactoryImpl"
+        }
     },
-    "methods": [
-      {
-        "name": "<init>",
-        "parameterTypes": [
-          "org.jboss.logging.Logger"
+    {
+        "name": "org.hibernate.reactive.logging.impl.Log_$logger",
+        "condition": {
+            "typeReachable": "org.hibernate.reactive.logging.impl.LoggerFactory"
+        },
+        "methods": [
+            {
+                "name": "<init>",
+                "parameterTypes": [
+                    "org.jboss.logging.Logger"
+                ]
+            }
         ]
-      }
-    ]
-  }
+    },
+    {
+        "name": "org.hibernate.reactive.provider.ReactiveServiceRegistryBuilder",
+        "condition": {
+            "typeReachable": "org.hibernate.reactive.session.impl.ReactiveSessionFactoryImpl"
+        }
+    },
+    {
+        "name": "org.hibernate.reactive.persister.entity.impl.ReactiveSingleTableEntityPersister",
+        "condition": {
+            "typeReachable": "org.hibernate.reactive.session.impl.ReactiveSessionFactoryImpl"
+        },
+        "methods": [
+            {
+                "name": "<init>",
+                "parameterTypes": [
+                    "org.hibernate.mapping.PersistentClass",
+                    "org.hibernate.cache.spi.access.EntityDataAccess",
+                    "org.hibernate.cache.spi.access.NaturalIdDataAccess",
+                    "org.hibernate.metamodel.spi.RuntimeModelCreationContext"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "org.hibernate.reactive.pool.impl.DefaultSqlClientPool",
+        "queryAllPublicMethods": true,
+        "condition": {
+            "typeReachable": "org.hibernate.reactive.provider.service.ReactiveImprovedExtractionContextImpl"
+        }
+    },
+    {
+        "name": "org.hibernate.reactive.pool.impl.DefaultSqlClientPoolConfiguration",
+        "queryAllPublicMethods": true,
+        "condition": {
+            "typeReachable": "org.hibernate.reactive.pool.impl.DefaultSqlClientPool"
+        }
+    },
+    {
+        "name": "org.hibernate.reactive.provider.service.NoJdbcConnectionProvider",
+        "queryAllPublicMethods": true,
+        "condition": {
+            "typeReachable": "org.hibernate.reactive.provider.service.NoJdbcEnvironmentInitiator"
+        }
+    },
+    {
+        "name": "org.hibernate.reactive.provider.service.ReactiveMarkerServiceSingleton",
+        "queryAllPublicMethods": true,
+        "condition": {
+            "typeReachable": "org.hibernate.reactive.provider.impl.ReactiveModeCheck"
+        }
+    },
+    {
+        "name": "org.hibernate.reactive.provider.service.ReactivePersisterClassResolver",
+        "queryAllPublicMethods": true,
+        "condition": {
+            "typeReachable": "org.hibernate.reactive.session.impl.ReactiveSessionFactoryImpl"
+        }
+    },
+    {
+        "name": "org.hibernate.reactive.provider.service.ReactiveSchemaManagementTool",
+        "queryAllPublicMethods": true,
+        "condition": {
+            "typeReachable": "org.hibernate.reactive.session.impl.ReactiveSessionFactoryImpl"
+        }
+    },
+    {
+        "name": "org.hibernate.reactive.provider.service.ReactiveValuesMappingProducerProvider",
+        "queryAllPublicMethods": true,
+        "condition": {
+            "typeReachable": "org.hibernate.reactive.session.impl.ReactiveSessionFactoryImpl"
+        }
+    },
+    {
+        "name": "org.hibernate.reactive.provider.service.ReactiveWrappingDialectFactory",
+        "queryAllPublicMethods": true,
+        "condition": {
+            "typeReachable": "org.hibernate.reactive.provider.service.NoJdbcEnvironmentInitiator"
+        }
+    },
+    {
+        "name": "org.hibernate.reactive.query.sqm.spi.ReactiveNativeQueryInterpreter",
+        "queryAllPublicMethods": true,
+        "condition": {
+            "typeReachable": "org.hibernate.reactive.session.impl.ReactiveSessionFactoryImpl"
+        }
+    },
+    {
+        "name": "org.hibernate.reactive.vertx.impl.DefaultVertxInstance",
+        "queryAllPublicMethods": true,
+        "condition": {
+            "typeReachable": "org.hibernate.reactive.pool.impl.DefaultSqlClientPool"
+        }
+    }
 ]

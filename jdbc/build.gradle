@@ -7,7 +7,6 @@ dependencies {
 
     api(mn.micronaut.inject)
 
-    compileOnly(libs.graal.svm)
     compileOnly(mnSpring.micronaut.spring)
 
     compileOnly(mnSpring.spring.jdbc)

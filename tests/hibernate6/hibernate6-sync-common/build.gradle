@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation projects.micronautTests.micronautCommon
+    implementation projects.micronautTests.micronautCommonSync
     implementation projects.micronautHibernateJpa
     runtimeOnly projects.micronautJdbcHikari
 

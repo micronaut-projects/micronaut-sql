@@ -1,0 +1,8 @@
+[
+  {
+    "name": "[Ljava.time.Year;",
+    "condition": {
+      "typeReachable": "org.jooq.impl.SQLDataType"
+    }
+  }
+]

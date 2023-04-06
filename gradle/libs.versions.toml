@@ -52,7 +52,6 @@ managed-h2 = "2.1.214"
 # Other
 
 sfm-reflect = "8.2.3"
-graal-svm = "22.3.1"
 
 # Testing
 
@@ -138,7 +137,6 @@ jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transaction-ap
 # Others
 
 sfm-reflect = { module = "org.simpleflatmapper:sfm-reflect", version.ref = "sfm-reflect" }
-graal-svm = { module = "org.graalvm.nativeimage:svm", version.ref = "graal-svm" }
 
 # Testcontainers
 

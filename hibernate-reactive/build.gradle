@@ -18,7 +18,6 @@ dependencies {
     api libs.managed.hibernate.reactive.core
     api mn.micronaut.runtime
 
-    compileOnly libs.graal.svm
     compileOnly libs.managed.vertx.sql.client
 
     testAnnotationProcessor mn.micronaut.inject.java

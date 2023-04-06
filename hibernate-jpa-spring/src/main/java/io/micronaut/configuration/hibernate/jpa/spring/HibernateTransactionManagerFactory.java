@@ -16,11 +16,9 @@
 package io.micronaut.configuration.hibernate.jpa.spring;
 
 import io.micronaut.context.annotation.*;
-import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.jdbc.spring.DataSourceTransactionManagerFactory;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.SpringSessionContext;
 
 import javax.sql.DataSource;
 
@@ -33,7 +31,6 @@ import javax.sql.DataSource;
 @Factory
 @Requires(classes = HibernateTransactionManager.class)
 @Replaces(factory = DataSourceTransactionManagerFactory.class)
-@TypeHint({SpringSessionContext.class, HibernateTransactionManager.class})
 public class HibernateTransactionManagerFactory {
 
     /**

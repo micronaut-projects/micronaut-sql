@@ -13,8 +13,6 @@ jpa:
     compile-time-hibernate-proxies: true
 ----
 
-[NOTE]Compile-time proxies are not supported for Hibernate6.
-
 Compile-time proxies require for an entity which needs to have a proxy to be annotated with `@GenerateProxy`:
 
 For example:

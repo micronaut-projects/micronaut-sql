@@ -15,12 +15,6 @@ dependencies {
 
 micronaut {
     testResources {
-        // TODO: This is temporary removed from testresources, add once we have sql and data modules fixed
-        // additionalModules.add(HIBERNATE_REACTIVE_MYSQL)
+        additionalModules.add(HIBERNATE_REACTIVE_MYSQL)
     }
-}
-
-graalvmNative {
-    // TODO: Enable native tests in separate PR
-    testSupport = false
 }

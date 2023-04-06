@@ -3,13 +3,12 @@ plugins {
 }
 
 dependencies {
-    implementation mn.micronaut.http
-    implementation mn.micronaut.runtime
-    api(projects.micronautTests.micronautCommonEntity)
-    api(mnData.micronaut.data.tx)
-
-    implementation(mnSerde.micronaut.serde.jackson)
-    testImplementation(mnSerde.micronaut.serde.jackson)
-
+    api(mnSerde.micronaut.serde.api)
     runtimeOnly(mn.snakeyaml)
+}
+
+graalvmNative {
+    metadataRepository {
+        uri("https://github.com/oracle/graalvm-reachability-metadata/releases/download/0.2.7/graalvm-reachability-metadata-0.2.7.zip")
+    }
 }

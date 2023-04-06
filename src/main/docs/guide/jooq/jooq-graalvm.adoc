@@ -1,6 +1,4 @@
-Micronaut by default deactivates mapping to proxies with `ProxyMapper` to enable native image generation.
-It also provides reflection configuration for basic type mappings but it is necessary to declare the `Record` classes
-for reflection.
+To use JOOQ in a native image it is necessary to declare the `Record` classes for reflection.
 The easiest way to do it is configure jOOQ to annotate the generated classes with the JPA annotations enabling the
 option `jpaAnnotations`. This way Micronaut will be able to detect them and automatically generate the reflection
 configuration that GraalVM needs.

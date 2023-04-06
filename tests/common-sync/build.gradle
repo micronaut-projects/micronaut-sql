@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation mnReactor.micronaut.reactor
     implementation mn.micronaut.http
     implementation mn.micronaut.runtime
     api(projects.micronautTests.micronautCommon)

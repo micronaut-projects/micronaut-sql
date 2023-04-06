@@ -1,9 +1,0 @@
-[
-  {
-    "name":"oracle.jdbc.driver.OracleDriver",
-    "allDeclaredFields":true,
-    "allDeclaredMethods": true,
-    "allPublicMethods" : true,
-    "allDeclaredConstructors":true
-  }
-]

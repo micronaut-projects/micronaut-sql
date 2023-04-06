@@ -12,8 +12,3 @@ dependencies {
 configurations {
     all*.exclude module: "javassist"
 }
-
-// TODO: Enable native tests once jakarta.validation gets replaced with jakarta.validation which is required for hibernate6
-graalvmNative {
-    testSupport = false
-}

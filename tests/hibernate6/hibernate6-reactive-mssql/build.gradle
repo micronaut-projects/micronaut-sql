@@ -14,14 +14,11 @@ dependencies {
 
 micronaut {
     testResources {
-        // TODO: This is temporary removed from testresources, add once we have sql and data modules fixed
-       // additionalModules.add(HIBERNATE_REACTIVE_MSSQL)
+        additionalModules.add(HIBERNATE_REACTIVE_MSSQL)
     }
 }
 
 graalvmNative {
-    // TODO: Enable native tests in separate PR
-    testSupport = false
     binaries.all {
         buildArgs.addAll("-H:+AddAllCharsets")
     }
