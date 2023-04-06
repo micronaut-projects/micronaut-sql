@@ -6,6 +6,8 @@ dependencies {
     implementation projects.micronautTests.micronautHibernate6.micronautHibernate6SyncCommon
     testImplementation projects.micronautTests.micronautCommonTests
 
+    runtimeOnly projects.micronautJdbcHikari
+
     runtimeOnly libs.managed.h2
 }
 
