@@ -56,7 +56,7 @@ sfm-reflect = "8.2.3"
 # Testing
 
 groovy = "4.0.10"
-testcontainers = "1.17.6"
+testcontainers = "1.18.0"
 sonar-gradle-plugin = "4.0.0.2929"
 
 [libraries]
