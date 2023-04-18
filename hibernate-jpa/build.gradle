@@ -13,7 +13,7 @@ dependencies {
     annotationProcessor(mn.micronaut.graal)
 
     api(libs.managed.hibernate.core)
-    api(libs.jakarta.transaction.api)
+    api(libs.managed.jakarta.transaction.api)
     api(mnValidation.micronaut.validation)
     compileOnly(mnData.micronaut.data.tx.hibernate)
     testImplementation(mnData.micronaut.data.tx.hibernate)
