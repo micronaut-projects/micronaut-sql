@@ -30,7 +30,8 @@ managed-jdbi = "3.37.1"
 
 # JDBC Drivers
 
-managed-ojdbc = "21.9.0.0"
+managed-ojdbc = "23.2.0.0"
+managed-ojdbcdms = "21.9.0.0"
 managed-postgres-driver = "42.6.0"
 managed-mariadb-driver = "3.1.3"
 managed-mssql-driver = "12.2.0.jre11"
@@ -116,7 +117,7 @@ managed-ucp = { module = "com.oracle.database.jdbc:ucp", version.ref = "managed-
 # UCP
 
 dms = { module = "com.oracle.database.observability:dms", version.ref = "managed-ojdbc" }
-ojdbc11dms = { module = "com.oracle.database.observability:ojdbc11dms", version.ref = "managed-ojdbc" }
+ojdbc11dms = { module = "com.oracle.database.observability:ojdbc11dms", version.ref = "managed-ojdbcdms" }
 
 # JDBC drivers
 
