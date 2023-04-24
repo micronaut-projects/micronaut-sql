@@ -2,10 +2,10 @@
 
 # Micronaut
 
-micronaut = "4.0.0-M1"
+micronaut = "4.0.0-M2"
 micronaut-docs = "2.0.0"
-micronaut-gradle-plugin = "4.0.0-SNAPSHOT"
-micronaut-testresources = "2.0.0-SNAPSHOT"
+micronaut-gradle-plugin = "4.0.0-M1"
+micronaut-testresources = "2.0.0-M1"
 
 # Platform dependencies
 micronaut-cache = "4.0.0-M1"
@@ -14,10 +14,10 @@ micronaut-hibernate-validator = "4.0.0-M1"
 micronaut-micrometer = "5.0.0-M1"
 micronaut-r2dbc = "5.0.0-M1"
 micronaut-reactor = "3.0.0-M1"
-micronaut-serde = "2.0.0-M1"
+micronaut-serde = "2.0.0-M3"
 micronaut-spring = "5.0.0-M1"
 micronaut-test = "4.0.0-M1"
-micronaut-validation = "4.0.0-M2"
+micronaut-validation = "4.0.0-M4"
 
 # Frameworks
 
@@ -56,7 +56,7 @@ sfm-reflect = "8.2.3"
 
 # Testing
 
-groovy = "4.0.10"
+groovy = "4.0.11"
 testcontainers = "1.18.0"
 sonar-gradle-plugin = "4.0.0.2929"
 
