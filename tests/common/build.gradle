@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    annotationProcessor(mnSerde.micronaut.serde.processor)
     api(mnSerde.micronaut.serde.api)
     runtimeOnly(mn.snakeyaml)
 }
