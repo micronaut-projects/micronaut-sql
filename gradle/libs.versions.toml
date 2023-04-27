@@ -24,7 +24,7 @@ micronaut-validation = "4.0.0-M4"
 managed-vertx = "4.4.1"
 managed-jooq = "3.18.2"
 managed-hibernate = "6.2.0.Final"
-managed-hibernate-reactive = "2.0.0.Beta1"
+managed-hibernate-reactive = "2.0.0.CR1"
 managed-jasync = "2.1.23"
 managed-jdbi = "3.37.1"
 
