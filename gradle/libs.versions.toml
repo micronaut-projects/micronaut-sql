@@ -4,8 +4,8 @@
 
 micronaut = "4.0.0-M2"
 micronaut-docs = "2.0.0"
-micronaut-gradle-plugin = "4.0.0-M1"
 micronaut-testresources = "2.0.0-M1"
+micronaut-gradle-plugin = "4.0.0-M2"
 
 # Platform dependencies
 micronaut-cache = "4.0.0-M1"
