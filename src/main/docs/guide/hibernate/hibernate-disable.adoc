@@ -1,0 +1,1 @@
+You can disable Micronaut Hibernate JPA, for example in a test, by setting `micronaut.hibernate.jpa.enabled` to `false`.

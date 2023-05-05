@@ -8,6 +8,7 @@ jdbc:
   jdbc-spring-transaction: Using Spring Transaction Management
 hibernate:
   title: Configuring Hibernate
+  hibernate-disable: Disable Micronaut Hibernate JPA
   hibernate-inject-session: Injecting an EntityManager or Hibernate Session
   hibernate-customizing: Customizing Hibernate/JPA Configuration
   hibernate-entity-scan: Entity Scan Configuration

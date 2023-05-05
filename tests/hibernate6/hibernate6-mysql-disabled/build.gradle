@@ -1,0 +1,19 @@
+plugins {
+    id("io.micronaut.build.internal.test-application-hibernate6")
+}
+
+dependencies {
+    implementation projects.micronautHibernateReactive
+    runtimeOnly projects.micronautJdbcHikari
+    runtimeOnly libs.managed.mysql.connector.java
+}
+
+configurations {
+    all*.exclude module: "javassist"
+}
+
+micronaut {
+    testResources {
+        additionalModules.add(JDBC_MYSQL)
+    }
+}
