@@ -41,7 +41,7 @@ managed-mysql-driver = "8.0.32"
 
 managed-hikari = "5.0.1"
 managed-commons-dbcp = "2.9.0"
-managed-tomcat-jdbc = "10.1.7"
+managed-tomcat-jdbc = "10.1.8"
 
 # JPA
 
