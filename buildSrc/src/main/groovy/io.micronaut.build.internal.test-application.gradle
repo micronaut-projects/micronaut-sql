@@ -31,7 +31,8 @@ tasks.named("check") { task ->
         System.getProperty(it)?.toLowerCase(Locale.ENGLISH)?.contains("graal")
     }
     if (graal) {
-        task.dependsOn("nativeTest")
+        // Native tests executed by separate github workflows
+        // task.dependsOn("nativeTest")
     }
 }
 
