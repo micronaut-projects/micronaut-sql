@@ -1,6 +1,6 @@
 plugins {
     id 'io.micronaut.build.internal.testing-base'
-    id 'io.micronaut.library'
+    id 'io.micronaut.minimal.library'
 }
 
 micronaut {

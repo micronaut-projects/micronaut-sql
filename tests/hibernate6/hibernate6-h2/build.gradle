@@ -14,3 +14,9 @@ dependencies {
 configurations {
     all*.exclude module: "javassist"
 }
+
+graalvmNative {
+    metadataRepository {
+        uri("https://github.com/oracle/graalvm-reachability-metadata/releases/download/0.2.7/graalvm-reachability-metadata-0.2.7.zip")
+    }
+}
