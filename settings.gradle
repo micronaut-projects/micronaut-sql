@@ -22,7 +22,6 @@ micronautBuild {
     importMicronautCatalog("micronaut-r2dbc")
     importMicronautCatalog("micronaut-serde")
     importMicronautCatalog("micronaut-spring")
-    importMicronautCatalog("micronaut-test")
     importMicronautCatalog("micronaut-validation")
 }
 
