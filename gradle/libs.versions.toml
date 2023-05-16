@@ -3,6 +3,7 @@
 # Micronaut
 
 micronaut = "4.0.0-M2"
+micronaut-platform = "4.0.0-M2"
 micronaut-docs = "2.0.0"
 micronaut-gradle-plugin = "4.0.0-M2"
 micronaut-testresources = "2.0.0-M3"
@@ -14,7 +15,7 @@ micronaut-hibernate-validator = "4.0.0-M2"
 micronaut-micrometer = "5.0.0-M1"
 micronaut-r2dbc = "5.0.0-M2"
 micronaut-reactor = "3.0.0-M1"
-micronaut-serde = "2.0.0-M3"
+micronaut-serde = "2.0.0-M6"
 micronaut-spring = "5.0.0-M1"
 micronaut-test = "4.0.0-M3"
 micronaut-validation = "4.0.0-M4"
@@ -53,6 +54,10 @@ managed-h2 = "2.1.214"
 # Other
 
 sfm-reflect = "8.2.3"
+
+# Logback
+
+logback = "1.4.6"
 
 # Testing
 

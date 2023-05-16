@@ -5,11 +5,12 @@ plugins {
 }
 
 micronaut {
-    version '4.0.0-SNAPSHOT'//project.ext.micronautVersion
+    version libs.versions.micronaut.platform.get()
     runtime "netty"
     testRuntime "junit"
     testResources {
         clientTimeout = 180
+        version = libs.versions.micronaut.testresources.get()
     }
 }
 
