@@ -20,11 +20,9 @@ import io.micronaut.configuration.hibernate.jpa.conf.settings.SettingsSupplier;
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.annotation.Requires;
 import io.vertx.sqlclient.Pool;
-import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.hibernate.engine.jdbc.spi.SqlStatementLogger;
-import org.hibernate.reactive.pool.impl.Parameters;
 import org.hibernate.reactive.pool.impl.SqlClientPool;
 import org.hibernate.reactive.provider.Settings;
 import org.hibernate.reactive.util.impl.CompletionStages;
@@ -54,7 +52,8 @@ final class ExternalVertxSqlClientPoolSettingSupplier implements SettingsSupplie
 
         private final transient Pool pool;
         private transient SqlStatementLogger sqlStatementLogger;
-        private transient Parameters parameters;
+        private transient SqlExceptionHelper sqlExceptionHelper;
+        private transient ServiceRegistryImplementor serviceRegistry;
 
         private ExternalSqlClientPool(Pool pool) {
             this.pool = pool;
@@ -66,13 +65,17 @@ final class ExternalVertxSqlClientPoolSettingSupplier implements SettingsSupplie
         }
 
         @Override
-        protected Parameters getParameters() {
-            return parameters;
+        protected SqlStatementLogger getSqlStatementLogger() {
+            return sqlStatementLogger;
         }
 
         @Override
-        protected SqlStatementLogger getSqlStatementLogger() {
-            return sqlStatementLogger;
+        protected SqlExceptionHelper getSqlExceptionHelper() {
+            if (sqlExceptionHelper == null) {
+                sqlExceptionHelper = serviceRegistry
+                    .getService(JdbcServices.class).getSqlExceptionHelper();
+            }
+            return sqlExceptionHelper;
         }
 
         @Override
@@ -82,9 +85,8 @@ final class ExternalVertxSqlClientPoolSettingSupplier implements SettingsSupplie
 
         @Override
         public void injectServices(ServiceRegistryImplementor serviceRegistry) {
+            this.serviceRegistry = serviceRegistry;
             sqlStatementLogger = serviceRegistry.getService(JdbcServices.class).getSqlStatementLogger();
-            final Dialect dialect = serviceRegistry.getService(JdbcEnvironment.class).getDialect();
-            parameters = Parameters.instance(dialect);
         }
     }
 
