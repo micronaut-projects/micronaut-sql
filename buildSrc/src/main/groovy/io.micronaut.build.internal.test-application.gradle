@@ -5,11 +5,12 @@ plugins {
 }
 
 micronaut {
-    version '4.0.0-SNAPSHOT'//project.ext.micronautVersion
+    version libs.versions.micronaut.platform.get()
     runtime "netty"
     testRuntime "junit"
     testResources {
         clientTimeout = 180
+        version = libs.versions.micronaut.testresources.get()
     }
 }
 
@@ -23,16 +24,6 @@ dependencies {
 
 application {
     mainClass = "example.Application"
-}
-
-tasks.named("check") { task ->
-    def graal = ["jvmci.Compiler", "java.vendor.version", "java.vendor"].any {
-        println "$it ${System.getProperty(it)}"
-        System.getProperty(it)?.toLowerCase(Locale.ENGLISH)?.contains("graal")
-    }
-    if (graal) {
-        task.dependsOn("nativeTest")
-    }
 }
 
 configurations.all {
