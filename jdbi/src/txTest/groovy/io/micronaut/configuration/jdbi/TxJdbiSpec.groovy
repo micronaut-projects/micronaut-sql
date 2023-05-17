@@ -6,8 +6,7 @@ import io.micronaut.context.env.MapPropertySource
 import io.micronaut.core.version.SemanticVersion
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.internal.OnDemandExtensions
-import org.jdbi.v3.sqlobject.SqlObjectFactory
-import spock.lang.IgnoreIf
+import org.jdbi.v3.sqlobject.GeneratorSqlObjectFactory
 import spock.lang.Requires
 import spock.lang.Specification
 import spock.util.environment.Jvm
@@ -43,7 +42,7 @@ class TxJdbiSpec extends Specification {
 
         then:
         def config = jdbi.getConfig(OnDemandExtensions)
-        config.onDemandExtensionFactory instanceof SqlObjectFactory
+        config.onDemandExtensionFactory instanceof GeneratorSqlObjectFactory
 
         cleanup:
         applicationContext.close()
