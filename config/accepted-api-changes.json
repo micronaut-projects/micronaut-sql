@@ -1,5 +1,55 @@
 [
   {
+    "type": "io.micronaut.configuration.jooq.graal.$DefaultDataTypeReflection$ReflectConfig",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Changed in Micronaut Framework 4"
+  },
+  {
+    "type": "io.micronaut.configuration.jooq.graal.$DefaultDataTypeReflection$ReflectConfig",
+    "member": "Constructor io.micronaut.configuration.jooq.graal.$DefaultDataTypeReflection$ReflectConfig()",
+    "reason": "Changed in Micronaut Framework 4"
+  },
+  {
+    "type": "io.micronaut.configuration.jooq.graal.$DefaultDataTypeReflection$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Changed in Micronaut Framework 4"
+  },
+  {
+    "type": "io.micronaut.configuration.jooq.graal.$DefaultDataTypeReflection$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Changed in Micronaut Framework 4"
+  },
+  {
+    "type": "io.micronaut.configuration.jooq.graal.$DefaultDataTypeReflection$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.graal.GraalReflectionConfigurer",
+    "reason": "Changed in Micronaut Framework 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.spring.$HibernateTransactionManagerFactory$ReflectConfig",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Changed in Micronaut Framework 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.spring.$HibernateTransactionManagerFactory$ReflectConfig",
+    "member": "Constructor io.micronaut.configuration.hibernate.jpa.spring.$HibernateTransactionManagerFactory$ReflectConfig()",
+    "reason": "Changed in Micronaut Framework 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.spring.$HibernateTransactionManagerFactory$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Changed in Micronaut Framework 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.spring.$HibernateTransactionManagerFactory$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Changed in Micronaut Framework 4"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.spring.$HibernateTransactionManagerFactory$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.graal.GraalReflectionConfigurer",
+    "reason": "Changed in Micronaut Framework 4"
+  },
+  {
     "type": "io.micronaut.configuration.jooq.JooqConfigurationFactory",
     "member": "Class io.micronaut.configuration.jooq.JooqConfigurationFactory",
     "reason": "Ability to use custom org.jooq.ConnectionProvider"
