@@ -19,11 +19,10 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource
 import io.micronaut.core.version.SemanticVersion
-import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.internal.OnDemandExtensions
 import org.jdbi.v3.core.statement.SqlStatements
-import org.jdbi.v3.sqlobject.SqlObjectFactory
+import org.jdbi.v3.sqlobject.GeneratorSqlObjectFactory
 import spock.lang.Requires
 import spock.lang.Specification
 import spock.util.environment.Jvm
@@ -83,7 +82,7 @@ class JdbiSpec extends Specification {
         Jdbi jdbi = applicationContext.getBean(Jdbi)
 
         then:
-        jdbi.getConfig(OnDemandExtensions).onDemandExtensionFactory instanceof SqlObjectFactory
+        jdbi.getConfig(OnDemandExtensions).onDemandExtensionFactory instanceof GeneratorSqlObjectFactory
 
         cleanup:
         applicationContext.close()
