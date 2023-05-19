@@ -16,4 +16,6 @@ dependencies {
     implementation(platform(mnData.micronaut.data.bom))
     testAnnotationProcessor(platform(mnData.micronaut.data.bom))
     testImplementation(platform(mnData.micronaut.data.bom))
+    implementation(platform(mnTest.micronaut.test.bom))
+    testImplementation(platform(mnTest.micronaut.test.bom))
 }
