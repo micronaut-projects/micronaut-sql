@@ -71,12 +71,12 @@ public class DatasourceFactory implements AutoCloseable {
 
     private void addMeterRegistry(HikariUrlDataSource ds) {
         try {
-            MeterRegistry meterRegistry = getMeterRegistry();
-            if (ds != null && meterRegistry != null &&
-                    this.applicationContext
-                            .getProperty(MICRONAUT_METRICS_BINDERS + ".jdbc.enabled",
-                                    boolean.class).orElse(true)) {
-                ds.setMetricRegistry(meterRegistry);
+            Boolean metricsEnabled = this.applicationContext.getProperty(MICRONAUT_METRICS_BINDERS + ".jdbc.enabled", boolean.class).orElse(true);
+            if (ds != null && metricsEnabled) {
+                MeterRegistry meterRegistry = getMeterRegistry();
+                if (meterRegistry != null) {
+                    ds.setMetricRegistry(meterRegistry);
+                }
             }
         } catch (NoClassDefFoundError ignore) {
             LOG.debug("Could not wire metrics to HikariCP as there is no class of type MeterRegistry on the classpath, io.micronaut.configuration:micrometer-core library missing.");
