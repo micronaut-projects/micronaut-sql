@@ -48,7 +48,7 @@ dependencies {
     txTestAnnotationProcessor(mnData.micronaut.data.processor)
     txTestImplementation(mnData.micronaut.data.tx)
     txTestImplementation(mn.micronaut.inject.groovy)
-    txTestRuntimeOnly(mn.logback.classic)
+    txTestRuntimeOnly(mnLogging.logback.classic)
     txTestImplementation(libs.jdbi3.sqlobject)
     txTestImplementation(mnTest.micronaut.test.spock)
 }
