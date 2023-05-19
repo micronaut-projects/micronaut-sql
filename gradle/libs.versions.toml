@@ -10,7 +10,7 @@ micronaut-testresources = "2.0.0-M3"
 
 # Platform dependencies
 micronaut-cache = "4.0.0-M1"
-micronaut-data = "4.0.0-M2"
+micronaut-data = "4.0.0-M3"
 micronaut-hibernate-validator = "4.0.0-M2"
 micronaut-micrometer = "5.0.0-M1"
 micronaut-r2dbc = "5.0.0-M2"
