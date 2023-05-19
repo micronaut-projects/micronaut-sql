@@ -4,5 +4,16 @@ plugins {
 }
 
 micronaut {
-    version libs.versions.micronaut.platform.get()
+    importMicronautPlatform = false
+}
+
+dependencies {
+    annotationProcessor(platform(mn.micronaut.core.bom))
+    implementation(platform(mn.micronaut.core.bom))
+    testAnnotationProcessor(platform(mn.micronaut.core.bom))
+    testImplementation(platform(mn.micronaut.core.bom))
+    annotationProcessor(platform(mnData.micronaut.data.bom))
+    implementation(platform(mnData.micronaut.data.bom))
+    testAnnotationProcessor(platform(mnData.micronaut.data.bom))
+    testImplementation(platform(mnData.micronaut.data.bom))
 }

@@ -19,11 +19,11 @@ dependencies {
     implementation(platform(mn.micronaut.core.bom))
     testAnnotationProcessor(platform(mn.micronaut.core.bom))
     testImplementation(platform(mn.micronaut.core.bom))
+    testImplementation(platform(libs.testcontainers.bom))
     runtimeOnly mnLogging.logback.classic
     implementation mn.micronaut.http.client
     testImplementation mnTest.micronaut.test.core
-    testImplementation libs.testcontainers.bom
-    testImplementation libs.testcontainers.jdbc
+    testImplementation(libs.testcontainers.jdbc)
 }
 
 application {
