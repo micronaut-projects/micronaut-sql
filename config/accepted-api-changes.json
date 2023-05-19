@@ -333,5 +333,55 @@
     "type": "io.micronaut.configuration.jdbc.ucp.$DatasourceConfiguration$Definition$Reference",
     "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
     "reason": "Micronaut 4 Bean Definition changes"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.spring.$HibernateTransactionManagerFactory$ReflectConfig",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Micronaut Framework 4 Bean"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.spring.$HibernateTransactionManagerFactory$ReflectConfig",
+    "member": "Constructor io.micronaut.configuration.hibernate.jpa.spring.$HibernateTransactionManagerFactory$ReflectConfig()",
+    "reason": "Micronaut Framework 4 Bean"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.spring.$HibernateTransactionManagerFactory$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Micronaut Framework 4 Bean"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.spring.$HibernateTransactionManagerFactory$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Micronaut Framework 4 Bean"
+  },
+  {
+    "type": "io.micronaut.configuration.hibernate.jpa.spring.$HibernateTransactionManagerFactory$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.graal.GraalReflectionConfigurer",
+    "reason": "Micronaut Framework 4 Bean"
+  },
+  {
+    "type": "io.micronaut.configuration.jooq.graal.$DefaultDataTypeReflection$ReflectConfig",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Provide a human readable reason for the change"
+  },
+  {
+    "type": "io.micronaut.configuration.jooq.graal.$DefaultDataTypeReflection$ReflectConfig",
+    "member": "Constructor io.micronaut.configuration.jooq.graal.$DefaultDataTypeReflection$ReflectConfig()",
+    "reason": "Micronaut Framework 4 Bean"
+  },
+  {
+    "type": "io.micronaut.configuration.jooq.graal.$DefaultDataTypeReflection$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Micronaut Framework 4 Bean"
+  },
+  {
+    "type": "io.micronaut.configuration.jooq.graal.$DefaultDataTypeReflection$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Micronaut Framework 4 Bean"
+  },
+  {
+    "type": "io.micronaut.configuration.jooq.graal.$DefaultDataTypeReflection$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.graal.GraalReflectionConfigurer",
+    "reason": "Micronaut Framework 4 Bean"
   }
 ]
