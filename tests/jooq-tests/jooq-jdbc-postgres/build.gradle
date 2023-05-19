@@ -4,10 +4,13 @@ plugins {
 
 dependencies {
     implementation projects.micronautJooq
-    implementation mnData.micronaut.data.tx
     implementation projects.micronautTests.micronautCommonSync
 
-    annotationProcessor mnData.micronaut.data.processor
+    testAnnotationProcessor(platform(mnData.micronaut.data.bom))
+    annotationProcessor(platform(mnData.micronaut.data.bom))
+    annotationProcessor(mnData.micronaut.data.processor)
+    implementation(platform(mnData.micronaut.data.bom))
+    implementation mnData.micronaut.data.tx
 
     runtimeOnly libs.managed.postgresql
     runtimeOnly projects.micronautJdbcHikari
