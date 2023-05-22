@@ -5,7 +5,7 @@
 micronaut = "4.0.0-M2"
 micronaut-platform = "4.0.0-M2"
 micronaut-docs = "2.0.0"
-micronaut-gradle-plugin = "4.0.0-M2"
+micronaut-gradle-plugin = "4.0.0-M3"
 micronaut-testresources = "2.0.0-M3"
 
 # Platform dependencies
@@ -24,8 +24,8 @@ micronaut-validation = "4.0.0-M4"
 
 managed-vertx = "4.4.2"
 managed-jooq = "3.18.4"
-managed-hibernate = "6.2.0.Final"
-managed-hibernate-reactive = "2.0.0.CR1"
+managed-hibernate = "6.2.3.Final"
+managed-hibernate-reactive = "2.0.0.CR2"
 managed-jasync = "2.1.24"
 managed-jdbi = "3.38.2"
 
