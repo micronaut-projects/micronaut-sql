@@ -10,4 +10,5 @@ dependencies {
     implementation projects.micronautJdbc
 
     runtimeOnly(mn.snakeyaml)
+    runtimeOnly(mnData.micronaut.data.model)
 }

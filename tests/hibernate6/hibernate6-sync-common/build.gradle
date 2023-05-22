@@ -7,4 +7,5 @@ dependencies {
     implementation projects.micronautHibernateJpa
 
     runtimeOnly(mn.snakeyaml)
+    runtimeOnly(mnData.micronaut.data.model)
 }

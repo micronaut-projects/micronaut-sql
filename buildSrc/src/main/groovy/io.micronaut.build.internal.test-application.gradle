@@ -19,6 +19,10 @@ dependencies {
     implementation mn.micronaut.http.client
     testImplementation mnTest.micronaut.test.core
     testImplementation(libs.testcontainers.jdbc)
+    testImplementation(platform(libs.testcontainers.bom))
+
+    micronautBoms(platform(mn.micronaut.core.bom))
+    micronautBoms(platform(mnData.micronaut.data.bom))
 }
 
 application {

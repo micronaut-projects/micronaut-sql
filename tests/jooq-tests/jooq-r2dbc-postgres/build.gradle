@@ -4,17 +4,12 @@ plugins {
 
 dependencies {
     implementation projects.micronautJooq
-    implementation(platform(mnData.micronaut.data.bom))
     implementation mnData.micronaut.data.tx
     implementation mnData.micronaut.data.r2dbc
     implementation mnR2dbc.r2dbc.postgresql
     implementation mnR2dbc.r2dbc.pool
 
     implementation projects.micronautTests.micronautCommonReactive
-
-    testAnnotationProcessor(platform(mnData.micronaut.data.bom))
-    annotationProcessor(platform(mnData.micronaut.data.bom))
-    annotationProcessor mnData.micronaut.data.processor
 
     testImplementation projects.micronautTests.micronautCommonTests
 }

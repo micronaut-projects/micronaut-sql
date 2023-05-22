@@ -6,12 +6,6 @@ dependencies {
     implementation projects.micronautJooq
     implementation projects.micronautTests.micronautCommonSync
 
-    testAnnotationProcessor(platform(mnData.micronaut.data.bom))
-    annotationProcessor(platform(mnData.micronaut.data.bom))
-    annotationProcessor(mnData.micronaut.data.processor)
-    implementation(platform(mnData.micronaut.data.bom))
-    implementation mnData.micronaut.data.tx
-
     runtimeOnly libs.managed.postgresql
     runtimeOnly projects.micronautJdbcHikari
 
