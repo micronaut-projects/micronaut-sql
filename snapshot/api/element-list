@@ -1,10 +1,8 @@
 io.micronaut.configuration.hibernate.jpa
-io.micronaut.configuration.hibernate.jpa.condition
 io.micronaut.configuration.hibernate.jpa.conf.serviceregistry.builder.configures
 io.micronaut.configuration.hibernate.jpa.conf.serviceregistry.builder.supplier
 io.micronaut.configuration.hibernate.jpa.conf.sessionfactory.configure
 io.micronaut.configuration.hibernate.jpa.conf.settings
-io.micronaut.configuration.hibernate.jpa.jcache
 io.micronaut.configuration.hibernate.jpa.metrics
 io.micronaut.configuration.hibernate.jpa.proxy
 io.micronaut.configuration.hibernate.jpa.spring
@@ -23,7 +21,6 @@ io.micronaut.configuration.jdbi.transaction
 io.micronaut.configuration.jdbi.transaction.micronaut
 io.micronaut.configuration.jdbi.transaction.spring
 io.micronaut.configuration.jooq
-io.micronaut.configuration.jooq.graal
 io.micronaut.configuration.jooq.spring
 io.micronaut.configuration.vertx.mysql.client
 io.micronaut.configuration.vertx.mysql.client.condition
