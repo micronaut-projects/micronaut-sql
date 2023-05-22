@@ -10,7 +10,7 @@ micronaut-testresources = "2.0.0-M3"
 
 # Platform dependencies
 micronaut-cache = "4.0.0-M1"
-micronaut-data = "4.0.0-M2"
+micronaut-data = "4.0.0-M3"
 micronaut-hibernate-validator = "4.0.0-M2"
 micronaut-micrometer = "5.0.0-M1"
 micronaut-r2dbc = "5.0.0-M2"
@@ -42,12 +42,12 @@ managed-mysql-driver = "8.0.33"
 
 managed-hikari = "5.0.1"
 managed-commons-dbcp = "2.9.0"
-managed-tomcat-jdbc = "10.1.8"
+managed-tomcat-jdbc = "10.1.9"
 
 # JPA
 
-jakarta-persistence-api = "3.1.0"
-jakarta-transaction-api = "2.0.1"
+managed-jakarta-persistence-api = "3.1.0"
+managed-jakarta-transaction-api = "2.0.1"
 
 managed-h2 = "2.1.214"
 
@@ -137,8 +137,8 @@ managed-h2 = { module = "com.h2database:h2", version.ref = "managed-h2" }
 
 # JPA
 
-jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version.ref = "jakarta-persistence-api" }
-jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transaction-api", version.ref = "jakarta-transaction-api" }
+managed-jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version.ref = "managed-jakarta-persistence-api" }
+managed-jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transaction-api", version.ref = "managed-jakarta-transaction-api" }
 
 # Others
 
