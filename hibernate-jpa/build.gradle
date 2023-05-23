@@ -19,7 +19,6 @@ dependencies {
     testImplementation(mnData.micronaut.data.tx.hibernate)
     api(mn.micronaut.aop)
     api projects.micronautJdbc
-    api(mn.micronaut.runtime)
 
     compileOnly(libs.managed.hibernate.micrometer)
     compileOnly(libs.managed.hibernate.jcache)

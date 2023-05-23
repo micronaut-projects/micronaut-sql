@@ -5,7 +5,7 @@ plugins {
 }
 
 micronaut {
-    version libs.versions.micronaut.platform.get()
+    importMicronautPlatform = false
     runtime "netty"
     testRuntime "junit"
     testResources {
@@ -15,11 +15,14 @@ micronaut {
 }
 
 dependencies {
-    runtimeOnly mn.logback.classic
+    runtimeOnly mnLogging.logback.classic
     implementation mn.micronaut.http.client
     testImplementation mnTest.micronaut.test.core
-    testImplementation libs.testcontainers.bom
-    testImplementation libs.testcontainers.jdbc
+    testImplementation(libs.testcontainers.jdbc)
+    testImplementation(platform(libs.testcontainers.bom))
+
+    micronautBoms(platform(mn.micronaut.core.bom))
+    micronautBoms(platform(mnData.micronaut.data.bom))
 }
 
 application {

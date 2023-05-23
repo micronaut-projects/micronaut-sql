@@ -5,6 +5,8 @@ plugins {
 dependencies {
     implementation projects.micronautTests.micronautCommonSync
     implementation projects.micronautHibernateJpa
+    implementation mnTest.micronaut.test.junit5
 
     runtimeOnly(mn.snakeyaml)
+    runtimeOnly(mnData.micronaut.data.model)
 }
