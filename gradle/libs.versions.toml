@@ -2,30 +2,29 @@
 
 # Micronaut
 
-micronaut = "4.0.0-M2"
-micronaut-platform = "4.0.0-M2"
+micronaut = "4.0.0-M4"
 micronaut-docs = "2.0.0"
-micronaut-gradle-plugin = "4.0.0-M2"
+micronaut-gradle-plugin = "4.0.0-M3"
 micronaut-testresources = "2.0.0-M3"
 
 # Platform dependencies
-micronaut-cache = "4.0.0-M1"
-micronaut-data = "4.0.0-M3"
+micronaut-cache = "4.0.0-M2"
+micronaut-data = "4.0.0-M4"
 micronaut-hibernate-validator = "4.0.0-M2"
 micronaut-micrometer = "5.0.0-M1"
-micronaut-r2dbc = "5.0.0-M2"
-micronaut-reactor = "3.0.0-M1"
-micronaut-serde = "2.0.0-M6"
+micronaut-r2dbc = "5.0.0-M5"
+micronaut-reactor = "3.0.0-M2"
+micronaut-serde = "2.0.0-M7"
 micronaut-spring = "5.0.0-M1"
 micronaut-test = "4.0.0-M3"
-micronaut-validation = "4.0.0-M5"
+micronaut-validation = "4.0.0-M7"
 
 # Frameworks
 
 managed-vertx = "4.4.2"
 managed-jooq = "3.18.4"
-managed-hibernate = "6.2.0.Final"
-managed-hibernate-reactive = "2.0.0.CR1"
+managed-hibernate = "6.2.3.Final"
+managed-hibernate-reactive = "2.0.0.CR2"
 managed-jasync = "2.1.24"
 managed-jdbi = "3.38.2"
 
@@ -42,12 +41,12 @@ managed-mysql-driver = "8.0.33"
 
 managed-hikari = "5.0.1"
 managed-commons-dbcp = "2.9.0"
-managed-tomcat-jdbc = "10.1.8"
+managed-tomcat-jdbc = "10.1.9"
 
 # JPA
 
-jakarta-persistence-api = "3.1.0"
-jakarta-transaction-api = "2.0.1"
+managed-jakarta-persistence-api = "3.1.0"
+managed-jakarta-transaction-api = "2.0.1"
 
 managed-h2 = "2.1.214"
 
@@ -65,7 +64,12 @@ groovy = "4.0.11"
 testcontainers = "1.18.1"
 sonar-gradle-plugin = "4.0.0.2929"
 
+micronaut-logging = "1.0.0-M2"
 [libraries]
+# Core
+micronaut-core = { module = 'io.micronaut:micronaut-core-bom', version.ref = 'micronaut' }
+
+micronaut-logging = { module = "io.micronaut.logging:micronaut-logging-bom", version.ref = "micronaut-logging" }
 
 # Platform catalogs
 
@@ -137,8 +141,8 @@ managed-h2 = { module = "com.h2database:h2", version.ref = "managed-h2" }
 
 # JPA
 
-jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version.ref = "jakarta-persistence-api" }
-jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transaction-api", version.ref = "jakarta-transaction-api" }
+managed-jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version.ref = "managed-jakarta-persistence-api" }
+managed-jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transaction-api", version.ref = "managed-jakarta-transaction-api" }
 
 # Others
 

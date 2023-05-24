@@ -11,8 +11,6 @@ dependencies {
 
     implementation projects.micronautTests.micronautCommonReactive
 
-    annotationProcessor mnData.micronaut.data.processor
-
     testImplementation projects.micronautTests.micronautCommonTests
 }
 

@@ -8,6 +8,8 @@ dependencies {
     implementation mn.micronaut.http.client
     implementation projects.micronautHibernateReactive
     implementation projects.micronautJdbc
+    implementation mnTest.micronaut.test.junit5
 
     runtimeOnly(mn.snakeyaml)
+    runtimeOnly(mnData.micronaut.data.model)
 }

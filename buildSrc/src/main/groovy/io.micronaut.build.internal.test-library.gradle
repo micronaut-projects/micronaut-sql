@@ -4,5 +4,9 @@ plugins {
 }
 
 micronaut {
-    version libs.versions.micronaut.platform.get()
+    importMicronautPlatform = false
+}
+
+dependencies {
+    micronautBoms(platform(mnData.micronaut.data.bom))
 }

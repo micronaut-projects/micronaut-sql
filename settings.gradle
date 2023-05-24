@@ -12,8 +12,8 @@ plugins {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 micronautBuild {
+    importMicronautCatalog("micronaut-logging")
     useStandardizedProjectNames = true
-    addSnapshotRepository()
     importMicronautCatalog()
     importMicronautCatalog("micronaut-cache")
     importMicronautCatalog("micronaut-data")
