@@ -31,7 +31,7 @@ managed-jdbi = "3.38.2"
 # JDBC Drivers
 
 managed-ojdbc = "21.10.0.0" # Don't change until the issue described on the following link gets fixed: https://github.com/spring-projects/spring-boot/issues/35006
-managed-ojdbcdms = "21.9.0.0"
+managed-ojdbcdms = "21.10.0.0"
 managed-postgres-driver = "42.6.0"
 managed-mariadb-driver = "3.1.4"
 managed-mssql-driver = "12.2.0.jre11"
