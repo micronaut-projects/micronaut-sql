@@ -411,7 +411,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>The above configuration will result in a single <a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html">DataSource</a> bean being registered with the named qualifier of <code>default</code>.</p>
+<p>The above configuration will result in a single <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html">DataSource</a> bean being registered with the named qualifier of <code>default</code>.</p>
 </div>
 <div class="paragraph">
 <p>If for example, the H2 driver is on the classpath, it is equivalent to the following:</p>
@@ -670,7 +670,7 @@ datasources.warehouse=...</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>When injecting <a href="https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html">DataSource</a> beans, the one with the name "default" will be injected unless the injection is qualified with the configured name. If no configuration is named "default", none of the beans will be primary and thus all injections must be qualified. For example:</p>
+<p>When injecting <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html">DataSource</a> beans, the one with the name "default" will be injected unless the injection is qualified with the configured name. If no configuration is named "default", none of the beans will be primary and thus all injections must be qualified. For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
