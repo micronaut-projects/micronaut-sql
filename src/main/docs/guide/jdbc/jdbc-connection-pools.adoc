@@ -20,7 +20,7 @@ For example:
 datasources.default: {}
 ----
 
-The above configuration will result in a single link:{jdkapi}/javax/sql/DataSource.html[DataSource] bean being registered with the named qualifier of `default`.
+The above configuration will result in a single link:{jdkapi}/java.sql/javax/sql/DataSource.html[DataSource] bean being registered with the named qualifier of `default`.
 
 If for example, the H2 driver is on the classpath, it is equivalent to the following:
 
