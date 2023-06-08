@@ -5,7 +5,6 @@ jdbc:
   jdbc-connection-pools: Configuring JDBC Connection Pools
   jdbc-multiple-datasources: Configuring Multiple Data Sources
   jdbc-healthchecks: JDBC Health Checks
-  jdbc-spring-transaction: Using Spring Transaction Management
 hibernate:
   title: Configuring Hibernate
   hibernate-inject-session: Injecting an EntityManager or Hibernate Session
@@ -13,7 +12,6 @@ hibernate:
   hibernate-entity-scan: Entity Scan Configuration
   hibernate-reactive: Configuring Hibernate Reactive
   hibernate-proxies: Using compile-time Hibernate proxies
-  hibernate-spring-transaction: Using Spring Transaction Management
   hibernate-lazy-initialization: Understanding LazyInitializationException
 jasync:
   title: Configuring JAsync SQL

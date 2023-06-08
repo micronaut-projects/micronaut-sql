@@ -6,9 +6,4 @@ dependencies {
     annotationProcessor(mn.micronaut.graal)
 
     api(mn.micronaut.inject)
-
-    compileOnly(mnSpring.micronaut.spring)
-
-    compileOnly(mnSpring.spring.jdbc)
-    compileOnly(mnSpring.spring.tx)
 }

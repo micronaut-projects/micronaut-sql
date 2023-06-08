@@ -28,7 +28,6 @@ dependencies {
 
     testRuntimeOnly projects.micronautJdbcHikari
     testRuntimeOnly(libs.managed.h2)
-    testRuntimeOnly(mnSpring.spring.jdbc)
 
     testAnnotationProcessor(mn.micronaut.inject.java)
     testAnnotationProcessor(mnSpring.micronaut.spring.annotation)
@@ -36,6 +35,7 @@ dependencies {
     testImplementation(mn.micronaut.http.server.netty)
     testImplementation(mn.micronaut.http.client)
     testImplementation(mn.micronaut.management)
+    testImplementation(mnSpring.spring.jdbc)
 
     testImplementation(mnMicrometer.micronaut.micrometer.core)
 

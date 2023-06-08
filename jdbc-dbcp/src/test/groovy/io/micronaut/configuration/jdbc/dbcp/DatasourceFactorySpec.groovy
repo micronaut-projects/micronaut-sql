@@ -15,23 +15,23 @@
  */
 package io.micronaut.configuration.jdbc.dbcp
 
-import io.micronaut.jdbc.spring.SpringDataSourceResolver
+import io.micronaut.jdbc.DataSourceResolver
 import org.apache.commons.dbcp2.BasicDataSource
-import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy
 import spock.lang.Specification
 
+import javax.sql.DataSource
+
 class DatasourceFactorySpec extends Specification {
-
-    DatasourceFactory datasourceFactory
-
-    def setup() {
-        datasourceFactory = new DatasourceFactory(new SpringDataSourceResolver())
-    }
 
     def "create basic datasource"() {
         given:
         def dataSource = new BasicDataSource(validationQuery: "SELECT 1")
-
+        DatasourceFactory datasourceFactory = new DatasourceFactory(new DataSourceResolver() {
+            @Override
+            DataSource resolve(DataSource ds) {
+                return ds
+            }
+        })
         when:
         def metadata = datasourceFactory.dbcpDataSourcePoolMetadata(dataSource)
 
@@ -44,13 +44,23 @@ class DatasourceFactorySpec extends Specification {
         metadata.usage >= 0
     }
 
-    def "create transactional datasource"() {
+    def "create proxy datasource"() {
         given:
         def dataSource = new BasicDataSource(validationQuery: "SELECT 1")
-        def transactionalDataSource = new TransactionAwareDataSourceProxy(targetDataSource: dataSource)
+        def proxyDataSource = Spy(dataSource)
+        def dataSourceResolver = new DataSourceResolver() {
+            @Override
+            DataSource resolve(DataSource ds) {
+                if (ds.is(proxyDataSource)) {
+                    return dataSource
+                }
+                return ds
+            }
+        }
+        DatasourceFactory datasourceFactory = new DatasourceFactory(dataSourceResolver)
 
         when:
-        def metadata = datasourceFactory.dbcpDataSourcePoolMetadata(transactionalDataSource)
+        def metadata = datasourceFactory.dbcpDataSourcePoolMetadata(proxyDataSource)
 
         then:
         metadata

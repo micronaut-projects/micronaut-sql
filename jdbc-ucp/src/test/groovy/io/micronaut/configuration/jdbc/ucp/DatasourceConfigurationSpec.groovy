@@ -19,6 +19,7 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource
 import io.micronaut.inject.qualifiers.Qualifiers
+import io.micronaut.jdbc.DataSourceResolver
 import oracle.ucp.jdbc.PoolDataSource
 import spock.lang.Specification
 
@@ -54,13 +55,14 @@ class DatasourceConfigurationSpec extends Specification {
                 ]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(PoolDataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        PoolDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        PoolDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.getURL() == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
@@ -82,13 +84,14 @@ class DatasourceConfigurationSpec extends Specification {
                 ]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(PoolDataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        PoolDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        PoolDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.getURL() == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
@@ -115,13 +118,14 @@ class DatasourceConfigurationSpec extends Specification {
                 ]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(PoolDataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        PoolDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        PoolDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then:
         dataSource.getInitialPoolSize() == 5
@@ -152,20 +156,21 @@ class DatasourceConfigurationSpec extends Specification {
                 ]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(DataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        PoolDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        PoolDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.getURL() == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
         dataSource.getUser() == 'sa'
 
         when:
-        dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("foo")).targetDataSource
+        dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource, Qualifiers.byName("foo")))
 
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.getURL() == 'jdbc:h2:mem:foo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
@@ -202,13 +207,14 @@ class DatasourceConfigurationSpec extends Specification {
                 ]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.getBeansOfType(DataSource).size() == 2
         applicationContext.getBeansOfType(DatasourceConfiguration).size() == 2
 
         when:
-        dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("default")).targetDataSource
+        dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource, Qualifiers.byName("default")))
 
         then:
         dataSource.getInitialPoolSize() == 5
@@ -220,7 +226,7 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.getLoginTimeout() == 20
 
         when:
-        dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("person")).targetDataSource
+        dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource, Qualifiers.byName("person")))
 
         then:
         dataSource.getInitialPoolSize() == 5
@@ -260,9 +266,10 @@ class DatasourceConfigurationSpec extends Specification {
                 ]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         when:
-        PoolDataSource dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("person")).targetDataSource
+        PoolDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource, Qualifiers.byName("person")))
 
         then:
         dataSource
@@ -296,9 +303,10 @@ class DatasourceConfigurationSpec extends Specification {
                 ]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         when:
-        PoolDataSource dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("person")).targetDataSource
+        PoolDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource, Qualifiers.byName("person")))
 
         then:
         dataSource
@@ -316,13 +324,14 @@ class DatasourceConfigurationSpec extends Specification {
                 ["datasources.default.data-source-properties": ["oracle.fan.enabled": true]]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(PoolDataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        PoolDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        PoolDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.getSQLForValidateConnection()== 'SELECT 1'
