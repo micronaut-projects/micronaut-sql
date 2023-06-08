@@ -105,8 +105,6 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-healthchecks"><a href="#jdbc-healthchecks"><strong>3.3</strong><span>JDBC Health Checks</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-spring-transaction"><a href="#jdbc-spring-transaction"><strong>3.4</strong><span>Using Spring Transaction Management</span></a></div>
-        
         <div class="toc-item" style="margin-left:0px" id="toc-item-hibernate"><a href="#hibernate"><strong>4</strong><span>Configuring Hibernate</span></a></div>
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-inject-session"><a href="#hibernate-inject-session"><strong>4.1</strong><span>Injecting an EntityManager or Hibernate Session</span></a></div>
@@ -119,9 +117,7 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-proxies"><a href="#hibernate-proxies"><strong>4.5</strong><span>Using compile-time Hibernate proxies</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-spring-transaction"><a href="#hibernate-spring-transaction"><strong>4.6</strong><span>Using Spring Transaction Management</span></a></div>
-        
-        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-lazy-initialization"><a href="#hibernate-lazy-initialization"><strong>4.7</strong><span>Understanding LazyInitializationException</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-lazy-initialization"><a href="#hibernate-lazy-initialization"><strong>4.6</strong><span>Understanding LazyInitializationException</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-jasync"><a href="#jasync"><strong>5</strong><span>Configuring JAsync SQL</span></a></div>
         
@@ -693,58 +689,6 @@ datasources.warehouse=...</code></pre>
 </div>
 <div class="paragraph">
 <p>See the section on the <a href="https://docs.micronaut.io/latest/guide/index.html#healthEndpoint">Health Endpoint</a> for more information.</p>
-</div>
-
-<h2 id="jdbc-spring-transaction"><a class="anchor" href="#jdbc-spring-transaction"></a>3.4 Using Spring Transaction Management</h2>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/jdbc/jdbc-spring-transaction.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
-<div class="paragraph">
-<p>If you wish to use Spring-based transaction management you can add the following dependencies to your application:</p>
-</div>
-<div class="paragraph">
-<p>        <div class="listingblock multi-language-sample">
-<div class="title"></div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.spring:micronaut-spring")</span></code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
-    &lt;groupId&gt;io.micronaut.spring&lt;/groupId&gt;
-    &lt;artifactId&gt;micronaut-spring&lt;/artifactId&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div></p>
-</div>
-<div class="paragraph">
-<p>        <div class="listingblock multi-language-sample">
-<div class="title"></div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">runtimeOnly(<span class="hljs-string">"org.springframework:spring-jdbc")</span></code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
-    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-    &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
-    &lt;scope&gt;runtime&lt;/scope&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div></p>
-</div>
-<div class="paragraph">
-<p>Micronaut will automatically configure a <code>DataSourceTransactionManager</code> and wrap the <code>DataSource</code> in a <code>TransactionAwareDataSourceProxy</code> for each configured <code>DataSource</code>.</p>
-</div>
-<div class="paragraph">
-<p>For transactions to work, use spring&#8217;s <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Transactional.html">@Transactional</a> annotation and <a href="https://micronaut-projects.github.io/micronaut-spring/latest/guide/#springToMicronautStart">configure micronaut-spring-annotation in your annotation processor path</a>.</p>
 </div>
 
 <h1 id="hibernate"><a class="anchor" href="#hibernate"></a>4 Configuring Hibernate</h1>
@@ -1632,42 +1576,7 @@ Compile-time proxies are enabled by default for GraalVM environment.
 </table>
 </div>
 
-<h2 id="hibernate-spring-transaction"><a class="anchor" href="#hibernate-spring-transaction"></a>4.6 Using Spring Transaction Management</h2>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/hibernate/hibernate-spring-transaction.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
-<div class="paragraph">
-<p>Since 2.0, by default Micronaut-based transaction management is enabled. Thus on any service you can use the <code>io.micronaut.transaction.annotation.TransactionalAdvice</code> annotation (or the <code>javax.transaction.Transactional</code> annotation if you include the <code>micronaut-data-processor</code> dependency in your annotation processor configuration).</p>
-</div>
-<div class="paragraph">
-<p>If you wish to use Spring-based transaction management instead you should add the following dependency:</p>
-</div>
-<div class="paragraph">
-<p>        <div class="listingblock multi-language-sample">
-<div class="title"></div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.sql:micronaut-hibernate-jpa-spring")</span></code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
-    &lt;groupId&gt;io.micronaut.sql&lt;/groupId&gt;
-    &lt;artifactId&gt;micronaut-hibernate-jpa-spring&lt;/artifactId&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div></p>
-</div>
-<div class="paragraph">
-<p>Which will enable configuration of the Spring transaction management instead.</p>
-</div>
-
-<h2 id="hibernate-lazy-initialization"><a class="anchor" href="#hibernate-lazy-initialization"></a>4.7 Understanding LazyInitializationException</h2>
+<h2 id="hibernate-lazy-initialization"><a class="anchor" href="#hibernate-lazy-initialization"></a>4.6 Understanding LazyInitializationException</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/hibernate/hibernate-lazy-initialization.adoc"'>

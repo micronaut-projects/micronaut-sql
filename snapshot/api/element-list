@@ -5,7 +5,6 @@ io.micronaut.configuration.hibernate.jpa.conf.sessionfactory.configure
 io.micronaut.configuration.hibernate.jpa.conf.settings
 io.micronaut.configuration.hibernate.jpa.metrics
 io.micronaut.configuration.hibernate.jpa.proxy
-io.micronaut.configuration.hibernate.jpa.spring
 io.micronaut.configuration.hibernate.jpa.validation
 io.micronaut.configuration.jasync
 io.micronaut.configuration.jasync.condition
@@ -30,4 +29,3 @@ io.micronaut.configuration.vertx.pg.client.condition
 io.micronaut.configuration.vertx.pg.client.health
 io.micronaut.jdbc
 io.micronaut.jdbc.metadata
-io.micronaut.jdbc.spring
