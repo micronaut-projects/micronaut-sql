@@ -135,18 +135,18 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>&nbsp;</code></div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(io.micronaut.context.ApplicationContext,org.hibernate.integrator.spi.Integrator)" class="member-name-link">JpaConfiguration</a><wbr>(io.micronaut.context.ApplicationContext&nbsp;applicationContext,
- <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html" title="class or interface in org.hibernate.integrator.spi" class="external-link">Integrator</a>&nbsp;integrator)</code></div>
+ @Nullable <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html" title="class or interface in org.hibernate.integrator.spi" class="external-link">Integrator</a>&nbsp;integrator)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>&nbsp;</code></div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,io.micronaut.context.ApplicationContext,org.hibernate.integrator.spi.Integrator)" class="member-name-link">JpaConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-first odd-row-color"><code>protected </code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.hibernate.integrator.spi.Integrator,io.micronaut.context.ApplicationContext,io.micronaut.configuration.hibernate.jpa.JpaConfiguration.EntityScanConfiguration)" class="member-name-link">JpaConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ @Nullable <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html" title="class or interface in org.hibernate.integrator.spi" class="external-link">Integrator</a>&nbsp;integrator,
  io.micronaut.context.ApplicationContext&nbsp;applicationContext,
- <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html" title="class or interface in org.hibernate.integrator.spi" class="external-link">Integrator</a>&nbsp;integrator)</code></div>
+ @Nullable <a href="JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a>&nbsp;entityScanConfiguration)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected </code></div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.hibernate.integrator.spi.Integrator,io.micronaut.context.ApplicationContext,io.micronaut.configuration.hibernate.jpa.JpaConfiguration.EntityScanConfiguration)" class="member-name-link">JpaConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html" title="class or interface in org.hibernate.integrator.spi" class="external-link">Integrator</a>&nbsp;integrator,
+<div class="col-first even-row-color"><code>&nbsp;</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,io.micronaut.context.ApplicationContext,org.hibernate.integrator.spi.Integrator)" class="member-name-link">JpaConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  io.micronaut.context.ApplicationContext&nbsp;applicationContext,
- <a href="JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a>&nbsp;entityScanConfiguration)</code></div>
+ @Nullable <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html" title="class or interface in org.hibernate.integrator.spi" class="external-link">Integrator</a>&nbsp;integrator)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -170,7 +170,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntityScanConfiguration()" class="member-name-link">getEntityScanConfiguration</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMappingResources()" class="member-name-link">getMappingResources</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Mapping resources (equivalent to "mapping-file" entries in persistence.xml).</div>
@@ -181,7 +181,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPackagesToScan()" class="member-name-link">getPackagesToScan</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProperties()" class="member-name-link">getProperties</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
@@ -208,7 +208,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Sets the packages to scan.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProperties(java.util.Map)" class="member-name-link">setProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;jpaProperties)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProperties(java.util.Map)" class="member-name-link">setProperties</a><wbr>(@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;jpaProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Sets the JPA properties to be passed to the JPA implementation.</div>
 </div>
@@ -273,7 +273,7 @@ loadScripts(document, 'script');</script>
 <h3>JpaConfiguration</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">JpaConfiguration</span><wbr><span class="parameters">(io.micronaut.context.ApplicationContext&nbsp;applicationContext,
  @Nullable
- <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html" title="class or interface in org.hibernate.integrator.spi" class="external-link">Integrator</a>&nbsp;integrator)</span></div>
+ @Nullable <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html" title="class or interface in org.hibernate.integrator.spi" class="external-link">Integrator</a>&nbsp;integrator)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>applicationContext</code> - The application context</dd>
@@ -288,7 +288,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  io.micronaut.context.ApplicationContext&nbsp;applicationContext,
  @Nullable
- <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html" title="class or interface in org.hibernate.integrator.spi" class="external-link">Integrator</a>&nbsp;integrator)</span></div>
+ @Nullable <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html" title="class or interface in org.hibernate.integrator.spi" class="external-link">Integrator</a>&nbsp;integrator)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>name</code> - The name</dd>
@@ -304,10 +304,10 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">protected</span>&nbsp;<span class="element-name">JpaConfiguration</span><wbr><span class="parameters">(@Parameter
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  @Nullable
- <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html" title="class or interface in org.hibernate.integrator.spi" class="external-link">Integrator</a>&nbsp;integrator,
+ @Nullable <a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/integrator/spi/Integrator.html" title="class or interface in org.hibernate.integrator.spi" class="external-link">Integrator</a>&nbsp;integrator,
  io.micronaut.context.ApplicationContext&nbsp;applicationContext,
  @Nullable
- <a href="JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a>&nbsp;entityScanConfiguration)</span></div>
+ @Nullable <a href="JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a>&nbsp;entityScanConfiguration)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>name</code> - The name</dd>
@@ -370,7 +370,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setProperties(java.util.Map)">
 <h3>setProperties</h3>
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProperties</span><wbr><span class="parameters">(@MapFormat(transformation=FLAT,keyFormat=RAW) @NonNull
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;jpaProperties)</span></div>
+ @NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;jpaProperties)</span></div>
 <div class="block">Sets the JPA properties to be passed to the JPA implementation.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -382,7 +382,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getProperties()">
 <h3>getProperties</h3>
 <div class="member-signature"><span class="annotations">@NonNull
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name">getProperties</span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name">getProperties</span>()</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>The JPA properties</dd>
@@ -393,7 +393,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getMappingResources()">
 <h3>getMappingResources</h3>
 <div class="member-signature"><span class="annotations">@NonNull
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getMappingResources</span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getMappingResources</span>()</div>
 <div class="block">Mapping resources (equivalent to "mapping-file" entries in persistence.xml).</div>
 <dl class="notes">
 <dt>Returns:</dt>

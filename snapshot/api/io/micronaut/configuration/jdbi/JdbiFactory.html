@@ -114,9 +114,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Jdbi.html" title="class or interface in org.jdbi.v3.core" class="external-link">Jdbi</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#jdbi(javax.sql.DataSource,org.jdbi.v3.core.transaction.TransactionHandler,org.jdbi.v3.core.statement.StatementBuilderFactory,io.micronaut.configuration.jdbi.JdbiCustomizer)" class="member-name-link">jdbi</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link">DataSource</a>&nbsp;dataSource,
- <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">TransactionHandler</a>&nbsp;transactionHandler,
- <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/statement/StatementBuilderFactory.html" title="class or interface in org.jdbi.v3.core.statement" class="external-link">StatementBuilderFactory</a>&nbsp;statementBuilderFactory,
- <a href="JdbiCustomizer.html" title="interface in io.micronaut.configuration.jdbi">JdbiCustomizer</a>&nbsp;jdbiCustomizer)</code></div>
+ @Nullable <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">TransactionHandler</a>&nbsp;transactionHandler,
+ @Nullable <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/statement/StatementBuilderFactory.html" title="class or interface in org.jdbi.v3.core.statement" class="external-link">StatementBuilderFactory</a>&nbsp;statementBuilderFactory,
+ @Nullable <a href="JdbiCustomizer.html" title="interface in io.micronaut.configuration.jdbi">JdbiCustomizer</a>&nbsp;jdbiCustomizer)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Creates a Jdbi <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Jdbi.html" title="class or interface in org.jdbi.v3.core" class="external-link"><code>Jdbi</code></a> instance.</div>
 </div>
@@ -157,11 +157,11 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@EachBean(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link">javax.sql.DataSource.class</a>)
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Jdbi.html" title="class or interface in org.jdbi.v3.core" class="external-link">Jdbi</a></span>&nbsp;<span class="element-name">jdbi</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link">DataSource</a>&nbsp;dataSource,
  @Parameter @Nullable
- <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">TransactionHandler</a>&nbsp;transactionHandler,
+ @Nullable <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">TransactionHandler</a>&nbsp;transactionHandler,
  @Parameter @Nullable
- <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/statement/StatementBuilderFactory.html" title="class or interface in org.jdbi.v3.core.statement" class="external-link">StatementBuilderFactory</a>&nbsp;statementBuilderFactory,
+ @Nullable <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/statement/StatementBuilderFactory.html" title="class or interface in org.jdbi.v3.core.statement" class="external-link">StatementBuilderFactory</a>&nbsp;statementBuilderFactory,
  @Parameter @Nullable
- <a href="JdbiCustomizer.html" title="interface in io.micronaut.configuration.jdbi">JdbiCustomizer</a>&nbsp;jdbiCustomizer)</span></div>
+ @Nullable <a href="JdbiCustomizer.html" title="interface in io.micronaut.configuration.jdbi">JdbiCustomizer</a>&nbsp;jdbiCustomizer)</span></div>
 <div class="block">Creates a Jdbi <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Jdbi.html" title="class or interface in org.jdbi.v3.core" class="external-link"><code>Jdbi</code></a> instance.
  It will configure it with available Jdbi provider beans with the same qualifier.
  <p>
