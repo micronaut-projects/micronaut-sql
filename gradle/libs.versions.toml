@@ -101,6 +101,7 @@ managed-jooq = { module = "org.jooq:jooq", version.ref = "managed-jooq" }
 # Hibernate
 
 managed-hibernate-core = { module = "org.hibernate.orm:hibernate-core", version.ref = "managed-hibernate" }
+managed-hibernate-jpamodelgen = { module = "org.hibernate.orm:hibernate-jpamodelgen", version.ref = "managed-hibernate" }
 managed-hibernate-jcache = { module = "org.hibernate.orm:hibernate-jcache", version.ref = "managed-hibernate" }
 managed-hibernate-micrometer = { module = "org.hibernate.orm:hibernate-micrometer", version.ref = "managed-hibernate" }
 managed-hibernate-reactive-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version.ref = "managed-hibernate-reactive" }
