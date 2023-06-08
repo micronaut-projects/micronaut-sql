@@ -11,13 +11,7 @@ micronautBom {
 micronautBom {
     suppressions {
         acceptedLibraryRegressions.add("micronaut-hibernate-jpa-spring")
-        acceptedLibraryRegressions.add("commons-dbcp-compat")
         acceptedVersionRegressions.add("commons-dbcp-compat")
         acceptedLibraryRegressions.add("commons-dbcp")
-        dependencies.addAll([
-                "org.jdbi:jdbi3-core:3.38.3",
-                "org.jdbi:jdbi3-sqlobject:3.38.3",
-                "org.jdbi:jdbi3-json:3.38.3"
-        ])
     }
 }
