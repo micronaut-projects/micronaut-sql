@@ -15,22 +15,23 @@
  */
 package io.micronaut.configuration.jdbc.tomcat
 
-import io.micronaut.jdbc.spring.SpringDataSourceResolver
+import io.micronaut.jdbc.DataSourceResolver
 import org.apache.tomcat.jdbc.pool.DataSource
-import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy
 import spock.lang.Specification
 
 class DatasourceFactorySpec extends Specification {
 
     DatasourceFactory datasourceFactory
 
-    def setup() {
-        datasourceFactory = new DatasourceFactory(new SpringDataSourceResolver())
-    }
-
     def "create basic datasource"() {
         given:
         def dataSource = new DataSource(validationQuery: "SELECT 1")
+        DatasourceFactory datasourceFactory = new DatasourceFactory(new DataSourceResolver() {
+            @Override
+            javax.sql.DataSource resolve(javax.sql.DataSource ds) {
+                return ds
+            }
+        })
 
         when:
         def metadata = datasourceFactory.tomcatPoolDataSourceMetadataProvider(dataSource)
@@ -47,10 +48,19 @@ class DatasourceFactorySpec extends Specification {
     def "create transactional datasource"() {
         given:
         def dataSource = new DataSource(validationQuery: "SELECT 1")
-        def transactionalDataSource = new TransactionAwareDataSourceProxy(targetDataSource: dataSource)
+        def proxyDataSource = Spy(dataSource)
+        def dataSourceResolver = new DataSourceResolver() {
+            @Override
+            javax.sql.DataSource resolve(javax.sql.DataSource ds) {
+                if (ds.is(proxyDataSource)) {
+                    return dataSource
+                }
+                return ds
+            }
+        }
 
         when:
-        def metadata = datasourceFactory.tomcatPoolDataSourceMetadataProvider(transactionalDataSource)
+        def metadata = new DatasourceFactory(dataSourceResolver).tomcatPoolDataSourceMetadataProvider(proxyDataSource)
 
         then:
         metadata

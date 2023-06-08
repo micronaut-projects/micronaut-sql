@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.jdbc.spring;
+package io.micronaut.configuration.jdbi;
 
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
@@ -36,7 +36,6 @@ import javax.sql.DataSource;
  */
 @Factory
 @Requires(classes = DataSourceTransactionManager.class)
-@Requires(condition = HibernatePresenceCondition.class)
 @Internal
 public class DataSourceTransactionManagerFactory {
 

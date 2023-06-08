@@ -1,7 +1,0 @@
-Since 2.0, by default Micronaut-based transaction management is enabled. Thus on any service you can use the `io.micronaut.transaction.annotation.TransactionalAdvice` annotation (or the `javax.transaction.Transactional` annotation if you include the `micronaut-data-processor` dependency in your annotation processor configuration).
-
-If you wish to use Spring-based transaction management instead you should add the following dependency:
-
-dependency:micronaut-hibernate-jpa-spring[groupId="io.micronaut.sql"]
-
-Which will enable configuration of the Spring transaction management instead.

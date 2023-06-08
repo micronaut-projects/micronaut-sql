@@ -11,13 +11,9 @@ dependencies {
     testRuntimeOnly(libs.managed.h2)
 
     testAnnotationProcessor(mn.micronaut.inject.java)
-    testAnnotationProcessor(mnSpring.micronaut.spring.annotation)
-    testImplementation(mnSpring.micronaut.spring)
     testImplementation(mn.micronaut.http.server.netty)
     testImplementation(mn.micronaut.http.client)
     testImplementation(mn.micronaut.management)
     testImplementation(mnMicrometer.micronaut.micrometer.core)
     testImplementation(mnCache.micronaut.cache.core)
-
-    testImplementation(mnSpring.spring.jdbc)
 }

@@ -21,6 +21,7 @@ import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource
 import io.micronaut.context.exceptions.NoSuchBeanException
 import io.micronaut.inject.qualifiers.Qualifiers
+import io.micronaut.jdbc.DataSourceResolver
 import spock.lang.Ignore
 import spock.lang.Specification
 
@@ -51,6 +52,7 @@ class DatasourceConfigurationSpec extends Specification {
                 ['datasources.default': [:]]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(DataSource)
@@ -58,7 +60,7 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.containsBean(TomcatDataSourcePoolMetadata)
 
         when:
-        DataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        DataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.url == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
@@ -117,6 +119,7 @@ class DatasourceConfigurationSpec extends Specification {
                  'datasources.default.defaultCatalog'                     : 'catalog']
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(DataSource)
@@ -124,7 +127,7 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.containsBean(TomcatDataSourcePoolMetadata)
 
         when:
-        DataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        DataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then:
         dataSource.abandonWhenPercentageFull == 99
@@ -152,13 +155,14 @@ class DatasourceConfigurationSpec extends Specification {
                  'datasources.foo'    : [:]]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(DataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        DataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        DataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.url == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
@@ -168,7 +172,7 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.driverClassName == 'org.h2.Driver'
 
         when:
-        dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("foo")).targetDataSource
+        dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource, Qualifiers.byName("foo")))
 
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.url == 'jdbc:h2:mem:foo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
@@ -212,6 +216,7 @@ class DatasourceConfigurationSpec extends Specification {
                 ]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.getBeansOfType(DataSource).size() == 2
@@ -224,7 +229,7 @@ class DatasourceConfigurationSpec extends Specification {
         thrown(NoSuchBeanException)
 
         when:
-        dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("default")).targetDataSource
+        dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource, Qualifiers.byName("default")))
 
         then:
         dataSource.abandonWhenPercentageFull == 99
@@ -238,7 +243,7 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.defaultCatalog == 'catalog'
 
         when:
-        dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("person")).targetDataSource
+        dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource, Qualifiers.byName("person")))
 
         then:
         dataSource.abandonWhenPercentageFull == 99
@@ -334,9 +339,10 @@ class DatasourceConfigurationSpec extends Specification {
                 ]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         when:
-        org.apache.tomcat.jdbc.pool.DataSource dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("person")).targetDataSource
+        org.apache.tomcat.jdbc.pool.DataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource, Qualifiers.byName("person")))
 
         then:
         dataSource.getPool()
@@ -371,9 +377,10 @@ class DatasourceConfigurationSpec extends Specification {
                 ]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         when:
-        org.apache.tomcat.jdbc.pool.DataSource dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("person")).targetDataSource
+        org.apache.tomcat.jdbc.pool.DataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource, Qualifiers.byName("person")))
 
         then:
         dataSource.getPool()

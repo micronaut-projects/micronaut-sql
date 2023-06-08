@@ -17,7 +17,6 @@ package io.micronaut.configuration.jdbc.dbcp;
 
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -48,27 +47,34 @@ public class BookService {
         }
     }
 
-    @Transactional
     public String save(String title) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+
             connection.createStatement().execute("UPDATE foo SET id = id + 1;");
 
             ResultSet resultSet = connection.createStatement().executeQuery("SELECT id FROM foo");
             resultSet.next();
             int value = resultSet.getInt("id");
+
+            connection.commit();
 
             return Integer.toString(value);
         }
     }
 
-    @Transactional
     public String longsave(String title) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+
             connection.createStatement().execute("UPDATE foo SET id = id + 1;");
             Thread.sleep(10);
             ResultSet resultSet = connection.createStatement().executeQuery("SELECT id FROM foo");
             resultSet.next();
             int value = resultSet.getInt("id");
+
+            connection.commit();
+
             return Integer.toString(value);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -76,15 +82,17 @@ public class BookService {
         return "";
     }
 
-
-    @Transactional("secondary")
     public String saveTwo(String title) throws SQLException {
         try (Connection connection = secondary.getConnection()) {
+            connection.setAutoCommit(false);
+
             connection.createStatement().execute("UPDATE foo SET id = id + 1;");
 
             ResultSet resultSet = connection.createStatement().executeQuery("SELECT id FROM foo");
             resultSet.next();
             int value = resultSet.getInt("id");
+
+            connection.commit();
 
             return Integer.toString(value);
         }
