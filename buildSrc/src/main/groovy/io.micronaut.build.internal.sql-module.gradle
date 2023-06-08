@@ -3,8 +3,9 @@ plugins {
     id 'io.micronaut.build.internal.sql-base'
 }
 
-configurations.all {
-    resolutionStrategy {
-        force 'org.graalvm.sdk:graal-sdk:22.3.2'
+micronautBuild {
+    binaryCompatibility {
+        // Enable before Micronaut 4 release
+        enabled.set(false)
     }
 }
