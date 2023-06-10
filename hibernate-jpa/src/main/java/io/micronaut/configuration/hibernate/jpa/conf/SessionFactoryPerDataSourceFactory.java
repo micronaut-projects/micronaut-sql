@@ -30,6 +30,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.core.annotation.TypeHint;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -48,6 +49,7 @@ import java.util.List;
  */
 @Internal
 @Requires(missingClasses = "org.hibernate.reactive.provider.ReactiveServiceRegistryBuilder")
+@TypeHint(typeNames = "org.hibernate.reactive.provider.ReactiveServiceRegistryBuilder")
 @Factory
 final class SessionFactoryPerDataSourceFactory extends AbstractHibernateFactory {
 
