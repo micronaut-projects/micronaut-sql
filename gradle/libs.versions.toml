@@ -62,7 +62,7 @@ logback = "1.4.6"
 
 groovy = "4.0.11"
 testcontainers = "1.18.3"
-sonar-gradle-plugin = "4.2.0.3129"
+sonar-gradle-plugin = "4.2.1.3168"
 
 micronaut-logging = "1.0.0-M3"
 [libraries]
