@@ -22,7 +22,7 @@ import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Internal;
-import io.micronaut.transaction.hibernate6.MicronautSessionContext;
+import io.micronaut.transaction.hibernate.MicronautSessionContext;
 import org.hibernate.cfg.AvailableSettings;
 
 import java.util.Collections;
