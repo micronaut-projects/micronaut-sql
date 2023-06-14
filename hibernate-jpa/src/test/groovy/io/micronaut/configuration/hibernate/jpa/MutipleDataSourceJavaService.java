@@ -15,7 +15,7 @@
  */
 package io.micronaut.configuration.hibernate.jpa;
 
-import io.micronaut.transaction.annotation.TransactionalAdvice;
+import io.micronaut.transaction.annotation.Transactional;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.hibernate.Session;
@@ -36,13 +36,13 @@ public class MutipleDataSourceJavaService {
         this.sessionField = sessionField;
     }
 
-    @TransactionalAdvice
+    @Transactional
     public boolean testCurrent() {
         session.clear();
         return true;
     }
 
-    @TransactionalAdvice
+    @Transactional
     public boolean testCurrentFromField() {
         sessionField.clear();
         return true;

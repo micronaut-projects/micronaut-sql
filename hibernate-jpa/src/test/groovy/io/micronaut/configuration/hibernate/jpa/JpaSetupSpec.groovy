@@ -21,12 +21,11 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.Environment
 import io.micronaut.http.exceptions.HttpException
 import io.micronaut.transaction.TransactionDefinition
-import io.micronaut.transaction.annotation.TransactionalAdvice
+import io.micronaut.transaction.annotation.Transactional
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
 import org.hibernate.Session
 import spock.lang.AutoCleanup
-import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -38,7 +37,6 @@ import jakarta.persistence.EntityManagerFactory
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 
-import jakarta.validation.ConstraintViolation
 import jakarta.validation.ConstraintViolationException
 import jakarta.validation.constraints.NotBlank
 
@@ -187,7 +185,7 @@ class BookService {
     @Inject
     Session session
 
-    @TransactionalAdvice(
+    @Transactional(
             readOnly = true,
             propagation = TransactionDefinition.Propagation.MANDATORY,
             isolation = TransactionDefinition.Isolation.REPEATABLE_READ,
@@ -199,7 +197,7 @@ class BookService {
 
     }
 
-    @TransactionalAdvice(readOnly = true)
+    @Transactional(readOnly = true)
     List<Book> listBooks() {
         def query = session.getCriteriaBuilder().createQuery(Book)
         def root = query.from(Book)
@@ -207,19 +205,19 @@ class BookService {
         return session.createQuery(query).getResultList()
     }
 
-    @TransactionalAdvice(readOnly = true)
+    @Transactional(readOnly = true)
     List<Book> saveReadOnly() {
         session.persist(new Book(title: "the stand"))
         listBooks()
     }
 
-    @TransactionalAdvice
+    @Transactional
     List<Book> saveError() {
         session.persist(new Book(title: "the stand"))
         throw new Exception("bad things happened")
     }
 
-    @TransactionalAdvice
+    @Transactional
     List<Book> saveSuccess() {
         session.persist(new Book(title: "the stand"))
         listBooks()

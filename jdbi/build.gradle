@@ -24,6 +24,7 @@ dependencies {
     compileOnly(libs.managed.h2)
     compileOnly(mnData.micronaut.data.tx)
     compileOnly(mnSpring.spring.jdbc)
+    compileOnly(mnData.micronaut.data.tx.jdbc)
     runtimeOnly(mnCache.micronaut.cache.caffeine)
 
     testRuntimeOnly projects.micronautJdbcHikari
@@ -51,6 +52,8 @@ dependencies {
     txTestRuntimeOnly(mnLogging.logback.classic)
     txTestImplementation(libs.jdbi3.sqlobject)
     txTestImplementation(mnTest.micronaut.test.spock)
+
+    txTestImplementation(mnData.micronaut.data.tx.jdbc)
 }
 
 

@@ -19,7 +19,7 @@ import example.domain.IOwner;
 import example.domain.IPet;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
-import io.micronaut.transaction.annotation.TransactionalAdvice;
+import io.micronaut.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +36,7 @@ class InitController {
     }
 
     @Get
-    @TransactionalAdvice
+    @Transactional
     void init() {
         IOwner fred = ownerRepository.create();
         fred.setName("Fred");

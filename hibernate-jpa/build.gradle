@@ -38,4 +38,6 @@ dependencies {
 
     testRuntimeOnly projects.micronautJdbcTomcat
     testRuntimeOnly(libs.managed.h2)
+
+    testCompileOnly(mnData.micronaut.data.connection.jdbc)
 }

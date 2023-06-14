@@ -16,13 +16,13 @@
 package io.micronaut.configuration.hibernate.jpa.mapping;
 
 import io.micronaut.core.annotation.Nullable;
-import io.micronaut.transaction.annotation.TransactionalAdvice;
+import io.micronaut.transaction.annotation.Transactional;
 import jakarta.inject.Singleton;
 
 import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.NotBlank;
 
-@TransactionalAdvice
+@Transactional
 @Singleton
 public class AccountRepository {
 

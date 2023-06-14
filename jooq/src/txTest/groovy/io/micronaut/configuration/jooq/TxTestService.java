@@ -21,7 +21,7 @@ import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 
 import jakarta.annotation.PostConstruct;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 @Singleton
 public class TxTestService {
