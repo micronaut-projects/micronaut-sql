@@ -1,6 +1,7 @@
 package example.jooq.reactive;
 
 import io.micronaut.transaction.reactive.ReactiveTransactionStatus;
+import io.micronaut.transaction.reactive.ReactorReactiveTransactionOperations;
 import io.r2dbc.spi.Connection;
 import org.jooq.DSLContext;
 import org.jooq.Publisher;
@@ -14,9 +15,11 @@ import java.util.function.Function;
 public class AbstractRepository {
 
     protected final DSLContext ctx;
+    private final ReactorReactiveTransactionOperations<Connection> transactionOperations;
 
-    public AbstractRepository(DSLContext db) {
+    public AbstractRepository(DSLContext db, ReactorReactiveTransactionOperations<Connection> transactionOperations) {
         this.ctx = db;
+        this.transactionOperations = transactionOperations;
     }
 
     protected <T> Flux<T> withDSLContextFlux(Function<DSLContext, Publisher<T>> fn) {
@@ -40,6 +43,6 @@ public class AbstractRepository {
     }
 
     private ReactiveTransactionStatus<Connection> getTransactionStatus(ContextView contextView) {
-        return contextView.getOrDefault("io.micronaut.tx.status.r2dbc.default", null);
+        return transactionOperations.findTransactionStatus(contextView).orElse(null);
     }
 }
