@@ -15,7 +15,7 @@
  */
 package io.micronaut.configuration.hibernate.jpa;
 
-import io.micronaut.transaction.annotation.TransactionalAdvice;
+import io.micronaut.transaction.annotation.Transactional;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -38,26 +38,26 @@ public class JavaBookService {
         this.entityManager = entityManager;
     }
 
-    @TransactionalAdvice
+    @Transactional
     public boolean testFieldInject() {
         entityManagerField.clear();
         return true;
     }
 
-    @TransactionalAdvice
+    @Transactional
     public boolean testMethodInject() {
         entityManager.clear();
         return true;
     }
 
-    @TransactionalAdvice
+    @Transactional
     public boolean testNativeQuery() {
         // just testing the method can be invoked
         entityManager.createNativeQuery("select * from book", Book.class).getResultList();
         return true;
     }
 
-    @TransactionalAdvice
+    @Transactional
     public boolean testClose() throws Exception {
         // just testing the method can be invoked
         ((AutoCloseable)entityManager).close();

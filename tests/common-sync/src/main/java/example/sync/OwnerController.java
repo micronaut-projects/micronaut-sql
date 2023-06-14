@@ -18,7 +18,7 @@ package example.sync;
 import example.dto.OwnerDto;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
-import io.micronaut.transaction.annotation.TransactionalAdvice;
+import io.micronaut.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +36,7 @@ class OwnerController {
     }
 
     @Get
-    @TransactionalAdvice(readOnly = true)
+    @Transactional(readOnly = true)
     List<OwnerDto> all() {
         return ownerRepository.findAll()
                 .stream()
@@ -45,7 +45,7 @@ class OwnerController {
     }
 
     @Get("/{name}")
-    @TransactionalAdvice(readOnly = true)
+    @Transactional(readOnly = true)
     Optional<OwnerDto> byName(String name) {
         return ownerRepository.findByName(name)
                 .map(mapper::toOwnerDto);

@@ -15,7 +15,7 @@ import org.jooq.impl.SQLDataType;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.function.Function;
 
 @Singleton

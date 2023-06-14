@@ -10,6 +10,7 @@ dependencies {
     runtimeOnly projects.micronautJdbcHikari
 
     testImplementation projects.micronautTests.micronautCommonTests
+    testImplementation(mnData.micronaut.data.tx.jdbc)
 }
 
 micronaut {

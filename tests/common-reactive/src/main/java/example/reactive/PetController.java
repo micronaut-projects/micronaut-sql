@@ -18,7 +18,7 @@ package example.reactive;
 import example.dto.PetDto;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
-import io.micronaut.transaction.annotation.TransactionalAdvice;
+import io.micronaut.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -34,7 +34,7 @@ class PetController {
         this.mapper = mapper;
     }
 
-    @TransactionalAdvice(readOnly = true)
+    @Transactional(readOnly = true)
     @Get
     Mono<List<PetDto>> all() {
         return petRepository.findAll()
@@ -42,7 +42,7 @@ class PetController {
             .collectList();
     }
 
-    @TransactionalAdvice(readOnly = true)
+    @Transactional(readOnly = true)
     @Get("/{name}")
     Mono<PetDto> byName(String name) {
         return petRepository.findByName(name).map(mapper::toPetDto);

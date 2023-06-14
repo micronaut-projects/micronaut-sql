@@ -18,7 +18,7 @@ package example.hibernate6.sync;
 import example.domain.IPet;
 import example.sync.IPetRepository;
 import io.micronaut.transaction.TransactionDefinition;
-import io.micronaut.transaction.annotation.TransactionalAdvice;
+import io.micronaut.transaction.annotation.Transactional;
 import jakarta.inject.Singleton;
 import org.hibernate.Hibernate;
 
@@ -40,13 +40,13 @@ class PetRepository implements IPetRepository {
         return new Pet();
     }
 
-    @TransactionalAdvice(propagation = TransactionDefinition.Propagation.MANDATORY)
+    @Transactional(propagation = TransactionDefinition.Propagation.MANDATORY)
     @Override
     public void save(IPet pet) {
         entityManager.persist(pet);
     }
 
-    @TransactionalAdvice(propagation = TransactionDefinition.Propagation.MANDATORY)
+    @Transactional(propagation = TransactionDefinition.Propagation.MANDATORY)
     @Override
     public void delete(IPet pet) {
         entityManager.remove(pet);

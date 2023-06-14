@@ -20,7 +20,7 @@ import jakarta.inject.Singleton;
 import org.jdbi.v3.core.Jdbi;
 
 import jakarta.annotation.PostConstruct;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 @Singleton
 public class TxTestService {

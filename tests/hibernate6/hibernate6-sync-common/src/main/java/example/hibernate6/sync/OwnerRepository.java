@@ -18,7 +18,7 @@ package example.hibernate6.sync;
 import example.domain.IOwner;
 import example.sync.IOwnerRepository;
 import io.micronaut.transaction.TransactionDefinition;
-import io.micronaut.transaction.annotation.TransactionalAdvice;
+import io.micronaut.transaction.annotation.Transactional;
 import jakarta.inject.Singleton;
 
 import jakarta.persistence.EntityManager;
@@ -40,13 +40,13 @@ class OwnerRepository implements IOwnerRepository {
         return new Owner();
     }
 
-    @TransactionalAdvice(propagation = TransactionDefinition.Propagation.MANDATORY)
+    @Transactional(propagation = TransactionDefinition.Propagation.MANDATORY)
     @Override
     public void save(IOwner entity) {
         entityManager.persist(entity);
     }
 
-    @TransactionalAdvice(propagation = TransactionDefinition.Propagation.MANDATORY)
+    @Transactional(propagation = TransactionDefinition.Propagation.MANDATORY)
     @Override
     public void delete(IOwner entity) {
         entityManager.remove(entity);
@@ -57,14 +57,14 @@ class OwnerRepository implements IOwnerRepository {
         return null;
     }
 
-    @TransactionalAdvice(readOnly = true, propagation = TransactionDefinition.Propagation.MANDATORY)
+    @Transactional(readOnly = true, propagation = TransactionDefinition.Propagation.MANDATORY)
     @Override
     public Collection<IOwner> findAll() {
         return new ArrayList<>(entityManager.createQuery("from Owner", Owner.class)
                 .getResultList());
     }
 
-    @TransactionalAdvice(readOnly = true, propagation = TransactionDefinition.Propagation.MANDATORY)
+    @Transactional(readOnly = true, propagation = TransactionDefinition.Propagation.MANDATORY)
     @Override
     public Optional<Owner> findByName(String name) {
         return entityManager.createQuery("from Owner where name = :name", Owner.class)

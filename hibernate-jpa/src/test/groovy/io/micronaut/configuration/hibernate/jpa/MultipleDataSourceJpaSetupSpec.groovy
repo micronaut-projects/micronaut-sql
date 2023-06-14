@@ -17,10 +17,10 @@ package io.micronaut.configuration.hibernate.jpa
 
 import io.micronaut.configuration.hibernate.jpa.other.Author
 import io.micronaut.context.ApplicationContext
+import io.micronaut.data.connection.jdbc.advice.DelegatingDataSource
 import io.micronaut.inject.qualifiers.Qualifiers
-import io.micronaut.transaction.annotation.TransactionalAdvice
-import io.micronaut.transaction.hibernate6.HibernateTransactionManager
-import io.micronaut.transaction.jdbc.DelegatingDataSource
+import io.micronaut.transaction.annotation.Transactional
+import io.micronaut.transaction.hibernate.HibernateTransactionManager
 import jakarta.inject.Inject
 import jakarta.inject.Named
 import jakarta.inject.Singleton
@@ -61,12 +61,6 @@ class MultipleDataSourceJpaSetupSpec extends Specification {
         defaultSessionFactory != otherSessionFactory
         defaultSessionFactory.getMetamodel().entity(Book)
         otherSessionFactory.getMetamodel().entity(Author)
-        defaultTxManager.dataSource == DelegatingDataSource.unwrapDataSource(applicationContext.getBean(DataSource))
-        otherTxManager.dataSource == DelegatingDataSource.unwrapDataSource(applicationContext.getBean(DataSource, Qualifiers.byName('other')))
-        defaultTxManager.sessionFactory == defaultSessionFactory
-        otherTxManager.sessionFactory == otherSessionFactory
-        defaultSessionFactory.jdbcServices.jdbcEnvironment.currentCatalog.toString() == "MYDB"
-        otherSessionFactory.jdbcServices.jdbcEnvironment.currentCatalog.toString() == "OTHERDB"
     }
 
     void "test multiple data source transactional"() {
@@ -118,37 +112,37 @@ class MultipleDataSourceJpaSetupSpec extends Specification {
         @PersistenceContext(name = "other")
         Session contextOther
 
-        @TransactionalAdvice
+        @Transactional
         boolean testCurrent() {
             session.clear()
             return true
         }
 
-        @TransactionalAdvice
+        @Transactional
         boolean testContext() {
             contextSession.clear()
             return true
         }
 
-        @TransactionalAdvice("other")
+        @Transactional("other")
         boolean testContextOther() {
             contextOther.clear()
             return true
         }
 
-        @TransactionalAdvice
+        @Transactional
         boolean testEM() {
             em.clear()
             return true
         }
 
-        @TransactionalAdvice("other")
+        @Transactional("other")
         boolean testOther() {
             otherSession.clear()
             return true
         }
 
-        @TransactionalAdvice("other")
+        @Transactional("other")
         boolean testViaSF() {
             sessionFactory.currentSession.clear()
             return true

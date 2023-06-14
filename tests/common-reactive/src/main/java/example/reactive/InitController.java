@@ -19,7 +19,7 @@ import example.domain.IOwner;
 import example.domain.IPet;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
-import io.micronaut.transaction.annotation.TransactionalAdvice;
+import io.micronaut.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -34,7 +34,7 @@ class InitController {
     }
 
     @Get
-    @TransactionalAdvice
+    @Transactional
     Mono<Void> init() {
         IOwner fred = ownerRepository.create();
         fred.setName("Fred");

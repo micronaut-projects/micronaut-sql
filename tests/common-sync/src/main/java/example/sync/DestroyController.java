@@ -17,7 +17,7 @@ package example.sync;
 
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
-import io.micronaut.transaction.annotation.TransactionalAdvice;
+import io.micronaut.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ class DestroyController {
     }
 
     @Get
-    @TransactionalAdvice
+    @Transactional
     void destroy() {
         petRepository.findAll().forEach(it -> petRepository.delete(it));
         ownerRepository.findAll().forEach(it -> ownerRepository.delete(it));
