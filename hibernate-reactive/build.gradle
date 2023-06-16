@@ -2,12 +2,6 @@ plugins {
     id 'io.micronaut.build.internal.sql-module'
 }
 
-micronautBuild {
-    binaryCompatibility {
-        enabled.set(false)
-    }
-}
-
 dependencies {
     annotationProcessor(mn.micronaut.graal)
 
