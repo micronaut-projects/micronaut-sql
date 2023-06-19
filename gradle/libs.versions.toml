@@ -53,7 +53,7 @@ managed-h2 = "2.1.214"
 # Other
 
 sfm-reflect = "8.2.3"
-# Needed for vertx pg client
+# Needed for vertx pg client and micronaut-data hibernate reactive
 managed-ongres-scram = "2.1"
 
 # Logback
