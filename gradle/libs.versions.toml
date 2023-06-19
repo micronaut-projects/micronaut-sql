@@ -53,6 +53,8 @@ managed-h2 = "2.1.214"
 # Other
 
 sfm-reflect = "8.2.3"
+# Needed for vertx pg client
+managed-ongres-scram = "2.1"
 
 # Logback
 
@@ -148,6 +150,7 @@ managed-jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transa
 # Others
 
 sfm-reflect = { module = "org.simpleflatmapper:sfm-reflect", version.ref = "sfm-reflect" }
+managed-ongres-scram-client = { module = "com.ongres.scram:client", version.ref = "managed-ongres-scram" }
 
 # Testcontainers
 
