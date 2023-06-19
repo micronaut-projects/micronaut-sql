@@ -62,7 +62,7 @@ public class MicronautDataTransactionHandler extends AbstractTransactionHandler 
 
     @Override
     public void commit(Handle handle) {
-        withLocalStuff(handle, (localStuff) -> {
+        withLocalStuff(handle, localStuff -> {
             try {
                 this.transactionManager.commit(localStuff.getTransactionStatus());
             } finally {
@@ -74,7 +74,7 @@ public class MicronautDataTransactionHandler extends AbstractTransactionHandler 
     @Override
     public void rollback(Handle handle) {
         didTxnRollback.set(true);
-        withLocalStuff(handle, (localStuff) -> {
+        withLocalStuff(handle, localStuff -> {
             try {
                 this.transactionManager.rollback(localStuff.getTransactionStatus());
             } finally {
@@ -91,30 +91,17 @@ public class MicronautDataTransactionHandler extends AbstractTransactionHandler 
 
     @Override
     public void savepoint(Handle handle, String savepointName) {
-        withLocalStuff(handle, (localStuff) -> {
-            Object savePoint = localStuff.getTransactionStatus().createSavepoint();
-            localStuff.getSavepoints().put(savepointName, savePoint);
-        });
+        // Not supported after micronaut-data 4.0.0-M10
     }
 
     @Override
     public void rollbackToSavepoint(Handle handle, String savepointName) {
-        withLocalStuff(handle, (localStuff) -> {
-            Object savePoint = localStuff.getSavepoints().get(savepointName);
-            if (savePoint != null) {
-                localStuff.getTransactionStatus().rollbackToSavepoint(savePoint);
-            }
-        });
+        // Not supported after micronaut-data 4.0.0-M10
     }
 
     @Override
     public void releaseSavepoint(Handle handle, String savepointName) {
-        withLocalStuff(handle, (localStuff) -> {
-            Object savePoint = localStuff.getSavepoints().remove(savepointName);
-            if (savePoint != null) {
-                localStuff.getTransactionStatus().releaseSavepoint(savePoint);
-            }
-        });
+        // Not supported after micronaut-data 4.0.0-M10
     }
 
     private TransactionStatus<Connection> getTransactionStatus(Handle handle) {
