@@ -9,4 +9,10 @@ jooq:
     datasources:
         default:
             sql-dialect: 'POSTGRES'
+
+# Or if you're using R2DBC, you should use `r2dbc-datasources` like this:
+jooq:
+    r2dbc-datasources:
+        default:
+            sql-dialect: 'POSTGRES'
 ----
