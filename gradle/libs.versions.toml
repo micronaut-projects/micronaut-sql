@@ -8,16 +8,16 @@ micronaut-gradle-plugin = "4.0.0-M8"
 micronaut-testresources = "2.0.0-M12"
 
 # Platform dependencies
-micronaut-cache = "4.0.0-M5"
-micronaut-data = "4.0.0-M14"
-micronaut-hibernate-validator = "4.0.0-M7"
-micronaut-micrometer = "5.0.0-M5"
-micronaut-r2dbc = "5.0.0-M11"
-micronaut-reactor = "3.0.0-M9"
-micronaut-serde = "2.0.0-M12"
-micronaut-spring = "5.0.0-M6"
+micronaut-cache = "4.0.0-M6"
+micronaut-data = "4.0.0-M15"
+micronaut-hibernate-validator = "4.0.0-M8"
+micronaut-micrometer = "5.0.0-M6"
+micronaut-r2dbc = "5.0.0-M12"
+micronaut-reactor = "3.0.0-M10"
+micronaut-serde = "2.0.0-M13"
+micronaut-spring = "5.0.0-M7"
 micronaut-test = "4.0.0-M9"
-micronaut-validation = "4.0.0-M11"
+micronaut-validation = "4.0.0-M12"
 
 # Frameworks
 
@@ -66,7 +66,7 @@ groovy = "4.0.11"
 testcontainers = "1.18.3"
 sonar-gradle-plugin = "4.2.1.3168"
 
-micronaut-logging = "1.0.0-M5"
+micronaut-logging = "1.0.0-M6"
 [libraries]
 # Core
 micronaut-core = { module = 'io.micronaut:micronaut-core-bom', version.ref = 'micronaut' }
