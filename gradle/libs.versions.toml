@@ -2,7 +2,7 @@
 
 # Micronaut
 
-micronaut = "4.0.0-RC4"
+micronaut = "4.0.0-RC5"
 micronaut-docs = "2.0.0"
 micronaut-gradle-plugin = "4.0.0-M8"
 micronaut-testresources = "2.0.0-M12"
@@ -48,7 +48,7 @@ managed-tomcat-jdbc = "10.1.10"
 managed-jakarta-persistence-api = "3.1.0"
 managed-jakarta-transaction-api = "2.0.1"
 
-managed-h2 = "2.1.214"
+managed-h2 = "2.2.220"
 
 # Other
 
