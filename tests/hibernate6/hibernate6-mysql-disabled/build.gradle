@@ -4,6 +4,8 @@ plugins {
 
 dependencies {
     implementation projects.micronautHibernateReactive
+    testImplementation projects.micronautTests.micronautCommonTests
+
     runtimeOnly projects.micronautJdbcHikari
     runtimeOnly libs.managed.mysql.connector.java
 }
