@@ -2,6 +2,8 @@ package example.jooq.reactive;
 
 import example.domain.IOwner;
 import example.reactive.IOwnerRepository;
+import io.micronaut.transaction.reactive.ReactorReactiveTransactionOperations;
+import io.r2dbc.spi.Connection;
 import jakarta.inject.Singleton;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -15,7 +17,7 @@ import org.jooq.impl.SQLDataType;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.function.Function;
 
 @Singleton
@@ -26,8 +28,8 @@ public class OwnerRepository extends AbstractRepository implements IOwnerReposit
     private final static Field<String> OWNER_NAME = DSL.field("name", SQLDataType.VARCHAR(200));
     private final static Field<Integer> OWNER_AGE = DSL.field("age", SQLDataType.INTEGER);
 
-    public OwnerRepository(DSLContext db) {
-        super(db);
+    public OwnerRepository(DSLContext db, ReactorReactiveTransactionOperations<Connection> transactionOperations) {
+        super(db, transactionOperations);
     }
 
     @Override

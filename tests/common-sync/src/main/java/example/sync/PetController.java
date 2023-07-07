@@ -18,7 +18,7 @@ package example.sync;
 import example.dto.PetDto;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
-import io.micronaut.transaction.annotation.TransactionalAdvice;
+import io.micronaut.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +34,7 @@ class PetController {
         this.mapper = mapper;
     }
 
-    @TransactionalAdvice(readOnly = true)
+    @Transactional(readOnly = true)
     @Get
     List<PetDto> all() {
         return petRepository.findAll()
@@ -43,7 +43,7 @@ class PetController {
                 .toList();
     }
 
-    @TransactionalAdvice(readOnly = true)
+    @Transactional(readOnly = true)
     @Get("/{name}")
     Optional<PetDto> byName(String name) {
         return petRepository.findByName(name).map(mapper::toPetDto);

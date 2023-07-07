@@ -6,7 +6,6 @@ dependencies {
     implementation projects.micronautTests.micronautHibernate6.micronautHibernate6ReactiveCommon
     testImplementation projects.micronautTests.micronautCommonTests
 
-//    implementation projects.vertxPgClient
     implementation libs.managed.vertx.pg.client
 }
 

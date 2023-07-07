@@ -21,6 +21,7 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource
 import io.micronaut.inject.qualifiers.Qualifiers
+import io.micronaut.jdbc.DataSourceResolver
 import io.micronaut.jdbc.metadata.DataSourcePoolMetadata
 import spock.lang.Specification
 
@@ -54,13 +55,14 @@ class DatasourceConfigurationSpec extends Specification {
                 ['datasources.default': [:]]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(DataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        HikariUrlDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        HikariUrlDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.jdbcUrl == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
@@ -81,19 +83,20 @@ class DatasourceConfigurationSpec extends Specification {
                 ['datasources.default': [:]]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(DataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        HikariDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        HikariDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
         ResultSet resultSet = dataSource.getConnection().prepareStatement("SELECT H2VERSION() FROM DUAL").executeQuery()
         resultSet.next()
         String version = resultSet.getString(1)
 
         then:
-        version == '2.1.214'
+        version == '2.2.220'
 
         cleanup:
         applicationContext.close()
@@ -114,13 +117,14 @@ class DatasourceConfigurationSpec extends Specification {
                  'datasources.default.validationQuery'          : 'select 3']
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(DataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        HikariDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        HikariDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then:
         dataSource.connectionTimeout == 500
@@ -145,13 +149,14 @@ class DatasourceConfigurationSpec extends Specification {
                  'datasources.foo'    : [:]]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(DataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        HikariDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        HikariDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.jdbcUrl == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
@@ -160,7 +165,7 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.driverClassName == 'org.h2.Driver'
 
         when:
-        dataSource = applicationContext.getBean(DataSource, Qualifiers.byName("foo")).targetDataSource
+        dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource, Qualifiers.byName("foo")))
 
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.jdbcUrl == 'jdbc:h2:mem:foo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
@@ -182,13 +187,14 @@ class DatasourceConfigurationSpec extends Specification {
                  'datasources.foo'    : [:]]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.getBeansOfType(DataSource).size() == 2
         applicationContext.getBeansOfType(DatasourceConfiguration).size() == 2
 
         when:
-        dataSource = (HikariDataSource) applicationContext.getBean(DataSource, Qualifiers.byName("default")).targetDataSource
+        dataSource = (HikariDataSource) dataSourceResolver.resolve(applicationContext.getBean(DataSource, Qualifiers.byName("default")))
 
         then:
         dataSource.jdbcUrl == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
@@ -197,7 +203,7 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.driverClassName == 'org.h2.Driver'
 
         when:
-        dataSource = (HikariDataSource) applicationContext.getBean(DataSource, Qualifiers.byName("foo")).targetDataSource
+        dataSource = (HikariDataSource) dataSourceResolver.resolve(applicationContext.getBean(DataSource, Qualifiers.byName("foo")))
 
         then:
         dataSource.jdbcUrl == 'jdbc:h2:mem:foo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
@@ -260,13 +266,14 @@ class DatasourceConfigurationSpec extends Specification {
                 ['datasources.default.data-source-properties' : ['reWriteBatchInserts' : true, 'anotherOne' : 'value']]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(DataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        HikariDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        HikariDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then:
         !dataSource.dataSourceProperties.isEmpty()
@@ -286,9 +293,10 @@ class DatasourceConfigurationSpec extends Specification {
                 ['datasources.default.automatic-validation-query': false]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         when:
-        HikariUrlDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource
+        HikariUrlDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.jdbcUrl == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'

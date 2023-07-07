@@ -30,6 +30,7 @@ dependencies {
 
     compileOnly(mnSpring.spring.jdbc)
     compileOnly(mnData.micronaut.data.tx)
+    compileOnly(mnData.micronaut.data.tx.jdbc)
     compileOnly(libs.sfm.reflect)
     compileOnly(mn.jackson.databind)
     compileOnly(mn.micronaut.json.core)
@@ -51,6 +52,7 @@ dependencies {
     txTestAnnotationProcessor(mn.micronaut.inject.java)
     txTestAnnotationProcessor(mnData.micronaut.data.processor)
     txTestImplementation(mnData.micronaut.data.tx)
+    txTestImplementation(mnData.micronaut.data.tx.jdbc)
     txTestImplementation(mn.micronaut.inject.groovy)
     txTestImplementation(mnTest.micronaut.test.spock)
 }

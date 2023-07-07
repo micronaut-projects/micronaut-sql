@@ -2,36 +2,36 @@
 
 # Micronaut
 
-micronaut = "4.0.0-M4"
+micronaut = "4.0.0-RC5"
 micronaut-docs = "2.0.0"
-micronaut-gradle-plugin = "4.0.0-M3"
-micronaut-testresources = "2.0.0-M3"
+micronaut-gradle-plugin = "4.0.0-M8"
+micronaut-testresources = "2.0.0-M13"
 
 # Platform dependencies
-micronaut-cache = "4.0.0-M2"
-micronaut-data = "4.0.0-M4"
-micronaut-hibernate-validator = "4.0.0-M2"
-micronaut-micrometer = "5.0.0-M1"
-micronaut-r2dbc = "5.0.0-M5"
-micronaut-reactor = "3.0.0-M2"
-micronaut-serde = "2.0.0-M7"
-micronaut-spring = "5.0.0-M1"
-micronaut-test = "4.0.0-M3"
-micronaut-validation = "4.0.0-M7"
+micronaut-cache = "4.0.0-M6"
+micronaut-data = "4.0.0-M15"
+micronaut-hibernate-validator = "4.0.0-M8"
+micronaut-micrometer = "5.0.0-M6"
+micronaut-r2dbc = "5.0.0-M12"
+micronaut-reactor = "3.0.0-M10"
+micronaut-serde = "2.0.0-M13"
+micronaut-spring = "5.0.0-M7"
+micronaut-test = "4.0.0-M9"
+micronaut-validation = "4.0.0-M12"
 
 # Frameworks
 
-managed-vertx = "4.4.2"
-managed-jooq = "3.18.4"
-managed-hibernate = "6.2.3.Final"
-managed-hibernate-reactive = "2.0.0.CR2"
-managed-jasync = "2.1.24"
-managed-jdbi = "3.38.2"
+managed-vertx = "4.4.4"
+managed-jooq = "3.18.5"
+managed-hibernate = "6.2.6.Final"
+managed-hibernate-reactive = "2.0.2.Final"
+managed-jasync = "2.2.0"
+managed-jdbi = "3.39.1"
 
 # JDBC Drivers
 
-managed-ojdbc = "21.9.0.0" # Don't change until the issue described on the following link gets fixed: https://github.com/spring-projects/spring-boot/issues/35006
-managed-ojdbcdms = "21.9.0.0"
+managed-ojdbc = "21.10.0.0" # Don't change until the issue described on the following link gets fixed: https://github.com/spring-projects/spring-boot/issues/35006
+managed-ojdbcdms = "21.10.0.0"
 managed-postgres-driver = "42.6.0"
 managed-mariadb-driver = "3.1.4"
 managed-mssql-driver = "12.2.0.jre11"
@@ -41,18 +41,20 @@ managed-mysql-driver = "8.0.33"
 
 managed-hikari = "5.0.1"
 managed-commons-dbcp = "2.9.0"
-managed-tomcat-jdbc = "10.1.9"
+managed-tomcat-jdbc = "10.1.10"
 
 # JPA
 
 managed-jakarta-persistence-api = "3.1.0"
 managed-jakarta-transaction-api = "2.0.1"
 
-managed-h2 = "2.1.214"
+managed-h2 = "2.2.220"
 
 # Other
 
 sfm-reflect = "8.2.3"
+# Needed for vertx pg client and micronaut-data hibernate reactive
+managed-ongres-scram = "2.1"
 
 # Logback
 
@@ -61,10 +63,10 @@ logback = "1.4.6"
 # Testing
 
 groovy = "4.0.11"
-testcontainers = "1.18.1"
-sonar-gradle-plugin = "4.0.0.2929"
+testcontainers = "1.18.3"
+sonar-gradle-plugin = "4.2.1.3168"
 
-micronaut-logging = "1.0.0-M2"
+micronaut-logging = "1.0.0-M6"
 [libraries]
 # Core
 micronaut-core = { module = 'io.micronaut:micronaut-core-bom', version.ref = 'micronaut' }
@@ -101,6 +103,7 @@ managed-jooq = { module = "org.jooq:jooq", version.ref = "managed-jooq" }
 # Hibernate
 
 managed-hibernate-core = { module = "org.hibernate.orm:hibernate-core", version.ref = "managed-hibernate" }
+managed-hibernate-jpamodelgen = { module = "org.hibernate.orm:hibernate-jpamodelgen", version.ref = "managed-hibernate" }
 managed-hibernate-jcache = { module = "org.hibernate.orm:hibernate-jcache", version.ref = "managed-hibernate" }
 managed-hibernate-micrometer = { module = "org.hibernate.orm:hibernate-micrometer", version.ref = "managed-hibernate" }
 managed-hibernate-reactive-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version.ref = "managed-hibernate-reactive" }
@@ -147,6 +150,7 @@ managed-jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transa
 # Others
 
 sfm-reflect = { module = "org.simpleflatmapper:sfm-reflect", version.ref = "sfm-reflect" }
+managed-ongres-scram-client = { module = "com.ongres.scram:client", version.ref = "managed-ongres-scram" }
 
 # Testcontainers
 

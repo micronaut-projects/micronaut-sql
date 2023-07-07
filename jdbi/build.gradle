@@ -24,11 +24,11 @@ dependencies {
     compileOnly(libs.managed.h2)
     compileOnly(mnData.micronaut.data.tx)
     compileOnly(mnSpring.spring.jdbc)
+    compileOnly(mnData.micronaut.data.tx.jdbc)
     runtimeOnly(mnCache.micronaut.cache.caffeine)
 
     testRuntimeOnly projects.micronautJdbcHikari
     testRuntimeOnly(libs.managed.h2)
-    testRuntimeOnly(mnSpring.spring.jdbc)
 
     testAnnotationProcessor(mn.micronaut.inject.java)
     testAnnotationProcessor(mnSpring.micronaut.spring.annotation)
@@ -36,6 +36,7 @@ dependencies {
     testImplementation(mn.micronaut.http.server.netty)
     testImplementation(mn.micronaut.http.client)
     testImplementation(mn.micronaut.management)
+    testImplementation(mnSpring.spring.jdbc)
 
     testImplementation(mnMicrometer.micronaut.micrometer.core)
 
@@ -51,6 +52,8 @@ dependencies {
     txTestRuntimeOnly(mnLogging.logback.classic)
     txTestImplementation(libs.jdbi3.sqlobject)
     txTestImplementation(mnTest.micronaut.test.spock)
+
+    txTestImplementation(mnData.micronaut.data.tx.jdbc)
 }
 
 

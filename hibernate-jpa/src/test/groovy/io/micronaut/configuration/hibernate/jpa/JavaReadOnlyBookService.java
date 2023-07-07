@@ -16,13 +16,12 @@
 package io.micronaut.configuration.hibernate.jpa;
 
 
-import io.micronaut.transaction.annotation.TransactionalAdvice;
+import io.micronaut.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
-import javax.transaction.Transactional;
 
-@Transactional
-@TransactionalAdvice(readOnly = true)
+@jakarta.transaction.Transactional
+@Transactional(readOnly = true)
 public class JavaReadOnlyBookService {
 
     private final EntityManager entityManager;

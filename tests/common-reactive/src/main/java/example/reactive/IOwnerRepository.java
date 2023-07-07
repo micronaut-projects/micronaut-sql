@@ -19,7 +19,7 @@ import example.domain.IOwner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 public interface IOwnerRepository {
 

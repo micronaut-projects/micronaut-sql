@@ -19,8 +19,6 @@ import example.sync.AbstractApp;
 import io.micronaut.context.annotation.Property;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 
-import java.time.Duration;
-
 @MicronautTest(transactional = false)
 @Property(name = "r2dbc.datasources.default.db-type", value = "postgres")
 @Property(name = "jooq.r2dbc-datasources.default.sql-dialect", value = "postgres")

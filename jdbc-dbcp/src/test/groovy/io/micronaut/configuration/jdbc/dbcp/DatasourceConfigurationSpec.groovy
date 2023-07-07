@@ -15,12 +15,12 @@
  */
 package io.micronaut.configuration.jdbc.dbcp
 
+import io.micronaut.jdbc.DataSourceResolver
 import org.apache.commons.dbcp2.BasicDataSource
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource
 import io.micronaut.inject.qualifiers.Qualifiers
-import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy
 import spock.lang.Specification
 
 import javax.sql.DataSource
@@ -49,13 +49,14 @@ class DatasourceConfigurationSpec extends Specification {
                 ['datasources.default': [:]]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(BasicDataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        BasicDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource as BasicDataSource
+        BasicDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.url == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
@@ -76,19 +77,20 @@ class DatasourceConfigurationSpec extends Specification {
                 ['datasources.default': [:]]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(BasicDataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        BasicDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource as BasicDataSource
+        BasicDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource)) as BasicDataSource
         ResultSet resultSet = dataSource.getConnection().prepareStatement("SELECT H2VERSION() FROM DUAL").executeQuery()
         resultSet.next()
         String version = resultSet.getString(1)
 
         then:
-        version == '2.1.214'
+        version == '2.2.220'
 
         cleanup:
         applicationContext.close()
@@ -105,13 +107,14 @@ class DatasourceConfigurationSpec extends Specification {
                 'datasources.default.defaultCatalog': 'catalog']
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(BasicDataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        BasicDataSource dataSource = applicationContext.getBean(DataSource).targetDataSource as BasicDataSource
+        BasicDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then:
         dataSource.maxWaitMillis == 5000
@@ -133,13 +136,14 @@ class DatasourceConfigurationSpec extends Specification {
                 'datasources.foo': [:]]
         ))
         applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         expect:
         applicationContext.containsBean(BasicDataSource)
         applicationContext.containsBean(DatasourceConfiguration)
 
         when:
-        BasicDataSource dataSource = (applicationContext.getBean(DataSource, Qualifiers.byName("foo")) as TransactionAwareDataSourceProxy).targetDataSource
+        BasicDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource, Qualifiers.byName("foo")))
 
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.url == 'jdbc:h2:mem:foo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'

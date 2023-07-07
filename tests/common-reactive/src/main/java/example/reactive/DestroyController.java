@@ -17,7 +17,7 @@ package example.reactive;
 
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
-import io.micronaut.transaction.annotation.TransactionalAdvice;
+import io.micronaut.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -33,7 +33,7 @@ class DestroyController {
     }
 
     @Get
-    @TransactionalAdvice
+    @Transactional
     Mono<Void> destroy() {
         return Flux.concat(
             petRepository.destroy(),

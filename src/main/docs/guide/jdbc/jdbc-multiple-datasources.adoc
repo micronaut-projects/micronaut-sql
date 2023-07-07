@@ -9,7 +9,7 @@ datasources:
         ...
 ----
 
-When injecting link:{jdkapi}/javax/sql/DataSource.html[DataSource] beans, the one with the name "default" will be injected unless the injection is qualified with the configured name. If no configuration is named "default", none of the beans will be primary and thus all injections must be qualified. For example:
+When injecting link:{jdkapi}/java.sql/javax/sql/DataSource.html[DataSource] beans, the one with the name "default" will be injected unless the injection is qualified with the configured name. If no configuration is named "default", none of the beans will be primary and thus all injections must be qualified. For example:
 
 [source,java]
 ----

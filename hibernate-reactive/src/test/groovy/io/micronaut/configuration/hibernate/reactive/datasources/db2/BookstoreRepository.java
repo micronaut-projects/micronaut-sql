@@ -15,18 +15,17 @@
  */
 package io.micronaut.configuration.hibernate.reactive.datasources.db2;
 
-import io.micronaut.transaction.annotation.TransactionalAdvice;
+import io.micronaut.transaction.annotation.Transactional;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 
 import jakarta.persistence.EntityManager;
-import javax.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.Optional;
 
-@Transactional
-@TransactionalAdvice("db2")
+@jakarta.transaction.Transactional
+@Transactional("db2")
 @Singleton
 public class BookstoreRepository {
 
@@ -42,8 +41,8 @@ public class BookstoreRepository {
         return bookstore;
     }
 
-    @Transactional
-    @TransactionalAdvice(readOnly = true) // <3>
+    @jakarta.transaction.Transactional
+    @Transactional(readOnly = true) // <3>
     public Optional<Bookstore> findById(@NotNull Long id) {
         return Optional.ofNullable(entityManager.find(Bookstore.class, id));
     }

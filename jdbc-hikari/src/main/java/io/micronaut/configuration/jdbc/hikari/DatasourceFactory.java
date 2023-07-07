@@ -79,7 +79,7 @@ public class DatasourceFactory implements AutoCloseable {
                 ds.setMetricRegistry(meterRegistry);
             }
         } catch (NoClassDefFoundError ignore) {
-            LOG.debug("Could not wire metrics to HikariCP as there is no class of type MeterRegistry on the classpath, io.micronaut.configuration:micrometer-core library missing.");
+            LOG.debug("Could not wire metrics to HikariCP as there is no class of type MeterRegistry on the classpath, io.micronaut.micrometer:micrometer-core library missing.");
         }
     }
 

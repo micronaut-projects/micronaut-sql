@@ -1,8 +1,9 @@
 package example.jooq.reactive;
 
-import example.domain.IOwner;
 import example.domain.IPet;
 import example.reactive.IPetRepository;
+import io.micronaut.transaction.reactive.ReactorReactiveTransactionOperations;
+import io.r2dbc.spi.Connection;
 import jakarta.inject.Singleton;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -16,7 +17,7 @@ import org.jooq.impl.SQLDataType;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -31,8 +32,8 @@ public class PetRepository extends AbstractRepository implements IPetRepository 
     private final static Field<String> PET_TYPE = DSL.field("type", SQLDataType.VARCHAR(200));
     private final static Field<Long> PET_OWNER = DSL.field("owner", SQLDataType.BIGINT);
 
-    public PetRepository(DSLContext db, OwnerRepository ownerRepository) {
-        super(db);
+    public PetRepository(DSLContext db, OwnerRepository ownerRepository, ReactorReactiveTransactionOperations<Connection> transactionOperations) {
+        super(db, transactionOperations);
         this.ownerRepository = ownerRepository;
     }
 

@@ -15,12 +15,11 @@
  */
 package io.micronaut.configuration.hibernate.reactive.datasources.db2;
 
-import io.micronaut.transaction.annotation.TransactionalAdvice;
+import io.micronaut.transaction.annotation.Transactional;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.Optional;
@@ -34,16 +33,16 @@ public class BookstoreMethodLevelTransaction {
         this.entityManager = entityManager;
     }
 
-    @Transactional
-    @TransactionalAdvice(transactionManager = "db2")
+    @jakarta.transaction.Transactional
+    @Transactional(transactionManager = "db2")
     public Bookstore save(@NotBlank String name) {
         Bookstore bookstore = new Bookstore(name);
         entityManager.persist(bookstore);
         return bookstore;
     }
 
-    @Transactional
-    @TransactionalAdvice(readOnly = true, transactionManager = "db2")
+    @jakarta.transaction.Transactional
+    @Transactional(readOnly = true, transactionManager = "db2")
     public Optional<Bookstore> findById(@NotNull Long id) {
         return Optional.ofNullable(entityManager.find(Bookstore.class, id));
     }

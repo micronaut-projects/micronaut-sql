@@ -6,13 +6,12 @@ pluginManagement {
 }
 
 plugins {
-    id 'io.micronaut.build.shared.settings' version '6.4.4'
+    id 'io.micronaut.build.shared.settings' version '6.5.3'
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 micronautBuild {
-    importMicronautCatalog("micronaut-logging")
     useStandardizedProjectNames = true
     importMicronautCatalog()
     importMicronautCatalog("micronaut-cache")
@@ -35,7 +34,6 @@ include 'jdbc-tomcat'
 include 'jdbc-ucp'
 include 'jasync-sql'
 include 'hibernate-jpa'
-include 'hibernate-jpa-spring'
 
 include 'hibernate-reactive'
 include 'jooq'
