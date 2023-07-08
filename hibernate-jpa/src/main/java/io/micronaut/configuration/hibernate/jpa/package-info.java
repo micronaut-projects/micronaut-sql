@@ -20,7 +20,7 @@
  * @since 1.0
  */
 @Configuration
-@Requires(property = "micronaut.hibernate.jpa.enabled", value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
+@Requires(property = "jpa.enabled", value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 @Requires(classes = {SessionFactory.class, Entity.class})
 package io.micronaut.configuration.hibernate.jpa;
 

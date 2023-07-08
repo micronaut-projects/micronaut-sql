@@ -8,7 +8,7 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-@Property(name = "micronaut.hibernate.jpa.enabled", value = StringUtils.FALSE)
+@Property(name = "jpa.enabled", value = StringUtils.FALSE)
 @MicronautTest
 class TempTest {
 
