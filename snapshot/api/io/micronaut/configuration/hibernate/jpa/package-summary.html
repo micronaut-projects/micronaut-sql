@@ -63,7 +63,7 @@ loadScripts(document, 'script');</script>
 </div>
 <hr>
 <div class="package-signature"><span class="annotations">@Configuration
-@Requires(classes={<a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/SessionFactory.html" title="class or interface in org.hibernate" class="external-link">org.hibernate.SessionFactory.class</a>,jakarta.persistence.Entity.class})
+@Requires(property="jpa.enabled",value="true",defaultValue="true") @Requires(classes={<a href="https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/SessionFactory.html" title="class or interface in org.hibernate" class="external-link">org.hibernate.SessionFactory.class</a>,jakarta.persistence.Entity.class})
 </span>package <span class="element-name">io.micronaut.configuration.hibernate.jpa</span></div>
 <section class="package-description" id="package-description">
 <div class="block">This package contains a configuration for Hibernate and JPA.</div>
