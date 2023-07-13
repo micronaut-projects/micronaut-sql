@@ -7,6 +7,7 @@ jdbc:
   jdbc-healthchecks: JDBC Health Checks
 hibernate:
   title: Configuring Hibernate
+  hibernate-disable: Disable Micronaut Hibernate JPA
   hibernate-inject-session: Injecting an EntityManager or Hibernate Session
   hibernate-customizing: Customizing Hibernate/JPA Configuration
   hibernate-entity-scan: Entity Scan Configuration
