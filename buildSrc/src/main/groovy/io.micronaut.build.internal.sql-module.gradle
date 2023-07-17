@@ -2,10 +2,3 @@ plugins {
     id 'io.micronaut.build.internal.module'
     id 'io.micronaut.build.internal.sql-base'
 }
-
-micronautBuild {
-    binaryCompatibility {
-        baselineVersion = "5.0.0-M12"
-        enabled = true
-    }
-}
