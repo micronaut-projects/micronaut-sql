@@ -14,9 +14,3 @@ dependencies {
 configurations {
     all*.exclude module: "javassist"
 }
-
-graalvmNative {
-    metadataRepository {
-        version = "0.3.2"
-    }
-}
