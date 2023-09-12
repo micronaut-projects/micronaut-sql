@@ -66,7 +66,7 @@ groovy = "4.0.11"
 testcontainers = "1.19.0"
 sonar-gradle-plugin = "4.3.1.3277"
 
-micronaut-logging = "1.1.0"
+micronaut-logging = "1.1.2"
 [libraries]
 # Core
 micronaut-core = { module = 'io.micronaut:micronaut-core-bom', version.ref = 'micronaut' }
