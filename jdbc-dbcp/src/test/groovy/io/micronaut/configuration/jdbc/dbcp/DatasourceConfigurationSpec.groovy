@@ -90,7 +90,7 @@ class DatasourceConfigurationSpec extends Specification {
         String version = resultSet.getString(1)
 
         then:
-        version == '2.2.222'
+        version == '2.2.224'
 
         cleanup:
         applicationContext.close()
