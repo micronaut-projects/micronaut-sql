@@ -8,7 +8,7 @@ dependencies {
 
     runtimeOnly projects.micronautJdbcTomcat
 
-    runtimeOnly libs.managed.mysql.connector.java
+    runtimeOnly(libs.managed.mysql.connector.j)
 }
 
 configurations {

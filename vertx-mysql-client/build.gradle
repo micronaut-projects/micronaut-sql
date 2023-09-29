@@ -15,5 +15,5 @@ dependencies {
     testImplementation(mn.micronaut.management)
     testImplementation(libs.testcontainers.spock)
     testImplementation(libs.testcontainers.mysql)
-    testImplementation(libs.managed.mysql.connector.java)
+    testImplementation(libs.managed.mysql.connector.j)
 }

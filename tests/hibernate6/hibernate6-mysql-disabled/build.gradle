@@ -7,7 +7,7 @@ dependencies {
     testImplementation projects.micronautTests.micronautCommonTests
 
     runtimeOnly projects.micronautJdbcHikari
-    runtimeOnly libs.managed.mysql.connector.java
+    runtimeOnly(libs.managed.mysql.connector.j)
 }
 
 configurations {
