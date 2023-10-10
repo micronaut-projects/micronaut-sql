@@ -8,6 +8,7 @@ dependencies {
     api(projects.micronautHibernateJpa) {
         exclude module: 'jdbc'
         exclude group: 'micronaut-data'
+        exclude group: 'org.hibernate.orm', module: 'hibernate-core'
     }
     api libs.managed.hibernate.reactive.core
     api mn.micronaut.runtime
