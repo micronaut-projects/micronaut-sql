@@ -1,10 +1,10 @@
-If you don't register bean of type link:{jooqapi}/org/jooq/ConverterProvider.html[ConverterProvider] and provide following configuration, `JacksonConverterProvider` will be used, which uses Micronaut configured `ObjectMapper` for converting from and to types JSON and JSONB.
+If you don't register bean of type link:{jooqapi}/org/jooq/ConverterProvider.html[ConverterProvider] and provide following configuration, `JsonConverterProvider` will be used, which uses Micronaut configured `JsonMapper` for converting from and to types JSON and JSONB.
 
-.Configuring Micronaut Jackson converter
+.Configuring Micronaut Json converter
 [source,yaml]
 ----
 jooq:
     datasources:
         default:
-            jackson-converter-enabled: true
+            json-converter-enabled: true
 ----
