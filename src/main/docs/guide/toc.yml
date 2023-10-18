@@ -22,7 +22,7 @@ jooq:
   title: Configuring jOOQ
   jooq-dialect: Configuring SQL dialect
   jooq-provider-beans: Configuring additional provider beans
-  jooq-jsonb: Using ObjectMapper to convert JSON(B) types
+  jooq-jsonb: Using JsonMapper to convert JSON(B) types
   jooq-graalvm: GraalVM native image
 jdbi:
   title: Configuring Jdbi
