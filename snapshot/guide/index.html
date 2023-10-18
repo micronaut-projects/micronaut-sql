@@ -133,7 +133,7 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-provider-beans"><a href="#jooq-provider-beans"><strong>6.2</strong><span>Configuring additional provider beans</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-jsonb"><a href="#jooq-jsonb"><strong>6.3</strong><span>Using ObjectMapper to convert JSON(B) types</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-jsonb"><a href="#jooq-jsonb"><strong>6.3</strong><span>Using JsonMapper to convert JSON(B) types</span></a></div>
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-graalvm"><a href="#jooq-graalvm"><strong>6.4</strong><span>GraalVM native image</span></a></div>
         
@@ -2003,7 +2003,7 @@ Only beans with the same name qualifier as the data source name will be used.</p
 </ul>
 </div>
 
-<h2 id="jooq-jsonb"><a class="anchor" href="#jooq-jsonb"></a>6.3 Using ObjectMapper to convert JSON(B) types</h2>
+<h2 id="jooq-jsonb"><a class="anchor" href="#jooq-jsonb"></a>6.3 Using JsonMapper to convert JSON(B) types</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/master/src/main/docs/guide/jooq/jooq-jsonb.adoc"'>
@@ -2013,15 +2013,15 @@ Only beans with the same name qualifier as the data source name will be used.</p
 
 
 <div class="paragraph">
-<p>If you don&#8217;t register bean of type <a href="https://www.jooq.org/javadoc/latest/org/jooq/ConverterProvider.html">ConverterProvider</a> and provide following configuration, <code>JacksonConverterProvider</code> will be used, which uses Micronaut configured <code>ObjectMapper</code> for converting from and to types JSON and JSONB.</p>
+<p>If you don&#8217;t register bean of type <a href="https://www.jooq.org/javadoc/latest/org/jooq/ConverterProvider.html">ConverterProvider</a> and provide following configuration, <code>JsonConverterProvider</code> will be used, which uses Micronaut configured <code>JsonMapper</code> for converting from and to types JSON and JSONB.</p>
 </div>
 <div class="listingblock">
-<div class="title">Configuring Micronaut Jackson converter</div>
+<div class="title">Configuring Micronaut Json converter</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">jooq:
     datasources:
         default:
-            jackson-converter-enabled: true</code></pre>
+            json-converter-enabled: true</code></pre>
 </div>
 </div>
 
