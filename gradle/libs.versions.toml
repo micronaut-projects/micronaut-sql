@@ -34,7 +34,7 @@ managed-ojdbc = "21.11.0.0" # Don't change until the issue described on the foll
 managed-ojdbcdms = "21.11.0.0"
 managed-postgres-driver = "42.6.0"
 managed-mariadb-driver = "3.2.0"
-managed-mssql-driver = "12.4.1.jre11"
+managed-mssql-driver = "12.4.2.jre11"
 managed-mysql-driver = "8.0.33"
 managed-mysql-connector-j = "8.1.0"
 
