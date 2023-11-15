@@ -42,7 +42,7 @@ managed-mysql-connector-j = "8.2.0"
 
 managed-hikari = "5.1.0"
 managed-commons-dbcp = "2.11.0"
-managed-tomcat-jdbc = "10.1.15"
+managed-tomcat-jdbc = "10.1.16"
 
 # JPA
 
