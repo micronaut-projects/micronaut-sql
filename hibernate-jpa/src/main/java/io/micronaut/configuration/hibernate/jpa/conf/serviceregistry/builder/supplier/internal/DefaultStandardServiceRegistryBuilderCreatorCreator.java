@@ -26,8 +26,10 @@ import io.micronaut.core.annotation.Nullable;
 import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.integrator.spi.Integrator;
+
+import static org.hibernate.bytecode.internal.BytecodeProviderInitiator.BYTECODE_PROVIDER_NAME_NONE;
+import static org.hibernate.cfg.AvailableSettings.BYTECODE_PROVIDER;
 
 /**
  * Default supplier of {@link StandardServiceRegistryBuilderCreator}.
@@ -54,7 +56,7 @@ final class DefaultStandardServiceRegistryBuilderCreatorCreator implements Stand
     @Override
     public StandardServiceRegistryBuilder create(JpaConfiguration jpaConfiguration) {
         if (jpaConfiguration.isCompileTimeHibernateProxies()) {
-            System.setProperty(AvailableSettings.BYTECODE_PROVIDER, org.hibernate.cfg.Environment.BYTECODE_PROVIDER_NAME_NONE);
+            System.setProperty(BYTECODE_PROVIDER, BYTECODE_PROVIDER_NAME_NONE);
         }
         if (jpaConfiguration.isReactive()) {
             throw new IllegalStateException("Hibernate Reactive not found on classpath!");

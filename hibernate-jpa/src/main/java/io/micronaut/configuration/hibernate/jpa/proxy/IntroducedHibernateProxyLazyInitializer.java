@@ -16,7 +16,10 @@
 package io.micronaut.configuration.hibernate.jpa.proxy;
 
 import io.micronaut.core.annotation.Internal;
+import org.hibernate.LazyInitializationException;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.proxy.AbstractLazyInitializer;
 
 /**
@@ -43,4 +46,20 @@ final class IntroducedHibernateProxyLazyInitializer extends AbstractLazyInitiali
         return persistentClass;
     }
 
+    @Override
+    public Class<?> getImplementationClass() {
+        if (!isUninitialized()) {
+            return getImplementation().getClass();
+        }
+        final SharedSessionContractImplementor session = getSession();
+        if (session == null) {
+            throw new LazyInitializationException("could not retrieve real entity class [" + getEntityName() + "#" + getIdentifier() + "] - no Session");
+        }
+        final SessionFactoryImplementor factory = session.getFactory();
+        final EntityPersister entityDescriptor = factory.getMappingMetamodel().getEntityDescriptor(getEntityName());
+        if (entityDescriptor.getEntityMappingType().hasSubclasses()) {
+            return getImplementation().getClass();
+        }
+        return persistentClass;
+    }
 }

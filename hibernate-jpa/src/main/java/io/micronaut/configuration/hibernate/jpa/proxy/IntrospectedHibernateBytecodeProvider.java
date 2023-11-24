@@ -18,6 +18,7 @@ package io.micronaut.configuration.hibernate.jpa.proxy;
 import io.micronaut.core.annotation.Internal;
 import jakarta.inject.Singleton;
 import org.hibernate.bytecode.enhance.spi.EnhancementContext;
+import org.hibernate.bytecode.enhance.spi.EnhancementException;
 import org.hibernate.bytecode.enhance.spi.Enhancer;
 import org.hibernate.bytecode.spi.BytecodeProvider;
 import org.hibernate.bytecode.spi.ProxyFactoryFactory;
@@ -37,7 +38,18 @@ import java.util.Map;
 @Internal
 public final class IntrospectedHibernateBytecodeProvider implements BytecodeProvider {
 
-    private static final Enhancer NO_OP = (className, originalBytes) -> null;
+    private static final Enhancer NO_OP = new Enhancer() {
+
+        @Override
+        public byte[] enhance(String className, byte[] originalBytes) throws EnhancementException {
+            return null;
+        }
+
+        @Override
+        public void discoverTypes(String className, byte[] originalBytes) throws EnhancementException {
+            // Does nothing
+        }
+    };
 
     @Override
     public ProxyFactoryFactory getProxyFactoryFactory() {
