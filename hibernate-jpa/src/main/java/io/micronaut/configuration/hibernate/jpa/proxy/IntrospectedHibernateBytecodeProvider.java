@@ -40,11 +40,9 @@ public final class IntrospectedHibernateBytecodeProvider implements BytecodeProv
 
     private static final Enhancer NO_OP = new Enhancer() {
 
-        private static final byte[] EMPTY_BYTE_ARRAY = {};
-
         @Override
         public byte[] enhance(String className, byte[] originalBytes) throws EnhancementException {
-            return EMPTY_BYTE_ARRAY;
+            return null;
         }
 
         @Override
