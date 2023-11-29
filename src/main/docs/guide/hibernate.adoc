@@ -17,7 +17,7 @@ dependency:micronaut-hibernate-jpa[groupId="io.micronaut.sql"]
 
 and the Micronaut Data Transaction Hibernate dependency:
 
-dependency:micronaut-data-tx-hibernate="io.micronaut.data"]
+dependency:micronaut-data-tx-hibernate[groupId="io.micronaut.data"]
 
 And that is it. For each registered SQL `DataSource`, Micronaut will configure the following beans using api:configuration.hibernate.jpa.EntityManagerFactoryBean[]:
 
