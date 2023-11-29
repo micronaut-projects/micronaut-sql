@@ -76,14 +76,14 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/TransactionProvider.html" title="class or interface in org.jooq" class="external-link">TransactionProvider</a></code></dd>
+<dd><code>org.jooq.TransactionProvider</code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="annotations">@Requires(classes=io.micronaut.transaction.jdbc.DataSourceTransactionManager.class)
 @EachBean(io.micronaut.transaction.jdbc.DataSourceTransactionManager.class)
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">MicronautTransactionProvider</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/TransactionProvider.html" title="class or interface in org.jooq" class="external-link">TransactionProvider</a></span></div>
+implements org.jooq.TransactionProvider</span></div>
 <div class="block">Allows Micronaut Transaction to be used with JOOQ.</div>
 <dl class="notes">
 <dt>Since:</dt>
@@ -121,13 +121,13 @@ implements <a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/Transa
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#begin(org.jooq.TransactionContext)" class="member-name-link">begin</a><wbr>(<a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/TransactionContext.html" title="class or interface in org.jooq" class="external-link">TransactionContext</a>&nbsp;context)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#begin(org.jooq.TransactionContext)" class="member-name-link">begin</a><wbr>(org.jooq.TransactionContext&nbsp;context)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#commit(org.jooq.TransactionContext)" class="member-name-link">commit</a><wbr>(<a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/TransactionContext.html" title="class or interface in org.jooq" class="external-link">TransactionContext</a>&nbsp;ctx)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#commit(org.jooq.TransactionContext)" class="member-name-link">commit</a><wbr>(org.jooq.TransactionContext&nbsp;ctx)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#rollback(org.jooq.TransactionContext)" class="member-name-link">rollback</a><wbr>(<a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/TransactionContext.html" title="class or interface in org.jooq" class="external-link">TransactionContext</a>&nbsp;ctx)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#rollback(org.jooq.TransactionContext)" class="member-name-link">rollback</a><wbr>(org.jooq.TransactionContext&nbsp;ctx)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -168,39 +168,39 @@ implements <a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/Transa
 <li>
 <section class="detail" id="begin(org.jooq.TransactionContext)">
 <h3>begin</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">begin</span><wbr><span class="parameters">(<a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/TransactionContext.html" title="class or interface in org.jooq" class="external-link">TransactionContext</a>&nbsp;context)</span>
-           throws <span class="exceptions"><a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/exception/DataAccessException.html" title="class or interface in org.jooq.exception" class="external-link">DataAccessException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">begin</span><wbr><span class="parameters">(org.jooq.TransactionContext&nbsp;context)</span>
+           throws <span class="exceptions">org.jooq.exception.DataAccessException</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/TransactionProvider.html#begin(org.jooq.TransactionContext)" title="class or interface in org.jooq" class="external-link">begin</a></code>&nbsp;in interface&nbsp;<code><a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/TransactionProvider.html" title="class or interface in org.jooq" class="external-link">TransactionProvider</a></code></dd>
+<dd><code>begin</code>&nbsp;in interface&nbsp;<code>org.jooq.TransactionProvider</code></dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/exception/DataAccessException.html" title="class or interface in org.jooq.exception" class="external-link">DataAccessException</a></code></dd>
+<dd><code>org.jooq.exception.DataAccessException</code></dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="commit(org.jooq.TransactionContext)">
 <h3>commit</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">commit</span><wbr><span class="parameters">(<a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/TransactionContext.html" title="class or interface in org.jooq" class="external-link">TransactionContext</a>&nbsp;ctx)</span>
-            throws <span class="exceptions"><a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/exception/DataAccessException.html" title="class or interface in org.jooq.exception" class="external-link">DataAccessException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">commit</span><wbr><span class="parameters">(org.jooq.TransactionContext&nbsp;ctx)</span>
+            throws <span class="exceptions">org.jooq.exception.DataAccessException</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/TransactionProvider.html#commit(org.jooq.TransactionContext)" title="class or interface in org.jooq" class="external-link">commit</a></code>&nbsp;in interface&nbsp;<code><a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/TransactionProvider.html" title="class or interface in org.jooq" class="external-link">TransactionProvider</a></code></dd>
+<dd><code>commit</code>&nbsp;in interface&nbsp;<code>org.jooq.TransactionProvider</code></dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/exception/DataAccessException.html" title="class or interface in org.jooq.exception" class="external-link">DataAccessException</a></code></dd>
+<dd><code>org.jooq.exception.DataAccessException</code></dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="rollback(org.jooq.TransactionContext)">
 <h3>rollback</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">rollback</span><wbr><span class="parameters">(<a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/TransactionContext.html" title="class or interface in org.jooq" class="external-link">TransactionContext</a>&nbsp;ctx)</span>
-              throws <span class="exceptions"><a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/exception/DataAccessException.html" title="class or interface in org.jooq.exception" class="external-link">DataAccessException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">rollback</span><wbr><span class="parameters">(org.jooq.TransactionContext&nbsp;ctx)</span>
+              throws <span class="exceptions">org.jooq.exception.DataAccessException</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/TransactionProvider.html#rollback(org.jooq.TransactionContext)" title="class or interface in org.jooq" class="external-link">rollback</a></code>&nbsp;in interface&nbsp;<code><a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/TransactionProvider.html" title="class or interface in org.jooq" class="external-link">TransactionProvider</a></code></dd>
+<dd><code>rollback</code>&nbsp;in interface&nbsp;<code>org.jooq.TransactionProvider</code></dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://www.jooq.org/javadoc/latest/org.jooq/org/jooq/exception/DataAccessException.html" title="class or interface in org.jooq.exception" class="external-link">DataAccessException</a></code></dd>
+<dd><code>org.jooq.exception.DataAccessException</code></dd>
 </dl>
 </section>
 </li>
