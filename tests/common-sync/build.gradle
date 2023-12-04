@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    annotationProcessor(mnSerde.micronaut.serde.processor)
     implementation mn.micronaut.http
     implementation mn.micronaut.runtime
     api(projects.micronautTests.micronautCommon)
