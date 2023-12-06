@@ -4,7 +4,7 @@ dependency:micronaut-hibernate-reactive[groupId="io.micronaut.sql"]
 
 and the Micronaut Data Transaction Hibernate dependency:
 
-dependency:micronaut-data-tx-hibernate="io.micronaut.data"]
+dependency:micronaut-data-tx-hibernate[groupId="io.micronaut.data"]
 
 NOTE: Hibernate Reactive requires Java 11
 
