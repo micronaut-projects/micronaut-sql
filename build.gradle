@@ -14,9 +14,3 @@ if (System.getenv("SONAR_TOKEN") != null) {
         }
     }
 }
-
-javadoc {
-    // jooqapi=https://www.jooq.org/javadoc/latest from gradle.properties gets into javadoc options.links
-    // but it is throwing certificate exception and fails project from building
-    options.links.remove(jooqapi)
-}
