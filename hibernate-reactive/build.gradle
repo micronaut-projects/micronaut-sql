@@ -15,7 +15,6 @@ dependencies {
     compileOnly libs.managed.vertx.sql.client
 
     testAnnotationProcessor mn.micronaut.inject.java
-    testRuntimeOnly libs.micronaut.hibernate.validator
     testImplementation mn.micronaut.inject.java
     testImplementation mn.micronaut.inject.groovy
     testImplementation projects.micronautJdbc

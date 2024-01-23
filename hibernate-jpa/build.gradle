@@ -19,7 +19,6 @@ dependencies {
     compileOnly(mnMicrometer.micronaut.micrometer.core)
 
     testAnnotationProcessor(mn.micronaut.inject.java)
-    testRuntimeOnly(libs.micronaut.hibernate.validator)
     testImplementation(mn.micronaut.inject.java)
     testImplementation(libs.managed.hibernate.jcache)
     testImplementation(mn.micronaut.management)
