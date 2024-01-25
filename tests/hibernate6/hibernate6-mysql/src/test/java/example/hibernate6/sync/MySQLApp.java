@@ -22,6 +22,6 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 @MicronautTest
 @Property(name = "datasources.default.db-type", value = "mysql")
 @Property(name = "jpa.default.properties.hibernate.dialect", value = "org.hibernate.dialect.MySQLDialect")
-@Property(name = "test-resources.containers.mysql.image-name", value = "mysql:8.0.30")
+@Property(name = "test-resources.containers.mysql.image-name", value = "mysql:8.2")
 public class MySQLApp extends AbstractApp {
 }
