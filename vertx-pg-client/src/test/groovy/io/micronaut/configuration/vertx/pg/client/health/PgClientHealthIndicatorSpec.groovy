@@ -27,7 +27,7 @@ class PgClientHealthIndicatorSpec extends Specification {
 
     void "test vertx-pg-client health indicator"() {
         given:
-        PostgreSQLContainer postgres = new PostgreSQLContainer()
+        PostgreSQLContainer postgres = new PostgreSQLContainer("postgres")
         postgres.start()
         ApplicationContext applicationContext = ApplicationContext.run(
                 'vertx.pg.client.port': postgres.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT),
@@ -44,7 +44,7 @@ class PgClientHealthIndicatorSpec extends Specification {
 
         then:
         result.status == HealthStatus.UP
-        result.details.version.startsWith("PostgreSQL ${postgres.DEFAULT_TAG}".toString())
+        result.details.version.startsWith("PostgreSQL ")
 
         when:
         postgres.stop()

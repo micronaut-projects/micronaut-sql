@@ -33,7 +33,7 @@ class MultipleDataSourceJpaSetupSpec extends Specification implements TestProper
 
     @Shared
     @AutoCleanup
-    JdbcDatabaseContainer dbContainer = new PostgreSQLContainer(DockerImageName.parse("postgres:9.6.12"))
+    JdbcDatabaseContainer dbContainer = new PostgreSQLContainer("postgres")
 
     @Shared
     @AutoCleanup

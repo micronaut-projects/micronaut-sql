@@ -27,6 +27,5 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 @Property(name = "r2dbc.datasources.default.options.connectTimeout", value = "PT1M")
 @Property(name = "r2dbc.datasources.default.options.statementTimeout", value = "PT1M")
 @Property(name = "r2dbc.datasources.default.options.lockTimeout", value = "PT1M")
-@Property(name = "test-resources.containers.postgres.image-name", value = "postgres:10")
 public class PostgresApp extends AbstractApp {
 }
