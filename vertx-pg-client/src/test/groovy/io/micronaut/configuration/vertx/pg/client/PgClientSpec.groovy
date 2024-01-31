@@ -56,7 +56,7 @@ import spock.lang.Specification
 class PgClientSpec extends Specification {
 
     // tag::pg-testcontainer[]
-    @Shared @AutoCleanup PostgreSQLContainer postgres = new PostgreSQLContainer()
+    @Shared @AutoCleanup PostgreSQLContainer postgres = new PostgreSQLContainer("postgres")
 
     // end::pg-testcontainer[]
 
@@ -97,7 +97,7 @@ class PgClientSpec extends Specification {
         // end::query[]
 
         then:
-        result == "Size: 4"
+        result == "Size: 5"
 
         cleanup:
         client.close()

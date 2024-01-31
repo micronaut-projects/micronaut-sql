@@ -10,6 +10,7 @@ dependencies {
     implementation(libs.managed.vertx.codegen)
 
     compileOnly(mn.micronaut.management)
+    runtimeOnly libs.managed.ongres.scram.client
 
     testImplementation(platform(libs.testcontainers.bom))
     testImplementation(mn.micronaut.management)

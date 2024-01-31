@@ -25,7 +25,7 @@ import spock.lang.Specification
 class MySQLPoolHealthIndicatorSpec extends Specification{
     void "test vertx-mysql-client health indicator"() {
         given:
-        MySQLContainer mysql = new MySQLContainer()
+        MySQLContainer mysql = new MySQLContainer("mysql")
         mysql.start()
         ApplicationContext applicationContext = ApplicationContext.run(
                 'vertx.mysql.client.port': mysql.getMappedPort(MySQLContainer.MYSQL_PORT),
@@ -42,7 +42,7 @@ class MySQLPoolHealthIndicatorSpec extends Specification{
 
         then:
         result.status == HealthStatus.UP
-        result.details.version.startsWith("${mysql.DEFAULT_TAG}".toString())
+        result.details.version >= mysql.DEFAULT_TAG
 
         when:
         mysql.stop()

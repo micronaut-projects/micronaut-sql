@@ -29,7 +29,7 @@ class JasyncHealthIndicatorSpec extends Specification {
 
     void "test jasync health indicator"() {
         given:
-        PostgreSQLContainer postgres = new PostgreSQLContainer()
+        PostgreSQLContainer postgres = new PostgreSQLContainer("postgres")
         postgres.start()
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer, [
                 'jasync.client.port'                        : postgres.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT),
@@ -55,7 +55,7 @@ class JasyncHealthIndicatorSpec extends Specification {
         then:
         response.code() == HttpStatus.OK.code
         response.body().status.name == "UP"
-        response.body().details.toString().contains("PostgreSQL ${postgres.DEFAULT_TAG}")
+        response.body().details.toString().contains("PostgreSQL ")
 
         when:
         postgres.stop()

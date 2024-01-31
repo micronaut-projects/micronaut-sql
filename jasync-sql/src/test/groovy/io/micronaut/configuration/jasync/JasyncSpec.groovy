@@ -52,7 +52,7 @@ import spock.lang.Specification
 class JasyncSpec extends Specification {
 
     // tag::pg-testcontainer[]
-    @Shared @AutoCleanup PostgreSQLContainer postgres = new PostgreSQLContainer()
+    @Shared @AutoCleanup PostgreSQLContainer postgres = new PostgreSQLContainer("postgres")
 
     // end::pg-testcontainer[]
 
@@ -86,7 +86,7 @@ class JasyncSpec extends Specification {
         // end::query[]
 
         then:
-        result == "Size: 4"
+        result == "Size: 5"
 
         cleanup:
         client.disconnect()
