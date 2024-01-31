@@ -2,7 +2,7 @@
 
 # Micronaut
 
-micronaut = "4.3.1"
+micronaut = "4.3.3"
 micronaut-docs = "2.0.0"
 micronaut-gradle-plugin = "4.2.1"
 micronaut-testresources = "2.3.2"
