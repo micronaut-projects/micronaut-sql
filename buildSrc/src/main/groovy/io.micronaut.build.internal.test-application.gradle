@@ -10,7 +10,7 @@ micronaut {
     testRuntime "junit"
     testResources {
         clientTimeout = 180
-        version = libs.versions.micronaut.testresources.get()
+        version = libs.versions.micronaut.test.resources.get()
     }
 }
 
@@ -18,8 +18,7 @@ dependencies {
     runtimeOnly mnLogging.logback.classic
     implementation mn.micronaut.http.client
     testImplementation mnTest.micronaut.test.core
-    testImplementation(libs.testcontainers.jdbc)
-    testImplementation(platform(libs.testcontainers.bom))
+    testImplementation(mnTestResources.testcontainers.jdbc)
 
     micronautBoms(platform(mn.micronaut.core.bom))
     micronautBoms(platform(mnData.micronaut.data.bom))

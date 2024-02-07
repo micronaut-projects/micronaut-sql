@@ -12,8 +12,6 @@ dependencies {
     compileOnly(mn.micronaut.management)
     runtimeOnly libs.managed.ongres.scram.client
 
-    testImplementation(platform(libs.testcontainers.bom))
     testImplementation(mn.micronaut.management)
-    testImplementation(libs.testcontainers.spock)
-    testImplementation(libs.testcontainers.postgresql)
+    testImplementation(mnTestResources.testcontainers.postgres)
 }
