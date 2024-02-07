@@ -4,7 +4,7 @@
 
 micronaut = "4.3.4"
 micronaut-docs = "2.0.0"
-micronaut-gradle-plugin = "4.3.1"
+micronaut-gradle-plugin = "4.3.2"
 micronaut-testresources = "2.3.3"
 
 # Platform dependencies
