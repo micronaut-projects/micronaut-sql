@@ -4,14 +4,14 @@
 
 micronaut = "4.3.4"
 micronaut-docs = "2.0.0"
-micronaut-gradle-plugin = "4.3.1"
+micronaut-gradle-plugin = "4.3.2"
 micronaut-test-resources = "2.3.3"
 
 # Platform dependencies
 micronaut-cache = "4.2.1"
 micronaut-data = "4.6.0"
 micronaut-hibernate-validator = "4.2.0"
-micronaut-logging = "1.2.2"
+micronaut-logging = "1.2.3"
 micronaut-micrometer = "5.4.0"
 micronaut-r2dbc = "5.3.0"
 micronaut-reactor = "3.2.1"
@@ -24,10 +24,10 @@ micronaut-validation = "4.4.0"
 
 managed-vertx = "4.5.3"
 managed-jooq = "3.19.3"
-managed-hibernate = "6.4.3.Final"
+managed-hibernate = "6.4.4.Final"
 managed-hibernate-reactive = "2.2.2.Final"
 managed-jasync = "2.2.4"
-managed-jdbi = "3.44.0"
+managed-jdbi = "3.44.1"
 
 # JDBC Drivers
 
