@@ -28,7 +28,7 @@ dependencies {
     testImplementation(mnMicrometer.micronaut.micrometer.core)
     testImplementation(libs.managed.hibernate.micrometer)
 
-    testImplementation(mnValidation.micronaut.validation)
+    testImplementation(mnHibernateValidator.micronaut.hibernate.validator)
 
     testRuntimeOnly projects.micronautJdbcTomcat
     testRuntimeOnly(libs.managed.h2)
