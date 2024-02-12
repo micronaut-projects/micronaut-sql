@@ -65,3 +65,5 @@ include 'tests:hibernate6:hibernate6-reactive-postgres'
 
 include 'tests:jooq-tests:jooq-jdbc-postgres'
 include 'tests:jooq-tests:jooq-r2dbc-postgres'
+
+include 'tests:jdbc-ucp-tests:jdbc-ucp-oracle'
