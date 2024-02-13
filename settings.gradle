@@ -23,6 +23,7 @@ micronautBuild {
     importMicronautCatalog("micronaut-spring")
     importMicronautCatalog("micronaut-test-resources")
     importMicronautCatalog("micronaut-validation")
+    importMicronautCatalog("micronaut-hibernate-validator")
 }
 
 rootProject.name = 'sql-parent'

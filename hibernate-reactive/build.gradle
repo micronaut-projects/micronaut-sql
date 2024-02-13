@@ -26,4 +26,5 @@ dependencies {
     testImplementation(mnTestResources.testcontainers.postgres)
     testImplementation libs.managed.vertx.pg.client
     testImplementation(mnData.micronaut.data.tx.hibernate)
+    testImplementation(mnValidation.micronaut.validation)
 }
