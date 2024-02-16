@@ -1,13 +1,14 @@
 plugins {
-    id 'io.micronaut.build.internal.sql-module'
+    id("io.micronaut.build.internal.sql-module")
 }
 
 dependencies {
-    api projects.micronautJdbc
+    api(projects.micronautJdbc)
     api(mn.micronaut.inject)
     api(mn.micronaut.context)
-    api(libs.managed.ucp)
-    api(libs.managed.ojdbc11)
+    api(mnOraclecloud.oracle.jdbc)
+    implementation(platform(mnOraclecloud.boms.oracle.jdbc))
+    implementation(libs.ucp)
 
     testRuntimeOnly(libs.managed.h2)
 
@@ -19,6 +20,7 @@ dependencies {
     testImplementation(mnCache.micronaut.cache.core)
 
     testImplementation(mnSpring.spring.jdbc)
+    testImplementation(platform(mnOraclecloud.boms.oracle.jdbc))
     testImplementation(libs.ojdbc11dms)
     testImplementation(libs.dms)
 }

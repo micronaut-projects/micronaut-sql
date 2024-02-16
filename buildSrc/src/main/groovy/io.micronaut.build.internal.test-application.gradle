@@ -22,6 +22,7 @@ dependencies {
 
     micronautBoms(platform(mn.micronaut.core.bom))
     micronautBoms(platform(mnData.micronaut.data.bom))
+    micronautBoms(platform(mnOraclecloud.boms.oracle.jdbc))
 }
 
 application {

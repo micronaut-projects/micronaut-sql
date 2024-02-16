@@ -15,3 +15,9 @@ micronautBom {
         acceptedLibraryRegressions.add("commons-dbcp")
     }
 }
+
+// removing managed ojdbc libs
+// can be removed after release of 6.0.0
+micronautBuild {
+    tasks.named("checkVersionCatalogCompatibility") { onlyIf { false } }
+}

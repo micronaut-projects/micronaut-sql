@@ -8,7 +8,7 @@ dependencies {
 
     runtimeOnly projects.micronautJdbcTomcat
 
-    runtimeOnly libs.managed.ojdbc11
+    runtimeOnly(mnOraclecloud.oracle.jdbc)
 }
 
 configurations {

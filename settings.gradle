@@ -17,6 +17,7 @@ micronautBuild {
     importMicronautCatalog("micronaut-cache")
     importMicronautCatalog("micronaut-data")
     importMicronautCatalog("micronaut-micrometer")
+    importMicronautCatalog("micronaut-oraclecloud")
     importMicronautCatalog("micronaut-reactor")
     importMicronautCatalog("micronaut-r2dbc")
     importMicronautCatalog("micronaut-serde")

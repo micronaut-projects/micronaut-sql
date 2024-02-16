@@ -13,6 +13,7 @@ micronaut-data = "4.6.1"
 micronaut-hibernate-validator = "4.2.0"
 micronaut-logging = "1.2.3"
 micronaut-micrometer = "5.4.0"
+micronaut-oraclecloud = "3.6.0"
 micronaut-r2dbc = "5.3.0"
 micronaut-reactor = "3.2.1"
 micronaut-serde = "2.8.1"
@@ -31,8 +32,6 @@ managed-jdbi = "3.44.1"
 
 # JDBC Drivers
 
-managed-ojdbc = "21.11.0.0"
-managed-ojdbcdms = "21.11.0.0"
 managed-postgres-driver = "42.7.1"
 managed-mariadb-driver = "3.3.2"
 managed-mssql-driver = "12.6.0.jre11"
@@ -72,6 +71,7 @@ micronaut-hibernate-validator = { module = "io.micronaut.beanvalidation:micronau
 micronaut-cache = { module = "io.micronaut.cache:micronaut-cache-bom", version.ref = "micronaut-cache" }
 micronaut-data = { module = "io.micronaut.data:micronaut-data-bom", version.ref = "micronaut-data" }
 micronaut-micrometer = { module = "io.micronaut.micrometer:micronaut-micrometer-bom", version.ref = "micronaut-micrometer" }
+micronaut-oraclecloud = { module = "io.micronaut.oraclecloud:micronaut-oraclecloud-bom", version.ref = "micronaut-oraclecloud" }
 micronaut-reactor = { module = "io.micronaut.reactor:micronaut-reactor-bom", version.ref = "micronaut-reactor" }
 micronaut-r2dbc = { module = "io.micronaut.r2dbc:micronaut-r2dbc-bom", version.ref = "micronaut-r2dbc" }
 micronaut-serde = { module = "io.micronaut.serde:micronaut-serde-bom", version.ref = "micronaut-serde" }
@@ -116,12 +116,12 @@ jdbi3-core = { module = "org.jdbi:jdbi3-core", version.ref = "managed-jdbi" }
 managed-hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "managed-hikari" }
 managed-commons-dbcp2 = { module = "org.apache.commons:commons-dbcp2", version.ref = "managed-commons-dbcp" }
 managed-tomcat-jdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "managed-tomcat-jdbc" }
-managed-ucp = { module = "com.oracle.database.jdbc:ucp", version.ref = "managed-ojdbc" }
+ucp = { module = "com.oracle.database.jdbc:ucp" }
 
 # UCP
 
-dms = { module = "com.oracle.database.observability:dms", version.ref = "managed-ojdbc" }
-ojdbc11dms = { module = "com.oracle.database.observability:ojdbc11dms", version.ref = "managed-ojdbcdms" }
+dms = { module = "com.oracle.database.observability:dms" }
+ojdbc11dms = { module = "com.oracle.database.observability:ojdbc11dms" }
 
 # JDBC drivers
 
@@ -131,8 +131,6 @@ managed-mssql-jdbc = { module = "com.microsoft.sqlserver:mssql-jdbc", version.re
 managed-mysql-connector-java = { module = "mysql:mysql-connector-java", version.ref = "managed-mysql-driver" }
 managed-mysql-connector-j = { module = "com.mysql:mysql-connector-j", version.ref = "managed-mysql-connector-j" }
 
-managed-ojdbc8 = { module = "com.oracle.database.jdbc:ojdbc8", version.ref = "managed-ojdbc" }
-managed-ojdbc11 = { module = "com.oracle.database.jdbc:ojdbc11", version.ref = "managed-ojdbc" }
 
 managed-h2 = { module = "com.h2database:h2", version.ref = "managed-h2" }
 
