@@ -33,4 +33,5 @@ vertxmysqlclient:
 vertxpgclient:
   title: Configuring Reactive PostgreSQL Client
   vertxpgclient-healthchecks: PostgreSQL Health Checks
+breaks: Breaking Changes
 repository: Repository
