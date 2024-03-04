@@ -17,6 +17,6 @@ configurations {
 
 micronaut {
     testResources {
-        additionalModules.add(JDBC_ORACLE_FREE)
+        additionalModules.add("jdbc-oracle-free")
     }
 }

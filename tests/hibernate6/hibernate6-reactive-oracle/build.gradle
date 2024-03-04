@@ -11,6 +11,6 @@ dependencies {
 
 micronaut {
     testResources {
-        additionalModules.add(HIBERNATE_REACTIVE_ORACLE_FREE)
+        additionalModules.add("hibernate-reactive-oracle-free")
     }
 }
