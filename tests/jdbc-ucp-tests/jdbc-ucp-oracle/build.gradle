@@ -15,6 +15,6 @@ dependencies {
 
 micronaut {
     testResources {
-        additionalModules.add(JDBC_ORACLE_XE)
+        additionalModules.add("jdbc-oracle-free")
     }
 }
