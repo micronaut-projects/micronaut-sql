@@ -159,7 +159,7 @@
         <h1>Micronaut SQL Libraries</h1>
         <p></p>
         <p>Projects to support SQL Database access in Micronaut</p>
-        <p><strong>Version:</strong> <select style='max-width: 200px' onChange='window.document.location.href=this.options[this.selectedIndex].value;'><option selected='selected' value='https://micronaut-projects.github.io/micronaut-sql/snapshot/guide/index.html'>SNAPSHOT</option><option value='https://micronaut-projects.github.io/micronaut-sql/latest/guide/index.html'>LATEST</option></select> </p>
+        <p><strong>Version:</strong> 5.5.3-SNAPSHOT </p>
     </div>
     
 <h1 id="introduction"><a class="anchor" href="#introduction"></a>1 Introduction</h1>
@@ -898,9 +898,9 @@ jpa:
       ]
     [jpa.default.properties]
       [jpa.default.properties.hibernate]
+        show_sql=true
         [jpa.default.properties.hibernate.hbm2ddl]
-          auto="update"
-        show_sql=true</code></pre>
+          auto="update"</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
