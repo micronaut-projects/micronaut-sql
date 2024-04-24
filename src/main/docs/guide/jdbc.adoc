@@ -1,4 +1,4 @@
-Java data sources can be configured for one of three currently provided implementations. Apache DBCP2, Hikari, and Tomcat are supported by default.
+Java data sources can be configured for one of four currently provided implementations. Apache DBCP2, Hikari, Tomcat, and Oracle Universal Connection Pool are supported by default.
 
 [TIP]
 .Using the CLI
