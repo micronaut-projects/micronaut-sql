@@ -99,11 +99,13 @@
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-jdbc"><a href="#jdbc"><strong>3</strong><span>Configuring JDBC</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-connection-pools"><a href="#jdbc-connection-pools"><strong>3.1</strong><span>Configuring JDBC Connection Pools</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-disable"><a href="#jdbc-disable"><strong>3.1</strong><span>Disable Micronaut JDBC Data Sources</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-multiple-datasources"><a href="#jdbc-multiple-datasources"><strong>3.2</strong><span>Configuring Multiple Data Sources</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-connection-pools"><a href="#jdbc-connection-pools"><strong>3.2</strong><span>Configuring JDBC Connection Pools</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-healthchecks"><a href="#jdbc-healthchecks"><strong>3.3</strong><span>JDBC Health Checks</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-multiple-datasources"><a href="#jdbc-multiple-datasources"><strong>3.3</strong><span>Configuring Multiple Data Sources</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-healthchecks"><a href="#jdbc-healthchecks"><strong>3.4</strong><span>JDBC Health Checks</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-hibernate"><a href="#hibernate"><strong>4</strong><span>Configuring Hibernate</span></a></div>
         
@@ -201,7 +203,7 @@
 
 
 <div class="paragraph">
-<p>Java data sources can be configured for one of three currently provided implementations. Apache DBCP2, Hikari, and Tomcat are supported by default.</p>
+<p>Java data sources can be configured for one of four currently provided implementations. Apache DBCP2, Hikari, Tomcat, and Oracle Universal Connection Pool are supported by default.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -315,7 +317,20 @@
 </div></p>
 </div>
 
-<h2 id="jdbc-connection-pools"><a class="anchor" href="#jdbc-connection-pools"></a>3.1 Configuring JDBC Connection Pools</h2>
+<h2 id="jdbc-disable"><a class="anchor" href="#jdbc-disable"></a>3.1 Disable Micronaut JDBC Data Sources</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/5.7.x/src/main/docs/guide/jdbc/jdbc-disable.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>You can disable Micronaut Data Sources, for example in a test, by setting <code>datasources.enabled</code> to <code>false</code>.</p>
+</div>
+
+<h2 id="jdbc-connection-pools"><a class="anchor" href="#jdbc-connection-pools"></a>3.2 Configuring JDBC Connection Pools</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/5.7.x/src/main/docs/guide/jdbc/jdbc-connection-pools.adoc"'>
@@ -601,7 +616,7 @@ datasources.default.maxPoolSize=10</code></pre>
 </tbody>
 </table>
 
-<h2 id="jdbc-multiple-datasources"><a class="anchor" href="#jdbc-multiple-datasources"></a>3.2 Configuring Multiple Data Sources</h2>
+<h2 id="jdbc-multiple-datasources"><a class="anchor" href="#jdbc-multiple-datasources"></a>3.3 Configuring Multiple Data Sources</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/5.7.x/src/main/docs/guide/jdbc/jdbc-multiple-datasources.adoc"'>
@@ -677,7 +692,7 @@ datasources.warehouse=...</code></pre>
 </div>
 </div>
 
-<h2 id="jdbc-healthchecks"><a class="anchor" href="#jdbc-healthchecks"></a>3.3 JDBC Health Checks</h2>
+<h2 id="jdbc-healthchecks"><a class="anchor" href="#jdbc-healthchecks"></a>3.4 JDBC Health Checks</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/5.7.x/src/main/docs/guide/jdbc/jdbc-healthchecks.adoc"'>
