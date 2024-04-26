@@ -1,0 +1,1 @@
+You can disable Micronaut Data Sources, for example in a test, by setting `datasources.enabled` to `false`.

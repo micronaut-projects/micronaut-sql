@@ -76,6 +76,27 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.close()
     }
 
+    void "test datasource can be disabled"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                [
+                        'datasources.default': [:],
+                        'datasources.enabled' : false
+                ]
+        ))
+        applicationContext.start()
+
+        expect:
+        !applicationContext.containsBean(DataSource)
+        !applicationContext.containsBean(DatasourceConfiguration)
+        !applicationContext.containsBean(TomcatDataSourcePoolMetadata)
+
+        cleanup:
+        applicationContext.close()
+    }
+
     void "test operations with a blank connection"() {
         given:
         ApplicationContext applicationContext = new DefaultApplicationContext("test")

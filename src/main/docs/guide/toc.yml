@@ -2,6 +2,7 @@ introduction: Introduction
 releaseHistory: Release History
 jdbc:
   title: Configuring JDBC
+  jdbc-disable: Disable Micronaut JDBC Data Sources
   jdbc-connection-pools: Configuring JDBC Connection Pools
   jdbc-multiple-datasources: Configuring Multiple Data Sources
   jdbc-healthchecks: JDBC Health Checks

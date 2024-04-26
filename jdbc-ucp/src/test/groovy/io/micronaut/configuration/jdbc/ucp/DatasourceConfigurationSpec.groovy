@@ -18,6 +18,7 @@ package io.micronaut.configuration.jdbc.ucp
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource
+import io.micronaut.context.exceptions.NoSuchBeanException
 import io.micronaut.inject.qualifiers.Qualifiers
 import io.micronaut.jdbc.DataSourceResolver
 import oracle.ucp.jdbc.PoolDataSource
@@ -96,6 +97,35 @@ class DatasourceConfigurationSpec extends Specification {
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.getURL() == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
         dataSource.getUser() == 'sa'
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    void "test datasource can be disabled"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                [
+                        "datasources.default.url": "jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE",
+                        "datasources.default.username": "sa",
+                        "datasources.default.password": "",
+                        "datasources.enabled": false
+                ]
+        ))
+        applicationContext.start()
+
+        expect:
+        !applicationContext.containsBean(PoolDataSource)
+        !applicationContext.containsBean(DatasourceConfiguration)
+
+        when:
+        applicationContext.getBean(DataSource)
+
+        then:
+        def ex = thrown(NoSuchBeanException)
+        ex.message.startsWith("No bean of type [javax.sql.DataSource] exists.")
 
         cleanup:
         applicationContext.close()
