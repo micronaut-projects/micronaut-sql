@@ -1,10 +1,8 @@
 You can use the `javax.persistence.PersistenceContext` annotation to inject an `EntityManager` (or Hibernate `Session`). To do so you need to make sure the JPA annotations are on the `annotationProcessor` path in your build:
 
-[source,groovy]
-.Adding the JPA dependency to `annotationProcessor` in Gradle
-----
-annotationProcessor "jakarta.persistence:jakarta.persistence-api:2.2"
-----
+dependency:jakarta.persistence-api[scope="annotationProcessor", groupId="jakarta.persistence", version="2.2"]
+
+NOTE: For Kotlin, add the `jakarta.persistence-api` dependency in https://docs.micronaut.io/4.4.3/guide/#kaptOrKsp[kapt or ksp scope], and for Groovy add `jakarta.persistence-api` in compileOnly scope.
 
 [source,java]
 .Using `@PersistenceContext`
