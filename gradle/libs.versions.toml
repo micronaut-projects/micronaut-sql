@@ -47,7 +47,7 @@ managed-tomcat-jdbc = "10.1.20"
 
 # JPA
 
-managed-jakarta-persistence-api = "3.1.0"
+managed-jakarta-persistence-api = "3.2.0"
 managed-jakarta-transaction-api = "2.0.1"
 
 managed-h2 = "2.2.224"
