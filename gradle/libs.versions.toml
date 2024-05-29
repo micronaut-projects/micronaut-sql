@@ -22,20 +22,20 @@ micronaut-validation = "4.4.4"
 
 # Frameworks
 
-managed-vertx = "4.5.7"
+managed-vertx = "4.5.8"
 managed-jooq = "3.19.7"
-managed-hibernate = "6.4.4.Final"
-managed-hibernate-reactive = "2.2.2.Final"
+managed-hibernate = "6.5.2.Final"
+managed-hibernate-reactive = "2.3.0.Final"
 managed-jasync = "2.2.4"
 managed-jdbi = "3.45.1"
 
 # JDBC Drivers
 
-managed-ojdbc = "21.13.0.0"
+managed-ojdbc = "21.14.0.0"
 managed-ojdbcdms = "21.13.0.0"
 managed-postgres-driver = "42.7.3"
-managed-mariadb-driver = "3.4.0"
-managed-mssql-driver = "12.6.1.jre11"
+managed-mariadb-driver = "3.4.3"
+managed-mssql-driver = "12.6.2.jre11"
 managed-mysql-driver = "8.0.33"
 managed-mysql-connector-j = "8.3.0"
 

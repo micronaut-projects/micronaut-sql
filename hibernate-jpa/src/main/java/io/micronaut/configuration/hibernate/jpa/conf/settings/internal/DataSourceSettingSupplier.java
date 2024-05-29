@@ -60,6 +60,6 @@ final class DataSourceSettingSupplier implements SettingsSupplier {
         if (dataSourceResolver != null) {
             dataSource = dataSourceResolver.resolve(dataSource);
         }
-        return Collections.singletonMap(AvailableSettings.DATASOURCE, dataSource);
+        return Collections.singletonMap(AvailableSettings.JAKARTA_NON_JTA_DATASOURCE, dataSource);
     }
 }
