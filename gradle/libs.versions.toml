@@ -17,7 +17,7 @@ micronaut-r2dbc = "5.4.0"
 micronaut-reactor = "3.2.1"
 micronaut-serde = "2.8.2"
 micronaut-spring = "5.5.0"
-micronaut-test = "4.2.1"
+micronaut-test = "4.3.0"
 micronaut-validation = "4.4.4"
 
 # Frameworks
