@@ -67,3 +67,4 @@ include 'tests:jooq-tests:jooq-jdbc-postgres'
 include 'tests:jooq-tests:jooq-r2dbc-postgres'
 
 include 'tests:jdbc-ucp-tests:jdbc-ucp-oracle'
+include 'tests:jdbc-dbcp-tests:jdbc-dbcp-postgres'
