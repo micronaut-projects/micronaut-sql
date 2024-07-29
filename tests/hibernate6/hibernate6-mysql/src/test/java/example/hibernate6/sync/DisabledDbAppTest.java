@@ -18,6 +18,7 @@ package example.hibernate6.sync;
 import io.micronaut.context.annotation.Property;
 import io.micronaut.context.exceptions.NoSuchBeanException;
 import io.micronaut.core.convert.ConversionService;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.runtime.server.EmbeddedServer;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MicronautTest(transactional = false)
-@Property(name = "datasources.default.enabled", value = "false")
+@Property(name = "datasources.default.enabled", value = StringUtils.FALSE)
+@Property(name = "jpa.enabled", value = StringUtils.FALSE)
 @Property(name = "datasources.default.db-type", value = "mysql")
 @Property(name = "jpa.default.properties.hibernate.dialect", value = "org.hibernate.dialect.MySQLDialect")
 class DisabledDbAppTest {
