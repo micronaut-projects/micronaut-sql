@@ -28,8 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@MicronautTest
-@Property(name = "datasources.enabled", value = "false")
+@MicronautTest(transactional = false)
+@Property(name = "datasources.default.enabled", value = "false")
 @Property(name = "datasources.default.db-type", value = "mysql")
 @Property(name = "jpa.default.properties.hibernate.dialect", value = "org.hibernate.dialect.MySQLDialect")
 class DisabledDbAppTest {

@@ -44,6 +44,7 @@ public class DatasourceConfiguration extends HikariConfig implements BasicJdbcCo
     private CalculatedSettings calculatedSettings;
     private String name;
     private boolean automaticValidationQuery = true;
+    private boolean enabled = true;
 
     /**
      * Constructor.
@@ -192,5 +193,18 @@ public class DatasourceConfiguration extends HikariConfig implements BasicJdbcCo
      */
     public void setAutomaticValidationQuery(boolean automaticValidationQuery) {
         this.automaticValidationQuery = automaticValidationQuery;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * Sets an indicator telling whether data source is enabled.
+     * @param enabled an indicator telling whether data source is enabled
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

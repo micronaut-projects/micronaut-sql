@@ -111,21 +111,80 @@ class DatasourceConfigurationSpec extends Specification {
                         "datasources.default.url": "jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE",
                         "datasources.default.username": "sa",
                         "datasources.default.password": "",
-                        "datasources.enabled": false
+                        "datasources.default.enabled": false
                 ]
         ))
         applicationContext.start()
 
-        expect:
-        !applicationContext.containsBean(PoolDataSource)
-        !applicationContext.containsBean(DatasourceConfiguration)
+        when:
+        def datasourceConfiguration = applicationContext.getBean(DatasourceConfiguration)
+        then:
+        datasourceConfiguration
+        !datasourceConfiguration.enabled
+
+        when:
+        applicationContext.getBean(PoolDataSource)
+        then:
+        def exception = thrown(NoSuchBeanException)
+        exception.message.contains('disabled since bean property [enabled] value is not equal to [true]')
 
         when:
         applicationContext.getBean(DataSource)
 
         then:
-        def ex = thrown(NoSuchBeanException)
-        ex.message.startsWith("No bean of type [javax.sql.DataSource] exists.")
+        exception = thrown(NoSuchBeanException)
+        exception.message.startsWith("No bean of type [javax.sql.DataSource] exists.")
+        exception.message.contains('disabled since bean property [enabled] value is not equal to [true]')
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    void "test datasource can be disabled and enabled"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                [
+                        'datasources.default': [:],
+                        'datasources.default.enabled' : false,
+                        'datasources.custom': [:],
+                ]
+        ))
+        applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
+
+        expect:
+        applicationContext.containsBean(DatasourceConfiguration)
+        def defaultDatasourceConfiguration = applicationContext.getBean(DatasourceConfiguration)
+        !defaultDatasourceConfiguration.enabled
+
+        applicationContext.containsBean(DatasourceConfiguration, Qualifiers.byName('custom'))
+        def customDatasourceConfiguration = applicationContext.getBean(DatasourceConfiguration, Qualifiers.byName('custom'))
+        customDatasourceConfiguration.enabled
+
+        when:
+        applicationContext.getBean(DataSource)
+        then:
+        def exception = thrown(NoSuchBeanException)
+        exception.message.contains('disabled since bean property [enabled] value is not equal to [true]')
+        when:
+        applicationContext.getBean(PoolDataSource)
+        then:
+        thrown(NoSuchBeanException)
+
+        when:
+        DataSource customDataSource = applicationContext.getBean(DataSource, Qualifiers.byName('custom'))
+        then:
+        noExceptionThrown()
+        customDataSource
+
+        when:
+        PoolDataSource dataSource = dataSourceResolver.resolve(customDataSource)
+
+        then: // The configuration is supplied because H2 is on the classpath
+        dataSource.getURL() == 'jdbc:h2:mem:custom;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
+        dataSource.getUser() == 'sa'
 
         cleanup:
         applicationContext.close()

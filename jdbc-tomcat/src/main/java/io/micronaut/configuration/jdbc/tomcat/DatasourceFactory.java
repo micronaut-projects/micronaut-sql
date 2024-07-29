@@ -59,6 +59,7 @@ public class DatasourceFactory implements AutoCloseable {
      */
     @Context
     @EachBean(DatasourceConfiguration.class)
+    @Requires(bean = DatasourceConfiguration.class, beanProperty = "enabled", value = "true")
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource(datasourceConfiguration);
         dataSources.add(ds);

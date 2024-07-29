@@ -28,8 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@MicronautTest
-@Property(name = "datasources.enabled", value = "false")
+@MicronautTest(transactional = false)
+@Property(name = "datasources.default.enabled", value = "false")
 @Property(name = "datasources.default.db-type", value = "oracle")
 @Property(name = "datasources.default.connection-factory-class-name", value = "oracle.jdbc.pool.OracleDataSource")
 @Property(name = "test-resources.containers.oracle.startup-timeout", value = "600s")

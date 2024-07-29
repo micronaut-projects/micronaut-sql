@@ -15,6 +15,8 @@
  */
 package io.micronaut.jdbc;
 
+import io.micronaut.core.util.Toggleable;
+
 import java.util.Map;
 
 /**
@@ -25,7 +27,7 @@ import java.util.Map;
  * @author graemerocher
  * @since 1.0
  */
-public interface BasicJdbcConfiguration {
+public interface BasicJdbcConfiguration extends Toggleable {
 
     /**
      * The prefix used for data source configuration.

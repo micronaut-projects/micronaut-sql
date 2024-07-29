@@ -43,6 +43,7 @@ import java.util.Properties;
 public class DatasourceConfiguration extends PoolProperties implements BasicJdbcConfiguration {
 
     private CalculatedSettings calculatedSettings;
+    private boolean enabled = true;
 
     /**
      * Constructor.
@@ -172,5 +173,18 @@ public class DatasourceConfiguration extends PoolProperties implements BasicJdbc
      */
     public void setJndiName(String jndiName) {
         setDataSourceJNDI(jndiName);
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * Sets an indicator telling whether data source is enabled.
+     * @param enabled an indicator telling whether data source is enabled
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

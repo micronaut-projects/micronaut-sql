@@ -1,5 +1,6 @@
 package io.micronaut.configuration.jdbc.dbcp
 
+import io.micronaut.context.exceptions.NoSuchBeanException
 import io.micronaut.jdbc.DataSourceResolver
 import org.apache.commons.dbcp2.BasicDataSource
 import io.micronaut.context.ApplicationContext
@@ -61,15 +62,80 @@ class DatasourceConfigurationSpec extends Specification {
                 "test",
                 [
                         'datasources.default': [:],
-                        'datasources.enabled': false
+                        'datasources.default.enabled': false
                 ]
         ))
         applicationContext.start()
 
+        when:
+        applicationContext.getBean(DatasourceConfiguration)
+        then:
+        def exception = thrown(NoSuchBeanException)
+        exception.message.contains('The datasource "default" is disabled')
+        when:
+        applicationContext.getBean(DataSource)
+        then:
+        exception = thrown(NoSuchBeanException)
+        exception.message.contains('The datasource "default" is disabled')
+        when:
+        applicationContext.getBean(BasicDataSource)
+        then:
+        thrown(NoSuchBeanException)
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    void "test datasource can be disabled and enabled"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                [
+                        'datasources.default': [:],
+                        'datasources.default.enabled' : false,
+                        'datasources.custom': [:],
+                ]
+        ))
+        applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
+
         expect:
-        !applicationContext.containsBean(DataSource)
-        !applicationContext.containsBean(BasicDataSource)
-        !applicationContext.containsBean(DatasourceConfiguration)
+        applicationContext.containsBean(DatasourceConfiguration, Qualifiers.byName('custom'))
+        def customDatasourceConfiguration = applicationContext.getBean(DatasourceConfiguration, Qualifiers.byName('custom'))
+        customDatasourceConfiguration.enabled
+
+        when:
+        applicationContext.getBean(DatasourceConfiguration)
+        then:
+        def exception = thrown(NoSuchBeanException)
+        exception.message.contains('The datasource "default" is disabled')
+
+        when:
+        applicationContext.getBean(DataSource)
+        then:
+        exception = thrown(NoSuchBeanException)
+        exception.message.contains('The datasource "default" is disabled')
+        when:
+        applicationContext.getBean(BasicDataSource)
+        then:
+        thrown(NoSuchBeanException)
+
+        when:
+        DataSource customDataSource = applicationContext.getBean(DataSource, Qualifiers.byName('custom'))
+        then:
+        noExceptionThrown()
+        customDataSource
+
+        when:
+        BasicDataSource dataSource = dataSourceResolver.resolve(customDataSource)
+
+        then: //The configuration is supplied because H2 is on the classpath
+        dataSource.url == 'jdbc:h2:mem:custom;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
+        dataSource.username == 'sa'
+        dataSource.password == ''
+        dataSource.driverClassName == 'org.h2.Driver'
+        dataSource.validationQuery == 'SELECT 1'
 
         cleanup:
         applicationContext.close()

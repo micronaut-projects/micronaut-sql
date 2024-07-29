@@ -19,6 +19,7 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Property;
+import io.micronaut.context.exceptions.DisabledBeanException;
 import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
@@ -50,6 +51,7 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
     private final CalculatedSettings calculatedSettings;
     private final String name;
+    private boolean enabled = true;
 
     /**
      * Constructor.
@@ -175,5 +177,23 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     @Override
     public String getConfiguredValidationQuery() {
         return super.getValidationQuery();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * Sets an indicator telling whether data source is enabled.
+     * @param enabled an indicator telling whether data source is enabled
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        if (!enabled) {
+            // This is the only way to disable this bean and datasource as well
+            // because dbcp doesn't have datasource factory like other datasource implementations
+            throw new DisabledBeanException("The datasource \"" + name + "\" is disabled");
+        }
     }
 }

@@ -57,6 +57,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     private String name;
     private String username;
     private String password;
+    private boolean enabled = true;
 
     /**
      * Constructor.
@@ -209,6 +210,18 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         return delegate.getSQLForValidateConnection();
     }
 
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * Sets an indicator telling whether data source is enabled.
+     * @param enabled an indicator telling whether data source is enabled
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     /**
      * Configures the missing properties of the data source from the calculated settings.
