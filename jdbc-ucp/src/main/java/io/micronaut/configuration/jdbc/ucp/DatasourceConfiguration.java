@@ -209,6 +209,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         return delegate.getSQLForValidateConnection();
     }
 
+
     /**
      * Configures the missing properties of the data source from the calculated settings.
      *

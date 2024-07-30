@@ -15,7 +15,6 @@
  */
 package io.micronaut.jdbc;
 
-
 import java.util.Map;
 
 /**

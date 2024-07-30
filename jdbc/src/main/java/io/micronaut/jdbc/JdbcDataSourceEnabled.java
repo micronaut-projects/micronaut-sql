@@ -45,6 +45,7 @@ public final class JdbcDataSourceEnabled implements Condition {
                 dataSourceName = "default";
             }
         }
-        return context.getProperty("datasources." + dataSourceName + ".enabled", Boolean.class, true) == true;
+        String property = "datasources." + dataSourceName + ".enabled";
+        return context.getProperty(property, Boolean.class, true);
     }
 }
