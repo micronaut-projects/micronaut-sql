@@ -22,6 +22,7 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.jdbc.DataSourceResolver;
+import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +60,7 @@ public class DatasourceFactory implements AutoCloseable {
      */
     @Context
     @EachBean(DatasourceConfiguration.class)
-    @Requires(bean = DatasourceConfiguration.class, beanProperty = "enabled", value = "true")
+    @Requires(condition = JdbcDataSourceEnabled.class)
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource(datasourceConfiguration);
         dataSources.add(ds);

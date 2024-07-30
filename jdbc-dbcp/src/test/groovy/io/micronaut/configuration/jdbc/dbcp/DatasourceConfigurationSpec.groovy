@@ -100,24 +100,17 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.start()
         DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
-        expect:
-        applicationContext.containsBean(DatasourceConfiguration, Qualifiers.byName('custom'))
-        def customDatasourceConfiguration = applicationContext.getBean(DatasourceConfiguration, Qualifiers.byName('custom'))
-        customDatasourceConfiguration.enabled
+        when:
+        applicationContext.getBean(DatasourceConfiguration, Qualifiers.byName('default'))
+        then:
+        thrown(NoSuchBeanException)
 
         when:
-        applicationContext.getBean(DatasourceConfiguration)
+        applicationContext.getBean(DataSource, Qualifiers.byName('default'))
         then:
-        def exception = thrown(NoSuchBeanException)
-        exception.message.contains('The datasource "default" is disabled')
-
+        thrown(NoSuchBeanException)
         when:
-        applicationContext.getBean(DataSource)
-        then:
-        exception = thrown(NoSuchBeanException)
-        exception.message.contains('The datasource "default" is disabled')
-        when:
-        applicationContext.getBean(BasicDataSource)
+        applicationContext.getBean(BasicDataSource, Qualifiers.byName('default'))
         then:
         thrown(NoSuchBeanException)
 

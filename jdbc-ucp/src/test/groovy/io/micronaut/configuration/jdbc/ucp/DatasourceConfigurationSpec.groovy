@@ -117,24 +117,15 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.start()
 
         when:
-        def datasourceConfiguration = applicationContext.getBean(DatasourceConfiguration)
+        applicationContext.getBean(PoolDataSource, Qualifiers.byName('default'))
         then:
-        datasourceConfiguration
-        !datasourceConfiguration.enabled
+        thrown(NoSuchBeanException)
 
         when:
-        applicationContext.getBean(PoolDataSource)
-        then:
-        def exception = thrown(NoSuchBeanException)
-        exception.message.contains('disabled since bean property [enabled] value is not equal to [true]')
-
-        when:
-        applicationContext.getBean(DataSource)
+        applicationContext.getBean(DataSource, Qualifiers.byName('default'))
 
         then:
-        exception = thrown(NoSuchBeanException)
-        exception.message.startsWith("No bean of type [javax.sql.DataSource] exists.")
-        exception.message.contains('disabled since bean property [enabled] value is not equal to [true]')
+        thrown(NoSuchBeanException)
 
         cleanup:
         applicationContext.close()
@@ -154,22 +145,12 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.start()
         DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
-        expect:
-        applicationContext.containsBean(DatasourceConfiguration)
-        def defaultDatasourceConfiguration = applicationContext.getBean(DatasourceConfiguration)
-        !defaultDatasourceConfiguration.enabled
-
-        applicationContext.containsBean(DatasourceConfiguration, Qualifiers.byName('custom'))
-        def customDatasourceConfiguration = applicationContext.getBean(DatasourceConfiguration, Qualifiers.byName('custom'))
-        customDatasourceConfiguration.enabled
-
         when:
-        applicationContext.getBean(DataSource)
+        applicationContext.getBean(DataSource, Qualifiers.byName('default'))
         then:
-        def exception = thrown(NoSuchBeanException)
-        exception.message.contains('disabled since bean property [enabled] value is not equal to [true]')
+        thrown(NoSuchBeanException)
         when:
-        applicationContext.getBean(PoolDataSource)
+        applicationContext.getBean(PoolDataSource, Qualifiers.byName('default'))
         then:
         thrown(NoSuchBeanException)
 

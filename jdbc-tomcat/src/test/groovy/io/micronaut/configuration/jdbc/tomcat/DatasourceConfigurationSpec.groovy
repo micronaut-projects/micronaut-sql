@@ -88,17 +88,12 @@ class DatasourceConfigurationSpec extends Specification {
         ))
         applicationContext.start()
 
-        expect:
-        applicationContext.containsBean(DatasourceConfiguration)
-        DatasourceConfiguration datasourceConfiguration = applicationContext.getBean(DatasourceConfiguration)
-        !datasourceConfiguration.enabled
         when:
-        applicationContext.getBean(DataSource)
+        applicationContext.getBean(DataSource, Qualifiers.byName('default'))
         then:
-        def exception = thrown(NoSuchBeanException)
-        exception.message.contains('disabled since bean property [enabled] value is not equal to [true]')
+        thrown(NoSuchBeanException)
         when:
-        applicationContext.getBean(TomcatDataSourcePoolMetadata)
+        applicationContext.getBean(TomcatDataSourcePoolMetadata, Qualifiers.byName('default'))
         then:
         thrown(NoSuchBeanException)
 
@@ -120,22 +115,12 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.start()
         DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
-        expect:
-        applicationContext.containsBean(DatasourceConfiguration)
-        def defaultDatasourceConfiguration = applicationContext.getBean(DatasourceConfiguration)
-        !defaultDatasourceConfiguration.enabled
-
-        applicationContext.containsBean(DatasourceConfiguration, Qualifiers.byName('custom'))
-        def customDatasourceConfiguration = applicationContext.getBean(DatasourceConfiguration, Qualifiers.byName('custom'))
-        customDatasourceConfiguration.enabled
-
         when:
-        applicationContext.getBean(DataSource)
+        applicationContext.getBean(DataSource, Qualifiers.byName('default'))
         then:
-        def exception = thrown(NoSuchBeanException)
-        exception.message.contains('disabled since bean property [enabled] value is not equal to [true]')
+        thrown(NoSuchBeanException)
         when:
-        applicationContext.getBean(TomcatDataSourcePoolMetadata)
+        applicationContext.getBean(TomcatDataSourcePoolMetadata, Qualifiers.byName('default'))
         then:
         thrown(NoSuchBeanException)
 

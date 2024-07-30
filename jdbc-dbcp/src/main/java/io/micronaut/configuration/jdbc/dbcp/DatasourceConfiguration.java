@@ -53,7 +53,6 @@ class DatasourceConfiguration extends BasicDataSource implements BasicJdbcConfig
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
     private final CalculatedSettings calculatedSettings;
     private final String name;
-    private boolean enabled = true;
 
     /**
      * Constructor.
@@ -181,11 +180,6 @@ class DatasourceConfiguration extends BasicDataSource implements BasicJdbcConfig
         return super.getValidationQuery();
     }
 
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
     /**
      * Sets an indicator telling whether data source is enabled.
      * If enabled is false, that means datasource is disabled and this method will throw
@@ -195,7 +189,6 @@ class DatasourceConfiguration extends BasicDataSource implements BasicJdbcConfig
      */
     @Internal
     public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
         if (!enabled) {
             // This is the only way to disable this bean which is actual datasource
             // because dbcp doesn't have datasource factory like other datasource implementations
