@@ -20,6 +20,7 @@ import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Property;
 import io.micronaut.context.exceptions.DisabledBeanException;
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
@@ -46,7 +47,8 @@ import java.util.Map;
  */
 @Context
 @EachProperty(value = BasicJdbcConfiguration.PREFIX, primary = "default")
-public class DatasourceConfiguration extends BasicDataSource implements BasicJdbcConfiguration {
+@Internal
+class DatasourceConfiguration extends BasicDataSource implements BasicJdbcConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
     private final CalculatedSettings calculatedSettings;
@@ -186,12 +188,16 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
 
     /**
      * Sets an indicator telling whether data source is enabled.
+     * If enabled is false, that means datasource is disabled and this method will throw
+     * {@link DisabledBeanException} thus preventing this datasource from being added to the context.
+     *
      * @param enabled an indicator telling whether data source is enabled
      */
+    @Internal
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
         if (!enabled) {
-            // This is the only way to disable this bean and datasource as well
+            // This is the only way to disable this bean which is actual datasource
             // because dbcp doesn't have datasource factory like other datasource implementations
             throw new DisabledBeanException("The datasource \"" + name + "\" is disabled");
         }
