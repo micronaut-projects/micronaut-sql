@@ -47,8 +47,7 @@ import java.util.Map;
  */
 @Context
 @EachProperty(value = BasicJdbcConfiguration.PREFIX, primary = "default")
-@Internal
-class DatasourceConfiguration extends BasicDataSource implements BasicJdbcConfiguration {
+public class DatasourceConfiguration extends BasicDataSource implements BasicJdbcConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
     private final CalculatedSettings calculatedSettings;
@@ -188,7 +187,7 @@ class DatasourceConfiguration extends BasicDataSource implements BasicJdbcConfig
      * @param enabled an indicator telling whether data source is enabled
      */
     @Internal
-    public void setEnabled(boolean enabled) {
+    void setEnabled(boolean enabled) {
         if (!enabled) {
             // This is the only way to disable this bean which is actual datasource
             // because dbcp doesn't have datasource factory like other datasource implementations
