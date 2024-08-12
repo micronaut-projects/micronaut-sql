@@ -4,7 +4,7 @@
 
 micronaut = "4.5.4"
 micronaut-docs = "2.0.0"
-micronaut-gradle-plugin = "4.3.6"
+micronaut-gradle-plugin = "4.4.2"
 micronaut-test-resources = "2.5.4"
 
 # Platform dependencies
@@ -13,11 +13,11 @@ micronaut-data = "4.7.1"
 micronaut-hibernate-validator = "4.3.0"
 micronaut-logging = "1.2.3"
 micronaut-micrometer = "5.7.1"
-micronaut-r2dbc = "5.4.0"
+micronaut-r2dbc = "5.5.0"
 micronaut-reactor = "3.3.0"
-micronaut-serde = "2.9.0"
+micronaut-serde = "2.10.2"
 micronaut-spring = "5.6.0"
-micronaut-test = "4.3.0"
+micronaut-test = "4.4.0"
 micronaut-validation = "4.5.0"
 
 # Frameworks
@@ -27,7 +27,7 @@ managed-jooq = "3.19.10"
 managed-hibernate = "6.5.2.Final"
 managed-hibernate-reactive = "2.3.1.Final"
 managed-jasync = "2.2.4"
-managed-jdbi = "3.45.2"
+managed-jdbi = "3.45.3"
 
 # JDBC Drivers
 
@@ -43,7 +43,7 @@ managed-mysql-connector-j = "8.4.0"
 
 managed-hikari = "5.1.0"
 managed-commons-dbcp = "2.12.0"
-managed-tomcat-jdbc = "10.1.26"
+managed-tomcat-jdbc = "10.1.28"
 
 # JPA
 

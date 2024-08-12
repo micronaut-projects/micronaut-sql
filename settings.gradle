@@ -6,7 +6,7 @@ pluginManagement {
 }
 
 plugins {
-    id 'io.micronaut.build.shared.settings' version '7.0.1'
+    id 'io.micronaut.build.shared.settings' version '7.2.0'
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -67,3 +67,5 @@ include 'tests:jooq-tests:jooq-jdbc-postgres'
 include 'tests:jooq-tests:jooq-r2dbc-postgres'
 
 include 'tests:jdbc-ucp-tests:jdbc-ucp-oracle'
+include 'tests:jdbc-dbcp-tests:jdbc-dbcp-postgres'
+include 'tests:jdbc-tomcat-tests:jdbc-tomcat-mysql'

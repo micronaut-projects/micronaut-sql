@@ -1,0 +1,19 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application'
+}
+
+dependencies {
+    implementation projects.micronautJdbcTomcat
+    implementation projects.micronautTests.micronautCommonSync
+
+    runtimeOnly libs.managed.mysql.connector.j
+
+    testImplementation projects.micronautTests.micronautCommonTests
+    testImplementation(mnData.micronaut.data.tx.jdbc)
+}
+
+micronaut {
+    testResources {
+        additionalModules.add(JDBC_MYSQL)
+    }
+}
