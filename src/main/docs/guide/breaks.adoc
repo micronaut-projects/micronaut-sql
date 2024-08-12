@@ -1,0 +1,3 @@
+== Micronaut SQL 5.8.0
+
+In Micronaut SQL 5.7.0, you could <<jdbc-disable, disable data sources>> if you set `datasources.enabled` to `false`. Since Micronaut SQL 5.8.0, it is no longer supported. If you have multiple data sources, you have to disable them all individually. For example if you had two data sources named `a` and `b`, you have to set `datasources.a.enabled=false` and    `datasources.b.enabled=false`.
