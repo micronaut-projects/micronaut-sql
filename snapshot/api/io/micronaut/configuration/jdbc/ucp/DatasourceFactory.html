@@ -171,6 +171,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <h3>dataSource</h3>
 <div class="member-signature"><span class="annotations">@Context
 @EachBean(<a href="DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceConfiguration.class</a>)
+@Requires(condition=<a href="../../../jdbc/JdbcDataSourceEnabled.html" title="class in io.micronaut.jdbc">JdbcDataSourceEnabled.class</a>)
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type">oracle.ucp.jdbc.PoolDataSource</span>&nbsp;<span class="element-name">dataSource</span><wbr><span class="parameters">(<a href="DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceConfiguration</a>&nbsp;datasourceConfiguration)</span>
                                           throws <span class="exceptions">oracle.ucp.UniversalConnectionPoolException</span></div>
 <div class="block">Method to get a PoolDataSource from the <a href="DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp"><code>DatasourceConfiguration</code></a>.</div>
