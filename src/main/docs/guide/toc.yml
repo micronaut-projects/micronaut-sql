@@ -1,5 +1,6 @@
 introduction: Introduction
 releaseHistory: Release History
+breaks: Breaking Changes
 jdbc:
   title: Configuring JDBC
   jdbc-disable: Disable Micronaut JDBC Data Sources
