@@ -18,11 +18,8 @@
  */
 @Configuration
 @Requires(classes = HikariDataSource.class)
-@Requires(property = BasicJdbcConfiguration.PREFIX + ".enabled", value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 package io.micronaut.configuration.jdbc.hikari;
 
 import com.zaxxer.hikari.HikariDataSource;
 import io.micronaut.context.annotation.Configuration;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.util.StringUtils;
-import io.micronaut.jdbc.BasicJdbcConfiguration;

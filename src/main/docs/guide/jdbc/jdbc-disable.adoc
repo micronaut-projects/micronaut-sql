@@ -1,1 +1,5 @@
-You can disable Micronaut Data Sources, for example in a test, by setting `datasources.enabled` to `false`.
+You can disable Micronaut Data Sources, for example in a test, by setting `datasources.<datasource-name>.enabled` to `false`.
+
+Please note that such test should have `@MicronautTest(transactional = false)` because required transaction beans won't be available because there is no datasource and connection available in the context.
+
+NOTE: Micronaut SQL 5.7.0 allowed disabling datasources via setting `datasources.enabled` to `false. That it is no longer supported. If you have multiple dataousrces you have to disable them all individually.

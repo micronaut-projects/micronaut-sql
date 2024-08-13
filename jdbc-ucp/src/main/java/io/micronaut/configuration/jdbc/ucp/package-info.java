@@ -18,11 +18,8 @@
  */
 @Configuration
 @Requires(classes = PoolDataSource.class)
-@Requires(property = BasicJdbcConfiguration.PREFIX + ".enabled", value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 package io.micronaut.configuration.jdbc.ucp;
 
 import io.micronaut.context.annotation.Configuration;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.util.StringUtils;
-import io.micronaut.jdbc.BasicJdbcConfiguration;
 import oracle.ucp.jdbc.PoolDataSource;

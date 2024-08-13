@@ -20,6 +20,7 @@ import io.micronaut.configuration.metrics.binder.datasource.DataSourcePoolMetric
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource
+import io.micronaut.context.exceptions.NoSuchBeanException
 import io.micronaut.inject.qualifiers.Qualifiers
 import io.micronaut.jdbc.DataSourceResolver
 import io.micronaut.jdbc.metadata.DataSourcePoolMetadata
@@ -82,15 +83,62 @@ class DatasourceConfigurationSpec extends Specification {
                 'test',
                 [
                         'datasources.default': [:],
-                        'datasources.enabled' : false
+                        'datasources.default.enabled' : false
                 ]
         ))
         applicationContext.start()
 
-        expect:
-        !applicationContext.containsBean(DataSource)
-        !applicationContext.containsBean(HikariDataSource)
-        !applicationContext.containsBean(DatasourceConfiguration)
+        when:
+        applicationContext.getBean(DataSource)
+        then:
+        thrown(NoSuchBeanException)
+        when:
+        applicationContext.getBean(HikariDataSource)
+        then:
+        thrown(NoSuchBeanException)
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    void "test datasource can be disabled and enabled"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                [
+                        'datasources.default': [:],
+                        'datasources.default.enabled' : false,
+                        'datasources.custom': [:],
+                ]
+        ))
+        applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
+
+        when:
+        applicationContext.getBean(DataSource, Qualifiers.byName('default'))
+        then:
+        thrown(NoSuchBeanException)
+        when:
+        applicationContext.getBean(HikariDataSource, Qualifiers.byName('default'))
+        then:
+        thrown(NoSuchBeanException)
+
+        when:
+        DataSource customDataSource = applicationContext.getBean(DataSource, Qualifiers.byName('custom'))
+        then:
+        noExceptionThrown()
+        customDataSource
+
+        when:
+        HikariUrlDataSource dataSource = dataSourceResolver.resolve(customDataSource)
+
+        then: //The configuration is supplied because H2 is on the classpath
+        dataSource.jdbcUrl == 'jdbc:h2:mem:custom;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
+        dataSource.username == 'sa'
+        dataSource.password == ''
+        dataSource.driverClassName == 'org.h2.Driver'
+        dataSource.connectionTestQuery == "SELECT 1"
 
         cleanup:
         applicationContext.close()
