@@ -64,7 +64,6 @@ class CurrentSessionWithMultipleDataSourcesSpec extends Specification {
     void "test an application that defines multiple data sources"() {
         when:
             def context = ApplicationContext.run(
-                    'datasources.default.name': 'db1',
                     'datasources.db2.url': 'jdbc:h2:mem:db2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
                     'datasources.abc.url': 'jdbc:h2:mem:db2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
                     'jpa.db2.entity-scan.packages': ['io.micronaut.configuration.hibernate.reactive.datasources.db2'],
@@ -72,7 +71,7 @@ class CurrentSessionWithMultipleDataSourcesSpec extends Specification {
         then:
             !context.findBean(SessionFactory, Qualifiers.byName("default")).isPresent()
             context.findBean(SessionFactory, Qualifiers.byName("db2")).isPresent()
-            !context.findBean(SessionFactory, Qualifiers.byName("abc")).isPresent()
+            context.findBean(SessionFactory, Qualifiers.byName("abc")).isPresent()
             !context.findBean(SessionFactory, Qualifiers.byName("unknown")).isPresent()
         cleanup:
             context.close()
@@ -146,7 +145,7 @@ class CurrentSessionWithMultipleDataSourcesSpec extends Specification {
                     'datasources.default.name': 'db1',
             ).getBean(SessionFactory, Qualifiers.byName("default"))
         then:
-            thrown(NoSuchBeanException)
+            noExceptionThrown()
     }
 
     void "test get SessionFactory with only configured default data source name when jpa is also configured"() {
