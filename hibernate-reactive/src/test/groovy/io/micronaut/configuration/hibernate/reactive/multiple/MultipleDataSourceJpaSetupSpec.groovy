@@ -45,7 +45,6 @@ class MultipleDataSourceJpaSetupSpec extends Specification implements TestProper
         [
                 'datasources.default.url'                           : 'jdbc:h2:mem:mydb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
                 'jpa.default.packages-to-scan'                      : 'io.micronaut.configuration.hibernate.reactive.multiple.xyz',
-                'datasources.other.name'                             :  'other',
                 'jpa.other.packages-to-scan'                        : 'io.micronaut.configuration.hibernate.reactive.multiple.other',
                 'jpa.other.properties.hibernate.hbm2ddl.auto'       : 'create-drop',
                 "jpa.other.properties.hibernate.connection.url"     : dbContainer.getJdbcUrl(),
