@@ -25,6 +25,7 @@ import oracle.ucp.jdbc.PoolDataSource
 import spock.lang.Specification
 
 import javax.sql.DataSource
+import java.time.Duration
 
 class DatasourceConfigurationSpec extends Specification {
 
@@ -203,7 +204,7 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.getMaxPoolSize() == 20
         dataSource.getTimeoutCheckInterval() == 5
         dataSource.getInactiveConnectionTimeout() == 10
-        dataSource.getConnectionWaitTimeout() == 10
+        dataSource.getConnectionWaitDuration() == Duration.ofSeconds(3)
         dataSource.getLoginTimeout() == 20
 
         cleanup:
@@ -292,7 +293,7 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.getMaxPoolSize() == 20
         dataSource.getTimeoutCheckInterval() == 5
         dataSource.getInactiveConnectionTimeout() == 10
-        dataSource.getConnectionWaitTimeout() == 10
+        dataSource.getConnectionWaitDuration() == Duration.ofSeconds(3)
         dataSource.getLoginTimeout() == 20
 
         when:
@@ -304,7 +305,7 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.getMaxPoolSize() == 20
         dataSource.getTimeoutCheckInterval() == 5
         dataSource.getInactiveConnectionTimeout() == 10
-        dataSource.getConnectionWaitTimeout() == 10
+        dataSource.getConnectionWaitDuration() == Duration.ofSeconds(3)
         dataSource.getLoginTimeout() == 20
 
         cleanup:
