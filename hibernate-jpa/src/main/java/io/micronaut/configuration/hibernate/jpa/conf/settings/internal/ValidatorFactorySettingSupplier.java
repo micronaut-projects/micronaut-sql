@@ -45,6 +45,6 @@ final class ValidatorFactorySettingSupplier implements SettingsSupplier {
 
     @Override
     public Map<String, Object> supply(JpaConfiguration jpaConfiguration) {
-        return Collections.singletonMap(AvailableSettings.JPA_VALIDATION_FACTORY, validatorFactory);
+        return Collections.singletonMap(AvailableSettings.JAKARTA_VALIDATION_FACTORY, validatorFactory);
     }
 }

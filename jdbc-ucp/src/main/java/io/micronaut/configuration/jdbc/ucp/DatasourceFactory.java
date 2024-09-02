@@ -19,7 +19,9 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.exceptions.NoSuchBeanException;
+import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import oracle.ucp.UniversalConnectionPoolException;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
 import oracle.ucp.jdbc.PoolDataSource;
@@ -68,6 +70,7 @@ public class DatasourceFactory implements AutoCloseable {
      */
     @Context
     @EachBean(DatasourceConfiguration.class)
+    @Requires(condition = JdbcDataSourceEnabled.class)
     public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration) throws UniversalConnectionPoolException {
         PoolDataSource ds = datasourceConfiguration.getPoolDataSource();
         dataSources.add(ds);

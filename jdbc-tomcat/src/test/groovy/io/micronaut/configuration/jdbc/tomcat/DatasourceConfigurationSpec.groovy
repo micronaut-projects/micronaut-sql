@@ -76,6 +76,76 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.close()
     }
 
+    void "test datasource can be disabled"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                [
+                        'datasources.default': [:],
+                        'datasources.default.enabled' : false
+                ]
+        ))
+        applicationContext.start()
+
+        when:
+        applicationContext.getBean(DataSource, Qualifiers.byName('default'))
+        then:
+        thrown(NoSuchBeanException)
+        when:
+        applicationContext.getBean(TomcatDataSourcePoolMetadata, Qualifiers.byName('default'))
+        then:
+        thrown(NoSuchBeanException)
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    void "test datasource can be disabled and enabled"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                [
+                        'datasources.default': [:],
+                        'datasources.default.enabled' : false,
+                        'datasources.custom': [:]
+                ]
+        ))
+        applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
+
+        when:
+        applicationContext.getBean(DataSource, Qualifiers.byName('default'))
+        then:
+        thrown(NoSuchBeanException)
+        when:
+        applicationContext.getBean(TomcatDataSourcePoolMetadata, Qualifiers.byName('default'))
+        then:
+        thrown(NoSuchBeanException)
+
+        when:
+        DataSource customDataSource = applicationContext.getBean(DataSource, Qualifiers.byName('custom'))
+        then:
+        noExceptionThrown()
+        customDataSource
+
+        when:
+        DataSource dataSource = dataSourceResolver.resolve(customDataSource)
+
+        then: //The configuration is supplied because H2 is on the classpath
+        dataSource.url == 'jdbc:h2:mem:custom;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
+        dataSource.username == 'sa'
+        dataSource.poolProperties.password == ''
+        dataSource.name == 'custom'
+        dataSource.driverClassName == 'org.h2.Driver'
+        dataSource.abandonWhenPercentageFull == 0
+        dataSource.accessToUnderlyingConnectionAllowed
+
+        cleanup:
+        applicationContext.close()
+    }
+
     void "test operations with a blank connection"() {
         given:
         ApplicationContext applicationContext = new DefaultApplicationContext("test")
@@ -96,7 +166,7 @@ class DatasourceConfigurationSpec extends Specification {
         String version = resultSet.getString(1)
 
         then:
-        version == '2.2.224'
+        version == '2.3.232'
 
         cleanup:
         applicationContext.close()

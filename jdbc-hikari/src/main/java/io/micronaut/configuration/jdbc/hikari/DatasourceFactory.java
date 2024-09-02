@@ -20,6 +20,8 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Requires;
+import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,6 +64,7 @@ public class DatasourceFactory implements AutoCloseable {
      */
     @Context
     @EachBean(DatasourceConfiguration.class)
+    @Requires(condition = JdbcDataSourceEnabled.class)
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         HikariUrlDataSource ds = new HikariUrlDataSource(datasourceConfiguration);
         addMeterRegistry(ds);

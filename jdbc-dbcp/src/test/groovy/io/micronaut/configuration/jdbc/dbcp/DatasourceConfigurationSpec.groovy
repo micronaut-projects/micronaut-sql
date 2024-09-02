@@ -1,20 +1,6 @@
-/*
- * Copyright 2017-2020 original authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package io.micronaut.configuration.jdbc.dbcp
 
+import io.micronaut.context.exceptions.NoSuchBeanException
 import io.micronaut.jdbc.DataSourceResolver
 import org.apache.commons.dbcp2.BasicDataSource
 import io.micronaut.context.ApplicationContext
@@ -69,6 +55,85 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.close()
     }
 
+    void "test datasource can be disabled"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                "test",
+                [
+                        'datasources.default': [:],
+                        'datasources.default.enabled': false
+                ]
+        ))
+        applicationContext.start()
+
+        when:
+        applicationContext.getBean(DatasourceConfiguration)
+        then:
+        def exception = thrown(NoSuchBeanException)
+        exception.message.contains('The datasource "default" is disabled')
+        when:
+        applicationContext.getBean(DataSource)
+        then:
+        exception = thrown(NoSuchBeanException)
+        exception.message.contains('The datasource "default" is disabled')
+        when:
+        applicationContext.getBean(BasicDataSource)
+        then:
+        thrown(NoSuchBeanException)
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    void "test datasource can be disabled and enabled"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                [
+                        'datasources.default': [:],
+                        'datasources.default.enabled' : false,
+                        'datasources.custom': [:],
+                ]
+        ))
+        applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
+
+        when:
+        applicationContext.getBean(DatasourceConfiguration, Qualifiers.byName('default'))
+        then:
+        thrown(NoSuchBeanException)
+
+        when:
+        applicationContext.getBean(DataSource, Qualifiers.byName('default'))
+        then:
+        thrown(NoSuchBeanException)
+        when:
+        applicationContext.getBean(BasicDataSource, Qualifiers.byName('default'))
+        then:
+        thrown(NoSuchBeanException)
+
+        when:
+        DataSource customDataSource = applicationContext.getBean(DataSource, Qualifiers.byName('custom'))
+        then:
+        noExceptionThrown()
+        customDataSource
+
+        when:
+        BasicDataSource dataSource = dataSourceResolver.resolve(customDataSource)
+
+        then: //The configuration is supplied because H2 is on the classpath
+        dataSource.url == 'jdbc:h2:mem:custom;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
+        dataSource.username == 'sa'
+        dataSource.password == ''
+        dataSource.driverClassName == 'org.h2.Driver'
+        dataSource.validationQuery == 'SELECT 1'
+
+        cleanup:
+        applicationContext.close()
+    }
+
     void "test operations with a blank connection"() {
         given:
         ApplicationContext applicationContext = new DefaultApplicationContext("test")
@@ -90,7 +155,7 @@ class DatasourceConfigurationSpec extends Specification {
         String version = resultSet.getString(1)
 
         then:
-        version == '2.2.224'
+        version == '2.3.232'
 
         cleanup:
         applicationContext.close()
