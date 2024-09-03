@@ -25,6 +25,7 @@ import oracle.ucp.jdbc.PoolDataSource
 import spock.lang.Specification
 
 import javax.sql.DataSource
+import java.time.Duration
 
 class DatasourceConfigurationSpec extends Specification {
 
@@ -183,7 +184,7 @@ class DatasourceConfigurationSpec extends Specification {
                         'datasources.default.maxPoolSize'              : 20,
                         'datasources.default.timeoutCheckInterval'     : 5,
                         'datasources.default.inactiveConnectionTimeout': 10,
-                        'datasources.default.connectionWaitTimeout'    : 10,
+                        'datasources.default.connectionWaitDuration'   : "10s",
                         'datasources.default.loginTimeout'             : 20,
                 ]
         ))
@@ -203,7 +204,7 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.getMaxPoolSize() == 20
         dataSource.getTimeoutCheckInterval() == 5
         dataSource.getInactiveConnectionTimeout() == 10
-        dataSource.getConnectionWaitTimeout() == 10
+        dataSource.getConnectionWaitDuration() == Duration.ofSeconds(10)
         dataSource.getLoginTimeout() == 20
 
         cleanup:
@@ -264,7 +265,7 @@ class DatasourceConfigurationSpec extends Specification {
                         'datasources.default.maxPoolSize'              : 20,
                         'datasources.default.timeoutCheckInterval'     : 5,
                         'datasources.default.inactiveConnectionTimeout': 10,
-                        'datasources.default.connectionWaitTimeout'    : 10,
+                        'datasources.default.connectionWaitDuration'   : "10s",
                         'datasources.default.loginTimeout'             : 20,
 
                         'datasources.person.initialPoolSize'           : 5,
@@ -272,7 +273,7 @@ class DatasourceConfigurationSpec extends Specification {
                         'datasources.person.maxPoolSize'               : 20,
                         'datasources.person.timeoutCheckInterval'      : 5,
                         'datasources.person.inactiveConnectionTimeout' : 10,
-                        'datasources.person.connectionWaitTimeout'     : 10,
+                        'datasources.person.connectionWaitDuration'    : "10s",
                         'datasources.person.loginTimeout'              : 20,
                 ]
         ))
@@ -292,7 +293,7 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.getMaxPoolSize() == 20
         dataSource.getTimeoutCheckInterval() == 5
         dataSource.getInactiveConnectionTimeout() == 10
-        dataSource.getConnectionWaitTimeout() == 10
+        dataSource.getConnectionWaitDuration() == Duration.ofSeconds(10)
         dataSource.getLoginTimeout() == 20
 
         when:
@@ -304,7 +305,7 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.getMaxPoolSize() == 20
         dataSource.getTimeoutCheckInterval() == 5
         dataSource.getInactiveConnectionTimeout() == 10
-        dataSource.getConnectionWaitTimeout() == 10
+        dataSource.getConnectionWaitDuration() == Duration.ofSeconds(10)
         dataSource.getLoginTimeout() == 20
 
         cleanup:
@@ -331,7 +332,7 @@ class DatasourceConfigurationSpec extends Specification {
                         'datasources.person.maxPoolSize'               : 20,
                         'datasources.person.timeoutCheckInterval'      : 5,
                         'datasources.person.inactiveConnectionTimeout' : 10,
-                        'datasources.person.connectionWaitTimeout'     : 10,
+                        'datasources.person.connectionWaitDuration'    : "10s",
                         'datasources.person.loginTimeout'              : 20,
                 ]
         ))
