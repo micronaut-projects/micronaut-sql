@@ -6,7 +6,7 @@ dependencies {
     api projects.micronautJdbc
     api(mn.micronaut.inject)
     api(mn.micronaut.context)
-    api(libs.managed.ucp)
+    api(libs.managed.ucp11)
     api(libs.managed.ojdbc11)
 
     testRuntimeOnly(libs.managed.h2)
