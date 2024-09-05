@@ -121,6 +121,7 @@ managed-hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "managed-hika
 managed-commons-dbcp2 = { module = "org.apache.commons:commons-dbcp2", version.ref = "managed-commons-dbcp" }
 managed-tomcat-jdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "managed-tomcat-jdbc" }
 managed-ucp = { module = "com.oracle.database.jdbc:ucp", version.ref = "managed-ojdbc" }
+managed-ucp11 = { module = "com.oracle.database.jdbc:ucp11", version.ref = "managed-ojdbc" }
 
 # UCP
 
