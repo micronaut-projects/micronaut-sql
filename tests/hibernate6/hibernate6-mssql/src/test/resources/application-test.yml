@@ -2,3 +2,4 @@ test-resources:
   containers:
     mssql:
       accept-license: true
+      image-name: mcr.microsoft.com/mssql/server:2022-latest
