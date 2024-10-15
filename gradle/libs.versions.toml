@@ -18,7 +18,7 @@ micronaut-reactor = "3.5.0"
 micronaut-serde = "2.11.1"
 micronaut-spring = "5.8.0"
 micronaut-test = "4.5.0"
-micronaut-validation = "4.7.0"
+micronaut-validation = "4.8.0"
 
 # Frameworks
 
