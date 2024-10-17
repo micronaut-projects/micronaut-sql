@@ -1,0 +1,16 @@
+[
+  {
+    "name": "org.hibernate.internal.log.ConnectionInfoLogger_$logger",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "org.jboss.logging.Logger"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "[Lorg.hibernate.event.spi.PostUpsertEventListener;"
+  }
+]
