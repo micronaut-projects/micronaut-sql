@@ -81,6 +81,23 @@ class CurrentSessionWithMultipleDataSourcesSpec extends Specification {
             context.close()
     }
 
+    void "test an application that defines multiple data sources - one disabled"() {
+        when:
+        def context = ApplicationContext.run(
+                'datasources.default.name': 'db1',
+                'datasources.db2.url': 'jdbc:h2:mem:db2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+                'datasources.abc.url': 'jdbc:h2:mem:db2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+                'jpa.db2.enabled': false,
+        )
+        then:
+        context.findBean(SessionFactory, Qualifiers.byName("default")).isPresent()
+        !context.findBean(SessionFactory, Qualifiers.byName("db2")).isPresent()
+        context.findBean(SessionFactory, Qualifiers.byName("abc")).isPresent()
+        !context.findBean(SessionFactory, Qualifiers.byName("unknown")).isPresent()
+        cleanup:
+        context.close()
+    }
+
     void "test parallel init of non-default SessionFactory with missing entities"() {
         when:
             def context = ApplicationContext.run(

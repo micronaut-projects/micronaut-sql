@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
  * @since 1.0
  */
 @EachProperty(value = JpaConfiguration.PREFIX, primary = JpaConfiguration.PRIMARY)
-public class JpaConfiguration {
+public class JpaConfiguration implements Toggleable {
     public static final String PREFIX = "jpa";
     public static final String PRIMARY = "default";
 
@@ -62,6 +62,7 @@ public class JpaConfiguration {
 
     private boolean compileTimeHibernateProxies;
     private boolean reactive;
+    private boolean enabled = true;
 
     /**
      * @param applicationContext The application context
@@ -95,6 +96,19 @@ public class JpaConfiguration {
         this.entityScanConfiguration = entityScanConfiguration != null ? entityScanConfiguration : new EntityScanConfiguration(applicationContext.getEnvironment());
         this.applicationContext = applicationContext;
         this.integrator = integrator;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    /**
+     * Set whether the JPA integration for the datasource is enabled.
+     * @param enabled True if it is enabled
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     /**

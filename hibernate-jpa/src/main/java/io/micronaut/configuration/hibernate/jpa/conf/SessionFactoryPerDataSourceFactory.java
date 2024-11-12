@@ -28,6 +28,7 @@ import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
+import io.micronaut.context.exceptions.DisabledBeanException;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.annotation.TypeHint;
@@ -71,6 +72,8 @@ final class SessionFactoryPerDataSourceFactory extends AbstractHibernateFactory 
                                                           @Parameter String name) {
         if (jpaConfiguration == null) {
             jpaConfiguration = defaultJpaConfiguration.copy(name);
+        } else if (!jpaConfiguration.isEnabled()) {
+            throw new DisabledBeanException("JPA configuration for datasource [" + name + "] is disabled");
         }
         return super.buildHibernateStandardServiceRegistry(jpaConfiguration);
     }
