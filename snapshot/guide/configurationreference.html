@@ -46,7 +46,7 @@
         <div class="docs-content">
             <div class="project">
                 <h1>Configuration Reference</h1>
-                <p><strong>Version:</strong>6.0.1-SNAPSHOT</p>
+                <p><strong>Version:</strong>5.8.4-SNAPSHOT</p>
                 <p></p>
             </div>
 <div class="sect2">
@@ -97,6 +97,11 @@
 </thead>
 <tbody>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jpa.*.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set whether the JPA integration for the datasource is enabled.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>jpa.*.packages-to-scan</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"></td>
@@ -144,11 +149,6 @@
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.github.jasync.sql.db.SSLConfiguration</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.mode</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">com.github.jasync.sql.db.SSLConfiguration$Mode</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The mode</p></td>
@@ -167,6 +167,11 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl.client-private-key</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The client private key</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jasync.client.ssl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.github.jasync.sql.db.SSLConfiguration</p></td>
+<td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
 </table>
@@ -704,11 +709,6 @@
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.credentials</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.zaxxer.hikari.util.Credentials</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.validation-timeout</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">long</p></td>
 <td class="tableblock halign-left valign-top"></td>
@@ -831,11 +831,6 @@
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.exception-override-class-name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.exception-override</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.zaxxer.hikari.SQLExceptionOverride</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
@@ -1156,33 +1151,9 @@
 </div>
 <div class="sect2">
 <h3 id="_micronaut_jdbc_ucp_config_properties">Micronaut Jdbc Ucp Config Properties</h3>
-<a id="io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration$JMXBeanConfiguration" href="#io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration$JMXBeanConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 8. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration.html">UniversalConnectionPoolManagerConfiguration$JMXBeanConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ucp-manager.jmx.enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Enables the JMX-Based Management of UCP.</p></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
 <a id="io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration" href="#io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 9. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerConfiguration.html">UniversalConnectionPoolManagerConfiguration</a></caption>
+<caption class="title">Table 8. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerConfiguration.html">UniversalConnectionPoolManagerConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1206,7 +1177,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.micronaut.configuration.jdbc.ucp.DatasourceConfiguration" href="#io.micronaut.configuration.jdbc.ucp.DatasourceConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 10. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html">DatasourceConfiguration</a></caption>
+<caption class="title">Table 9. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html">DatasourceConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1316,11 +1287,6 @@
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.min-idle</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.max-pool-size</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
 <td class="tableblock halign-left valign-top"></td>
@@ -1331,13 +1297,8 @@
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-wait-duration</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-wait-duration-in-millis</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">long</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-wait-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
@@ -1485,20 +1446,12 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.util.function.Supplier</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.create-connection-in-borrow-thread</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
 </tbody>
 </table>
 <div style="page-break-after: always;"></div>
-</div>
-<div class="sect2">
-<h3 id="_micronaut_jooq_config_properties">Micronaut Jooq Config Properties</h3>
-<a id="io.micronaut.configuration.jooq.JooqConfigurationProperties" href="#io.micronaut.configuration.jooq.JooqConfigurationProperties">&#128279;</a>
+<a id="io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration$JMXBeanConfiguration" href="#io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration$JMXBeanConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 11. Configuration Properties for <a href="../api/io/micronaut/configuration/jooq/JooqConfigurationProperties.html">JooqConfigurationProperties</a></caption>
+<caption class="title">Table 10. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration.html">UniversalConnectionPoolManagerConfiguration$JMXBeanConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1513,21 +1466,19 @@
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jooq.datasources.*.sql-dialect</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">org.jooq.SQLDialect</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SQL dialect to use. If {@code null}, will be detected automatically.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jooq.datasources.*.json-converter-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ucp-manager.jmx.enabled</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">If enable {@link JsonConverterProvider} bean to use Jackson for JSON and JSONB types.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enables the JMX-Based Management of UCP.</p></td>
 </tr>
 </tbody>
 </table>
 <div style="page-break-after: always;"></div>
+</div>
+<div class="sect2">
+<h3 id="_micronaut_jooq_config_properties">Micronaut Jooq Config Properties</h3>
 <a id="io.micronaut.configuration.jooq.R2dbcJooqConfigurationProperties" href="#io.micronaut.configuration.jooq.R2dbcJooqConfigurationProperties">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 12. Configuration Properties for <a href="../api/io/micronaut/configuration/jooq/R2dbcJooqConfigurationProperties.html">R2dbcJooqConfigurationProperties</a></caption>
+<caption class="title">Table 11. Configuration Properties for <a href="../api/io/micronaut/configuration/jooq/R2dbcJooqConfigurationProperties.html">R2dbcJooqConfigurationProperties</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1548,6 +1499,35 @@
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>jooq.r2dbc-datasources.*.json-converter-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If enable {@link JsonConverterProvider} bean to use Jackson for JSON and JSONB types.</p></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<a id="io.micronaut.configuration.jooq.JooqConfigurationProperties" href="#io.micronaut.configuration.jooq.JooqConfigurationProperties">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 12. Configuration Properties for <a href="../api/io/micronaut/configuration/jooq/JooqConfigurationProperties.html">JooqConfigurationProperties</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jooq.datasources.*.sql-dialect</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">org.jooq.SQLDialect</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SQL dialect to use. If {@code null}, will be detected automatically.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jooq.datasources.*.json-converter-enabled</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">If enable {@link JsonConverterProvider} bean to use Jackson for JSON and JSONB types.</p></td>
 </tr>
