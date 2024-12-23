@@ -62,7 +62,7 @@ managed-ongres-scram = "2.1"
 # Testing
 
 groovy = "4.0.11"
-sonar-gradle-plugin = "5.1.0.4882"
+sonar-gradle-plugin = "6.0.1.5171"
 
 [libraries]
 # Core
