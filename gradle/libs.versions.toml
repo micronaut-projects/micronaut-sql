@@ -5,19 +5,19 @@
 micronaut = "4.7.9"
 micronaut-docs = "2.0.0"
 micronaut-gradle-plugin = "4.4.4"
-micronaut-test-resources = "2.6.2"
+micronaut-test-resources = "2.7.0"
 
 # Platform dependencies
 micronaut-cache = "5.1.0"
-micronaut-data = "4.9.6"
+micronaut-data = "4.10.5"
 micronaut-hibernate-validator = "4.5.0"
 micronaut-logging = "1.3.0"
 micronaut-micrometer = "5.9.3"
 micronaut-r2dbc = "5.6.1"
 micronaut-reactor = "3.6.0"
-micronaut-serde = "2.12.0"
+micronaut-serde = "2.13.0"
 micronaut-spring = "5.9.0"
-micronaut-test = "4.5.0"
+micronaut-test = "4.6.2"
 micronaut-validation = "4.8.0"
 
 # Frameworks
@@ -32,7 +32,7 @@ managed-jdbi = "3.47.0"
 # JDBC Drivers
 
 managed-ojdbc = "23.5.0.24.07"
-managed-ojdbcdms = "21.15.0.0"
+managed-ojdbcdms = "21.16.0.0"
 managed-dms = "23.3.0.23.09"
 managed-postgres-driver = "42.7.4"
 managed-mariadb-driver = "3.5.1"
@@ -62,7 +62,7 @@ managed-ongres-scram = "2.1"
 # Testing
 
 groovy = "4.0.11"
-sonar-gradle-plugin = "5.1.0.4882"
+sonar-gradle-plugin = "6.0.1.5171"
 
 [libraries]
 # Core
