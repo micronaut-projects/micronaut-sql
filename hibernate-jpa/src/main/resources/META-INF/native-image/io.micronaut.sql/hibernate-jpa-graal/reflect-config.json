@@ -12,5 +12,8 @@
   },
   {
     "name": "[Lorg.hibernate.event.spi.PostUpsertEventListener;"
+  },
+  {
+    "name":"[Lorg.hibernate.query.sqm.tree.select.SqmQueryPart;"
   }
 ]
