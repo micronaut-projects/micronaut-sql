@@ -9,4 +9,5 @@ repositories {
 
 dependencies {
     implementation libs.gradle.micronaut
+    implementation(libs.sonatype.scan)
 }
