@@ -41,6 +41,8 @@ public class OracleUcpConfigurator {
      *
      * <p>This initialization helps prevent duplicate connection pool errors that may occur during
      * application reloading.
+     *
+     * @param oracleUcpConfiguration The Oracle UCP configuration
      */
     @PostConstruct
     public void initUcp(@Nullable OracleUcpConfiguration oracleUcpConfiguration) {
