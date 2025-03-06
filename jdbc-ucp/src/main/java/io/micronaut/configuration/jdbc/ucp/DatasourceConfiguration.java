@@ -178,6 +178,11 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         return calculatedSettings.getValidationQuery();
     }
 
+    /**
+     * Sets the validation query.
+     *
+     * @param validationQuery The validation query
+     */
     public void setValidationQuery(String validationQuery) {
         try {
             delegate.setSQLForValidateConnection(validationQuery);

@@ -48,7 +48,9 @@ datasources:
     maxPoolSize: 10
 ----
 
-The Oracle UCP is managed by the link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/admin/UniversalConnectionPoolManager.html[UniversalConnectionPoolManager]. The manager can be disabled byt setting `ucp-manager.enabled` to `false`. Additionally you can enable the link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/jmx-based-management.html[JMX-Based Management] by setting the `ucp-manager.jmx.enabled` to `true` and providing the `ojdbc8dms.jar` and `dms.jar` dependencies.
+The Oracle UCP is managed by the link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/admin/UniversalConnectionPoolManager.html[UniversalConnectionPoolManager]. The manager can be disabled byt setting `ucp-manager.enabled` to `false`. Additionally, you can enable the link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/jmx-based-management.html[JMX-Based Management] by setting the `ucp-manager.jmx.enabled` to `true` and providing the `ojdbc8dms.jar` and `dms.jar` dependencies.
+
+In case when exception `Universal Connection Pool already exists in the Universal Connection Pool Manager` is thrown, there is `oracle.ucp.destroyOnReload` configuration that can be set to `true` to avoid this error. In that case, when creating new connection pool, if there is the one with the same name the old one will be destroyed first.
 
 For a list of other properties able to be configured, simply refer to the implementation that is being used. All setter methods are candidates for configuration.
 
