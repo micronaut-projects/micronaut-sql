@@ -623,7 +623,10 @@ datasources.default.maxPoolSize=10</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The Oracle UCP is managed by the <a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/admin/UniversalConnectionPoolManager.html">UniversalConnectionPoolManager</a>. The manager can be disabled byt setting <code>ucp-manager.enabled</code> to <code>false</code>. Additionally you can enable the <a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/jmx-based-management.html">JMX-Based Management</a> by setting the <code>ucp-manager.jmx.enabled</code> to <code>true</code> and providing the <code>ojdbc8dms.jar</code> and <code>dms.jar</code> dependencies.</p>
+<p>The Oracle UCP is managed by the <a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/admin/UniversalConnectionPoolManager.html">UniversalConnectionPoolManager</a>. The manager can be disabled byt setting <code>ucp-manager.enabled</code> to <code>false</code>. Additionally, you can enable the <a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/jmx-based-management.html">JMX-Based Management</a> by setting the <code>ucp-manager.jmx.enabled</code> to <code>true</code> and providing the <code>ojdbc8dms.jar</code> and <code>dms.jar</code> dependencies.</p>
+</div>
+<div class="paragraph">
+<p>In case when exception <code>Universal Connection Pool already exists in the Universal Connection Pool Manager</code> is thrown, there is <code>oracle.ucp.destroyOnReload</code> configuration that can be set to <code>true</code> to avoid this error. In that case, when creating new connection pool, if there is the one with the same name the old one will be destroyed first.</p>
 </div>
 <div class="paragraph">
 <p>For a list of other properties able to be configured, simply refer to the implementation that is being used. All setter methods are candidates for configuration.</p>
