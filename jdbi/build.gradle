@@ -57,7 +57,7 @@ dependencies {
 }
 
 
-task txTest(type: Test) {
+tasks.register('txTest', Test) {
     testClassesDirs = sourceSets.txTest.output.classesDirs
     classpath = sourceSets.txTest.runtimeClasspath
     shouldRunAfter test

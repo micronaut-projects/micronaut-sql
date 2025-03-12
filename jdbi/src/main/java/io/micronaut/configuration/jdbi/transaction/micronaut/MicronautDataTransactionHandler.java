@@ -15,20 +15,20 @@
  */
 package io.micronaut.configuration.jdbi.transaction.micronaut;
 
-import io.micronaut.configuration.jdbi.transaction.AbstractTransactionHandler;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.transaction.TransactionDefinition;
-import io.micronaut.transaction.TransactionStatus;
+import io.micronaut.transaction.impl.DefaultTransactionStatus;
 import io.micronaut.transaction.jdbc.DataSourceTransactionManager;
 import io.micronaut.transaction.support.DefaultTransactionDefinition;
 import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.HandleCallback;
+import org.jdbi.v3.core.transaction.TransactionHandler;
+import org.jdbi.v3.core.transaction.TransactionIsolationLevel;
 
 import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
+import java.sql.SQLException;
+import java.sql.Savepoint;
 
 /**
  * Allows Micronaut data Transaction to be used with Jdbi.
@@ -38,9 +38,7 @@ import java.util.function.Consumer;
  */
 @Requires(classes = DataSourceTransactionManager.class)
 @EachBean(DataSourceTransactionManager.class)
-public class MicronautDataTransactionHandler extends AbstractTransactionHandler {
-
-    private final ConcurrentHashMap<Handle, LocalStuff> localTransactions = new ConcurrentHashMap<>();
+public class MicronautDataTransactionHandler implements TransactionHandler {
 
     private final DataSourceTransactionManager transactionManager;
 
@@ -55,100 +53,76 @@ public class MicronautDataTransactionHandler extends AbstractTransactionHandler 
 
     @Override
     public void begin(Handle handle) {
-        TransactionDefinition definition = new DefaultTransactionDefinition(TransactionDefinition.Propagation.NESTED);
-        TransactionStatus<Connection> status = this.transactionManager.getTransaction(definition);
-        this.localTransactions.putIfAbsent(handle, new LocalStuff(status));
+        transactionManager.getTransaction(TransactionDefinition.DEFAULT);
     }
 
     @Override
     public void commit(Handle handle) {
-        withLocalStuff(handle, localStuff -> {
-            try {
-                this.transactionManager.commit(localStuff.getTransactionStatus());
-            } finally {
-                restore(handle);
-            }
-        });
+        transactionManager.commit(getRequiredTxStatus());
     }
 
     @Override
     public void rollback(Handle handle) {
-        didTxnRollback.set(true);
-        withLocalStuff(handle, localStuff -> {
-            try {
-                this.transactionManager.rollback(localStuff.getTransactionStatus());
-            } finally {
-                restore(handle);
-            }
-        });
+        transactionManager.rollback(getRequiredTxStatus());
     }
 
     @Override
     public boolean isInTransaction(Handle handle) {
-        TransactionStatus<Connection> status = getTransactionStatus(handle);
-        return status != null && !status.isCompleted();
+        return transactionManager.findTransactionStatus().isPresent();
+    }
+
+    @Override
+    public <R, X extends Exception> R inTransaction(Handle handle, HandleCallback<R, X> callback) {
+        return transactionManager.execute(TransactionDefinition.DEFAULT, status -> callback.withHandle(handle));
+    }
+
+    @Override
+    public <R, X extends Exception> R inTransaction(Handle handle, TransactionIsolationLevel level, HandleCallback<R, X> callback) throws X {
+        DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition(TransactionDefinition.Propagation.REQUIRED);
+        transactionDefinition.setIsolationLevel(switch (level) {
+            case NONE, UNKNOWN -> TransactionDefinition.Isolation.DEFAULT;
+            case READ_UNCOMMITTED -> TransactionDefinition.Isolation.READ_UNCOMMITTED;
+            case READ_COMMITTED -> TransactionDefinition.Isolation.READ_COMMITTED;
+            case REPEATABLE_READ -> TransactionDefinition.Isolation.REPEATABLE_READ;
+            case SERIALIZABLE -> TransactionDefinition.Isolation.SERIALIZABLE;
+        });
+        return transactionManager.execute(transactionDefinition, status -> callback.withHandle(handle));
     }
 
     @Override
     public void savepoint(Handle handle, String savepointName) {
-        // Not supported after micronaut-data 4.0.0-M10
+        try {
+            DefaultTransactionStatus<Connection> requiredTxStatus = getRequiredTxStatus();
+            Savepoint savepoint = requiredTxStatus.getConnectionStatus().getConnection().setSavepoint(savepointName);
+            requiredTxStatus.setSavepoint(savepoint);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void rollbackToSavepoint(Handle handle, String savepointName) {
-        // Not supported after micronaut-data 4.0.0-M10
+        try {
+            DefaultTransactionStatus<Connection> requiredTxStatus = getRequiredTxStatus();
+            requiredTxStatus.getConnectionStatus().getConnection().rollback((Savepoint) requiredTxStatus.getSavepoint());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void releaseSavepoint(Handle handle, String savepointName) {
-        // Not supported after micronaut-data 4.0.0-M10
-    }
-
-    private TransactionStatus<Connection> getTransactionStatus(Handle handle) {
-        LocalStuff localStuff = this.localTransactions.get(handle);
-        return localStuff != null ? localStuff.getTransactionStatus() : null;
-    }
-
-    private void withLocalStuff(Handle handle, Consumer<LocalStuff> consumer) {
-        LocalStuff localStuff = this.localTransactions.get(handle);
-        if (localStuff != null) {
-            consumer.accept(localStuff);
-        }
-    }
-
-    private void restore(final Handle handle) {
         try {
-            final LocalStuff stuff = this.localTransactions.remove(handle);
-            if (stuff != null) {
-                stuff.getSavepoints().clear();
-            }
-        } finally {
-            // prevent memory leak if rollback throws an exception
-            this.localTransactions.remove(handle);
+            DefaultTransactionStatus<Connection> requiredTxStatus = getRequiredTxStatus();
+            requiredTxStatus.getConnectionStatus().getConnection().releaseSavepoint((Savepoint) requiredTxStatus.getSavepoint());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    /**
-     * Local transaction definition.
-     */
-    private static class LocalStuff {
-
-        private final Map<String, Object> savepoints = new HashMap<>();
-
-        private final TransactionStatus<Connection> transactionStatus;
-
-        LocalStuff(TransactionStatus<Connection> transactionStatus) {
-            this.transactionStatus = transactionStatus;
-        }
-
-        Map<String, Object> getSavepoints() {
-            return savepoints;
-        }
-
-        TransactionStatus<Connection> getTransactionStatus() {
-            return transactionStatus;
-        }
-
+    private DefaultTransactionStatus<Connection> getRequiredTxStatus() {
+        return transactionManager.findTransactionStatus()
+            .orElseThrow(() -> new IllegalStateException("No transaction status found"));
     }
 
 }
