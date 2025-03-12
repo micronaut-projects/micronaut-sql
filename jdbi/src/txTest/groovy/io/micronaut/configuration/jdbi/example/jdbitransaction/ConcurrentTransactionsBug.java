@@ -3,6 +3,7 @@ package io.micronaut.configuration.jdbi.example.jdbitransaction;
 import io.micronaut.configuration.jdbi.example.dao.BookMapper;
 import io.micronaut.configuration.jdbi.example.dao.BooksDao;
 import io.micronaut.configuration.jdbi.example.model.Book;
+import io.micronaut.transaction.TransactionOperations;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
@@ -18,16 +19,23 @@ public class ConcurrentTransactionsBug {
     final BooksDao nonTransactional;
 
     final BooksDao withTransaction;
-    Semaphore semMain = new Semaphore(0);
-    Semaphore semThief = new Semaphore(0);
-    Semaphore semDone = new Semaphore(0);
+
+    final TransactionOperations manager;
+
     @Inject
     public ConcurrentTransactionsBug(
         @Named("nonTransactional") BooksDao booksDao,
-        @Named("transactions") BooksDao withTransaction) {
+        @Named("transactions") BooksDao withTransaction,
+        @Named("default") TransactionOperations manager
+    ) {
         this.nonTransactional = booksDao;
         this.withTransaction = withTransaction;
+        this.manager = manager;
     }
+
+    Semaphore semMain = new Semaphore(0);
+    Semaphore semThief = new Semaphore(0);
+    Semaphore semDone = new Semaphore(0);
 
     public void stealingThread() {
         // once we are in our Connection context, release main thread to being a parallel transaction
@@ -52,10 +60,10 @@ public class ConcurrentTransactionsBug {
      * Since it uses Handle as a key for Lookup. Handles for the same Jdbi injectable Bean use the
      * SAME instance of ContextualConnection and its {@link Handle#equals(Object)} compares the Jdbi
      * (is the same) and Connection (is the SAME instance) for all Handles created by Jdbi instance.
-     * <p>
+     *
      * Therefore, queries like isInTransaction() and other operations of MicronautDataTransactionHandler
      * are likely to mix threads together.
-     * <p>
+     *
      * Timing is critical. A transactionless query must start before a concurrent transaction
      * on the same Connection starts, and must end before that concurrent transaction commits.
      * To do so, we use Semaphores to establish that timing.
@@ -88,12 +96,39 @@ public class ConcurrentTransactionsBug {
      * complete. So instead restoring PropagatedContext in the order "A", "B", the states will be
      * restored in the order "B", "A", leaving incorrect state after closing the connection returned
      * by suspendOpenConnection().
-     * <p>
+     *
      * In addition, if obtaining a new connection fails (i.e. pool exhausted etc), suspendOpenConnection
      * FAILS to restore the previous context, as Scope is not rolled back in finally, it is not added
      * to connection synchronizations.
      */
     public void connectionStatusLostDuringExecution() {
         nonTransactional.listAll();
+    }
+
+    public void nestedTransaction() {
+        withTransaction.listAll();
+    }
+
+    /**
+     * Better check for nested transactions, but requires a proper handling of default methods,
+     * which is currently broken.
+     */
+    public void nestedTransaction2() {
+        withTransaction.listNoTransaction();
+        Object txObject = nonTransactional.captureMapperTransaction(manager);
+        if (txObject == null) {
+            throw new IllegalStateException("No transaction present in @Transaction JDBI method");
+        }
+        Object mapperTxObject = BookMapper.mapperTransactionObject;
+        if (txObject == mapperTxObject) {
+            throw new IllegalStateException("Nested @Transaction is the same as outer @Transactional");
+        }
+    }
+
+    public void noTransactionOrConnectionInDefaultMethod() {
+        Object txObject = nonTransactional.captureMapperTransaction(manager);
+        if (txObject == null) {
+            throw new IllegalStateException("No transaction present in @Transaction JDBI method");
+        }
     }
 }
