@@ -44,7 +44,7 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
@@ -71,9 +71,7 @@ loadScripts(document, 'script');</script>
 <h1 title="Class MicronautDataTransactionHandler" class="title">Class MicronautDataTransactionHandler</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="../AbstractTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction">io.micronaut.configuration.jdbi.transaction.AbstractTransactionHandler</a>
 <div class="inheritance">io.micronaut.configuration.jdbi.transaction.micronaut.MicronautDataTransactionHandler</div>
-</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
@@ -84,7 +82,8 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="annotations">@Requires(classes=io.micronaut.transaction.jdbc.DataSourceTransactionManager.class)
 @EachBean(io.micronaut.transaction.jdbc.DataSourceTransactionManager.class)
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">MicronautDataTransactionHandler</span>
-<span class="extends-implements">extends <a href="../AbstractTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction">AbstractTransactionHandler</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
+implements <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">TransactionHandler</a></span></div>
 <div class="block">Allows Micronaut data Transaction to be used with Jdbi.</div>
 <dl class="notes">
 <dt>Since:</dt>
@@ -95,15 +94,6 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="summary">
 <ul class="summary-list">
-<!-- =========== FIELD SUMMARY =========== -->
-<li>
-<section class="field-summary" id="field-summary">
-<h2>Field Summary</h2>
-<div class="inherited-list">
-<h3 id="fields-inherited-from-class-io.micronaut.configuration.jdbi.transaction.AbstractTransactionHandler">Fields inherited from class&nbsp;io.micronaut.configuration.jdbi.transaction.<a href="../AbstractTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction">AbstractTransactionHandler</a></h3>
-<code><a href="../AbstractTransactionHandler.html#didTxnRollback">didTxnRollback</a></code></div>
-</section>
-</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -136,6 +126,17 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#commit(org.jdbi.v3.core.Handle)" class="member-name-link">commit</a><wbr>(<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Handle.html" title="class or interface in org.jdbi.v3.core" class="external-link">Handle</a>&nbsp;handle)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;R,<wbr>
+X extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;<br>R</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#inTransaction(org.jdbi.v3.core.Handle,org.jdbi.v3.core.HandleCallback)" class="member-name-link">inTransaction</a><wbr>(<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Handle.html" title="class or interface in org.jdbi.v3.core" class="external-link">Handle</a>&nbsp;handle,
+ <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/HandleCallback.html" title="class or interface in org.jdbi.v3.core" class="external-link">HandleCallback</a>&lt;R,<wbr>X&gt;&nbsp;callback)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;R,<wbr>
+X extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;<br>R</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#inTransaction(org.jdbi.v3.core.Handle,org.jdbi.v3.core.transaction.TransactionIsolationLevel,org.jdbi.v3.core.HandleCallback)" class="member-name-link">inTransaction</a><wbr>(<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Handle.html" title="class or interface in org.jdbi.v3.core" class="external-link">Handle</a>&nbsp;handle,
+ <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionIsolationLevel.html" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">TransactionIsolationLevel</a>&nbsp;level,
+ <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/HandleCallback.html" title="class or interface in org.jdbi.v3.core" class="external-link">HandleCallback</a>&lt;R,<wbr>X&gt;&nbsp;callback)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isInTransaction(org.jdbi.v3.core.Handle)" class="member-name-link">isInTransaction</a><wbr>(<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Handle.html" title="class or interface in org.jdbi.v3.core" class="external-link">Handle</a>&nbsp;handle)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -157,9 +158,6 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-io.micronaut.configuration.jdbi.transaction.AbstractTransactionHandler">Methods inherited from class&nbsp;io.micronaut.configuration.jdbi.transaction.<a href="../AbstractTransactionHandler.html" title="class in io.micronaut.configuration.jdbi.transaction">AbstractTransactionHandler</a></h3>
-<code><a href="../AbstractTransactionHandler.html#inTransaction(org.jdbi.v3.core.Handle,org.jdbi.v3.core.HandleCallback)">inTransaction</a>, <a href="../AbstractTransactionHandler.html#inTransaction(org.jdbi.v3.core.Handle,org.jdbi.v3.core.transaction.TransactionIsolationLevel,org.jdbi.v3.core.HandleCallback)">inTransaction</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -200,24 +198,68 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="begin(org.jdbi.v3.core.Handle)">
 <h3>begin</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">begin</span><wbr><span class="parameters">(<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Handle.html" title="class or interface in org.jdbi.v3.core" class="external-link">Handle</a>&nbsp;handle)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html#begin(org.jdbi.v3.core.Handle)" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">begin</a></code>&nbsp;in interface&nbsp;<code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">TransactionHandler</a></code></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="commit(org.jdbi.v3.core.Handle)">
 <h3>commit</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">commit</span><wbr><span class="parameters">(<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Handle.html" title="class or interface in org.jdbi.v3.core" class="external-link">Handle</a>&nbsp;handle)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html#commit(org.jdbi.v3.core.Handle)" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">commit</a></code>&nbsp;in interface&nbsp;<code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">TransactionHandler</a></code></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="rollback(org.jdbi.v3.core.Handle)">
 <h3>rollback</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">rollback</span><wbr><span class="parameters">(<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Handle.html" title="class or interface in org.jdbi.v3.core" class="external-link">Handle</a>&nbsp;handle)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html#rollback(org.jdbi.v3.core.Handle)" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">rollback</a></code>&nbsp;in interface&nbsp;<code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">TransactionHandler</a></code></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="isInTransaction(org.jdbi.v3.core.Handle)">
 <h3>isInTransaction</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isInTransaction</span><wbr><span class="parameters">(<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Handle.html" title="class or interface in org.jdbi.v3.core" class="external-link">Handle</a>&nbsp;handle)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html#isInTransaction(org.jdbi.v3.core.Handle)" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">isInTransaction</a></code>&nbsp;in interface&nbsp;<code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">TransactionHandler</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="inTransaction(org.jdbi.v3.core.Handle,org.jdbi.v3.core.HandleCallback)">
+<h3>inTransaction</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;R,<wbr>
+X extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;</span>&nbsp;<span class="return-type">R</span>&nbsp;<span class="element-name">inTransaction</span><wbr><span class="parameters">(<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Handle.html" title="class or interface in org.jdbi.v3.core" class="external-link">Handle</a>&nbsp;handle,
+ <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/HandleCallback.html" title="class or interface in org.jdbi.v3.core" class="external-link">HandleCallback</a>&lt;R,<wbr>X&gt;&nbsp;callback)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html#inTransaction(org.jdbi.v3.core.Handle,org.jdbi.v3.core.HandleCallback)" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">inTransaction</a></code>&nbsp;in interface&nbsp;<code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">TransactionHandler</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="inTransaction(org.jdbi.v3.core.Handle,org.jdbi.v3.core.transaction.TransactionIsolationLevel,org.jdbi.v3.core.HandleCallback)">
+<h3>inTransaction</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;R,<wbr>
+X extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;</span>&nbsp;<span class="return-type">R</span>&nbsp;<span class="element-name">inTransaction</span><wbr><span class="parameters">(<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Handle.html" title="class or interface in org.jdbi.v3.core" class="external-link">Handle</a>&nbsp;handle,
+ <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionIsolationLevel.html" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">TransactionIsolationLevel</a>&nbsp;level,
+ <a href="https://jdbi.org/apidocs/org/jdbi/v3/core/HandleCallback.html" title="class or interface in org.jdbi.v3.core" class="external-link">HandleCallback</a>&lt;R,<wbr>X&gt;&nbsp;callback)</span>
+                                        throws <span class="exceptions">X</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html#inTransaction(org.jdbi.v3.core.Handle,org.jdbi.v3.core.transaction.TransactionIsolationLevel,org.jdbi.v3.core.HandleCallback)" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">inTransaction</a></code>&nbsp;in interface&nbsp;<code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">TransactionHandler</a></code></dd>
+<dt>Throws:</dt>
+<dd><code>X extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></code></dd>
+</dl>
 </section>
 </li>
 <li>
@@ -225,6 +267,10 @@ loadScripts(document, 'script');</script>
 <h3>savepoint</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">savepoint</span><wbr><span class="parameters">(<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Handle.html" title="class or interface in org.jdbi.v3.core" class="external-link">Handle</a>&nbsp;handle,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;savepointName)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html#savepoint(org.jdbi.v3.core.Handle,java.lang.String)" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">savepoint</a></code>&nbsp;in interface&nbsp;<code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">TransactionHandler</a></code></dd>
+</dl>
 </section>
 </li>
 <li>
@@ -232,6 +278,10 @@ loadScripts(document, 'script');</script>
 <h3>rollbackToSavepoint</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">rollbackToSavepoint</span><wbr><span class="parameters">(<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Handle.html" title="class or interface in org.jdbi.v3.core" class="external-link">Handle</a>&nbsp;handle,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;savepointName)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html#rollbackToSavepoint(org.jdbi.v3.core.Handle,java.lang.String)" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">rollbackToSavepoint</a></code>&nbsp;in interface&nbsp;<code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">TransactionHandler</a></code></dd>
+</dl>
 </section>
 </li>
 <li>
@@ -239,6 +289,10 @@ loadScripts(document, 'script');</script>
 <h3>releaseSavepoint</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">releaseSavepoint</span><wbr><span class="parameters">(<a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Handle.html" title="class or interface in org.jdbi.v3.core" class="external-link">Handle</a>&nbsp;handle,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;savepointName)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html#releaseSavepoint(org.jdbi.v3.core.Handle,java.lang.String)" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">releaseSavepoint</a></code>&nbsp;in interface&nbsp;<code><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/transaction/TransactionHandler.html" title="class or interface in org.jdbi.v3.core.transaction" class="external-link">TransactionHandler</a></code></dd>
+</dl>
 </section>
 </li>
 </ul>
