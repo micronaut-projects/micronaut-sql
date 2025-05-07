@@ -71,11 +71,6 @@ public class DatasourceFactory implements ApplicationEventListener<DataSourcePas
         return dbcpDataSourcePoolMetadata;
     }
 
-    /**
-     * Handle an application event.
-     *
-     * @param event the event to respond to
-     */
     @Override
     public void onApplicationEvent(DataSourcePasswordChangedEvent event) {
         DataSourcePasswordChangedEvent.DataSourcePasswordModel dataSourcePasswordModel = event.getDataSourcePasswordModel();

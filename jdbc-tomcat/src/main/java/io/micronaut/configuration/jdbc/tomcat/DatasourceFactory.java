@@ -20,7 +20,9 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.jdbc.DataSourcePasswordChangedEvent;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import jakarta.annotation.PreDestroy;
@@ -29,7 +31,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Creates a tomcat data source for each configuration bean.
@@ -39,10 +43,10 @@ import java.util.List;
  * @since 1.0
  */
 @Factory
-public class DatasourceFactory implements AutoCloseable {
+public class DatasourceFactory implements AutoCloseable, ApplicationEventListener<DataSourcePasswordChangedEvent> {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
-    private List<org.apache.tomcat.jdbc.pool.DataSource> dataSources = new ArrayList<>(2);
+    private Map<String, org.apache.tomcat.jdbc.pool.DataSource> dataSources = new HashMap<>(2);
 
     private final DataSourceResolver dataSourceResolver;
 
@@ -63,7 +67,7 @@ public class DatasourceFactory implements AutoCloseable {
     @Requires(condition = JdbcDataSourceEnabled.class)
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource(datasourceConfiguration);
-        dataSources.add(ds);
+        dataSources.put(datasourceConfiguration.getName(), ds);
         return ds;
     }
 
@@ -89,7 +93,7 @@ public class DatasourceFactory implements AutoCloseable {
     @Override
     @PreDestroy
     public void close() {
-        for (org.apache.tomcat.jdbc.pool.DataSource dataSource : dataSources) {
+        for (org.apache.tomcat.jdbc.pool.DataSource dataSource : dataSources.values()) {
             try {
                 dataSource.close();
             } catch (Exception e) {
@@ -100,4 +104,13 @@ public class DatasourceFactory implements AutoCloseable {
         }
     }
 
+    @Override
+    public void onApplicationEvent(DataSourcePasswordChangedEvent event) {
+        DataSourcePasswordChangedEvent.DataSourcePasswordModel dataSourcePasswordModel = event.getDataSourcePasswordModel();
+        String dataSourceName = dataSourcePasswordModel.dataSourceName();
+        org.apache.tomcat.jdbc.pool.DataSource dataSource = dataSources.get(dataSourceName);
+        if (dataSource != null) {
+            dataSource.setPassword(dataSourcePasswordModel.newPassword());
+        }
+    }
 }

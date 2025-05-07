@@ -21,6 +21,8 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.event.ApplicationEventListener;
+import io.micronaut.jdbc.DataSourcePasswordChangedEvent;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +30,9 @@ import org.slf4j.LoggerFactory;
 import jakarta.annotation.PreDestroy;
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static io.micronaut.configuration.metrics.micrometer.MeterRegistryFactory.MICRONAUT_METRICS_BINDERS;
 
@@ -40,10 +44,10 @@ import static io.micronaut.configuration.metrics.micrometer.MeterRegistryFactory
  * @since 1.0
  */
 @Factory
-public class DatasourceFactory implements AutoCloseable {
+public class DatasourceFactory implements AutoCloseable, ApplicationEventListener<DataSourcePasswordChangedEvent> {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
-    private List<HikariUrlDataSource> dataSources = new ArrayList<>(2);
+    private Map<String, HikariUrlDataSource> dataSources = new HashMap<>(2);
 
     private ApplicationContext applicationContext;
 
@@ -68,8 +72,18 @@ public class DatasourceFactory implements AutoCloseable {
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         HikariUrlDataSource ds = new HikariUrlDataSource(datasourceConfiguration);
         addMeterRegistry(ds);
-        dataSources.add(ds);
+        dataSources.put(datasourceConfiguration.getName(), ds);
         return ds;
+    }
+
+    @Override
+    public void onApplicationEvent(DataSourcePasswordChangedEvent event) {
+        DataSourcePasswordChangedEvent.DataSourcePasswordModel dataSourcePasswordModel = event.getDataSourcePasswordModel();
+        String dataSourceName = dataSourcePasswordModel.dataSourceName();
+        HikariUrlDataSource hikariUrlDataSource = dataSources.get(dataSourceName);
+        if (hikariUrlDataSource != null) {
+            hikariUrlDataSource.setPassword(dataSourcePasswordModel.newPassword());
+        }
     }
 
     private void addMeterRegistry(HikariUrlDataSource ds) {
@@ -94,7 +108,7 @@ public class DatasourceFactory implements AutoCloseable {
     @Override
     @PreDestroy
     public void close() {
-        for (HikariUrlDataSource dataSource : dataSources) {
+        for (HikariUrlDataSource dataSource : dataSources.values()) {
             try {
                 dataSource.close();
             } catch (Exception e) {

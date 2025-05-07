@@ -20,7 +20,9 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.context.exceptions.NoSuchBeanException;
+import io.micronaut.jdbc.DataSourcePasswordChangedEvent;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import oracle.ucp.UniversalConnectionPoolException;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
@@ -29,8 +31,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.annotation.PreDestroy;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Creates an ucp data source for each configuration bean.
@@ -39,12 +45,12 @@ import java.util.List;
  * @since 2.0.1
  */
 @Factory
-public class DatasourceFactory implements AutoCloseable {
+public class DatasourceFactory implements AutoCloseable, ApplicationEventListener<DataSourcePasswordChangedEvent> {
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
     private final ApplicationContext applicationContext;
     private final UniversalConnectionPoolManagerConfiguration configuration;
 
-    private List<PoolDataSource> dataSources = new ArrayList<>(2);
+    private Map<String, PoolDataSource> dataSources = new HashMap<>(2);
     private UniversalConnectionPoolManager connectionPoolManager;
 
     /**
@@ -73,7 +79,7 @@ public class DatasourceFactory implements AutoCloseable {
     @Requires(condition = JdbcDataSourceEnabled.class)
     public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration) throws UniversalConnectionPoolException {
         PoolDataSource ds = datasourceConfiguration.getPoolDataSource();
-        dataSources.add(ds);
+        dataSources.put(datasourceConfiguration.getName(), ds);
 
         return ds;
     }
@@ -82,7 +88,7 @@ public class DatasourceFactory implements AutoCloseable {
     @PreDestroy
     public void close() {
         if (configuration.isEnabled() && connectionPoolManager != null) {
-            for (PoolDataSource dataSource : dataSources) {
+            for (PoolDataSource dataSource : dataSources.values()) {
                 try {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Closing connection pool named: {}", dataSource.getConnectionPoolName());
@@ -92,6 +98,22 @@ public class DatasourceFactory implements AutoCloseable {
                     if (LOG.isWarnEnabled()) {
                         LOG.warn("Error closing data source [" + dataSource + "]: " + e.getMessage(), e);
                     }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onApplicationEvent(DataSourcePasswordChangedEvent event) {
+        DataSourcePasswordChangedEvent.DataSourcePasswordModel dataSourcePasswordModel = event.getDataSourcePasswordModel();
+        String dataSourceName = dataSourcePasswordModel.dataSourceName();
+        PoolDataSource dataSource = dataSources.get(dataSourceName);
+        if (dataSource != null) {
+            try {
+                dataSource.setPassword(dataSourcePasswordModel.newPassword());
+            } catch (SQLException e) {
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn("Failed to update password for datasource {}", dataSourceName, e);
                 }
             }
         }
