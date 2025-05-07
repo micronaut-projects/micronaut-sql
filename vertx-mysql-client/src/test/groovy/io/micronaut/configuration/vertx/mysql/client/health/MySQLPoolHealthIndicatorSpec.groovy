@@ -25,7 +25,7 @@ import spock.lang.Specification
 class MySQLPoolHealthIndicatorSpec extends Specification{
     void "test vertx-mysql-client health indicator"() {
         given:
-        MySQLContainer mysql = new MySQLContainer("mysql")
+        MySQLContainer mysql = new MySQLContainer("mysql:8.4.5")
         mysql.start()
         ApplicationContext applicationContext = ApplicationContext.run(
                 'vertx.mysql.client.port': mysql.getMappedPort(MySQLContainer.MYSQL_PORT),

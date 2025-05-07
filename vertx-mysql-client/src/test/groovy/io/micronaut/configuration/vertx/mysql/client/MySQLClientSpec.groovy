@@ -33,7 +33,7 @@ import spock.lang.Specification
 
 class MySQLClientSpec extends Specification{
     // tag::mysql-testcontainer[]
-    @Shared @AutoCleanup MySQLContainer mysql = new MySQLContainer("mysql")
+    @Shared @AutoCleanup MySQLContainer mysql = new MySQLContainer("mysql:8.4.5")
 
     // end::mysql-testcontainer[]
 
