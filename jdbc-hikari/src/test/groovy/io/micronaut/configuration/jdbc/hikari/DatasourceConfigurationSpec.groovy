@@ -22,6 +22,7 @@ import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource
 import io.micronaut.context.exceptions.NoSuchBeanException
 import io.micronaut.inject.qualifiers.Qualifiers
+import io.micronaut.jdbc.DataSourcePasswordChangedEvent
 import io.micronaut.jdbc.DataSourceResolver
 import io.micronaut.jdbc.metadata.DataSourcePoolMetadata
 import spock.lang.Specification
@@ -71,6 +72,13 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.password == ''
         dataSource.driverClassName == 'org.h2.Driver'
         dataSource.connectionTestQuery == "SELECT 1"
+
+        when:"Fire datasource password change event"
+        applicationContext.publishEvent(new DataSourcePasswordChangedEvent(new DataSourcePasswordChangedEvent.DataSourcePasswordModel("default", "new_pwd")))
+        dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
+
+        then:"Password is updated"
+        dataSource.password == 'new_pwd'
 
         cleanup:
         applicationContext.close()

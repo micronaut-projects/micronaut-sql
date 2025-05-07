@@ -21,6 +21,7 @@ import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource
 import io.micronaut.context.exceptions.NoSuchBeanException
 import io.micronaut.inject.qualifiers.Qualifiers
+import io.micronaut.jdbc.DataSourcePasswordChangedEvent
 import io.micronaut.jdbc.DataSourceResolver
 import spock.lang.Ignore
 import spock.lang.Specification
@@ -71,6 +72,12 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.abandonWhenPercentageFull == 0
         dataSource.accessToUnderlyingConnectionAllowed
 
+        when:"Fire datasource password change event"
+        applicationContext.publishEvent(new DataSourcePasswordChangedEvent(new DataSourcePasswordChangedEvent.DataSourcePasswordModel("default", "updated_pwd")))
+        dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
+
+        then:"Password is updated"
+        dataSource.poolProperties.password == 'updated_pwd'
 
         cleanup:
         applicationContext.close()

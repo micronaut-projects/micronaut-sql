@@ -29,9 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import jakarta.annotation.PreDestroy;
 import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static io.micronaut.configuration.metrics.micrometer.MeterRegistryFactory.MICRONAUT_METRICS_BINDERS;

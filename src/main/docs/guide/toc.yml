@@ -7,6 +7,7 @@ jdbc:
   jdbc-connection-pools: Configuring JDBC Connection Pools
   jdbc-multiple-datasources: Configuring Multiple Data Sources
   jdbc-healthchecks: JDBC Health Checks
+  jdbc-password-change: Changing Data Source Password in Runtime
 hibernate:
   title: Configuring Hibernate
   hibernate-disable: Disable Micronaut Hibernate JPA

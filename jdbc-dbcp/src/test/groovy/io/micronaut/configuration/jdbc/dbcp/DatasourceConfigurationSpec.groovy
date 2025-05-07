@@ -1,6 +1,7 @@
 package io.micronaut.configuration.jdbc.dbcp
 
 import io.micronaut.context.exceptions.NoSuchBeanException
+import io.micronaut.jdbc.DataSourcePasswordChangedEvent
 import io.micronaut.jdbc.DataSourceResolver
 import org.apache.commons.dbcp2.BasicDataSource
 import io.micronaut.context.ApplicationContext
@@ -50,6 +51,13 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.password == ''
         dataSource.driverClassName == 'org.h2.Driver'
         dataSource.validationQuery == 'SELECT 1'
+
+        when:"Fire datasource password change event"
+        applicationContext.publishEvent(new DataSourcePasswordChangedEvent(new DataSourcePasswordChangedEvent.DataSourcePasswordModel("default", "changed_pwd")))
+        dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
+
+        then:"Password is updated"
+        dataSource.password == 'changed_pwd'
 
         cleanup:
         applicationContext.close()
