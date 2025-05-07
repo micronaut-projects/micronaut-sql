@@ -21,6 +21,7 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 
 @MicronautTest
 @Property(name = "datasources.default.db-type", value = "mysql")
+@Property(name = "test-resources.containers.mysql.image-name", value = "mysql:8.4.5")
 public class MySQLApp extends AbstractApp {
 }
 
