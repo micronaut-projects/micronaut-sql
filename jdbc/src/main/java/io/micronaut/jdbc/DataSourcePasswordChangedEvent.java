@@ -27,11 +27,6 @@ import io.micronaut.context.event.ApplicationEvent;
 public final class DataSourcePasswordChangedEvent extends ApplicationEvent {
 
     /**
-     * The model containing information about the data source whose password has changed.
-     */
-    private final DataSourcePasswordModel dataSourcePasswordModel;
-
-    /**
      * Constructs a prototypical Event.
      *
      * @param source The object on which the Event initially occurred.
@@ -39,7 +34,6 @@ public final class DataSourcePasswordChangedEvent extends ApplicationEvent {
      */
     public DataSourcePasswordChangedEvent(DataSourcePasswordModel source) {
         super(source);
-        this.dataSourcePasswordModel = source;
     }
 
     /**
@@ -48,7 +42,7 @@ public final class DataSourcePasswordChangedEvent extends ApplicationEvent {
      * @return the data source password model.
      */
     public DataSourcePasswordModel getDataSourcePasswordModel() {
-        return dataSourcePasswordModel;
+        return (DataSourcePasswordModel) getSource();
     }
 
     /**
