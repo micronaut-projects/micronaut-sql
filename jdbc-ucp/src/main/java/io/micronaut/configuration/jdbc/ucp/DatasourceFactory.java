@@ -34,7 +34,6 @@ import jakarta.annotation.PreDestroy;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * Creates an ucp data source for each configuration bean.
