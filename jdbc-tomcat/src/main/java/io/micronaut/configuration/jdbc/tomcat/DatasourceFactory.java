@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -44,7 +44,7 @@ import java.util.Map;
 public class DatasourceFactory implements AutoCloseable, ApplicationEventListener<DataSourcePasswordChangedEvent> {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
-    private Map<String, org.apache.tomcat.jdbc.pool.DataSource> dataSources = new HashMap<>(2);
+    private final Map<String, org.apache.tomcat.jdbc.pool.DataSource> dataSources = new LinkedHashMap<>(2);
 
     private final DataSourceResolver dataSourceResolver;
 
@@ -109,6 +109,7 @@ public class DatasourceFactory implements AutoCloseable, ApplicationEventListene
         org.apache.tomcat.jdbc.pool.DataSource dataSource = dataSources.get(dataSourceName);
         if (dataSource != null) {
             dataSource.setPassword(dataSourcePasswordModel.newPassword());
+            dataSource.testIdle();
         }
     }
 }

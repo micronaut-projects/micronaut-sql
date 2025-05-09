@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import jakarta.annotation.PreDestroy;
 import javax.sql.DataSource;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static io.micronaut.configuration.metrics.micrometer.MeterRegistryFactory.MICRONAUT_METRICS_BINDERS;
@@ -45,9 +45,9 @@ import static io.micronaut.configuration.metrics.micrometer.MeterRegistryFactory
 public class DatasourceFactory implements AutoCloseable, ApplicationEventListener<DataSourcePasswordChangedEvent> {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
-    private Map<String, HikariUrlDataSource> dataSources = new HashMap<>(2);
+    private final Map<String, HikariUrlDataSource> dataSources = new LinkedHashMap<>(2);
 
-    private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
     /**
      * Default constructor.
@@ -80,7 +80,10 @@ public class DatasourceFactory implements AutoCloseable, ApplicationEventListene
         String dataSourceName = dataSourcePasswordModel.dataSourceName();
         HikariUrlDataSource hikariUrlDataSource = dataSources.get(dataSourceName);
         if (hikariUrlDataSource != null) {
-            hikariUrlDataSource.setPassword(dataSourcePasswordModel.newPassword());
+            String password = dataSourcePasswordModel.newPassword();
+            hikariUrlDataSource.setPassword(password);
+            hikariUrlDataSource.getHikariConfigMXBean().setPassword(password);
+            hikariUrlDataSource.getHikariPoolMXBean().softEvictConnections();
         }
     }
 

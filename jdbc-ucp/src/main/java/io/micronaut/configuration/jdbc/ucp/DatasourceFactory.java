@@ -24,7 +24,6 @@ import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.context.exceptions.NoSuchBeanException;
 import io.micronaut.jdbc.DataSourcePasswordChangedEvent;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
-import oracle.ucp.UniversalConnectionPoolException;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
 import oracle.ucp.jdbc.PoolDataSource;
 import org.slf4j.Logger;
@@ -33,8 +32,9 @@ import org.slf4j.LoggerFactory;
 import jakarta.annotation.PreDestroy;
 
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Creates an ucp data source for each configuration bean.
@@ -45,10 +45,9 @@ import java.util.Map;
 @Factory
 public class DatasourceFactory implements AutoCloseable, ApplicationEventListener<DataSourcePasswordChangedEvent> {
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
-    private final ApplicationContext applicationContext;
     private final UniversalConnectionPoolManagerConfiguration configuration;
 
-    private Map<String, PoolDataSource> dataSources = new HashMap<>(2);
+    private final Map<String, PoolDataSource> dataSources = new LinkedHashMap<>(2);
     private UniversalConnectionPoolManager connectionPoolManager;
 
     /**
@@ -56,8 +55,7 @@ public class DatasourceFactory implements AutoCloseable, ApplicationEventListene
      *
      * @param applicationContext The application context
      */
-    public DatasourceFactory(ApplicationContext applicationContext) throws UniversalConnectionPoolException {
-        this.applicationContext = applicationContext;
+    public DatasourceFactory(ApplicationContext applicationContext) {
         this.configuration = applicationContext.getBean(UniversalConnectionPoolManagerConfiguration.class);
         try {
             this.connectionPoolManager = applicationContext.getBean(UniversalConnectionPoolManager.class);
@@ -75,7 +73,7 @@ public class DatasourceFactory implements AutoCloseable, ApplicationEventListene
     @Context
     @EachBean(DatasourceConfiguration.class)
     @Requires(condition = JdbcDataSourceEnabled.class)
-    public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration) throws UniversalConnectionPoolException {
+    public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         PoolDataSource ds = datasourceConfiguration.getPoolDataSource();
         dataSources.put(datasourceConfiguration.getName(), ds);
 

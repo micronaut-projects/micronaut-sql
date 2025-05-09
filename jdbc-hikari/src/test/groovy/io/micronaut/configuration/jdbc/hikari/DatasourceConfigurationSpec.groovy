@@ -72,15 +72,26 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.password == ''
         dataSource.driverClassName == 'org.h2.Driver'
         dataSource.connectionTestQuery == "SELECT 1"
+        def rs = dataSource.connection.prepareStatement(dataSource.connectionTestQuery).executeQuery()
+        rs.next()
+        rs.getInt(1) == 1
 
         when:"Fire datasource password change event"
-        applicationContext.publishEvent(new DataSourcePasswordChangedEvent(new DataSourcePasswordChangedEvent.DataSourcePasswordModel("default", "new_pwd")))
+        def newPassword = 'new_pwd'
+        dataSource.connection.prepareStatement("ALTER USER sa SET PASSWORD '" + newPassword + "'").executeUpdate()
+        applicationContext.publishEvent(new DataSourcePasswordChangedEvent(new DataSourcePasswordChangedEvent.DataSourcePasswordModel("default", newPassword)))
         dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then:"Password is updated"
-        dataSource.password == 'new_pwd'
+        dataSource.password == newPassword
+        def newRs = dataSource.connection.prepareStatement(dataSource.connectionTestQuery).executeQuery()
+        newRs.next()
+        newRs.getInt(1) == 1
 
         cleanup:
+        // Change back to default password
+        dataSource.connection.prepareStatement("ALTER USER sa SET PASSWORD ''").executeUpdate()
+        applicationContext.publishEvent(new DataSourcePasswordChangedEvent(new DataSourcePasswordChangedEvent.DataSourcePasswordModel("default", '')))
         applicationContext.close()
     }
 
