@@ -19,10 +19,9 @@ import io.micronaut.configuration.jdbc.dbcp.metadata.DbcpDataSourcePoolMetadata;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
-import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.inject.qualifiers.Qualifiers;
-import io.micronaut.jdbc.DataSourcePasswordChangedEvent;
+import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.metadata.DataSourcePoolMetadata;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -40,7 +39,7 @@ import java.util.Optional;
  * @since 1.0
  */
 @Factory
-public class DatasourceFactory implements ApplicationEventListener<DataSourcePasswordChangedEvent> {
+public class DatasourceFactory extends BaseDatasourceFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
 
@@ -77,16 +76,14 @@ public class DatasourceFactory implements ApplicationEventListener<DataSourcePas
     }
 
     @Override
-    public void onApplicationEvent(DataSourcePasswordChangedEvent event) {
-        DataSourcePasswordChangedEvent.DataSourcePasswordModel dataSourcePasswordModel = event.getDataSourcePasswordModel();
-        String dataSourceName = dataSourcePasswordModel.dataSourceName();
+    protected void dataSourcePasswordChanged(String dataSourceName, String password) {
         Optional<DataSource> optionalDataSource = applicationContext.findBean(DataSource.class, Qualifiers.byName(dataSourceName));
         if (optionalDataSource.isEmpty()) {
             return;
         }
         DataSource dataSource = dataSourceResolver.resolve(optionalDataSource.get());
         if (dataSource instanceof BasicDataSource basicDataSource) {
-            basicDataSource.setPassword(dataSourcePasswordModel.newPassword());
+            basicDataSource.setPassword(password);
             try {
                 basicDataSource.restart();
             } catch (SQLException e) {

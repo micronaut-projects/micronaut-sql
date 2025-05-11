@@ -1,8 +1,8 @@
 package io.micronaut.configuration.jdbc.dbcp
 
 import io.micronaut.context.exceptions.NoSuchBeanException
-import io.micronaut.jdbc.DataSourcePasswordChangedEvent
 import io.micronaut.jdbc.DataSourceResolver
+import io.micronaut.runtime.context.scope.refresh.RefreshEvent
 import org.apache.commons.dbcp2.BasicDataSource
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
@@ -58,7 +58,7 @@ class DatasourceConfigurationSpec extends Specification {
         when:"Fire datasource password change event"
         def newPassword = "changed_pwd"
         dataSource.connection.prepareStatement("ALTER USER sa SET PASSWORD '" + newPassword + "'").executeUpdate()
-        applicationContext.publishEvent(new DataSourcePasswordChangedEvent(new DataSourcePasswordChangedEvent.DataSourcePasswordModel("default", newPassword)))
+        applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", newPassword)))
         dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then:"Password is updated"
@@ -70,7 +70,7 @@ class DatasourceConfigurationSpec extends Specification {
         cleanup:
         // Change back to default password
         dataSource.connection.prepareStatement("ALTER USER sa SET PASSWORD ''").executeUpdate()
-        applicationContext.publishEvent(new DataSourcePasswordChangedEvent(new DataSourcePasswordChangedEvent.DataSourcePasswordModel("default", '')))
+        applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", '')))
 
         applicationContext.close()
     }
@@ -239,4 +239,5 @@ class DatasourceConfigurationSpec extends Specification {
         cleanup:
         applicationContext.close()
     }
+
 }

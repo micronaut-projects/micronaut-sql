@@ -20,9 +20,8 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.core.annotation.Nullable;
-import io.micronaut.jdbc.DataSourcePasswordChangedEvent;
+import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import jakarta.annotation.PreDestroy;
@@ -41,7 +40,7 @@ import java.util.Map;
  * @since 1.0
  */
 @Factory
-public class DatasourceFactory implements AutoCloseable, ApplicationEventListener<DataSourcePasswordChangedEvent> {
+public class DatasourceFactory extends BaseDatasourceFactory implements AutoCloseable {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
     private final Map<String, org.apache.tomcat.jdbc.pool.DataSource> dataSources = new LinkedHashMap<>(2);
@@ -103,12 +102,10 @@ public class DatasourceFactory implements AutoCloseable, ApplicationEventListene
     }
 
     @Override
-    public void onApplicationEvent(DataSourcePasswordChangedEvent event) {
-        DataSourcePasswordChangedEvent.DataSourcePasswordModel dataSourcePasswordModel = event.getDataSourcePasswordModel();
-        String dataSourceName = dataSourcePasswordModel.dataSourceName();
+    protected void dataSourcePasswordChanged(String dataSourceName, String password) {
         org.apache.tomcat.jdbc.pool.DataSource dataSource = dataSources.get(dataSourceName);
         if (dataSource != null) {
-            dataSource.setPassword(dataSourcePasswordModel.newPassword());
+            dataSource.setPassword(password);
             dataSource.testIdle();
         }
     }

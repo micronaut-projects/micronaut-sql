@@ -20,9 +20,8 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.context.exceptions.NoSuchBeanException;
-import io.micronaut.jdbc.DataSourcePasswordChangedEvent;
+import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
 import oracle.ucp.jdbc.PoolDataSource;
@@ -42,7 +41,7 @@ import java.util.Map;
  * @since 2.0.1
  */
 @Factory
-public class DatasourceFactory implements AutoCloseable, ApplicationEventListener<DataSourcePasswordChangedEvent> {
+public class DatasourceFactory extends BaseDatasourceFactory implements AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
     private final UniversalConnectionPoolManagerConfiguration configuration;
 
@@ -99,13 +98,13 @@ public class DatasourceFactory implements AutoCloseable, ApplicationEventListene
     }
 
     @Override
-    public void onApplicationEvent(DataSourcePasswordChangedEvent event) {
-        DataSourcePasswordChangedEvent.DataSourcePasswordModel dataSourcePasswordModel = event.getDataSourcePasswordModel();
-        String dataSourceName = dataSourcePasswordModel.dataSourceName();
+    protected void dataSourcePasswordChanged(String dataSourceName, String password) {
         PoolDataSource dataSource = dataSources.get(dataSourceName);
         if (dataSource != null) {
             try {
-                dataSource.setPassword(dataSourcePasswordModel.newPassword());
+                dataSource.setPassword(password);
+                // TODO: Not enough to change password
+                // or to evict, refresh, destroy connection pool in UCP
             } catch (SQLException e) {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn("Failed to update password for datasource {}", dataSourceName, e);

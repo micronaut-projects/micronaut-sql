@@ -21,8 +21,7 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.context.event.ApplicationEventListener;
-import io.micronaut.jdbc.DataSourcePasswordChangedEvent;
+import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +41,7 @@ import static io.micronaut.configuration.metrics.micrometer.MeterRegistryFactory
  * @since 1.0
  */
 @Factory
-public class DatasourceFactory implements AutoCloseable, ApplicationEventListener<DataSourcePasswordChangedEvent> {
+public class DatasourceFactory extends BaseDatasourceFactory implements AutoCloseable {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
     private final Map<String, HikariUrlDataSource> dataSources = new LinkedHashMap<>(2);
@@ -75,12 +74,9 @@ public class DatasourceFactory implements AutoCloseable, ApplicationEventListene
     }
 
     @Override
-    public void onApplicationEvent(DataSourcePasswordChangedEvent event) {
-        DataSourcePasswordChangedEvent.DataSourcePasswordModel dataSourcePasswordModel = event.getDataSourcePasswordModel();
-        String dataSourceName = dataSourcePasswordModel.dataSourceName();
+    protected void dataSourcePasswordChanged(String dataSourceName, String password) {
         HikariUrlDataSource hikariUrlDataSource = dataSources.get(dataSourceName);
         if (hikariUrlDataSource != null) {
-            String password = dataSourcePasswordModel.newPassword();
             hikariUrlDataSource.setPassword(password);
             hikariUrlDataSource.getHikariConfigMXBean().setPassword(password);
             hikariUrlDataSource.getHikariPoolMXBean().softEvictConnections();
