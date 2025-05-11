@@ -26,8 +26,11 @@ import io.micronaut.jdbc.DataSourcePasswordChangedEvent;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.metadata.DataSourcePoolMetadata;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.Optional;
 
 /**
@@ -38,6 +41,8 @@ import java.util.Optional;
  */
 @Factory
 public class DatasourceFactory implements ApplicationEventListener<DataSourcePasswordChangedEvent> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
 
     private final DataSourceResolver dataSourceResolver;
     private final ApplicationContext applicationContext;
@@ -82,6 +87,13 @@ public class DatasourceFactory implements ApplicationEventListener<DataSourcePas
         DataSource dataSource = dataSourceResolver.resolve(optionalDataSource.get());
         if (dataSource instanceof BasicDataSource basicDataSource) {
             basicDataSource.setPassword(dataSourcePasswordModel.newPassword());
+            try {
+                basicDataSource.restart();
+            } catch (SQLException e) {
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn("Failed to restart datasource after password change {}", dataSourceName, e);
+                }
+            }
         }
     }
 }
