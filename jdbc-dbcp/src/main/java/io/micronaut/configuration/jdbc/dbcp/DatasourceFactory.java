@@ -81,7 +81,7 @@ public class DatasourceFactory implements ApplicationEventListener<DataSourcePas
         DataSourcePasswordChangedEvent.DataSourcePasswordModel dataSourcePasswordModel = event.getDataSourcePasswordModel();
         String dataSourceName = dataSourcePasswordModel.dataSourceName();
         Optional<DataSource> optionalDataSource = applicationContext.findBean(DataSource.class, Qualifiers.byName(dataSourceName));
-        if (!optionalDataSource.isPresent()) {
+        if (optionalDataSource.isEmpty()) {
             return;
         }
         DataSource dataSource = dataSourceResolver.resolve(optionalDataSource.get());
