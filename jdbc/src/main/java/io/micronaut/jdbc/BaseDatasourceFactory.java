@@ -15,6 +15,7 @@
  */
 package io.micronaut.jdbc;
 
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.CollectionUtils;
@@ -33,7 +34,10 @@ import java.util.regex.Pattern;
  * <p>
  * This class provides a basic implementation for handling refresh events and updating datasource credentials.
  * Subclasses are expected to implement the {@link #dataSourceCredentialsChanged(String, DataSourceCredentials)} method to handle the updated credentials.
+ *
+ * @since 6.2.0
  */
+@Internal
 public abstract class BaseDatasourceFactory implements RefreshEventListener {
 
     /**
