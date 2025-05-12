@@ -74,11 +74,17 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     }
 
     @Override
-    protected void dataSourcePasswordChanged(String dataSourceName, String password) {
+    protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
         HikariUrlDataSource hikariUrlDataSource = dataSources.get(dataSourceName);
         if (hikariUrlDataSource != null) {
-            hikariUrlDataSource.setPassword(password);
-            hikariUrlDataSource.getHikariConfigMXBean().setPassword(password);
+            if (dataSourceCredentials.userName() != null) {
+                hikariUrlDataSource.setUsername(dataSourceCredentials.userName());
+                hikariUrlDataSource.getHikariConfigMXBean().setUsername(dataSourceCredentials.userName());
+            }
+            if (dataSourceCredentials.password() != null) {
+                hikariUrlDataSource.setPassword(dataSourceCredentials.password());
+                hikariUrlDataSource.getHikariConfigMXBean().setPassword(dataSourceCredentials.password());
+            }
             hikariUrlDataSource.getHikariPoolMXBean().softEvictConnections();
         }
     }

@@ -76,14 +76,19 @@ public class DatasourceFactory extends BaseDatasourceFactory {
     }
 
     @Override
-    protected void dataSourcePasswordChanged(String dataSourceName, String password) {
+    protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
         Optional<DataSource> optionalDataSource = applicationContext.findBean(DataSource.class, Qualifiers.byName(dataSourceName));
         if (optionalDataSource.isEmpty()) {
             return;
         }
         DataSource dataSource = dataSourceResolver.resolve(optionalDataSource.get());
         if (dataSource instanceof BasicDataSource basicDataSource) {
-            basicDataSource.setPassword(password);
+            if (dataSourceCredentials.userName() != null) {
+                basicDataSource.setUsername(dataSourceCredentials.userName());
+            }
+            if (dataSourceCredentials.password() != null) {
+                basicDataSource.setPassword(dataSourceCredentials.password());
+            }
             try {
                 basicDataSource.restart();
             } catch (SQLException e) {

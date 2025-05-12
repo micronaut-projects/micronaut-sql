@@ -102,10 +102,15 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     }
 
     @Override
-    protected void dataSourcePasswordChanged(String dataSourceName, String password) {
+    protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
         org.apache.tomcat.jdbc.pool.DataSource dataSource = dataSources.get(dataSourceName);
         if (dataSource != null) {
-            dataSource.setPassword(password);
+            if (dataSourceCredentials.password() != null) {
+                dataSource.setPassword(dataSourceCredentials.password());
+            }
+            if (dataSourceCredentials.userName() != null) {
+                dataSource.setUsername(dataSourceCredentials.userName());
+            }
             dataSource.testIdle();
         }
     }

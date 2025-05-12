@@ -98,12 +98,17 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     }
 
     @Override
-    protected void dataSourcePasswordChanged(String dataSourceName, String password) {
+    protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
         PoolDataSource dataSource = dataSources.get(dataSourceName);
         if (dataSource != null) {
             try {
-                dataSource.setPassword(password);
-                // TODO: Not enough to change password
+                if (dataSourceCredentials.password() != null) {
+                    dataSource.setPassword(dataSourceCredentials.password());
+                }
+                if (dataSourceCredentials.userName() != null) {
+                    dataSource.setUser(dataSourceCredentials.userName());
+                }
+                // TODO: Not enough to change password and username
                 // or to evict, refresh, destroy connection pool in UCP
             } catch (SQLException e) {
                 if (LOG.isWarnEnabled()) {
