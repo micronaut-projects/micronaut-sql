@@ -33,6 +33,7 @@ import jakarta.annotation.PreDestroy;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Creates an ucp data source for each configuration bean.
@@ -102,14 +103,16 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         PoolDataSource dataSource = dataSources.get(dataSourceName);
         if (dataSource != null) {
             try {
+                Properties props = new Properties();
                 if (dataSourceCredentials.password() != null) {
                     dataSource.setPassword(dataSourceCredentials.password());
+                    props.put("password", dataSourceCredentials.password());
                 }
                 if (dataSourceCredentials.userName() != null) {
                     dataSource.setUser(dataSourceCredentials.userName());
+                    props.put("user", dataSourceCredentials.userName());
                 }
-                // TODO: Not enough to change password and username
-                // or to evict, refresh, destroy connection pool in UCP
+                dataSource.reconfigureDataSource(props);
             } catch (SQLException e) {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn("Failed to update password for datasource {}", dataSourceName, e);
