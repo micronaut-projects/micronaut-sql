@@ -22,6 +22,7 @@ import io.micronaut.context.exceptions.NoSuchBeanException
 import io.micronaut.inject.qualifiers.Qualifiers
 import io.micronaut.jdbc.DataSourceResolver
 import oracle.ucp.jdbc.PoolDataSource
+import oracle.ucp.util.Util
 import spock.lang.Specification
 
 import javax.sql.DataSource
@@ -413,5 +414,8 @@ class DatasourceConfigurationSpec extends Specification {
 
         cleanup:
         applicationContext.close()
+        Util.createConnectionInBorrowThread()
+        System.setProperty("oracle.ucp.createConnectionInBorrowThread", "false")
+        !Util.createConnectionInBorrowThread()
     }
 }
