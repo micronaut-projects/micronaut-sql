@@ -30,23 +30,32 @@ import oracle.ucp.jdbc.PoolDataSource;
 public class OracleUcpConfigurator {
 
     private static final String UCP_DESTROY_ON_RELOAD = "oracle.ucp.destroyOnReload";
+    private static final String UCP_CREATE_CONNECTION_IN_BORROW_THREAD = "oracle.ucp.createConnectionInBorrowThread";
 
     /**
-     * Initializes the Oracle UCP (Universal Connection Pooling) configuration.
+     * Initializes Oracle Universal Connection Pooling (UCP) configuration based on the provided
+     * {@link OracleUcpConfiguration}. This method sets system properties for UCP configuration
+     * if they are not already set.
      *
-     * <p>If the {@code oracle.ucp.destroyOnReload} system property is not set or is empty, this method
-     * sets it based on the value of the {@link OracleUcpConfiguration#destroyOnReload()} field.
-     * This property determines whether the connection pool should be destroyed when the application
-     * is reloaded.
+     * Specifically, it sets the following system properties:
+     * <ul>
+     *   <li>{@code oracle.ucp.destroyOnReload}: Controls whether to destroy connections on reload.
+     *   <li>{@code oracle.ucp.createConnectionInBorrowThread}: Controls whether the connection pool
+     *       should create connections in the borrow thread.
+     * </ul>
      *
-     * <p>This initialization helps prevent duplicate connection pool errors that may occur during
-     * application reloading.
+     * These properties are only set if the corresponding values in the provided configuration are not null
+     * and the system properties are not already set or are blank.
      *
-     * @param oracleUcpConfiguration The Oracle UCP configuration
+     * @param oracleUcpConfiguration the UCP configuration to apply, or null if no configuration is available
      */
     @PostConstruct
     public void initUcp(@Nullable OracleUcpConfiguration oracleUcpConfiguration) {
-        if (oracleUcpConfiguration != null && oracleUcpConfiguration.destroyOnReload() != null) {
+        if (oracleUcpConfiguration == null) {
+            return;
+        }
+
+        if (oracleUcpConfiguration.destroyOnReload() != null) {
             final String ucpDestroyOnReloadProperty = System.getProperty(UCP_DESTROY_ON_RELOAD);
             if (ucpDestroyOnReloadProperty == null || ucpDestroyOnReloadProperty.isBlank()) {
                 // This is to deal with a duplicate connection pool error of:
@@ -60,6 +69,18 @@ public class OracleUcpConfigurator {
                 System.setProperty(
                     UCP_DESTROY_ON_RELOAD,
                     String.valueOf(oracleUcpConfiguration.destroyOnReload()));
+            }
+        }
+
+        if (oracleUcpConfiguration.createConnectionInBorrowThread() != null) {
+            final String ucpCreateConnectionInBorrowThread = System.getProperty(UCP_CREATE_CONNECTION_IN_BORROW_THREAD);
+            if (ucpCreateConnectionInBorrowThread == null || ucpCreateConnectionInBorrowThread.isBlank()) {
+                // The current default behavior in UCP 23.x is to use background threads for creating connections,
+                // instead of the user threads, which results in enhanced efficiency. If required,
+                // it can be switched back to the old behavior by setting system property oracle.ucp.createConnectionInBorrowThread to true
+                System.setProperty(
+                    UCP_CREATE_CONNECTION_IN_BORROW_THREAD,
+                    String.valueOf(oracleUcpConfiguration.createConnectionInBorrowThread()));
             }
         }
     }

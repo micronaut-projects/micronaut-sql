@@ -52,6 +52,10 @@ The Oracle UCP is managed by the link:https://docs.oracle.com/en/database/oracle
 
 In case when exception `Universal Connection Pool already exists in the Universal Connection Pool Manager` is thrown, there is `oracle.ucp.destroyOnReload` configuration that can be set to `true` to avoid this error. In that case, when creating new connection pool, if there is the one with the same name the old one will be destroyed first.
 
+There is also property `oracle.ucp.createConnectionInBorrowThread` that can control connection creation using background threads. The default configuration since UCP 23.x is that connections are created using background threads instead of user threads.
+Adding configuration `oracle.ucp.createConnectionInBorrowThread=true` will switch to the old behavior.
+More about it can be read here link:https://docs.oracle.com/en/database/oracle/oracle-database/23/jjucp/borrowing-ucp-connections.html[Borrowing Connections from UCP].
+
 For a list of other properties able to be configured, simply refer to the implementation that is being used. All setter methods are candidates for configuration.
 
 [cols="20%,80%"]
