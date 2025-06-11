@@ -103,7 +103,7 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
             }
             if (StringUtils.isEmpty(userName)) {
                 // username may not be empty while password can
-                throw new IllegalStateException("Datasource [" + dataSourceName + "] username is change to empty.");
+                throw new IllegalStateException("Datasource [" + dataSourceName + "] username is changed to empty.");
             }
             DataSourceCredentials dataSourceCredentials = dataSourceCredentialsMap.get(dataSourceName);
             dataSourceCredentialsMap.put(dataSourceName, dataSourceCredentials == null ? new DataSourceCredentials(userName, null) : dataSourceCredentials.withUserName(userName));
@@ -129,8 +129,8 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
      * <p>
      * This record contains the username and password for a datasource.
      *
-     * @param userName the username (may be null)
-     * @param password the password (may be null)
+     * @param userName the username (can be null)
+     * @param password the password (can be null)
      */
     protected record DataSourceCredentials(@Nullable String userName, @Nullable String password) {
 
