@@ -105,17 +105,17 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
             try {
                 Properties props = new Properties();
                 if (dataSourceCredentials.password() != null) {
-                    dataSource.setPassword(dataSourceCredentials.password());
                     props.put("password", dataSourceCredentials.password());
                 }
                 if (dataSourceCredentials.userName() != null) {
-                    dataSource.setUser(dataSourceCredentials.userName());
                     props.put("user", dataSourceCredentials.userName());
                 }
-                dataSource.reconfigureDataSource(props);
+                if (!props.isEmpty()) {
+                    dataSource.reconfigureDataSource(props);
+                }
             } catch (SQLException e) {
                 if (LOG.isWarnEnabled()) {
-                    LOG.warn("Failed to update password for datasource {}", dataSourceName, e);
+                    LOG.warn("Failed to update username and/or password for datasource {}", dataSourceName, e);
                 }
             }
         }
