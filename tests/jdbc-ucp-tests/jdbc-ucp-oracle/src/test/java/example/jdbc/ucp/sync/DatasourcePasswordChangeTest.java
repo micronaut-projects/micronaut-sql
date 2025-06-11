@@ -1,5 +1,6 @@
 package example.jdbc.ucp.sync;
 
+import io.micronaut.configuration.jdbc.ucp.DatasourceConfiguration;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Property;
 import io.micronaut.jdbc.DataSourceResolver;
@@ -13,6 +14,7 @@ import javax.sql.DataSource;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @Property(name = "datasources.default.db-type", value = "oracle")
 @Property(name = "datasources.default.initial-pool-size", value = "1")
 @Property(name = "datasources.default.connection-factory-class-name", value = "oracle.jdbc.pool.OracleDataSource")
-@Property(name = "oracle.ucp.destroyOnReload", value = "true")
 class DatasourcePasswordChangeTest {
 
     @Inject
@@ -31,10 +32,15 @@ class DatasourcePasswordChangeTest {
     DataSourceResolver dataSourceResolver;
 
     @Inject
+    DatasourceConfiguration datasourceConfiguration;
+
+    @Inject
     ApplicationContext applicationContext;
 
     @Test
     void testStartupAndChangePassword() throws Exception {
+        assertNotNull(datasourceConfiguration);
+        String initialPassword = datasourceConfiguration.getPassword();
         assertNotNull(dataSource);
         ResultSet rs = dataSource.getConnection().prepareStatement("SELECT 1").executeQuery();
         assertTrue(rs.next());
@@ -44,15 +50,25 @@ class DatasourcePasswordChangeTest {
         dataSource.getConnection().prepareStatement(String.format("ALTER USER test IDENTIFIED BY %s", newPassword)).executeUpdate();
         applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", newPassword)));
 
+        invalidateConnection();
+
+        rs = dataSource.getConnection().prepareStatement("SELECT 1").executeQuery();
+        assertTrue(rs.next());
+        assertEquals(1, rs.getInt(1));
+
+        // Update back to the old password
+        dataSource.getConnection().prepareStatement(String.format("ALTER USER test IDENTIFIED BY %s", initialPassword)).executeUpdate();
+        applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", "test")));
+
+        invalidateConnection();
+    }
+
+    private void invalidateConnection() throws SQLException {
         Connection connection = dataSourceResolver.resolve(dataSource).getConnection();
         if (connection instanceof ValidConnection validConnection) {
             // For the test purpose, this is how to invalidate connection
             // and force connection pool to create new one using changed password
             validConnection.setInvalid();
         }
-
-        rs = dataSource.getConnection().prepareStatement("SELECT 1").executeQuery();
-        assertTrue(rs.next());
-        assertEquals(1, rs.getInt(1));
     }
 }
