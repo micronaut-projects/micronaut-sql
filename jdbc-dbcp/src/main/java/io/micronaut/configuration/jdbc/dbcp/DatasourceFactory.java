@@ -44,8 +44,6 @@ public class DatasourceFactory extends BaseDatasourceFactory {
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
 
     private final DataSourceResolver dataSourceResolver;
-    private final ApplicationContext applicationContext;
-
     /**
      * Default constructor.
      * @param dataSourceResolver The data source resolver
@@ -53,8 +51,8 @@ public class DatasourceFactory extends BaseDatasourceFactory {
      */
     public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
                              ApplicationContext applicationContext) {
+        super(applicationContext);
         this.dataSourceResolver = dataSourceResolver == null ? DataSourceResolver.DEFAULT : dataSourceResolver;
-        this.applicationContext = applicationContext;
     }
 
     /**

@@ -15,6 +15,7 @@
  */
 package io.micronaut.jdbc;
 
+import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
@@ -50,6 +51,12 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
      */
     private static final Pattern DATASOURCE_USERNAME_MATCHER = Pattern.compile(BasicJdbcConfiguration.PREFIX + "\\.(.*)\\.username");
 
+    protected final ApplicationContext applicationContext;
+
+    protected BaseDatasourceFactory(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
     @Override
     public @NonNull Set<String> getObservedConfigurationPrefixes() {
         return Set.of(BasicJdbcConfiguration.PREFIX);
@@ -64,14 +71,14 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
         Map<String, DataSourceCredentials> dataSourceCredentialsMap = new HashMap<>(2);
         for (Map.Entry<String, Object> change : changes.entrySet()) {
             String property = change.getKey();
-            Object value = change.getValue();
+            // value in change set is an old value, and we want to get new from the application context
             Matcher userNameMatcher = DATASOURCE_USERNAME_MATCHER.matcher(property);
             if (userNameMatcher.matches()) {
-                checkAndUpdateUsernameChange(value, userNameMatcher, dataSourceCredentialsMap);
+                checkAndUpdateUsernameChange(property, userNameMatcher, dataSourceCredentialsMap);
             } else {
                 Matcher passwordMatcher = DATASOURCE_PASSWORD_MATCHER.matcher(property);
                 if (passwordMatcher.matches()) {
-                    checkAndUpdatePasswordChange(value, passwordMatcher, dataSourceCredentialsMap);
+                    checkAndUpdatePasswordChange(property, passwordMatcher, dataSourceCredentialsMap);
                 }
             }
         }
@@ -92,15 +99,10 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
      */
     protected abstract void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials);
 
-    private void checkAndUpdateUsernameChange(Object value, Matcher userNameMatcher, Map<String, DataSourceCredentials> dataSourceCredentialsMap) {
+    private void checkAndUpdateUsernameChange(String property, Matcher userNameMatcher, Map<String, DataSourceCredentials> dataSourceCredentialsMap) {
         String dataSourceName = userNameMatcher.group(1);
         if (StringUtils.isNotEmpty(dataSourceName)) {
-            String userName;
-            if (value instanceof byte[] bytes) {
-                userName = new String(bytes);
-            } else {
-                userName = value.toString();
-            }
+            String userName = applicationContext.getRequiredProperty(property, String.class);
             if (StringUtils.isEmpty(userName)) {
                 // username may not be empty while password can
                 throw new IllegalStateException("Datasource [" + dataSourceName + "] username is changed to empty.");
@@ -110,15 +112,10 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
         }
     }
 
-    private void checkAndUpdatePasswordChange(Object value, Matcher passwordMatcher, Map<String, DataSourceCredentials> dataSourceCredentialsMap) {
+    private void checkAndUpdatePasswordChange(String property, Matcher passwordMatcher, Map<String, DataSourceCredentials> dataSourceCredentialsMap) {
         String dataSourceName = passwordMatcher.group(1);
         if (StringUtils.isNotEmpty(dataSourceName)) {
-            String password;
-            if (value instanceof byte[] bytes) {
-                password = new String(bytes);
-            } else {
-                password = value.toString();
-            }
+            String password = applicationContext.getRequiredProperty(property, String.class);
             DataSourceCredentials dataSourceCredentials = dataSourceCredentialsMap.get(dataSourceName);
             dataSourceCredentialsMap.put(dataSourceName, dataSourceCredentials == null ? new DataSourceCredentials(null, password) : dataSourceCredentials.withPassword(password));
         }

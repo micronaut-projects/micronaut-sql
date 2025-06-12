@@ -74,10 +74,51 @@ class DatasourceConfigurationSpec extends Specification {
         rs.next()
         rs.getInt(1) == 1
 
+        cleanup:
+        applicationContext.close()
+    }
+
+    void "test configuration for custom ds name and password change"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        System.setProperty("ds-custom-password", "")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                ['datasources.custom.password': '${ds-custom-password}',
+                 'datasources.custom.dialect': 'H2',
+                 'datasources.custom.url': 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+                 'datasources.custom.username': 'sa',
+                 'datasources.custom.driver-class-name': 'org.h2.Driver']
+        ))
+        applicationContext.start()
+        DataSourceResolver dataSourceResolver = applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
+
+        expect:
+        applicationContext.containsBean(DataSource)
+        applicationContext.containsBean(DatasourceConfiguration)
+        applicationContext.containsBean(TomcatDataSourcePoolMetadata)
+
+        when:
+        DataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
+
+        then: //The default configuration is supplied because H2 is on the classpath
+        dataSource.url == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
+        dataSource.username == 'sa'
+        dataSource.poolProperties.password == ''
+        dataSource.name == 'custom'
+        dataSource.driverClassName == 'org.h2.Driver'
+        dataSource.abandonWhenPercentageFull == 0
+        dataSource.accessToUnderlyingConnectionAllowed
+        def rs = dataSource.connection.prepareStatement('SELECT 1').executeQuery()
+        rs.next()
+        rs.getInt(1) == 1
+
         when:"Fire datasource password change event"
-        def newPassword = "updated_pwd"
+        def newPassword = 'updated_pwd'
+        System.setProperty("ds-custom-password", newPassword)
+        def changes = applicationContext.environment.refreshAndDiff()
         dataSource.connection.prepareStatement("ALTER USER sa SET PASSWORD '" + newPassword + "'").executeUpdate()
-        applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", newPassword)))
+        applicationContext.publishEvent(new RefreshEvent(changes))
         dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
 
         then:"Password is updated"
@@ -89,7 +130,9 @@ class DatasourceConfigurationSpec extends Specification {
         cleanup:
         // Change back to default password
         dataSource.connection.prepareStatement("ALTER USER sa SET PASSWORD ''").executeUpdate()
-        applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", '')))
+        System.setProperty("ds-custom-password", "")
+        changes = applicationContext.environment.refreshAndDiff()
+        applicationContext.publishEvent(new RefreshEvent(changes))
         applicationContext.close()
     }
 

@@ -55,6 +55,7 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
      * @param applicationContext The application context
      */
     public DatasourceFactory(ApplicationContext applicationContext) {
+        super(applicationContext);
         this.configuration = applicationContext.getBean(UniversalConnectionPoolManagerConfiguration.class);
         try {
             this.connectionPoolManager = applicationContext.getBean(UniversalConnectionPoolManager.class);

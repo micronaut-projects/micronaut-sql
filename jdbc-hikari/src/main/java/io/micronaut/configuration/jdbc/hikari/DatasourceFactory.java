@@ -46,14 +46,12 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
     private final Map<String, HikariUrlDataSource> dataSources = new LinkedHashMap<>(2);
 
-    private final ApplicationContext applicationContext;
-
     /**
      * Default constructor.
      * @param applicationContext The application context
      */
     public DatasourceFactory(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+        super(applicationContext);
     }
 
     /**

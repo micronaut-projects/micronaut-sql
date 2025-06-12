@@ -16,6 +16,7 @@
 package io.micronaut.configuration.jdbc.tomcat;
 
 import io.micronaut.configuration.jdbc.tomcat.metadata.TomcatDataSourcePoolMetadata;
+import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
@@ -51,7 +52,9 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
      * Default constructor.
      * @param dataSourceResolver The data source resolver
      */
-    public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver) {
+    public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
+                             ApplicationContext applicationContext) {
+        super(applicationContext);
         this.dataSourceResolver = dataSourceResolver == null ? DataSourceResolver.DEFAULT : dataSourceResolver;
     }
 
