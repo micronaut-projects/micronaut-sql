@@ -119,6 +119,8 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
                     LOG.warn("Failed to update username and/or password for datasource {}", dataSourceName, e);
                 }
             }
+        } else if (LOG.isDebugEnabled()) {
+            LOG.debug("Datasource with name [{}] not found while trying to propagate datasource credentials changes.", dataSourceName);
         }
     }
 }

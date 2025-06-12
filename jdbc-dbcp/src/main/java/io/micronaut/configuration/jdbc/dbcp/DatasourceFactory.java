@@ -77,6 +77,9 @@ public class DatasourceFactory extends BaseDatasourceFactory {
     protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
         Optional<DataSource> optionalDataSource = applicationContext.findBean(DataSource.class, Qualifiers.byName(dataSourceName));
         if (optionalDataSource.isEmpty()) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Datasource with name [{}] not found while trying to propagate datasource credentials changes.", dataSourceName);
+            }
             return;
         }
         DataSource dataSource = dataSourceResolver.resolve(optionalDataSource.get());

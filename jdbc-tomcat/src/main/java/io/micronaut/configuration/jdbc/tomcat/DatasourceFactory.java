@@ -115,6 +115,8 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
                 dataSource.setUsername(dataSourceCredentials.userName());
             }
             dataSource.testIdle();
+        } else if (LOG.isDebugEnabled()) {
+            LOG.debug("Datasource with name [{}] not found while trying to propagate datasource credentials changes.", dataSourceName);
         }
     }
 }

@@ -84,6 +84,8 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
                 hikariUrlDataSource.getHikariConfigMXBean().setPassword(dataSourceCredentials.password());
             }
             hikariUrlDataSource.getHikariPoolMXBean().softEvictConnections();
+        } else if (LOG.isDebugEnabled()) {
+            LOG.debug("Datasource with name [{}] not found while trying to propagate datasource credentials changes.", dataSourceName);
         }
     }
 

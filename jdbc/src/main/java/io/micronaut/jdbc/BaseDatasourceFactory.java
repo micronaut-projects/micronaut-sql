@@ -23,6 +23,8 @@ import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.runtime.context.scope.refresh.RefreshEvent;
 import io.micronaut.runtime.context.scope.refresh.RefreshEventListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +52,8 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
      * A regular expression pattern used to match datasource username properties.
      */
     private static final Pattern DATASOURCE_USERNAME_MATCHER = Pattern.compile(BasicJdbcConfiguration.PREFIX + "\\.(.*)\\.username");
+
+    private static final Logger LOG = LoggerFactory.getLogger(BaseDatasourceFactory.class);
 
     protected final ApplicationContext applicationContext;
 
@@ -84,7 +88,13 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
         }
         if (CollectionUtils.isNotEmpty(dataSourceCredentialsMap)) {
             for (Map.Entry<String, DataSourceCredentials> dataSourceCredentialsEntry : dataSourceCredentialsMap.entrySet()) {
-                dataSourceCredentialsChanged(dataSourceCredentialsEntry.getKey(), dataSourceCredentialsEntry.getValue());
+                String datasourceName = dataSourceCredentialsEntry.getKey();
+                DataSourceCredentials dataSourceCredentials = dataSourceCredentialsEntry.getValue();
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Datasource [{}] credentials changed [{}]. Trying to refresh connection pool.", datasourceName,
+                        dataSourceCredentials.getChangeType());
+                }
+                dataSourceCredentialsChanged(datasourceName, dataSourceCredentials);
             }
         }
     }
@@ -151,5 +161,26 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
             return new DataSourceCredentials(userName, newPassword);
         }
 
+        /**
+         * @return The change type in datasource credentials
+         */
+        public ChangeType getChangeType() {
+            if (userName != null && password != null) {
+                return ChangeType.USERNAME_AND_PASSWORD;
+            } else if (userName != null) {
+                return ChangeType.USERNAME;
+            } else if (password != null) {
+                return ChangeType.PASSWORD;
+            } else {
+                return ChangeType.NONE;
+            }
+        }
+
+        enum ChangeType {
+            USERNAME,
+            PASSWORD,
+            USERNAME_AND_PASSWORD,
+            NONE
+        }
     }
 }
