@@ -15,6 +15,7 @@
  */
 package io.micronaut.configuration.jdbc.dbcp
 
+import io.micronaut.context.ApplicationContext
 import io.micronaut.jdbc.DataSourceResolver
 import org.apache.commons.dbcp2.BasicDataSource
 import spock.lang.Specification
@@ -25,13 +26,14 @@ class DatasourceFactorySpec extends Specification {
 
     def "create basic datasource"() {
         given:
+        def applicationContext = ApplicationContext.run()
         def dataSource = new BasicDataSource(validationQuery: "SELECT 1")
         DatasourceFactory datasourceFactory = new DatasourceFactory(new DataSourceResolver() {
             @Override
             DataSource resolve(DataSource ds) {
                 return ds
             }
-        })
+        }, applicationContext)
         when:
         def metadata = datasourceFactory.dbcpDataSourcePoolMetadata(dataSource)
 
@@ -46,6 +48,7 @@ class DatasourceFactorySpec extends Specification {
 
     def "create proxy datasource"() {
         given:
+        def applicationContext = ApplicationContext.run()
         def dataSource = new BasicDataSource(validationQuery: "SELECT 1")
         def proxyDataSource = Spy(dataSource)
         def dataSourceResolver = new DataSourceResolver() {
@@ -57,7 +60,7 @@ class DatasourceFactorySpec extends Specification {
                 return ds
             }
         }
-        DatasourceFactory datasourceFactory = new DatasourceFactory(dataSourceResolver)
+        DatasourceFactory datasourceFactory = new DatasourceFactory(dataSourceResolver, applicationContext)
 
         when:
         def metadata = datasourceFactory.dbcpDataSourcePoolMetadata(proxyDataSource)

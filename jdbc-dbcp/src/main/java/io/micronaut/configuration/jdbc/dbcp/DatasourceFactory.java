@@ -16,14 +16,21 @@
 package io.micronaut.configuration.jdbc.dbcp;
 
 import io.micronaut.configuration.jdbc.dbcp.metadata.DbcpDataSourcePoolMetadata;
+import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.inject.qualifiers.Qualifiers;
+import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.metadata.DataSourcePoolMetadata;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
+import java.util.Optional;
 
 /**
  * Creates a dbcp data source for each configuration bean.
@@ -32,15 +39,19 @@ import javax.sql.DataSource;
  * @since 1.0
  */
 @Factory
-public class DatasourceFactory {
+public class DatasourceFactory extends BaseDatasourceFactory {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
 
     private final DataSourceResolver dataSourceResolver;
-
     /**
      * Default constructor.
      * @param dataSourceResolver The data source resolver
+     * @param applicationContext The application context
      */
-    public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver) {
+    public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
+                             ApplicationContext applicationContext) {
+        super(applicationContext);
         this.dataSourceResolver = dataSourceResolver == null ? DataSourceResolver.DEFAULT : dataSourceResolver;
     }
 
@@ -56,9 +67,36 @@ public class DatasourceFactory {
         DbcpDataSourcePoolMetadata dbcpDataSourcePoolMetadata = null;
         DataSource resolved = dataSourceResolver.resolve(dataSource);
 
-        if (resolved instanceof BasicDataSource) {
-            dbcpDataSourcePoolMetadata = new DbcpDataSourcePoolMetadata((BasicDataSource) resolved);
+        if (resolved instanceof BasicDataSource basicDataSource) {
+            dbcpDataSourcePoolMetadata = new DbcpDataSourcePoolMetadata(basicDataSource);
         }
         return dbcpDataSourcePoolMetadata;
+    }
+
+    @Override
+    protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
+        Optional<DataSource> optionalDataSource = applicationContext.findBean(DataSource.class, Qualifiers.byName(dataSourceName));
+        if (optionalDataSource.isEmpty()) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Datasource with name [{}] not found while trying to propagate datasource credentials changes.", dataSourceName);
+            }
+            return;
+        }
+        DataSource dataSource = dataSourceResolver.resolve(optionalDataSource.get());
+        if (dataSource instanceof BasicDataSource basicDataSource) {
+            if (dataSourceCredentials.userName() != null) {
+                basicDataSource.setUsername(dataSourceCredentials.userName());
+            }
+            if (dataSourceCredentials.password() != null) {
+                basicDataSource.setPassword(dataSourceCredentials.password());
+            }
+            try {
+                basicDataSource.restart();
+            } catch (SQLException e) {
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn("Failed to restart datasource after password change {}", dataSourceName, e);
+                }
+            }
+        }
     }
 }
