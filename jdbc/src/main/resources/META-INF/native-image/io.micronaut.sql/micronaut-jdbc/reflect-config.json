@@ -1,5 +1,13 @@
 [
   {
     "name":"com.microsoft.sqlserver.jdbc.ConfigurableRetryLogic"
+  },
+  {
+    "condition": {
+      "typeReachable": "org.mariadb.jdbc.Configuration"
+    },
+    "name":"org.mariadb.jdbc.Configuration$Builder",
+    "allDeclaredFields":true,
+    "methods":[{"name":"password","parameterTypes":["java.lang.String"] }, {"name":"user","parameterTypes":["java.lang.String"] }]
   }
 ]
