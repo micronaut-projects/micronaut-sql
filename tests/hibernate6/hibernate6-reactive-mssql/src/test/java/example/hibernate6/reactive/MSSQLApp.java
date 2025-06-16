@@ -23,4 +23,12 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 @Property(name = "jpa.default.properties.hibernate.connection.db-type", value = "mssql")
 @Property(name = "jpa.default.reactive", value = "true")
 public class MSSQLApp extends AbstractApp {
+
+    static {
+        // In netty 4.2.2 SslContextBuilder defaults endpointIdentificationAlgorithm to "HTTPS" if system property
+        // "io.netty.handler.ssl.defaultEndpointVerificationAlgorithm" is not set. This makes sun.security.util.HostnameChecker.match(String expectedName, X509Certificate cert, boolean chainsToPublicCA)
+        // method to throw error "javax.net.ssl.SSLHandshakeException: No name matching localhost found" and this is workaround.
+        // Which could be documented or suggested if user face issue
+        System.setProperty("io.netty.handler.ssl.defaultEndpointVerificationAlgorithm", "NONE");
+    }
 }
