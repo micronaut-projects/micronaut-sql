@@ -18,11 +18,11 @@ package example.hibernate6.reactive;
 import example.sync.AbstractApp;
 import io.micronaut.context.annotation.Property;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 
 @MicronautTest(transactional = false)
 @Property(name = "jpa.default.properties.hibernate.connection.db-type", value = "mssql")
 @Property(name = "jpa.default.reactive", value = "true")
-@Ignore(value = "Temporary to examine other potential errors")
+@Disabled(value = "Temporary to examine other potential errors")
 public class MSSQLApp extends AbstractApp {
 }
