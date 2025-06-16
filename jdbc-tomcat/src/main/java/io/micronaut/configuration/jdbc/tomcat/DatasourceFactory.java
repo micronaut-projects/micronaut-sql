@@ -16,11 +16,13 @@
 package io.micronaut.configuration.jdbc.tomcat;
 
 import io.micronaut.configuration.jdbc.tomcat.metadata.TomcatDataSourcePoolMetadata;
+import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import jakarta.annotation.PreDestroy;
@@ -28,8 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Creates a tomcat data source for each configuration bean.
@@ -39,10 +41,10 @@ import java.util.List;
  * @since 1.0
  */
 @Factory
-public class DatasourceFactory implements AutoCloseable {
+public class DatasourceFactory extends BaseDatasourceFactory implements AutoCloseable {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
-    private List<org.apache.tomcat.jdbc.pool.DataSource> dataSources = new ArrayList<>(2);
+    private final Map<String, org.apache.tomcat.jdbc.pool.DataSource> dataSources = new LinkedHashMap<>(2);
 
     private final DataSourceResolver dataSourceResolver;
 
@@ -50,7 +52,9 @@ public class DatasourceFactory implements AutoCloseable {
      * Default constructor.
      * @param dataSourceResolver The data source resolver
      */
-    public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver) {
+    public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
+                             ApplicationContext applicationContext) {
+        super(applicationContext);
         this.dataSourceResolver = dataSourceResolver == null ? DataSourceResolver.DEFAULT : dataSourceResolver;
     }
 
@@ -63,7 +67,7 @@ public class DatasourceFactory implements AutoCloseable {
     @Requires(condition = JdbcDataSourceEnabled.class)
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource(datasourceConfiguration);
-        dataSources.add(ds);
+        dataSources.put(datasourceConfiguration.getName(), ds);
         return ds;
     }
 
@@ -89,7 +93,7 @@ public class DatasourceFactory implements AutoCloseable {
     @Override
     @PreDestroy
     public void close() {
-        for (org.apache.tomcat.jdbc.pool.DataSource dataSource : dataSources) {
+        for (org.apache.tomcat.jdbc.pool.DataSource dataSource : dataSources.values()) {
             try {
                 dataSource.close();
             } catch (Exception e) {
@@ -100,4 +104,19 @@ public class DatasourceFactory implements AutoCloseable {
         }
     }
 
+    @Override
+    protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
+        org.apache.tomcat.jdbc.pool.DataSource dataSource = dataSources.get(dataSourceName);
+        if (dataSource != null) {
+            if (dataSourceCredentials.password() != null) {
+                dataSource.setPassword(dataSourceCredentials.password());
+            }
+            if (dataSourceCredentials.userName() != null) {
+                dataSource.setUsername(dataSourceCredentials.userName());
+            }
+            dataSource.testIdle();
+        } else if (LOG.isDebugEnabled()) {
+            LOG.debug("Datasource with name [{}] not found while trying to propagate datasource credentials changes.", dataSourceName);
+        }
+    }
 }
