@@ -21,14 +21,15 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.annotation.PreDestroy;
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static io.micronaut.configuration.metrics.micrometer.MeterRegistryFactory.MICRONAUT_METRICS_BINDERS;
 
@@ -40,19 +41,17 @@ import static io.micronaut.configuration.metrics.micrometer.MeterRegistryFactory
  * @since 1.0
  */
 @Factory
-public class DatasourceFactory implements AutoCloseable {
+public class DatasourceFactory extends BaseDatasourceFactory implements AutoCloseable {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
-    private List<HikariUrlDataSource> dataSources = new ArrayList<>(2);
-
-    private ApplicationContext applicationContext;
+    private final Map<String, HikariUrlDataSource> dataSources = new LinkedHashMap<>(2);
 
     /**
      * Default constructor.
      * @param applicationContext The application context
      */
     public DatasourceFactory(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+        super(applicationContext);
     }
 
     /**
@@ -68,8 +67,26 @@ public class DatasourceFactory implements AutoCloseable {
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         HikariUrlDataSource ds = new HikariUrlDataSource(datasourceConfiguration);
         addMeterRegistry(ds);
-        dataSources.add(ds);
+        dataSources.put(datasourceConfiguration.getName(), ds);
         return ds;
+    }
+
+    @Override
+    protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
+        HikariUrlDataSource hikariUrlDataSource = dataSources.get(dataSourceName);
+        if (hikariUrlDataSource != null) {
+            if (dataSourceCredentials.userName() != null) {
+                hikariUrlDataSource.setUsername(dataSourceCredentials.userName());
+                hikariUrlDataSource.getHikariConfigMXBean().setUsername(dataSourceCredentials.userName());
+            }
+            if (dataSourceCredentials.password() != null) {
+                hikariUrlDataSource.setPassword(dataSourceCredentials.password());
+                hikariUrlDataSource.getHikariConfigMXBean().setPassword(dataSourceCredentials.password());
+            }
+            hikariUrlDataSource.getHikariPoolMXBean().softEvictConnections();
+        } else if (LOG.isDebugEnabled()) {
+            LOG.debug("Datasource with name [{}] not found while trying to propagate datasource credentials changes.", dataSourceName);
+        }
     }
 
     private void addMeterRegistry(HikariUrlDataSource ds) {
@@ -94,7 +111,7 @@ public class DatasourceFactory implements AutoCloseable {
     @Override
     @PreDestroy
     public void close() {
-        for (HikariUrlDataSource dataSource : dataSources) {
+        for (HikariUrlDataSource dataSource : dataSources.values()) {
             try {
                 dataSource.close();
             } catch (Exception e) {
