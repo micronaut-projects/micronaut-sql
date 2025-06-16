@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -51,7 +52,7 @@ import java.util.Properties;
 public class DatasourceConfiguration implements BasicJdbcConfiguration {
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
 
-    @ConfigurationBuilder(allowZeroArgs = true, excludes = {"connectionFactoryProperties"})
+    @ConfigurationBuilder(allowZeroArgs = true, excludes = {"connectionFactoryProperties", "URL", "username", "password"})
     PoolDataSourceImpl delegate = (PoolDataSourceImpl) PoolDataSourceFactory.getPoolDataSource();
     private CalculatedSettings calculatedSettings;
     private String name;
@@ -124,7 +125,9 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     @Override
     public void setUrl(String url) {
         try {
-            this.delegate.setURL(url);
+            if (!Objects.equals(url, this.delegate.getURL())) {
+                this.delegate.setURL(url);
+            }
         } catch (SQLException e) {
             throw new ConfigurationException("Unable to set datasource URL: " + e.getMessage(), e);
         }
@@ -139,9 +142,11 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
      * @param username the username
      */
     public void setUsername(String username) {
-        this.username = username;
         try {
-            this.delegate.setUser(username);
+            if (!Objects.equals(this.username, username)) {
+                this.username = username;
+                this.delegate.setUser(username);
+            }
         } catch (SQLException e) {
             throw new ConfigurationException("Unable to set datasource username: " + e.getMessage(), e);
         }
@@ -160,12 +165,13 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     @Override
     public void setPassword(String password) {
         try {
-            this.password = password;
-            this.delegate.setPassword(password);
+            if (!Objects.equals(this.password, password)) {
+                this.password = password;
+                this.delegate.setPassword(password);
+            }
         } catch (SQLException e) {
             throw new ConfigurationException("Unable to set datasource password: " + e.getMessage(), e);
         }
-
     }
 
     @Override

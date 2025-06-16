@@ -2,6 +2,7 @@ package io.micronaut.configuration.jdbc.dbcp
 
 import io.micronaut.context.exceptions.NoSuchBeanException
 import io.micronaut.jdbc.DataSourceResolver
+import io.micronaut.runtime.context.scope.refresh.RefreshEvent
 import org.apache.commons.dbcp2.BasicDataSource
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
@@ -50,8 +51,68 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.password == ''
         dataSource.driverClassName == 'org.h2.Driver'
         dataSource.validationQuery == 'SELECT 1'
+        def rs = dataSource.connection.prepareStatement(dataSource.validationQuery).executeQuery()
+        rs.next()
+        rs.getInt(1) == 1
 
         cleanup:
+        applicationContext.close()
+    }
+
+    void "test default configuration and password change"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        System.setProperty("ds-default-password", "")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                "test",
+                ['datasources.default.password': '${ds-default-password}',
+                 'datasources.default.dialect': 'H2',
+                 'datasources.default.url': 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+                 'datasources.default.username': 'sa',
+                 'datasources.default.driver-class-name': 'org.h2.Driver',
+                 'datasources.default.validation-query': 'SELECT 1']
+        ))
+        applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
+
+        expect:
+        applicationContext.containsBean(BasicDataSource)
+        applicationContext.containsBean(DatasourceConfiguration)
+
+        when:
+        BasicDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
+
+        then: //The default configuration is supplied because H2 is on the classpath
+        dataSource.url == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
+        dataSource.username == 'sa'
+        dataSource.password == ''
+        dataSource.driverClassName == 'org.h2.Driver'
+        dataSource.validationQuery == 'SELECT 1'
+        def rs = dataSource.connection.prepareStatement(dataSource.validationQuery).executeQuery()
+        rs.next()
+        rs.getInt(1) == 1
+
+        when:"Fire datasource password change event"
+        def newPassword = "changed_pwd"
+        System.setProperty("ds-default-password", newPassword)
+        def changes = applicationContext.environment.refreshAndDiff()
+        dataSource.connection.prepareStatement("ALTER USER sa SET PASSWORD '" + newPassword + "'").executeUpdate()
+        applicationContext.publishEvent(new RefreshEvent(changes))
+        dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
+
+        then:"Password is updated"
+        dataSource.password == newPassword
+        def newRs = dataSource.connection.prepareStatement(dataSource.validationQuery).executeQuery()
+        newRs.next()
+        newRs.getInt(1) == 1
+
+        cleanup:
+        // Change back to default password
+        dataSource.connection.prepareStatement("ALTER USER sa SET PASSWORD ''").executeUpdate()
+        System.setProperty("ds-default-password", "")
+        changes = applicationContext.environment.refreshAndDiff()
+        applicationContext.publishEvent(new RefreshEvent(changes))
+
         applicationContext.close()
     }
 
@@ -219,4 +280,5 @@ class DatasourceConfigurationSpec extends Specification {
         cleanup:
         applicationContext.close()
     }
+
 }
