@@ -24,11 +24,13 @@ import static io.micronaut.configuration.jdbc.ucp.OracleUcpConfiguration.PREFIX;
 /**
  * Configuration properties for Oracle Universal Connection Pooling (UCP).
  *
- * @param destroyOnReload Flag indicating whether to destroy connections on reload
+ * @param destroyOnReload An indicating whether to destroy connections on reload
+ * @param createConnectionInBorrowThread An indicator telling whether connection pool should create connection in borrow thread.
+ *
  */
 @ConfigurationProperties(PREFIX)
 @Requires(property = PREFIX)
-public record OracleUcpConfiguration(@Nullable Boolean destroyOnReload) {
+public record OracleUcpConfiguration(@Nullable Boolean destroyOnReload, @Nullable Boolean createConnectionInBorrowThread) {
 
     /** Prefix used for configuration properties. */
     static final String PREFIX = "oracle.ucp";
