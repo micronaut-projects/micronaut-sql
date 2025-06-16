@@ -1,5 +1,8 @@
 [
   {
+   "name":"com.microsoft.sqlserver.jdbc.ConfigurableRetryLogic"
+  },
+  {
     "condition": {
       "typeReachable": "org.mariadb.jdbc.Configuration"
     },

@@ -21,7 +21,10 @@ import io.micronaut.context.env.MapPropertySource
 import io.micronaut.context.exceptions.NoSuchBeanException
 import io.micronaut.inject.qualifiers.Qualifiers
 import io.micronaut.jdbc.DataSourceResolver
+import io.micronaut.runtime.context.scope.refresh.RefreshEvent
 import oracle.ucp.jdbc.PoolDataSource
+import oracle.ucp.util.Util
+import spock.lang.Ignore
 import spock.lang.Specification
 
 import javax.sql.DataSource
@@ -100,6 +103,57 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.getUser() == 'sa'
 
         cleanup:
+        applicationContext.close()
+    }
+
+    @Ignore("https://jira.oraclecorp.com/jira/browse/JDBC-4314")
+    void "test default configuration and password change"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        System.setProperty("ds-default-password", "")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                [
+                        'datasources.default.url': 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+                        'datasources.default.username': 'sa',
+                        'datasources.default.password': '${ds-default-password}',
+                        'datasources.default.driver-class-name': 'org.h2.Driver',
+                        'datasources.default.dialect': 'H2'
+                ]
+        ))
+        applicationContext.start()
+        DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
+
+        expect:
+        applicationContext.containsBean(PoolDataSource)
+        applicationContext.containsBean(DatasourceConfiguration)
+
+        when:
+        PoolDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
+
+        then: //The default configuration is supplied because H2 is on the classpath
+        dataSource.getURL() == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
+        dataSource.getUser() == 'sa'
+
+        when:"Fire datasource password change event"
+        def newPassword = 'updated_pwd'
+        System.setProperty("ds-default-password", newPassword)
+        def changes = applicationContext.environment.refreshAndDiff()
+        dataSource.connection.prepareStatement("ALTER USER sa SET PASSWORD '" + newPassword + "'").executeUpdate()
+        applicationContext.publishEvent(new RefreshEvent(changes))
+        dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
+
+        then:"Password is updated and query can be executed"
+        def newRs = dataSource.connection.prepareStatement('SELECT 1').executeQuery()
+        newRs.next()
+        newRs.getInt(1) == 1
+
+        cleanup:
+        // Change back to default password
+        dataSource.connection.prepareStatement("ALTER USER sa SET PASSWORD ''").executeUpdate()
+        System.setProperty("ds-default-password", "")
+        changes = applicationContext.environment.refreshAndDiff()
+        applicationContext.publishEvent(new RefreshEvent(changes))
         applicationContext.close()
     }
 
@@ -392,7 +446,8 @@ class DatasourceConfigurationSpec extends Specification {
         ApplicationContext applicationContext = new DefaultApplicationContext("test")
         applicationContext.environment.addPropertySource(MapPropertySource.of(
                 'test',
-                ["datasources.default.data-source-properties": ["oracle.fan.enabled": true]]
+                ["datasources.default.data-source-properties": ["oracle.fan.enabled": true],
+                 "oracle.ucp.createConnectionInBorrowThread": "true"]
         ))
         applicationContext.start()
         DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
@@ -412,5 +467,8 @@ class DatasourceConfigurationSpec extends Specification {
 
         cleanup:
         applicationContext.close()
+        Util.createConnectionInBorrowThread()
+        System.setProperty("oracle.ucp.createConnectionInBorrowThread", "false")
+        !Util.createConnectionInBorrowThread()
     }
 }
