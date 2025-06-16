@@ -6,4 +6,5 @@ dependencies {
     annotationProcessor(mn.micronaut.graal)
 
     api(mn.micronaut.inject)
+    api(mn.micronaut.context)
 }
