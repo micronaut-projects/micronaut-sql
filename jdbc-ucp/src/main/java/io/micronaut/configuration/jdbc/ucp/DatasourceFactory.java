@@ -21,16 +21,19 @@ import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.exceptions.NoSuchBeanException;
+import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
-import oracle.ucp.UniversalConnectionPoolException;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
 import oracle.ucp.jdbc.PoolDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.annotation.PreDestroy;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Creates an ucp data source for each configuration bean.
@@ -39,12 +42,11 @@ import java.util.List;
  * @since 2.0.1
  */
 @Factory
-public class DatasourceFactory implements AutoCloseable {
+public class DatasourceFactory extends BaseDatasourceFactory implements AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
-    private final ApplicationContext applicationContext;
     private final UniversalConnectionPoolManagerConfiguration configuration;
 
-    private List<PoolDataSource> dataSources = new ArrayList<>(2);
+    private final Map<String, PoolDataSource> dataSources = new LinkedHashMap<>(2);
     private UniversalConnectionPoolManager connectionPoolManager;
 
     /**
@@ -52,8 +54,8 @@ public class DatasourceFactory implements AutoCloseable {
      *
      * @param applicationContext The application context
      */
-    public DatasourceFactory(ApplicationContext applicationContext) throws UniversalConnectionPoolException {
-        this.applicationContext = applicationContext;
+    public DatasourceFactory(ApplicationContext applicationContext) {
+        super(applicationContext);
         this.configuration = applicationContext.getBean(UniversalConnectionPoolManagerConfiguration.class);
         try {
             this.connectionPoolManager = applicationContext.getBean(UniversalConnectionPoolManager.class);
@@ -71,9 +73,9 @@ public class DatasourceFactory implements AutoCloseable {
     @Context
     @EachBean(DatasourceConfiguration.class)
     @Requires(condition = JdbcDataSourceEnabled.class)
-    public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration) throws UniversalConnectionPoolException {
+    public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         PoolDataSource ds = datasourceConfiguration.getPoolDataSource();
-        dataSources.add(ds);
+        dataSources.put(datasourceConfiguration.getName(), ds);
 
         return ds;
     }
@@ -82,7 +84,7 @@ public class DatasourceFactory implements AutoCloseable {
     @PreDestroy
     public void close() {
         if (configuration.isEnabled() && connectionPoolManager != null) {
-            for (PoolDataSource dataSource : dataSources) {
+            for (PoolDataSource dataSource : dataSources.values()) {
                 try {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Closing connection pool named: {}", dataSource.getConnectionPoolName());
@@ -94,6 +96,31 @@ public class DatasourceFactory implements AutoCloseable {
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
+        PoolDataSource dataSource = dataSources.get(dataSourceName);
+        if (dataSource != null) {
+            try {
+                Properties props = new Properties();
+                if (dataSourceCredentials.password() != null) {
+                    props.put("password", dataSourceCredentials.password());
+                }
+                if (dataSourceCredentials.userName() != null) {
+                    props.put("user", dataSourceCredentials.userName());
+                }
+                if (!props.isEmpty()) {
+                    dataSource.reconfigureDataSource(props);
+                }
+            } catch (SQLException e) {
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn("Failed to update username and/or password for datasource {}", dataSourceName, e);
+                }
+            }
+        } else if (LOG.isDebugEnabled()) {
+            LOG.debug("Datasource with name [{}] not found while trying to propagate datasource credentials changes.", dataSourceName);
         }
     }
 }

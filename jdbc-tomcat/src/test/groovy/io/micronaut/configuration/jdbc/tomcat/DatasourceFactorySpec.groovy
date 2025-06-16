@@ -15,6 +15,7 @@
  */
 package io.micronaut.configuration.jdbc.tomcat
 
+import io.micronaut.context.ApplicationContext
 import io.micronaut.jdbc.DataSourceResolver
 import org.apache.tomcat.jdbc.pool.DataSource
 import spock.lang.Specification
@@ -31,7 +32,7 @@ class DatasourceFactorySpec extends Specification {
             javax.sql.DataSource resolve(javax.sql.DataSource ds) {
                 return ds
             }
-        })
+        }, ApplicationContext.run())
 
         when:
         def metadata = datasourceFactory.tomcatPoolDataSourceMetadataProvider(dataSource)
@@ -60,7 +61,7 @@ class DatasourceFactorySpec extends Specification {
         }
 
         when:
-        def metadata = new DatasourceFactory(dataSourceResolver).tomcatPoolDataSourceMetadataProvider(proxyDataSource)
+        def metadata = new DatasourceFactory(dataSourceResolver, ApplicationContext.run()).tomcatPoolDataSourceMetadataProvider(proxyDataSource)
 
         then:
         metadata
