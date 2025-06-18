@@ -28,7 +28,7 @@ public class MSSQLApp extends AbstractApp {
         // In netty 4.2.2 SslContextBuilder defaults endpointIdentificationAlgorithm to "HTTPS" if system property
         // "io.netty.handler.ssl.defaultEndpointVerificationAlgorithm" is not set. This makes sun.security.util.HostnameChecker.match(String expectedName, X509Certificate cert, boolean chainsToPublicCA)
         // method to throw error "javax.net.ssl.SSLHandshakeException: No name matching localhost found" and this is workaround.
-        // Which could be documented or suggested if user face issue
+        // Which could be documented or suggested if users experience this issue
         System.setProperty("io.netty.handler.ssl.defaultEndpointVerificationAlgorithm", "NONE");
     }
 }
