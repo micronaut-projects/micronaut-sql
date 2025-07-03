@@ -46,43 +46,14 @@
         <div class="docs-content">
             <div class="project">
                 <h1>Configuration Reference</h1>
-                <p><strong>Version:</strong>6.2.0</p>
+                <p><strong>Version:</strong>6.2.1</p>
                 <p></p>
             </div>
 <div class="sect2">
 <h3 id="_micronaut_hibernate_jpa_config_properties">Micronaut Hibernate Jpa Config Properties</h3>
-<a id="io.micronaut.configuration.hibernate.jpa.JpaConfiguration$EntityScanConfiguration" href="#io.micronaut.configuration.hibernate.jpa.JpaConfiguration$EntityScanConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html">JpaConfiguration$EntityScanConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jpa.*.entity-scan.enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Set whether entity scan is enabled. Defaults to true.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jpa.*.entity-scan.packages</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The packages to limit the scan to.</p></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
 <a id="io.micronaut.configuration.hibernate.jpa.JpaConfiguration" href="#io.micronaut.configuration.hibernate.jpa.JpaConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 2. Configuration Properties for <a href="../api/io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html">JpaConfiguration</a></caption>
+<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html">JpaConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -125,6 +96,35 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>jpa.*.reactive</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
 <td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<a id="io.micronaut.configuration.hibernate.jpa.JpaConfiguration$EntityScanConfiguration" href="#io.micronaut.configuration.hibernate.jpa.JpaConfiguration$EntityScanConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. Configuration Properties for <a href="../api/io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html">JpaConfiguration$EntityScanConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jpa.*.entity-scan.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set whether entity scan is enabled. Defaults to true.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jpa.*.entity-scan.packages</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The packages to limit the scan to.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1190,9 +1190,9 @@
 </tbody>
 </table>
 <div style="page-break-after: always;"></div>
-<a id="io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration" href="#io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration">&#128279;</a>
+<a id="io.micronaut.configuration.jdbc.ucp.OracleUcpConfiguration" href="#io.micronaut.configuration.jdbc.ucp.OracleUcpConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 9. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerConfiguration.html">UniversalConnectionPoolManagerConfiguration</a></caption>
+<caption class="title">Table 9. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/OracleUcpConfiguration.html">OracleUcpConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1207,9 +1207,14 @@
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ucp-manager.enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Enables {@link oracle.ucp.admin.UniversalConnectionPoolManager}.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>oracle.ucp.destroy-on-reload</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An indicating whether to destroy connections on reload</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>oracle.ucp.create-connection-in-borrow-thread</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An indicator telling whether connection pool should create connection in borrow thread.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1508,9 +1513,9 @@
 </tbody>
 </table>
 <div style="page-break-after: always;"></div>
-<a id="io.micronaut.configuration.jdbc.ucp.OracleUcpConfiguration" href="#io.micronaut.configuration.jdbc.ucp.OracleUcpConfiguration">&#128279;</a>
+<a id="io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration" href="#io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 11. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/OracleUcpConfiguration.html">OracleUcpConfiguration</a></caption>
+<caption class="title">Table 11. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerConfiguration.html">UniversalConnectionPoolManagerConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1525,14 +1530,9 @@
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>oracle.ucp.destroy-on-reload</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">An indicating whether to destroy connections on reload</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>oracle.ucp.create-connection-in-borrow-thread</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">An indicator telling whether connection pool should create connection in borrow thread.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ucp-manager.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enables {@link oracle.ucp.admin.UniversalConnectionPoolManager}.</p></td>
 </tr>
 </tbody>
 </table>
