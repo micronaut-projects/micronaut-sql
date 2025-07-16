@@ -638,25 +638,43 @@ More about it can be read here <a href="https://docs.oracle.com/en/database/orac
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 20%;">
-<col style="width: 80%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
 </colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Connection Pool</th>
+<th class="tableblock halign-left valign-top">Javadoc</th>
+<th class="tableblock halign-left valign-top">Configuration</th>
+<th class="tableblock halign-left valign-top">Pool Documentation</th>
+</tr>
+</thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Tomcat</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://tomcat.apache.org/tomcat-9.0-doc/api/org/apache/tomcat/jdbc/pool/PoolProperties.html">PoolProperties</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://micronaut-projects.github.io/micronaut-sql/latest/guide/configurationreference.html#io.micronaut.configuration.jdbc.tomcat.DatasourceConfiguration">DatasourceConfiguration</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://tomcat.apache.org/tomcat-7.0-doc/jdbc-pool.html">Tomcat Connection Pool</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Hikari</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="http://static.javadoc.io/com.zaxxer/HikariCP/2.7.1/com/zaxxer/hikari/HikariConfig.html">HikariConfig</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://micronaut-projects.github.io/micronaut-sql/latest/guide/configurationreference.html#io.micronaut.configuration.jdbc.hikari.DatasourceConfiguration">DatasourceConfiguration</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/brettwooldridge/HikariCP?tab=readme-ov-file#gear-configuration-knobs-baby">Hikari Docs</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Apache DBCP</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="http://commons.apache.org/proper/commons-dbcp/api-2.1.1/org/apache/commons/dbcp2/BasicDataSource.html">BasicDataSource</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://micronaut-projects.github.io/micronaut-sql/latest/guide/configurationreference.html#io.micronaut.configuration.jdbc.dbcp.DatasourceConfiguration">DatasourceConfiguration</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://commons.apache.org/proper/commons-dbcp/configuration.html">Apache DBCP Configuration</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Oracle UCP</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/jdbc/PoolDataSource.html">PoolDataSource</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://micronaut-projects.github.io/micronaut-sql/latest/guide/configurationreference.html#io.micronaut.configuration.jdbc.ucp.DatasourceConfiguration">DatasourceConfiguration</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/intro.html#GUID-197BA5D3-86DA-43BE-AFC6-E8CBED4883EF">Oracle UCP</a></p></td>
 </tr>
 </tbody>
 </table>
