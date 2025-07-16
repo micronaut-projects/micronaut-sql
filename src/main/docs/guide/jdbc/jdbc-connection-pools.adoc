@@ -58,10 +58,28 @@ More about it can be read here link:https://docs.oracle.com/en/database/oracle/o
 
 For a list of other properties able to be configured, simply refer to the implementation that is being used. All setter methods are candidates for configuration.
 
-[cols="20%,80%"]
 |=======
-|Tomcat |link:https://tomcat.apache.org/tomcat-9.0-doc/api/org/apache/tomcat/jdbc/pool/PoolProperties.html[PoolProperties]
-|Hikari |link:http://static.javadoc.io/com.zaxxer/HikariCP/2.7.1/com/zaxxer/hikari/HikariConfig.html[HikariConfig]
-|Apache DBCP |link:http://commons.apache.org/proper/commons-dbcp/api-2.1.1/org/apache/commons/dbcp2/BasicDataSource.html[BasicDataSource]
-|Oracle UCP|link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/jdbc/PoolDataSource.html[PoolDataSource]
+|Connection Pool |Javadoc |Configuration |Pool Documentation
+
+|Tomcat 
+|link:https://tomcat.apache.org/tomcat-9.0-doc/api/org/apache/tomcat/jdbc/pool/PoolProperties.html[PoolProperties]
+|https://micronaut-projects.github.io/micronaut-sql/latest/guide/configurationreference.html#io.micronaut.configuration.jdbc.tomcat.DatasourceConfiguration[DatasourceConfiguration]
+|https://tomcat.apache.org/tomcat-7.0-doc/jdbc-pool.html[Tomcat Connection Pool]
+
+|Hikari 
+|link:http://static.javadoc.io/com.zaxxer/HikariCP/2.7.1/com/zaxxer/hikari/HikariConfig.html[HikariConfig]
+|https://micronaut-projects.github.io/micronaut-sql/latest/guide/configurationreference.html#io.micronaut.configuration.jdbc.hikari.DatasourceConfiguration[DatasourceConfiguration]
+|https://github.com/brettwooldridge/HikariCP?tab=readme-ov-file#gear-configuration-knobs-baby[Hikari Docs]
+
+|Apache DBCP 
+|link:http://commons.apache.org/proper/commons-dbcp/api-2.1.1/org/apache/commons/dbcp2/BasicDataSource.html[BasicDataSource]
+|https://micronaut-projects.github.io/micronaut-sql/latest/guide/configurationreference.html#io.micronaut.configuration.jdbc.dbcp.DatasourceConfiguration[DatasourceConfiguration]
+|https://commons.apache.org/proper/commons-dbcp/configuration.html[Apache DBCP Configuration]
+
+
+|Oracle UCP
+|link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/jdbc/PoolDataSource.html[PoolDataSource]
+|https://micronaut-projects.github.io/micronaut-sql/latest/guide/configurationreference.html#io.micronaut.configuration.jdbc.ucp.DatasourceConfiguration[DatasourceConfiguration]
+|https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/intro.html#GUID-197BA5D3-86DA-43BE-AFC6-E8CBED4883EF[Oracle UCP]
+
 |=======
