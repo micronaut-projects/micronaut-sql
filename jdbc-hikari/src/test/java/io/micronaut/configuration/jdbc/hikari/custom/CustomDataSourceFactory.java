@@ -2,7 +2,6 @@ package io.micronaut.configuration.jdbc.hikari.custom;
 
 import io.micronaut.configuration.jdbc.hikari.DatasourceConfiguration;
 import io.micronaut.configuration.jdbc.hikari.DatasourceFactory;
-import io.micronaut.configuration.jdbc.hikari.HikariUrlDataSource;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
