@@ -1,0 +1,9 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application'
+}
+
+dependencies {
+    implementation projects.micronautJdbcHikari
+    runtimeOnly libs.managed.h2
+    testImplementation projects.micronautTests.micronautCommonTests
+}
