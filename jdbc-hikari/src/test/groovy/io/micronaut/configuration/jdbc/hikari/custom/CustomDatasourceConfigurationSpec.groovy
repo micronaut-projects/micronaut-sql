@@ -41,8 +41,4 @@ class CustomDatasourceConfigurationSpec extends Specification {
         cleanup:
         applicationContext.close()
     }
-
-
-
-
 }
