@@ -199,7 +199,7 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
         }
     }
 
-    public Map<String, ?> getIndividualDsProperties() {
+    Map<String, ?> getIndividualDsProperties() {
         return individualDsProperties;
     }
 }
