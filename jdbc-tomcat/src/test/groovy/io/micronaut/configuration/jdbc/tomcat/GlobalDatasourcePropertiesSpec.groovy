@@ -99,4 +99,32 @@ class GlobalDatasourcePropertiesSpec extends Specification {
         cleanup:
         applicationContext.close()
     }
+
+    void "test individual datasource properties override global properties"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                ['datasources.default.url': 'jdbc:h2:mem:default',
+                 'datasources.default.data-source-properties.ApplicationName': 'SpecificApp',
+                 'datasources.default.data-source-properties.specificProperty': 'specificValue',
+                 'global.datasources.data-source-properties.ApplicationName': 'GlobalApp',
+                 'global.datasources.data-source-properties.assumeMinServerVersion': '9.0',
+                 'global.datasources.data-source-properties.globalProperty': 'globalValue']
+        ))
+        applicationContext.start()
+
+        when:
+        DatasourceConfiguration datasourceConfig = applicationContext.getBean(DatasourceConfiguration)
+
+        then: "Individual properties override globals, but global properties are still added"
+        datasourceConfig != null
+        datasourceConfig.dbProperties['ApplicationName'] == 'SpecificApp' // Overridden
+        datasourceConfig.dbProperties['specificProperty'] == 'specificValue' // Individual property
+        datasourceConfig.dbProperties['assumeMinServerVersion'] == '9.0' // Added from global
+        datasourceConfig.dbProperties['globalProperty'] == 'globalValue' // Added from global
+
+        cleanup:
+        applicationContext.close()
+    }
 }
