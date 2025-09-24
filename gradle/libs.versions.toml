@@ -2,7 +2,7 @@
 
 # Micronaut
 
-micronaut = "4.9.9"
+micronaut = "4.9.10"
 micronaut-docs = "2.0.0"
 micronaut-gradle-plugin = "4.5.4"
 micronaut-test-resources = "2.8.0"
@@ -16,7 +16,7 @@ micronaut-micrometer = "5.11.0"
 micronaut-r2dbc = "6.0.0"
 micronaut-reactor = "3.7.0"
 micronaut-serde = "2.14.1"
-micronaut-spring = "5.10.1"
+micronaut-spring = "5.11.1"
 micronaut-test = "4.7.0"
 micronaut-validation = "4.9.0"
 
