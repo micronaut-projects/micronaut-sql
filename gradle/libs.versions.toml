@@ -51,7 +51,7 @@ managed-tomcat-jdbc = "11.0.10"
 managed-jakarta-persistence-api = "3.1.0"
 managed-jakarta-transaction-api = "2.0.1"
 
-managed-h2 = "2.3.232"
+managed-h2 = "2.4.240"
 
 # Other
 
