@@ -1166,9 +1166,62 @@
 </div>
 <div class="sect2">
 <h3 id="_micronaut_jdbc_ucp_config_properties">Micronaut Jdbc Ucp Config Properties</h3>
+<a id="io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration$JMXBeanConfiguration" href="#io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration$JMXBeanConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 8. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration.html">UniversalConnectionPoolManagerConfiguration$JMXBeanConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ucp-manager.jmx.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enables the JMX-Based Management of UCP.</p></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<a id="io.micronaut.configuration.jdbc.ucp.OracleUcpConfiguration" href="#io.micronaut.configuration.jdbc.ucp.OracleUcpConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 9. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/OracleUcpConfiguration.html">OracleUcpConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>oracle.ucp.destroy-on-reload</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An indicating whether to destroy connections on reload</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>oracle.ucp.create-connection-in-borrow-thread</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An indicator telling whether connection pool should create connection in borrow thread.</p></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
 <a id="io.micronaut.configuration.jdbc.ucp.DatasourceConfiguration" href="#io.micronaut.configuration.jdbc.ucp.DatasourceConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 8. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html">DatasourceConfiguration</a></caption>
+<caption class="title">Table 10. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html">DatasourceConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1299,6 +1352,11 @@
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-wait-duration-in-millis</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">long</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-wait-timeout-while-service-down</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">long</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -1456,59 +1514,6 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.commit-on-connection-return</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
 <td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
-<a id="io.micronaut.configuration.jdbc.ucp.OracleUcpConfiguration" href="#io.micronaut.configuration.jdbc.ucp.OracleUcpConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 9. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/OracleUcpConfiguration.html">OracleUcpConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>oracle.ucp.destroy-on-reload</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">An indicating whether to destroy connections on reload</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>oracle.ucp.create-connection-in-borrow-thread</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">An indicator telling whether connection pool should create connection in borrow thread.</p></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
-<a id="io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration$JMXBeanConfiguration" href="#io.micronaut.configuration.jdbc.ucp.UniversalConnectionPoolManagerConfiguration$JMXBeanConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 10. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/ucp/UniversalConnectionPoolManagerConfiguration.JMXBeanConfiguration.html">UniversalConnectionPoolManagerConfiguration$JMXBeanConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ucp-manager.jmx.enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Enables the JMX-Based Management of UCP.</p></td>
 </tr>
 </tbody>
 </table>
