@@ -58,7 +58,6 @@ managed-h2 = "2.4.240"
 sfm-reflect = "9.0.2"
 # Needed for vertx pg client and micronaut-data hibernate reactive
 managed-ongres-scram = "2.1"
-sonatype-scan = "3.1.4"
 
 # Testing
 
@@ -151,7 +150,6 @@ managed-jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transa
 
 sfm-reflect = { module = "org.simpleflatmapper:sfm-reflect", version.ref = "sfm-reflect" }
 managed-ongres-scram-client = { module = "com.ongres.scram:client", version.ref = "managed-ongres-scram" }
-sonatype-scan = { module = "org.sonatype.gradle.plugins:scan-gradle-plugin", version.ref = "sonatype-scan" }
 
 # Testresources
 
