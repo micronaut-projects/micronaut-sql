@@ -13,3 +13,9 @@ if (System.getenv("SONAR_TOKEN") != null) {
         }
     }
 }
+
+// TODO: Workaround for duplicated doc file
+// Entry io.vertx.sqlclient.PoolOptions.adoc is a duplicate
+tasks.named("processConfigProps") {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
