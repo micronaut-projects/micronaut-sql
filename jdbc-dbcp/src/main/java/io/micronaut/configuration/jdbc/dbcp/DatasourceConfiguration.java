@@ -31,6 +31,8 @@ import org.slf4j.LoggerFactory;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -52,6 +54,7 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
     private final CalculatedSettings calculatedSettings;
     private final String name;
+    private Map<String, ?> individualDsProperties = new HashMap<>();
 
     /**
      * Constructor.
@@ -165,6 +168,7 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
 
     @Override
     public void setDataSourceProperties(@MapFormat(transformation = MapFormat.MapTransformation.FLAT, keyFormat = StringConvention.RAW)  Map<String, ?> dsProperties) {
+        this.individualDsProperties = dsProperties;
         if (dsProperties != null) {
             dsProperties.forEach((s, o) -> {
                 if (o != null) {
@@ -193,5 +197,9 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
             // because dbcp doesn't have datasource factory like other datasource implementations
             throw new DisabledBeanException("The datasource \"" + name + "\" is disabled");
         }
+    }
+
+    Map<String, ?> getIndividualDsProperties() {
+        return individualDsProperties;
     }
 }
