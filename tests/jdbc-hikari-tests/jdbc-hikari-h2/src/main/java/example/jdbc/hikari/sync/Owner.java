@@ -1,4 +1,4 @@
-package example.jdbc.ucp.sync;
+package example.jdbc.hikari.sync;
 
 import example.domain.IOwner;
 import io.micronaut.core.annotation.Creator;
