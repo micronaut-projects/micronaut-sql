@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package example.jdbc.ucp.sync;
+package example.jdbc.dbcp.sync;
 
 import example.sync.AbstractApp;
 import io.micronaut.context.annotation.Property;
