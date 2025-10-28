@@ -108,12 +108,15 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>protected io.vertx.mysqlclient.MySQLConnectOptions</code></div>
 <div class="col-second even-row-color"><code><a href="#connectOptions" class="member-name-link">connectOptions</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected io.vertx.sqlclient.PoolOptions</code></div>
-<div class="col-second odd-row-color"><code><a href="#poolOptions" class="member-name-link">poolOptions</a></code></div>
+<div class="col-first odd-row-color"><code>protected io.vertx.core.net.NetClientOptions</code></div>
+<div class="col-second odd-row-color"><code><a href="#netClientOptions" class="member-name-link">netClientOptions</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#uri" class="member-name-link">uri</a></code></div>
+<div class="col-first even-row-color"><code>protected io.vertx.sqlclient.PoolOptions</code></div>
+<div class="col-second even-row-color"><code><a href="#poolOptions" class="member-name-link">poolOptions</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#uri" class="member-name-link">uri</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -144,12 +147,15 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>io.vertx.mysqlclient.MySQLConnectOptions</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectOptions()" class="member-name-link">getConnectOptions</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>io.vertx.sqlclient.PoolOptions</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPoolOptions()" class="member-name-link">getPoolOptions</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>io.vertx.core.net.NetClientOptions</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNetClientOptions()" class="member-name-link">getNetClientOptions</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUri()" class="member-name-link">getUri</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>io.vertx.sqlclient.PoolOptions</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPoolOptions()" class="member-name-link">getPoolOptions</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUri()" class="member-name-link">getUri</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -179,6 +185,13 @@ loadScripts(document, 'script');</script>
 <h3>poolOptions</h3>
 <div class="member-signature"><span class="annotations">@ConfigurationBuilder
 </span><span class="modifiers">protected</span>&nbsp;<span class="return-type">io.vertx.sqlclient.PoolOptions</span>&nbsp;<span class="element-name">poolOptions</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="netClientOptions">
+<h3>netClientOptions</h3>
+<div class="member-signature"><span class="annotations">@ConfigurationBuilder
+</span><span class="modifiers">protected</span>&nbsp;<span class="return-type">io.vertx.core.net.NetClientOptions</span>&nbsp;<span class="element-name">netClientOptions</span></div>
 </section>
 </li>
 <li>
@@ -236,6 +249,16 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>The options for configuring a connection pool.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getNetClientOptions()">
+<h3>getNetClientOptions</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">io.vertx.core.net.NetClientOptions</span>&nbsp;<span class="element-name">getNetClientOptions</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>The net client options for configuring client.</dd>
 </dl>
 </section>
 </li>
