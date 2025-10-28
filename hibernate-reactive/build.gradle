@@ -12,7 +12,7 @@ dependencies {
     api libs.managed.hibernate.reactive.core
     api mn.micronaut.runtime
 
-    compileOnly libs.managed.vertx5.sql.client
+    compileOnly libs.managed.vertx.mysql.client
     implementation libs.managed.ongres.scram.client
 
     testAnnotationProcessor mn.micronaut.inject.java
@@ -25,11 +25,11 @@ dependencies {
 
     testImplementation(mnTestResources.testcontainers.jdbc)
     testImplementation(mnTestResources.testcontainers.postgres)
-    testImplementation libs.managed.vertx5.pg.client
+    testImplementation libs.managed.vertx.pg.client
     testImplementation(mnData.micronaut.data.tx.hibernate)
 }
 
 ossIndexAudit {
     // TODO: Temporary disable check for CVE
-    excludeCoordinates = ['com.ongres.scram:scram-common:3.0']
+    excludeCoordinates = ['com.ongres.scram:scram-common:3.1']
 }

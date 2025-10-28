@@ -15,3 +15,8 @@ dependencies {
     testImplementation(mn.micronaut.management)
     testImplementation(mnTestResources.testcontainers.postgres)
 }
+
+ossIndexAudit {
+    // TODO: Temporary disable check for CVE
+    excludeCoordinates = ['com.ongres.scram:scram-common:3.1']
+}

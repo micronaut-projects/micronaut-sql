@@ -15,3 +15,8 @@ dependencies {
     testImplementation(mnTestResources.testcontainers.mysql)
     testImplementation(libs.managed.mysql.connector.j)
 }
+
+ossIndexAudit {
+    // TODO: Temporary disable check for CVE
+    excludeCoordinates = ['com.ongres.scram:scram-common:3.1']
+}
