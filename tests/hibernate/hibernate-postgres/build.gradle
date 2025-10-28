@@ -1,0 +1,22 @@
+plugins {
+    id("io.micronaut.build.internal.test-application-hibernate")
+}
+
+dependencies {
+    implementation projects.micronautTests.micronautHibernate.micronautHibernateSyncCommon
+    testImplementation projects.micronautTests.micronautCommonTests
+
+    runtimeOnly projects.micronautJdbcTomcat
+
+    runtimeOnly libs.managed.postgresql
+}
+
+configurations {
+    all*.exclude module: "javassist"
+}
+
+micronaut {
+    testResources {
+        additionalModules.add(JDBC_POSTGRESQL)
+    }
+}

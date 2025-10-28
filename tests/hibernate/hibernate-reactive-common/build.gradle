@@ -1,0 +1,15 @@
+plugins {
+    id("io.micronaut.build.internal.test-application-hibernate")
+}
+
+dependencies {
+    implementation projects.micronautTests.micronautCommonReactive
+    implementation mnReactor.micronaut.reactor
+    implementation mn.micronaut.http.client
+    implementation projects.micronautHibernateReactive
+    implementation projects.micronautJdbc
+    implementation mnTest.micronaut.test.junit5
+
+    runtimeOnly(mn.snakeyaml)
+    runtimeOnly(mnData.micronaut.data.model)
+}

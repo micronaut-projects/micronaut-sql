@@ -1,0 +1,17 @@
+micronaut:
+  application:
+    name: graalvm-hibernate-jpa
+  http:
+    client:
+      read-timeout: 60s
+jackson:
+  bean-introspection-module: true
+jpa:
+  default:
+    packages-to-scan: 'example.hibernate.reactive'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        show_sql: true
+    compileTimeHibernateProxies: true
