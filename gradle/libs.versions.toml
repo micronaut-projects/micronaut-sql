@@ -37,7 +37,7 @@ managed-ojdbcdms = "21.19.0.0"
 managed-dms = "23.3.0.23.09"
 managed-postgres-driver = "42.7.8"
 managed-mariadb-driver = "3.5.6"
-managed-mssql-driver = "12.10.1.jre11"
+managed-mssql-driver = "12.10.2.jre11"
 managed-mysql-driver = "8.0.33"
 managed-mysql-connector-j = "9.4.0"
 
