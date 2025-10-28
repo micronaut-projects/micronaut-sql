@@ -21,16 +21,17 @@ import io.micronaut.health.HealthStatus;
 import io.micronaut.management.endpoint.health.HealthEndpoint;
 import io.micronaut.management.health.indicator.HealthIndicator;
 import io.micronaut.management.health.indicator.HealthResult;
-import io.vertx.reactivex.pgclient.PgPool;
-import io.vertx.reactivex.sqlclient.Row;
+import io.vertx.sqlclient.Pool;
+import io.vertx.sqlclient.Row;
 import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscription;
 
 import java.util.Collections;
+import java.util.concurrent.CompletionStage;
 
 /**
  * A  {@link HealthIndicator} for Vertx Pg client.
- *
  */
 @Requires(beans = HealthEndpoint.class)
 @Requires(property = HealthEndpoint.PREFIX + ".vertx.pg.client.enabled", notEquals = StringUtils.FALSE)
@@ -38,25 +39,55 @@ import java.util.Collections;
 public class PgHealthIndicator implements HealthIndicator {
     public static final String NAME = "vertx-pg-client";
     public static final String QUERY = "SELECT version();";
-    private final PgPool client;
+    private final Pool client;
 
     /**
      * Constructor.
      *
      * @param client A pool of connections.
      */
-    public PgHealthIndicator(PgPool client) {
+    public PgHealthIndicator(Pool client) {
         this.client = client;
     }
 
     @Override
     public Publisher<HealthResult> getResult() {
-        return client.query(QUERY).rxExecute().map(rows -> {
-            HealthResult.Builder status = HealthResult.builder(NAME, HealthStatus.UP);
-            Row row = rows.iterator().next();
-            status.details(Collections.singletonMap("version", row.getString(0)));
-            return status.build();
-        }).onErrorReturn(this::buildErrorResult).toFlowable();
+        CompletionStage<HealthResult> stage = client
+            .query(QUERY)
+            .execute()
+            .toCompletionStage()
+            .thenApply(rows -> {
+                HealthResult.Builder status = HealthResult.builder(NAME, HealthStatus.UP);
+                Row row = rows.iterator().next();
+                status.details(Collections.singletonMap("version", row.getString(0)));
+                return status.build();
+            })
+            .exceptionally(this::buildErrorResult);
+
+        return subscriber -> subscriber.onSubscribe(new Subscription() {
+            private volatile boolean done;
+
+            @Override
+            public void request(long n) {
+                if (done) {
+                    return;
+                }
+                done = true;
+                stage.whenComplete((res, err) -> {
+                    if (err != null) {
+                        subscriber.onNext(buildErrorResult(err));
+                    } else {
+                        subscriber.onNext(res);
+                    }
+                    subscriber.onComplete();
+                });
+            }
+
+            @Override
+            public void cancel() {
+                done = true;
+            }
+        });
     }
 
     private HealthResult buildErrorResult(Throwable throwable) {

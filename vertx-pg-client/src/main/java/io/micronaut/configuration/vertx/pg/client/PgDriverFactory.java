@@ -25,7 +25,7 @@ import io.vertx.pgclient.spi.PgDriver;
 import io.vertx.sqlclient.Pool;
 import jakarta.inject.Singleton;
 
-import java.util.Collections;
+import io.vertx.core.Future;
 
 /**
  * The Factory for creating Vertx Pg client.
@@ -62,8 +62,8 @@ class PgDriverFactory {
         String connectionUri = connectionConfiguration.getUri();
         if (StringUtils.isNotEmpty(connectionUri)) {
             PgConnectOptions pgConnectOptions = PgDriver.INSTANCE.parseConnectionUri(connectionUri);
-            return PgDriver.INSTANCE.createPool(vertx, Collections.singletonList(pgConnectOptions), connectionConfiguration.poolOptions);
+            return PgDriver.INSTANCE.createPool(vertx, () -> Future.succeededFuture(pgConnectOptions), connectionConfiguration.poolOptions, connectionConfiguration.netClientOptions, null);
         }
-        return PgDriver.INSTANCE.createPool(vertx, Collections.singletonList(connectionConfiguration.connectOptions), connectionConfiguration.poolOptions);
+        return PgDriver.INSTANCE.createPool(vertx, () -> Future.succeededFuture(connectionConfiguration.connectOptions), connectionConfiguration.poolOptions, connectionConfiguration.netClientOptions, null);
     }
 }

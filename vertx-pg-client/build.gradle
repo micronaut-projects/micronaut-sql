@@ -5,7 +5,6 @@ plugins {
 dependencies {
     api(mn.micronaut.inject)
     api(libs.managed.vertx.pg.client)
-    api(libs.managed.vertx.rx.java2)
 
     implementation(libs.managed.vertx.codegen)
 

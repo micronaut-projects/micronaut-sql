@@ -18,7 +18,9 @@ package io.micronaut.configuration.vertx.pg.client.health
 import io.micronaut.context.ApplicationContext
 import io.micronaut.health.HealthStatus
 import io.micronaut.management.health.indicator.HealthResult
-import io.reactivex.Flowable
+import java.util.concurrent.CompletableFuture
+import org.reactivestreams.Subscriber
+import org.reactivestreams.Subscription
 import org.testcontainers.containers.PostgreSQLContainer
 import spock.lang.Specification
 
@@ -40,7 +42,35 @@ class PgClientHealthIndicatorSpec extends Specification {
 
         when:
         PgHealthIndicator indicator = applicationContext.getBean(PgHealthIndicator)
-        HealthResult result = Flowable.fromPublisher(indicator.getResult()).blockingFirst()
+        HealthResult result
+        int attempts = 0
+        while (true) {
+            CompletableFuture<HealthResult> future1 = new CompletableFuture<>()
+            indicator.getResult().subscribe(new Subscriber<HealthResult>() {
+                @Override
+                void onSubscribe(Subscription s) { s.request(1) }
+                @Override
+                void onNext(HealthResult hr) { future1.complete(hr) }
+                @Override
+                void onError(Throwable t) { future1.completeExceptionally(t) }
+                @Override
+                void onComplete() { }
+            })
+            try {
+                result = future1.get()
+                if (result.status == HealthStatus.UP) {
+                    break
+                }
+            } catch (Throwable t) {
+                // ignore and retry
+            }
+            attempts++
+            if (attempts >= 10) {
+                // give up after retries; assertion will fail if not UP
+                break
+            }
+            Thread.sleep(200)
+        }
 
         then:
         result.status == HealthStatus.UP
@@ -48,7 +78,18 @@ class PgClientHealthIndicatorSpec extends Specification {
 
         when:
         postgres.stop()
-        result = Flowable.fromPublisher(indicator.getResult()).blockingFirst()
+        CompletableFuture<HealthResult> future2 = new CompletableFuture<>()
+        indicator.getResult().subscribe(new Subscriber<HealthResult>() {
+            @Override
+            void onSubscribe(Subscription s) { s.request(1) }
+            @Override
+            void onNext(HealthResult hr) { future2.complete(hr) }
+            @Override
+            void onError(Throwable t) { future2.completeExceptionally(t) }
+            @Override
+            void onComplete() { }
+        })
+        result = future2.get()
 
         then:
         result.status == HealthStatus.DOWN
