@@ -21,7 +21,7 @@ import io.micronaut.health.HealthStatus;
 import io.micronaut.management.endpoint.health.HealthEndpoint;
 import io.micronaut.management.health.indicator.HealthIndicator;
 import io.micronaut.management.health.indicator.HealthResult;
-import io.vertx.mysqlclient.MySQLPool;
+import io.vertx.sqlclient.Pool;
 import io.vertx.sqlclient.Row;
 import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
@@ -39,14 +39,14 @@ import java.util.Collections;
 public class MySQLHealthIndicator implements HealthIndicator {
     public static final String NAME = "vertx-mysql-client";
     public static final String QUERY = "SELECT version();";
-    private final MySQLPool client;
+    private final Pool client;
 
     /**
      * Constructor.
      *
      * @param client A pool of connections.
      */
-    public MySQLHealthIndicator(MySQLPool client) {
+    public MySQLHealthIndicator(Pool client) {
         this.client = client;
     }
 
