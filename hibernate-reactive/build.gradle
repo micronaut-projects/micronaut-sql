@@ -12,8 +12,8 @@ dependencies {
     api libs.managed.hibernate.reactive.core
     api mn.micronaut.runtime
 
-    compileOnly libs.managed.vertx.mysql.client
-    implementation libs.managed.ongres.scram.client
+    compileOnly libs.managed.vertx.sql.client
+    runtimeOnly libs.managed.ongres.scram.client
 
     testAnnotationProcessor mn.micronaut.inject.java
     testImplementation mn.micronaut.inject.java
