@@ -2,5 +2,7 @@ plugins {
     id 'io.micronaut.build.internal.test-application'
 }
 dependencies {
-    testImplementation(mnData.micronaut.data.tx.hibernate)
+    testImplementation(mnData.micronaut.data.tx.hibernate) {
+        exclude(group: "org.hibernate.orm")
+    }
 }

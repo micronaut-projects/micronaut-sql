@@ -8,8 +8,12 @@ dependencies {
     api(libs.managed.hibernate.core)
     api(libs.managed.jakarta.transaction.api)
     api(mnValidation.micronaut.validation)
-    compileOnly(mnData.micronaut.data.tx.hibernate)
-    testImplementation(mnData.micronaut.data.tx.hibernate)
+    compileOnly(mnData.micronaut.data.tx.hibernate) {
+        exclude(group: "org.hibernate.orm")
+    }
+    testImplementation(mnData.micronaut.data.tx.hibernate) {
+        exclude(group: "org.hibernate.orm")
+    }
     api(mn.micronaut.aop)
     api projects.micronautJdbc
 

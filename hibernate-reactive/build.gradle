@@ -12,8 +12,8 @@ dependencies {
     api libs.managed.hibernate.reactive.core
     api mn.micronaut.runtime
 
-    compileOnly libs.managed.vertx.sql.client
-    runtimeOnly libs.managed.ongres.scram.client
+    compileOnly libs.managed.vertx5.sql.client
+    implementation libs.managed.ongres.scram.client
 
     testAnnotationProcessor mn.micronaut.inject.java
     testImplementation mn.micronaut.inject.java
@@ -21,9 +21,10 @@ dependencies {
     testImplementation projects.micronautJdbc
     testRuntimeOnly projects.micronautJdbcTomcat
     testRuntimeOnly(libs.managed.h2)
+    testRuntimeOnly libs.managed.ongres.scram.client
 
     testImplementation(mnTestResources.testcontainers.jdbc)
     testImplementation(mnTestResources.testcontainers.postgres)
-    testImplementation libs.managed.vertx.pg.client
+    testImplementation libs.managed.vertx5.pg.client
     testImplementation(mnData.micronaut.data.tx.hibernate)
 }

@@ -21,10 +21,12 @@ import io.micronaut.health.HealthStatus;
 import io.micronaut.management.endpoint.health.HealthEndpoint;
 import io.micronaut.management.health.indicator.HealthIndicator;
 import io.micronaut.management.health.indicator.HealthResult;
-import io.vertx.reactivex.mysqlclient.MySQLPool;
-import io.vertx.reactivex.sqlclient.Row;
+import io.vertx.mysqlclient.MySQLPool;
+import io.vertx.sqlclient.Row;
 import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscription;
+import java.util.concurrent.CompletionStage;
 
 import java.util.Collections;
 
@@ -50,12 +52,43 @@ public class MySQLHealthIndicator implements HealthIndicator {
 
     @Override
     public Publisher<HealthResult> getResult() {
-        return client.query(QUERY).rxExecute().map(rows -> {
-            HealthResult.Builder status = HealthResult.builder(NAME, HealthStatus.UP);
-            Row row = rows.iterator().next();
-            status.details(Collections.singletonMap("version", row.getString(0)));
-            return status.build();
-        }).onErrorReturn(this::buildErrorResult).toFlowable();
+        CompletionStage<HealthResult> stage = client
+                .query(QUERY)
+                .execute()
+                .toCompletionStage()
+                .thenApply(rows -> {
+                    HealthResult.Builder status = HealthResult.builder(NAME, HealthStatus.UP);
+                    Row row = rows.iterator().next();
+                    status.details(Collections.singletonMap("version", row.getString(0)));
+                    return status.build();
+                })
+                .exceptionally(this::buildErrorResult);
+        return subscriber -> {
+            subscriber.onSubscribe(new Subscription() {
+                private volatile boolean done;
+
+                @Override
+                public void request(long n) {
+                    if (done) {
+                        return;
+                    }
+                    done = true;
+                    stage.whenComplete((res, err) -> {
+                        if (err != null) {
+                            subscriber.onNext(buildErrorResult(err));
+                        } else {
+                            subscriber.onNext(res);
+                        }
+                        subscriber.onComplete();
+                    });
+                }
+
+                @Override
+                public void cancel() {
+                    done = true;
+                }
+            });
+        };
     }
 
     private HealthResult buildErrorResult(Throwable throwable) {
