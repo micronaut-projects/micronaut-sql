@@ -85,20 +85,7 @@ class PgClientSpec extends Specification {
         // end::pgPool-bean[]
 
         // tag::query[]
-        RowSet<Row> rowSet
-        int attempts = 0
-        while (true) {
-            try {
-                rowSet = client.query('SELECT * FROM pg_stat_database').execute().toCompletionStage().toCompletableFuture().get() // <1>
-                break
-            } catch (Throwable t) {
-                attempts++
-                if (attempts >= 10) {
-                    throw t
-                }
-                Thread.sleep(200)
-            }
-        }
+        RowSet<Row> rowSet = client.query('SELECT * FROM pg_stat_database').execute().toCompletionStage().toCompletableFuture().get() // <1>
         int size = 0
         RowIterator<Row> iterator = rowSet.iterator()
         while (iterator.hasNext()) {

@@ -20,9 +20,6 @@ import io.micronaut.health.HealthStatus
 import io.micronaut.management.health.indicator.HealthResult
 import io.reactivex.Flowable
 
-import java.util.concurrent.CompletableFuture
-import org.reactivestreams.Subscriber
-import org.reactivestreams.Subscription
 import org.testcontainers.containers.PostgreSQLContainer
 import spock.lang.Specification
 
