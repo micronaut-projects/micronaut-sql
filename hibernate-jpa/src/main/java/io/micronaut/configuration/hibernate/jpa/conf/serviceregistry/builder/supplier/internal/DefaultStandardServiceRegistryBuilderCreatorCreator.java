@@ -58,7 +58,7 @@ final class DefaultStandardServiceRegistryBuilderCreatorCreator implements Stand
             // Hibernate ORM will use the BytecodeProvider implementation it finds on the
             // classpath loading it via the standard ServiceLoader mechanism. Currently, there is only a single
             // implementation which is included in Hibernate ORM, so it's not possible to override this.
-            // System.setProperty(org.hibernate.cfg.AvailableSettings.BYTECODE_PROVIDER, "none");
+            System.setProperty(org.hibernate.cfg.AvailableSettings.BYTECODE_PROVIDER, "none");
         }
         if (jpaConfiguration.isReactive()) {
             throw new IllegalStateException("Hibernate Reactive not found on classpath!");
