@@ -18,6 +18,7 @@ package io.micronaut.configuration.vertx.mysql.client.health
 import io.micronaut.context.ApplicationContext
 import io.micronaut.health.HealthStatus
 import io.micronaut.management.health.indicator.HealthResult
+import io.reactivex.Flowable
 import org.testcontainers.containers.MySQLContainer
 import java.util.concurrent.CompletableFuture
 import org.reactivestreams.Subscriber
@@ -40,18 +41,7 @@ class MySQLPoolHealthIndicatorSpec extends Specification{
 
         when:
         MySQLHealthIndicator indicator = applicationContext.getBean(MySQLHealthIndicator)
-        CompletableFuture<HealthResult> future1 = new CompletableFuture<>()
-        indicator.getResult().subscribe(new Subscriber<HealthResult>() {
-            @Override
-            void onSubscribe(Subscription s) { s.request(1) }
-            @Override
-            void onNext(HealthResult hr) { future1.complete(hr) }
-            @Override
-            void onError(Throwable t) { future1.completeExceptionally(t) }
-            @Override
-            void onComplete() { }
-        })
-        HealthResult result = future1.get()
+        HealthResult result = Flowable.fromPublisher(indicator.getResult()).blockingFirst()
 
         then:
         result.status == HealthStatus.UP
@@ -59,22 +49,10 @@ class MySQLPoolHealthIndicatorSpec extends Specification{
 
         when:
         mysql.stop()
-        CompletableFuture<HealthResult> future2 = new CompletableFuture<>()
-        indicator.getResult().subscribe(new Subscriber<HealthResult>() {
-            @Override
-            void onSubscribe(Subscription s) { s.request(1) }
-            @Override
-            void onNext(HealthResult hr) { future2.complete(hr) }
-            @Override
-            void onError(Throwable t) { future2.completeExceptionally(t) }
-            @Override
-            void onComplete() { }
-        })
-        result = future2.get()
+        result = Flowable.fromPublisher(indicator.getResult()).blockingFirst()
 
         then:
         result.status == HealthStatus.DOWN
-
 
         cleanup:
         applicationContext?.stop()

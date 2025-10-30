@@ -13,6 +13,7 @@ dependencies {
     testImplementation(mn.micronaut.management)
     testImplementation(mnTestResources.testcontainers.mysql)
     testImplementation(libs.managed.mysql.connector.j)
+    testImplementation(libs.managed.vertx.rx.java2)
 }
 
 ossIndexAudit {

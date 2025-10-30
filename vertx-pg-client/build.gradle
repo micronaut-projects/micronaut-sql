@@ -13,6 +13,7 @@ dependencies {
 
     testImplementation(mn.micronaut.management)
     testImplementation(mnTestResources.testcontainers.postgres)
+    testImplementation(libs.managed.vertx.rx.java2)
 }
 
 ossIndexAudit {
