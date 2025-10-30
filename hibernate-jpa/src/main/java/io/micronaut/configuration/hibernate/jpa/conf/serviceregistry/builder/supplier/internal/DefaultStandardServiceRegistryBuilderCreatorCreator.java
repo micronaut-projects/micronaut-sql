@@ -53,10 +53,12 @@ final class DefaultStandardServiceRegistryBuilderCreatorCreator implements Stand
     @Override
     public StandardServiceRegistryBuilder create(JpaConfiguration jpaConfiguration) {
         if (jpaConfiguration.isCompileTimeHibernateProxies()) {
-            // TODO: Hibernate7 will by default use bytebuddy
+            // TODO: org.hibernate.cfg.AvailableSettings.BYTECODE_PROVIDER is deprecated and will be removed
+            // At present only bytebuddy is supported, bytebuddy being the default since version 5.3.
             // Hibernate ORM will use the BytecodeProvider implementation it finds on the
             // classpath loading it via the standard ServiceLoader mechanism. Currently, there is only a single
-            //implementation which is included in Hibernate ORM, so it's not possible to override this.
+            // implementation which is included in Hibernate ORM, so it's not possible to override this.
+            // System.setProperty(org.hibernate.cfg.AvailableSettings.BYTECODE_PROVIDER, "none");
         }
         if (jpaConfiguration.isReactive()) {
             throw new IllegalStateException("Hibernate Reactive not found on classpath!");
