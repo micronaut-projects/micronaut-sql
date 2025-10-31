@@ -517,8 +517,6 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/jdbc/BasicJdbcConfiguration.html#getName()" class="member-name-link">getName()</a> - Method in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html#getNetClientOptions()" class="member-name-link">getNetClientOptions()</a> - Method in class io.micronaut.configuration.vertx.mysql.client.<a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html" title="class in io.micronaut.configuration.vertx.mysql.client">MySQLClientConfiguration</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/jdbc/BaseDatasourceFactory.html#getObservedConfigurationPrefixes()" class="member-name-link">getObservedConfigurationPrefixes()</a> - Method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/BaseDatasourceFactory.html" title="class in io.micronaut.jdbc">BaseDatasourceFactory</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbc/ucp/ConnectionPoolManagerListener.html#getOrder()" class="member-name-link">getOrder()</a> - Method in class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/ConnectionPoolManagerListener.html" title="class in io.micronaut.configuration.jdbc.ucp">ConnectionPoolManagerListener</a></dt>
@@ -1026,7 +1024,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The Factory for creating Vertx MySQL client.</div>
 </dd>
-<dt><a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientFactory.html#%3Cinit%3E(io.micronaut.configuration.vertx.mysql.client.MySQLClientConfiguration,io.vertx.core.Vertx)" class="member-name-link">MySQLClientFactory(MySQLClientConfiguration, Vertx)</a> - Constructor for class io.micronaut.configuration.vertx.mysql.client.<a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientFactory.html" title="class in io.micronaut.configuration.vertx.mysql.client">MySQLClientFactory</a></dt>
+<dt><a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientFactory.html#%3Cinit%3E(io.micronaut.configuration.vertx.mysql.client.MySQLClientConfiguration,io.vertx.reactivex.core.Vertx)" class="member-name-link">MySQLClientFactory(MySQLClientConfiguration, Vertx)</a> - Constructor for class io.micronaut.configuration.vertx.mysql.client.<a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientFactory.html" title="class in io.micronaut.configuration.vertx.mysql.client">MySQLClientFactory</a></dt>
 <dd>
 <div class="block">Create the factory with given MySQL Client configuration.</div>
 </dd>
@@ -1038,7 +1036,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">A  <code>HealthIndicator</code> for Vertx MySQL client.</div>
 </dd>
-<dt><a href="io/micronaut/configuration/vertx/mysql/client/health/MySQLHealthIndicator.html#%3Cinit%3E(io.vertx.sqlclient.Pool)" class="member-name-link">MySQLHealthIndicator(Pool)</a> - Constructor for class io.micronaut.configuration.vertx.mysql.client.health.<a href="io/micronaut/configuration/vertx/mysql/client/health/MySQLHealthIndicator.html" title="class in io.micronaut.configuration.vertx.mysql.client.health">MySQLHealthIndicator</a></dt>
+<dt><a href="io/micronaut/configuration/vertx/mysql/client/health/MySQLHealthIndicator.html#%3Cinit%3E(io.vertx.reactivex.mysqlclient.MySQLPool)" class="member-name-link">MySQLHealthIndicator(MySQLPool)</a> - Constructor for class io.micronaut.configuration.vertx.mysql.client.health.<a href="io/micronaut/configuration/vertx/mysql/client/health/MySQLHealthIndicator.html" title="class in io.micronaut.configuration.vertx.mysql.client.health">MySQLHealthIndicator</a></dt>
 <dd>
 <div class="block">Constructor.</div>
 </dd>
@@ -1050,10 +1048,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="io/micronaut/configuration/vertx/mysql/client/health/MySQLHealthIndicator.html#NAME" class="member-name-link">NAME</a> - Static variable in class io.micronaut.configuration.vertx.mysql.client.health.<a href="io/micronaut/configuration/vertx/mysql/client/health/MySQLHealthIndicator.html" title="class in io.micronaut.configuration.vertx.mysql.client.health">MySQLHealthIndicator</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/vertx/pg/client/health/PgHealthIndicator.html#NAME" class="member-name-link">NAME</a> - Static variable in class io.micronaut.configuration.vertx.pg.client.health.<a href="io/micronaut/configuration/vertx/pg/client/health/PgHealthIndicator.html" title="class in io.micronaut.configuration.vertx.pg.client.health">PgHealthIndicator</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html#netClientOptions" class="member-name-link">netClientOptions</a> - Variable in class io.micronaut.configuration.vertx.mysql.client.<a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html" title="class in io.micronaut.configuration.vertx.mysql.client">MySQLClientConfiguration</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="io/micronaut/configuration/vertx/pg/client/PgClientConfiguration.html#netClientOptions" class="member-name-link">netClientOptions</a> - Variable in class io.micronaut.configuration.vertx.pg.client.<a href="io/micronaut/configuration/vertx/pg/client/PgClientConfiguration.html" title="class in io.micronaut.configuration.vertx.pg.client">PgClientConfiguration</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:O">O</h2>
@@ -1093,9 +1087,9 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/vertx/pg/client/PgClientFactory.html" class="type-name-link" title="class in io.micronaut.configuration.vertx.pg.client">PgClientFactory</a> - Class in <a href="io/micronaut/configuration/vertx/pg/client/package-summary.html">io.micronaut.configuration.vertx.pg.client</a></dt>
 <dd>
-<div class="block">The Factory for creating Vert.x Pg client.</div>
+<div class="block">The Factory for creating Vertx Pg client.</div>
 </dd>
-<dt><a href="io/micronaut/configuration/vertx/pg/client/PgClientFactory.html#%3Cinit%3E(io.micronaut.configuration.vertx.pg.client.PgClientConfiguration,io.vertx.core.Vertx)" class="member-name-link">PgClientFactory(PgClientConfiguration, Vertx)</a> - Constructor for class io.micronaut.configuration.vertx.pg.client.<a href="io/micronaut/configuration/vertx/pg/client/PgClientFactory.html" title="class in io.micronaut.configuration.vertx.pg.client">PgClientFactory</a></dt>
+<dt><a href="io/micronaut/configuration/vertx/pg/client/PgClientFactory.html#%3Cinit%3E(io.micronaut.configuration.vertx.pg.client.PgClientConfiguration,io.vertx.reactivex.core.Vertx)" class="member-name-link">PgClientFactory(PgClientConfiguration, Vertx)</a> - Constructor for class io.micronaut.configuration.vertx.pg.client.<a href="io/micronaut/configuration/vertx/pg/client/PgClientFactory.html" title="class in io.micronaut.configuration.vertx.pg.client">PgClientFactory</a></dt>
 <dd>
 <div class="block">Create the factory with given Pg Client configuration.</div>
 </dd>
@@ -1107,7 +1101,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">A  <code>HealthIndicator</code> for Vertx Pg client.</div>
 </dd>
-<dt><a href="io/micronaut/configuration/vertx/pg/client/health/PgHealthIndicator.html#%3Cinit%3E(io.vertx.sqlclient.Pool)" class="member-name-link">PgHealthIndicator(Pool)</a> - Constructor for class io.micronaut.configuration.vertx.pg.client.health.<a href="io/micronaut/configuration/vertx/pg/client/health/PgHealthIndicator.html" title="class in io.micronaut.configuration.vertx.pg.client.health">PgHealthIndicator</a></dt>
+<dt><a href="io/micronaut/configuration/vertx/pg/client/health/PgHealthIndicator.html#%3Cinit%3E(io.vertx.reactivex.pgclient.PgPool)" class="member-name-link">PgHealthIndicator(PgPool)</a> - Constructor for class io.micronaut.configuration.vertx.pg.client.health.<a href="io/micronaut/configuration/vertx/pg/client/health/PgHealthIndicator.html" title="class in io.micronaut.configuration.vertx.pg.client.health">PgHealthIndicator</a></dt>
 <dd>
 <div class="block">Constructor.</div>
 </dd>

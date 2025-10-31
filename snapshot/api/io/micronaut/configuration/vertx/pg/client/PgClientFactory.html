@@ -92,7 +92,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="annotations">@Factory
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">PgClientFactory</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">The Factory for creating Vert.x Pg client.</div>
+<div class="block">The Factory for creating Vertx Pg client.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -104,8 +104,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(io.micronaut.configuration.vertx.pg.client.PgClientConfiguration,io.vertx.core.Vertx)" class="member-name-link">PgClientFactory</a><wbr>(<a href="PgClientConfiguration.html" title="class in io.micronaut.configuration.vertx.pg.client">PgClientConfiguration</a>&nbsp;connectionConfiguration,
- @Nullable io.vertx.core.Vertx&nbsp;vertx)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(io.micronaut.configuration.vertx.pg.client.PgClientConfiguration,io.vertx.reactivex.core.Vertx)" class="member-name-link">PgClientFactory</a><wbr>(<a href="PgClientConfiguration.html" title="class in io.micronaut.configuration.vertx.pg.client">PgClientConfiguration</a>&nbsp;connectionConfiguration,
+ @Nullable io.vertx.reactivex.core.Vertx&nbsp;vertx)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Create the factory with given Pg Client configuration.</div>
 </div>
@@ -123,7 +123,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>io.vertx.sqlclient.Pool</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>io.vertx.reactivex.pgclient.PgPool</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#client()" class="member-name-link">client</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
@@ -144,16 +144,16 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(io.micronaut.configuration.vertx.pg.client.PgClientConfiguration,io.vertx.core.Vertx)">
+<section class="detail" id="&lt;init&gt;(io.micronaut.configuration.vertx.pg.client.PgClientConfiguration,io.vertx.reactivex.core.Vertx)">
 <h3>PgClientFactory</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">PgClientFactory</span><wbr><span class="parameters">(<a href="PgClientConfiguration.html" title="class in io.micronaut.configuration.vertx.pg.client">PgClientConfiguration</a>&nbsp;connectionConfiguration,
  @Nullable
- @Nullable io.vertx.core.Vertx&nbsp;vertx)</span></div>
+ @Nullable io.vertx.reactivex.core.Vertx&nbsp;vertx)</span></div>
 <div class="block">Create the factory with given Pg Client configuration.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>connectionConfiguration</code> - The Pg client configuration</dd>
-<dd><code>vertx</code> - The Vert.x instance</dd>
+<dd><code>connectionConfiguration</code> - The  Pg ClientOption configurations</dd>
+<dd><code>vertx</code> - The vertx instance</dd>
 </dl>
 </section>
 </li>
@@ -169,9 +169,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="client()">
 <h3>client</h3>
 <div class="member-signature"><span class="annotations">@Singleton
-@Requires(missingBeans=io.vertx.sqlclient.Pool.class)
 @Bean(preDestroy="close")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">io.vertx.sqlclient.Pool</span>&nbsp;<span class="element-name">client</span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">io.vertx.reactivex.pgclient.PgPool</span>&nbsp;<span class="element-name">client</span>()</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>client A pool of connections.</dd>
