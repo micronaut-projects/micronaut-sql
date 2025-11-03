@@ -1,4 +1,4 @@
-package example.jdbc.ucp.sync;
+package example.jdbc.hikari.sync;
 
 import example.domain.IOwner;
 import example.sync.IOwnerRepository;
@@ -33,10 +33,10 @@ public class OwnerRepository implements IOwnerRepository {
     @Transactional
     public void runInit() throws SQLException {
         PreparedStatement stmt = dataSource.getConnection().prepareStatement("""
-            CREATE TABLE owners (id INTEGER GENERATED ALWAYS AS IDENTITY NOT NULL,
+            CREATE TABLE owners (id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                                  name VARCHAR(200) NOT NULL,
-                                 age INTEGER NOT NULL,
-                                 PRIMARY KEY (id))""");
+                                 age INTEGER NOT NULL
+                                );""");
         stmt.executeUpdate();
     }
 

@@ -2,9 +2,9 @@
 
 # Micronaut
 
-micronaut = "4.10.6"
+micronaut = "4.10.8"
 micronaut-docs = "3.0.0"
-micronaut-gradle-plugin = "4.5.5"
+micronaut-gradle-plugin = "4.6.1"
 micronaut-test-resources = "2.10.1"
 
 # Platform dependencies
@@ -17,7 +17,7 @@ micronaut-r2dbc = "6.1.0"
 micronaut-reactor = "3.8.0"
 micronaut-serde = "2.15.4"
 micronaut-spring = "5.11.2"
-micronaut-test = "4.9.0"
+micronaut-test = "4.10.1"
 micronaut-validation = "4.11.0"
 
 # Frameworks
@@ -51,7 +51,7 @@ managed-tomcat-jdbc = "11.0.12"
 managed-jakarta-persistence-api = "3.1.0"
 managed-jakarta-transaction-api = "2.0.1"
 
-managed-h2 = "2.4.240"
+managed-h2 = "2.3.232"
 
 # Other
 
