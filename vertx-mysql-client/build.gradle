@@ -7,11 +7,11 @@ dependencies {
     api(libs.managed.vertx.mysql.client)
 
     implementation(libs.managed.vertx.codegen)
+    implementation(mnReactor.micronaut.reactor)
 
     compileOnly(mn.micronaut.management)
 
     testImplementation(mn.micronaut.management)
     testImplementation(mnTestResources.testcontainers.mysql)
     testImplementation(libs.managed.mysql.connector.j)
-    testImplementation(libs.managed.vertx.rx.java2)
 }

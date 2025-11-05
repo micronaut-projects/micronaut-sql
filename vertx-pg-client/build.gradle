@@ -7,12 +7,12 @@ dependencies {
     api(libs.managed.vertx.pg.client)
 
     implementation(libs.managed.vertx.codegen)
+    implementation(mnReactor.micronaut.reactor)
 
     compileOnly(mn.micronaut.management)
     runtimeOnly libs.managed.ongres.scram.client
 
     testImplementation(mn.micronaut.management)
     testImplementation(mnTestResources.testcontainers.postgres)
-    testImplementation(libs.managed.vertx.rx.java2)
 }
 

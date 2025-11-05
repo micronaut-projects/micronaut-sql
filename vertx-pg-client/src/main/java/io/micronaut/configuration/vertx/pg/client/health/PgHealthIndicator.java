@@ -25,10 +25,9 @@ import io.vertx.sqlclient.Pool;
 import io.vertx.sqlclient.Row;
 import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscription;
+import reactor.core.publisher.Mono;
 
 import java.util.Collections;
-import java.util.concurrent.CompletionStage;
 
 /**
  * A  {@link HealthIndicator} for Vertx Pg client.
@@ -52,42 +51,17 @@ public class PgHealthIndicator implements HealthIndicator {
 
     @Override
     public Publisher<HealthResult> getResult() {
-        CompletionStage<HealthResult> stage = client
-            .query(QUERY)
-            .execute()
-            .toCompletionStage()
-            .thenApply(rows -> {
-                HealthResult.Builder status = HealthResult.builder(NAME, HealthStatus.UP);
-                Row row = rows.iterator().next();
-                status.details(Collections.singletonMap("version", row.getString(0)));
-                return status.build();
-            })
-            .exceptionally(this::buildErrorResult);
-
-        return subscriber -> subscriber.onSubscribe(new Subscription() {
-            private volatile boolean done;
-
-            @Override
-            public void request(long n) {
-                if (done) {
-                    return;
-                }
-                done = true;
-                stage.whenComplete((res, err) -> {
-                    if (err != null) {
-                        subscriber.onNext(buildErrorResult(err));
-                    } else {
-                        subscriber.onNext(res);
-                    }
-                    subscriber.onComplete();
-                });
-            }
-
-            @Override
-            public void cancel() {
-                done = true;
-            }
-        });
+        return Mono.fromCompletionStage(
+            client.query(QUERY).execute()
+                .toCompletionStage()
+                .thenApply(rows -> {
+                    HealthResult.Builder status = HealthResult.builder(NAME, HealthStatus.UP);
+                    Row row = rows.iterator().next();
+                    status.details(Collections.singletonMap("version", row.getString(0)));
+                    return status.build();
+                })
+                .exceptionally(this::buildErrorResult)
+        );
     }
 
     private HealthResult buildErrorResult(Throwable throwable) {

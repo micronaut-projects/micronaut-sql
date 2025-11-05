@@ -18,9 +18,9 @@ package io.micronaut.configuration.vertx.pg.client.health
 import io.micronaut.context.ApplicationContext
 import io.micronaut.health.HealthStatus
 import io.micronaut.management.health.indicator.HealthResult
-import io.reactivex.Flowable
 
 import org.testcontainers.containers.PostgreSQLContainer
+import reactor.core.publisher.Mono
 import spock.lang.Specification
 
 
@@ -41,7 +41,7 @@ class PgClientHealthIndicatorSpec extends Specification {
 
         when:
         PgHealthIndicator indicator = applicationContext.getBean(PgHealthIndicator)
-        HealthResult result = Flowable.fromPublisher(indicator.getResult()).blockingFirst()
+        HealthResult result = Mono.from(indicator.getResult()).block()
 
         then:
         result.status == HealthStatus.UP
@@ -49,7 +49,7 @@ class PgClientHealthIndicatorSpec extends Specification {
 
         when:
         postgres.stop()
-        result = Flowable.fromPublisher(indicator.getResult()).blockingFirst()
+        result = Mono.from(indicator.getResult()).block()
 
         then:
         result.status == HealthStatus.DOWN
