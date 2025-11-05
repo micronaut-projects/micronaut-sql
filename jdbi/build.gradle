@@ -55,7 +55,7 @@ dependencies {
 
     txTestImplementation(mnData.micronaut.data.tx.jdbc)
 
-    testRuntimeOnly(mnTest.junit.platform.launcher)
+    txTestRuntimeOnly(mnTest.junit.platform.launcher)
 }
 
 

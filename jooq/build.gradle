@@ -56,7 +56,7 @@ dependencies {
     txTestImplementation(mn.micronaut.inject.groovy)
     txTestImplementation(mnTest.micronaut.test.spock)
 
-    testRuntimeOnly(mnTest.junit.platform.launcher)
+    txTestRuntimeOnly(mnTest.junit.platform.launcher)
 }
 
 task txTest(type: Test) {
