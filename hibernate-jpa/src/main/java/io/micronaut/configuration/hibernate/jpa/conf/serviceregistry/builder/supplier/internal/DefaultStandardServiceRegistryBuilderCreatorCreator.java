@@ -27,6 +27,8 @@ import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.integrator.spi.Integrator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Default supplier of {@link StandardServiceRegistryBuilderCreator}.
@@ -38,6 +40,8 @@ import org.hibernate.integrator.spi.Integrator;
 @Requires(missingBeans = StandardServiceRegistryBuilderCreator.class)
 @Prototype
 final class DefaultStandardServiceRegistryBuilderCreatorCreator implements StandardServiceRegistryBuilderCreator {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultStandardServiceRegistryBuilderCreatorCreator.class);
 
     private final BootstrapServiceRegistry bootstrapServiceRegistry;
 
@@ -58,7 +62,7 @@ final class DefaultStandardServiceRegistryBuilderCreatorCreator implements Stand
             // Hibernate ORM will use the BytecodeProvider implementation it finds on the
             // classpath loading it via the standard ServiceLoader mechanism. Currently, there is only a single
             // implementation which is included in Hibernate ORM, so it's not possible to override this.
-            System.setProperty(org.hibernate.cfg.AvailableSettings.BYTECODE_PROVIDER, "none");
+            LOG.debug("Creating StandardServiceRegistry with compile-time Hibernate Proxy implementations.");
         }
         if (jpaConfiguration.isReactive()) {
             throw new IllegalStateException("Hibernate Reactive not found on classpath!");
