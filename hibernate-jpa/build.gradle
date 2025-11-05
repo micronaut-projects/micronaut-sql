@@ -37,8 +37,3 @@ dependencies {
 
     testCompileOnly(mnData.micronaut.data.connection.jdbc)
 }
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
-}
