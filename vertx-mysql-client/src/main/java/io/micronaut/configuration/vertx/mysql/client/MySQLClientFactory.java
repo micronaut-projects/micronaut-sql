@@ -58,11 +58,7 @@ public class MySQLClientFactory {
     @Requires(missingBeans = Pool.class)
     @Bean(preDestroy = "close")
     public Pool client() {
-        if (this.vertx == null) {
-            return createClient();
-        } else {
-            return createClient();
-        }
+        return createClient();
     }
 
     /**
