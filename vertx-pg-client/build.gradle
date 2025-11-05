@@ -16,7 +16,3 @@ dependencies {
     testImplementation(libs.managed.vertx.rx.java2)
 }
 
-ossIndexAudit {
-    // TODO: Temporary disable check for CVE
-    excludeCoordinates = ['com.ongres.scram:scram-common:3.1']
-}
