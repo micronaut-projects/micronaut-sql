@@ -17,7 +17,7 @@ micronaut-r2dbc = "6.1.0"
 micronaut-reactor = "3.8.0"
 micronaut-serde = "2.15.4"
 micronaut-spring = "5.11.2"
-micronaut-test = "4.10.1"
+micronaut-test = "4.10.2"
 micronaut-validation = "4.11.0"
 
 # Frameworks
@@ -44,7 +44,7 @@ managed-mysql-connector-j = "9.4.0"
 
 managed-hikari = "6.3.3"
 managed-commons-dbcp = "2.13.0"
-managed-tomcat-jdbc = "11.0.12"
+managed-tomcat-jdbc = "11.0.13"
 
 # JPA
 
