@@ -31,7 +31,7 @@ managed-jdbi = "3.49.6"
 
 # JDBC Drivers
 
-managed-ojdbc = "23.9.0.25.07"
+managed-ojdbc = "23.26.0.0.0"
 managed-ojdbcdms = "21.20.0.0"
 managed-dms = "23.3.0.23.09"
 managed-postgres-driver = "42.7.8"
