@@ -894,7 +894,7 @@ datasources.warehouse=...</code></pre>
 
 
 <div class="paragraph">
-<p>You can use the <code>javax.persistence.PersistenceContext</code> annotation to inject an <code>EntityManager</code> (or Hibernate <code>Session</code>). To do so you need to make sure the JPA annotations are on the <code>annotationProcessor</code> path in your build:</p>
+<p>You can use the <code>jakarta.persistence.PersistenceContext</code> annotation to inject an <code>EntityManager</code> (or Hibernate <code>Session</code>). To do so you need to make sure the JPA annotations are on the <code>annotationProcessor</code> path in your build:</p>
 </div>
 <div class="listingblock">
 <div class="title">Adding the JPA dependency to <code>annotationProcessor</code> in Gradle</div>
@@ -914,17 +914,6 @@ EntityManager otherManager;</code></pre>
 </div>
 <div class="paragraph">
 <p>Micronaut will inject a compile time scoped proxy that retrieves the <code>EntityManager</code> associated with the current transaction when using <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Transactional.html">@Transactional</a> (see "Using Spring Transaction Management" below).</p>
-</div>
-<div class="paragraph">
-<p>Note the examples above use field injection, since the <code>@PersistenceContext</code> annotation does not support declaration on a parameter of a constructor or method argument. Therefore if you wish to instead use constructor or method injection you must use the <a href="../api/io/micronaut/configuration/hibernate/jpa/scope/CurrentSession.html">@CurrentSession</a> instead:</p>
-</div>
-<div class="listingblock">
-<div class="title">Using <code>@CurrentSession</code> for constructor injection</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public MyService(@CurrentSession EntityManager entityManager) {
-     this.entityManager = entityManager;
-}</code></pre>
-</div>
 </div>
 
 <h2 id="hibernate-customizing"><a class="anchor" href="#hibernate-customizing"></a>5.3 Customizing Hibernate/JPA Configuration</h2>
