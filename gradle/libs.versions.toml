@@ -22,10 +22,10 @@ micronaut-validation = "4.11.0"
 
 # Frameworks
 
-managed-vertx = "4.5.21"
+managed-vertx = "5.0.5"
 managed-jooq = "3.19.18"
-managed-hibernate = "6.6.32.Final"
-managed-hibernate-reactive = "2.4.8.Final"
+managed-hibernate = "7.1.7.Final"
+managed-hibernate-reactive = "4.1.4.Final"
 managed-jasync = "2.2.4"
 managed-jdbi = "3.49.6"
 
@@ -57,7 +57,7 @@ managed-h2 = "2.3.232"
 
 sfm-reflect = "9.0.2"
 # Needed for vertx pg client and micronaut-data hibernate reactive
-managed-ongres-scram = "2.1"
+managed-ongres-scram = "3.2"
 
 # Testing
 
@@ -149,7 +149,7 @@ managed-jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transa
 # Others
 
 sfm-reflect = { module = "org.simpleflatmapper:sfm-reflect", version.ref = "sfm-reflect" }
-managed-ongres-scram-client = { module = "com.ongres.scram:client", version.ref = "managed-ongres-scram" }
+managed-ongres-scram-client = { module = "com.ongres.scram:scram-client", version.ref = "managed-ongres-scram" }
 
 # Testresources
 

@@ -49,21 +49,42 @@ final class MicronautContainerSettingsSupplier implements SettingsSupplier {
     public Map<String, Object> supply(JpaConfiguration jpaConfiguration) {
         BeanContainer beanContainer = new BeanContainer() {
             @Override
-            public <B> ContainedBean<B> getBean(Class<B> beanType, LifecycleOptions lifecycleOptions, BeanInstanceProducer fallbackProducer) {
+            public <B> ContainedBean<B> getBean(Class<B> beanType,
+                                                    LifecycleOptions lifecycleOptions,
+                                                    BeanInstanceProducer fallbackProducer) {
                 B bean = applicationContext.findBean(beanType)
-                        .orElseGet(() -> fallbackProducer.produceBeanInstance(beanType));
-                return () -> bean;
+                    .orElseGet(() -> fallbackProducer.produceBeanInstance(beanType));
+                return new ContainedBean<>() {
+                    @Override
+                    public Class<B> getBeanClass() {
+                        return (Class<B>) bean.getClass();
+                    }
+
+                    @Override
+                    public B getBeanInstance() {
+                        return bean;
+                    }
+                };
             }
 
             @Override
-            public <B> ContainedBean<B> getBean(
-                    String name,
-                    Class<B> beanType,
-                    LifecycleOptions lifecycleOptions,
-                    BeanInstanceProducer fallbackProducer) {
+            public <B> ContainedBean<B> getBean(String name,
+                                                    Class<B> beanType,
+                                                    LifecycleOptions lifecycleOptions,
+                                                    BeanInstanceProducer fallbackProducer) {
                 B bean = applicationContext.findBean(beanType, Qualifiers.byName(name))
-                        .orElseGet(() -> fallbackProducer.produceBeanInstance(name, beanType));
-                return () -> bean;
+                    .orElseGet(() -> fallbackProducer.produceBeanInstance(name, beanType));
+                return new ContainedBean<>() {
+                    @Override
+                    public Class<B> getBeanClass() {
+                        return (Class<B>) bean.getClass();
+                    }
+
+                    @Override
+                    public B getBeanInstance() {
+                        return bean;
+                    }
+                };
             }
 
             @Override
@@ -71,6 +92,7 @@ final class MicronautContainerSettingsSupplier implements SettingsSupplier {
                 // no-op, managed externally
             }
         };
+
         return Collections.singletonMap(AvailableSettings.BEAN_CONTAINER, beanContainer);
     }
 }

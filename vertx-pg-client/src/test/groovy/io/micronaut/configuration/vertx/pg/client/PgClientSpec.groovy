@@ -37,10 +37,10 @@ import io.micronaut.context.ApplicationContext
 
 //end::appcontext-import[]
 
-import io.vertx.reactivex.pgclient.PgPool
-import io.vertx.reactivex.sqlclient.Row
-import io.vertx.reactivex.sqlclient.RowIterator
-import io.vertx.reactivex.sqlclient.RowSet
+import io.vertx.sqlclient.Pool
+import io.vertx.sqlclient.Row
+import io.vertx.sqlclient.RowIterator
+import io.vertx.sqlclient.RowSet
 import org.testcontainers.containers.PostgreSQLContainer
 
 //tag::pg-testcontainer-import[]
@@ -81,19 +81,18 @@ class PgClientSpec extends Specification {
         when:
 
         // tag::pgPool-bean[]
-        PgPool client = applicationContext.getBean(PgPool)
+        Pool client = applicationContext.getBean(Pool)
         // end::pgPool-bean[]
 
         // tag::query[]
-        result = client.query('SELECT * FROM pg_stat_database').rxExecute().map({ RowSet<Row> rowSet -> // <1>
-            int size = 0
-            RowIterator<Row> iterator = rowSet.iterator()
-            while (iterator.hasNext()) {
-                iterator.next()
-                size++
-            }
-            return "Size: ${size}"
-        }).blockingGet()
+        RowSet<Row> rowSet = client.query('SELECT * FROM pg_stat_database').execute().toCompletionStage().toCompletableFuture().get() // <1>
+        int size = 0
+        RowIterator<Row> iterator = rowSet.iterator()
+        while (iterator.hasNext()) {
+            iterator.next()
+            size++
+        }
+        result = "Size: ${size}"
         // end::query[]
 
         then:

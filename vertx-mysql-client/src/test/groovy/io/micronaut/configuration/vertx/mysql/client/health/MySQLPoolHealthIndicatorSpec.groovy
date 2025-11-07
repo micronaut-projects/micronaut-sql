@@ -18,8 +18,8 @@ package io.micronaut.configuration.vertx.mysql.client.health
 import io.micronaut.context.ApplicationContext
 import io.micronaut.health.HealthStatus
 import io.micronaut.management.health.indicator.HealthResult
-import io.reactivex.Flowable
 import org.testcontainers.containers.MySQLContainer
+import reactor.core.publisher.Mono
 import spock.lang.Specification
 
 class MySQLPoolHealthIndicatorSpec extends Specification{
@@ -38,7 +38,7 @@ class MySQLPoolHealthIndicatorSpec extends Specification{
 
         when:
         MySQLHealthIndicator indicator = applicationContext.getBean(MySQLHealthIndicator)
-        HealthResult result = Flowable.fromPublisher(indicator.getResult()).blockingFirst()
+        HealthResult result = Mono.from(indicator.getResult()).block()
 
         then:
         result.status == HealthStatus.UP
@@ -46,11 +46,10 @@ class MySQLPoolHealthIndicatorSpec extends Specification{
 
         when:
         mysql.stop()
-        result = Flowable.fromPublisher(indicator.getResult()).blockingFirst()
+        result = Mono.from(indicator.getResult()).block()
 
         then:
         result.status == HealthStatus.DOWN
-
 
         cleanup:
         applicationContext?.stop()
