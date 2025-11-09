@@ -37,6 +37,7 @@ graalvmNative {
     binaries {
         all {
             buildArgs.add("--report-unsupported-elements-at-runtime")
+            buildArgs.add("-H:+SharedArenaSupport")
         }
     }
     metadataRepository {
