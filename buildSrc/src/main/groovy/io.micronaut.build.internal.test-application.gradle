@@ -37,10 +37,7 @@ graalvmNative {
     binaries {
         all {
             buildArgs.add("--report-unsupported-elements-at-runtime")
-            def currentJavaMajor = JavaVersion.current().majorVersion.toInteger()
-            if (currentJavaMajor >= 25) {
-                buildArgs.add("-H:+SharedArenaSupport")
-            }
+            buildArgs.add("-H:+SharedArenaSupport")
         }
     }
     metadataRepository {
