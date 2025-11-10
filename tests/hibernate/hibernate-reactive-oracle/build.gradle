@@ -1,0 +1,16 @@
+plugins {
+    id("io.micronaut.build.internal.test-application-hibernate")
+}
+
+dependencies {
+    implementation projects.micronautTests.micronautHibernate.micronautHibernateReactiveCommon
+    testImplementation projects.micronautTests.micronautCommonTests
+
+    implementation libs.managed.vertx.oracle.client
+}
+
+micronaut {
+    testResources {
+        additionalModules.add("hibernate-reactive-oracle-free")
+    }
+}

@@ -21,9 +21,11 @@ dependencies {
     testImplementation projects.micronautJdbc
     testRuntimeOnly projects.micronautJdbcTomcat
     testRuntimeOnly(libs.managed.h2)
+    testRuntimeOnly libs.managed.ongres.scram.client
 
     testImplementation(mnTestResources.testcontainers.jdbc)
     testImplementation(mnTestResources.testcontainers.postgres)
     testImplementation libs.managed.vertx.pg.client
     testImplementation(mnData.micronaut.data.tx.hibernate)
 }
+

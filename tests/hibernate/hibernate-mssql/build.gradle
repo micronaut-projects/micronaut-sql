@@ -1,0 +1,30 @@
+plugins {
+    id("io.micronaut.build.internal.test-application-hibernate")
+}
+
+dependencies {
+    implementation projects.micronautTests.micronautHibernate.micronautHibernateSyncCommon
+    testImplementation projects.micronautTests.micronautCommonTests
+
+    runtimeOnly projects.micronautJdbcHikari
+
+    runtimeOnly libs.managed.mssql.jdbc
+}
+
+configurations {
+    all*.exclude module: "javassist"
+}
+
+micronaut {
+    testResources {
+        additionalModules.add(JDBC_MSSQL)
+    }
+}
+
+graalvmNative {
+    binaries {
+        all {
+            buildArgs.add("-H:+AddAllCharsets")
+        }
+    }
+}

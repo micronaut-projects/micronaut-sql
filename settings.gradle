@@ -6,7 +6,7 @@ pluginManagement {
 }
 
 plugins {
-    id 'io.micronaut.build.shared.settings' version '8.0.0-M4'
+    id 'io.micronaut.build.shared.settings' version '8.0.0-M9'
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -48,20 +48,20 @@ include 'tests:common-reactive'
 include 'tests:common-sync'
 include 'tests:common-tests'
 
-include 'tests:hibernate6:hibernate6-sync-common'
-include 'tests:hibernate6:hibernate6-h2'
-include 'tests:hibernate6:hibernate6-mariadb'
-include 'tests:hibernate6:hibernate6-mysql'
-include 'tests:hibernate6:hibernate6-mysql-disabled'
-include 'tests:hibernate6:hibernate6-mssql'
-include 'tests:hibernate6:hibernate6-oracle'
-include 'tests:hibernate6:hibernate6-postgres'
+include 'tests:hibernate:hibernate-sync-common'
+include 'tests:hibernate:hibernate-h2'
+include 'tests:hibernate:hibernate-mariadb'
+include 'tests:hibernate:hibernate-mysql'
+include 'tests:hibernate:hibernate-mysql-disabled'
+include 'tests:hibernate:hibernate-mssql'
+include 'tests:hibernate:hibernate-oracle'
+include 'tests:hibernate:hibernate-postgres'
 
-include 'tests:hibernate6:hibernate6-reactive-common'
-include 'tests:hibernate6:hibernate6-reactive-mssql'
-include 'tests:hibernate6:hibernate6-reactive-mysql'
-include 'tests:hibernate6:hibernate6-reactive-oracle'
-include 'tests:hibernate6:hibernate6-reactive-postgres'
+include 'tests:hibernate:hibernate-reactive-common'
+include 'tests:hibernate:hibernate-reactive-mssql'
+include 'tests:hibernate:hibernate-reactive-mysql'
+include 'tests:hibernate:hibernate-reactive-oracle'
+include 'tests:hibernate:hibernate-reactive-postgres'
 
 include 'tests:jooq-tests:jooq-jdbc-postgres'
 include 'tests:jooq-tests:jooq-r2dbc-postgres'
@@ -69,3 +69,4 @@ include 'tests:jooq-tests:jooq-r2dbc-postgres'
 include 'tests:jdbc-ucp-tests:jdbc-ucp-oracle'
 include 'tests:jdbc-dbcp-tests:jdbc-dbcp-postgres'
 include 'tests:jdbc-tomcat-tests:jdbc-tomcat-mysql'
+include 'tests:jdbc-hikari-tests:jdbc-hikari-h2'

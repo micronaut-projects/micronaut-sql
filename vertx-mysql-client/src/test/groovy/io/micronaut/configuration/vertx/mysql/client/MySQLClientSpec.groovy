@@ -19,10 +19,10 @@ package io.micronaut.configuration.vertx.mysql.client
 import io.micronaut.context.ApplicationContext
 //end::appcontext-import[]
 
-import io.vertx.reactivex.mysqlclient.MySQLPool
-import io.vertx.reactivex.sqlclient.Row
-import io.vertx.reactivex.sqlclient.RowIterator
-import io.vertx.reactivex.sqlclient.RowSet
+import io.vertx.sqlclient.Pool
+import io.vertx.sqlclient.Row
+import io.vertx.sqlclient.RowIterator
+import io.vertx.sqlclient.RowSet
 
 //tag::mysql-testcontainer-import[]
 import org.testcontainers.containers.MySQLContainer
@@ -58,19 +58,18 @@ class MySQLClientSpec extends Specification{
         when:
 
         // tag::mysqlPool-bean[]
-        MySQLPool client = applicationContext.getBean(MySQLPool)
+        Pool client = applicationContext.getBean(Pool)
         // end::mysqlPool-bean[]
 
         //
-        client.query("CREATE TABLE IF NOT EXISTS foo(id INTEGER)").rxExecute().blockingGet()
-        client.query("INSERT INTO foo(id) VALUES (0);").rxExecute().blockingGet()
+        client.query("CREATE TABLE IF NOT EXISTS foo(id INTEGER)").execute().toCompletionStage().toCompletableFuture().get()
+        client.query("INSERT INTO foo(id) VALUES (0);").execute().toCompletionStage().toCompletableFuture().get()
 
         // tag::query[]
-        result = client.query('SELECT * FROM foo').rxExecute().map({ RowSet<Row> rowSet -> // <1>
-            RowIterator<Row> iterator = rowSet.iterator()
-            int id = iterator.next().getInteger("id")
-            return "id: ${id}"
-        }).blockingGet()
+        RowSet<Row> rowSet = client.query('SELECT * FROM foo').execute().toCompletionStage().toCompletableFuture().get() // <1>
+        RowIterator<Row> iterator = rowSet.iterator()
+        int id = iterator.next().getInteger("id")
+        result = "id: ${id}"
         // end::query[]
 
         then:

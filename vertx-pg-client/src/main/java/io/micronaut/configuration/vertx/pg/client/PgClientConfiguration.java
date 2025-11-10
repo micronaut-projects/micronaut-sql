@@ -17,6 +17,7 @@ package io.micronaut.configuration.vertx.pg.client;
 
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
+import io.vertx.core.net.NetClientOptions;
 import io.vertx.pgclient.PgConnectOptions;
 import io.vertx.sqlclient.PoolOptions;
 
@@ -32,6 +33,9 @@ public class PgClientConfiguration {
 
     @ConfigurationBuilder
     protected PoolOptions poolOptions = new PoolOptions();
+
+    @ConfigurationBuilder
+    protected NetClientOptions netClientOptions = new NetClientOptions();
 
     protected String uri;
 
@@ -57,4 +61,5 @@ public class PgClientConfiguration {
     public PoolOptions getPoolOptions() {
         return poolOptions;
     }
+
 }
