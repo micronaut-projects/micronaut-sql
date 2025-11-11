@@ -23,7 +23,7 @@ micronaut-validation = "4.12.0"
 # Frameworks
 
 managed-vertx = "5.0.5"
-managed-jooq = "3.20.8"
+managed-jooq = "3.20.9"
 managed-hibernate = "7.1.7.Final"
 managed-hibernate-reactive = "4.1.5.Final"
 managed-jasync = "2.2.4"
@@ -95,7 +95,7 @@ managed-vertx-oracle-client = { module = "io.vertx:vertx-oracle-client", version
 managed-vertx-rx-java2 = { module = "io.vertx:vertx-rx-java2", version.ref = "managed-vertx" }
 
 boms-jooq = { module = "org.jooq:jooq-bom", version.ref = "managed-jooq" }
-managed-jooq = { module = "org.jooq:jooq", version.ref = "managed-jooq" }
+managed-jooq = { module = "org.jooq:jooq" }
 
 # Hibernate
 
