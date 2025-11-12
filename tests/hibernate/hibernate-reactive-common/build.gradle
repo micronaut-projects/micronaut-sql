@@ -13,3 +13,14 @@ dependencies {
     runtimeOnly(mn.snakeyaml)
     runtimeOnly(mnData.micronaut.data.model)
 }
+
+graalvmNative {
+    binaries {
+        all {
+            if (System.getenv("GRAALVM_HOME")?.contains("graal") && System.getenv("GRAALVM_HOME")?.contains("25")) {
+                logger.quiet("Enabling SharedArenaSupport for GraalVM 25")
+                buildArgs.add("-H:+SharedArenaSupport")
+            }
+        }
+    }
+}
