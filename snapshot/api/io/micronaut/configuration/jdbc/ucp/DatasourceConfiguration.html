@@ -187,7 +187,7 @@ implements <a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface 
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidationQuery()" class="member-name-link">getValidationQuery</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initialize()" class="member-name-link">initialize</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initialize(java.lang.String)" class="member-name-link">initialize</a><wbr>(@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;applicationName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Configures the missing properties of the data source from the calculated settings.</div>
 </div>
@@ -487,10 +487,11 @@ implements <a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface 
 </section>
 </li>
 <li>
-<section class="detail" id="initialize()">
+<section class="detail" id="initialize(java.lang.String)">
 <h3>initialize</h3>
 <div class="member-signature"><span class="annotations">@PostConstruct
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initialize</span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initialize</span><wbr><span class="parameters">(@Value("${micronaut.application.name:}") @Nullable
+ @Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;applicationName)</span></div>
 <div class="block">Configures the missing properties of the data source from the calculated settings.</div>
 <dl class="notes">
 <dt>Since:</dt>
