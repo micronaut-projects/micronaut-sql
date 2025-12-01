@@ -18,7 +18,7 @@ package io.micronaut.configuration.jdbc.ucp;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Internal;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import jakarta.annotation.PostConstruct;
 import oracle.ucp.jdbc.PoolDataSource;
 

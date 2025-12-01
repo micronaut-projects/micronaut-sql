@@ -1,7 +1,7 @@
 package example.hibernate.reactive;
 
 import io.micronaut.context.annotation.EachBean;
-import io.micronaut.core.annotation.NonNull;
+import org.jspecify.annotations.NonNull;
 import io.micronaut.data.connection.ConnectionDefinition;
 import io.micronaut.data.connection.ConnectionStatus;
 import io.micronaut.data.connection.DefaultConnectionDefinition;

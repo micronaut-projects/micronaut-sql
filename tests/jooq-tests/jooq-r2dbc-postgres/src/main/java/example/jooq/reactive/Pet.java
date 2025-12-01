@@ -2,7 +2,7 @@ package example.jooq.reactive;
 
 import example.domain.IOwner;
 import example.domain.IPet;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import io.micronaut.serde.annotation.Serdeable;
 
 @Serdeable

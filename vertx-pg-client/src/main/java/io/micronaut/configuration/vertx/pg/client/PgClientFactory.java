@@ -18,7 +18,7 @@ package io.micronaut.configuration.vertx.pg.client;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import io.micronaut.core.util.StringUtils;
 import io.vertx.core.Vertx;
 import io.vertx.pgclient.PgConnectOptions;
