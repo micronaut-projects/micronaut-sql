@@ -18,7 +18,7 @@ package io.micronaut.configuration.jooq;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.core.annotation.Internal;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import org.jooq.ConverterProvider;
 import org.jooq.DiagnosticsListenerProvider;

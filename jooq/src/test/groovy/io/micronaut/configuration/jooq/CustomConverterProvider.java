@@ -15,7 +15,7 @@
  */
 package io.micronaut.configuration.jooq;
 
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jooq.Converter;
 import org.jooq.ConverterProvider;
 import org.jooq.impl.DefaultConverterProvider;
