@@ -76,10 +76,16 @@ For a list of other properties able to be configured, simply refer to the implem
 |https://micronaut-projects.github.io/micronaut-sql/latest/guide/configurationreference.html#io.micronaut.configuration.jdbc.dbcp.DatasourceConfiguration[DatasourceConfiguration]
 |https://commons.apache.org/proper/commons-dbcp/configuration.html[Apache DBCP Configuration]
 
-
 |Oracle UCP
 |link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/jdbc/PoolDataSource.html[PoolDataSource]
 |https://micronaut-projects.github.io/micronaut-sql/latest/guide/configurationreference.html#io.micronaut.configuration.jdbc.ucp.DatasourceConfiguration[DatasourceConfiguration]
 |https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/intro.html#GUID-197BA5D3-86DA-43BE-AFC6-E8CBED4883EF[Oracle UCP]
 
+|Unpooled
+|link:{jdkapi}/java.sql/javax/sql/DataSource.html[DataSource]
+|https://micronaut-projects.github.io/micronaut-sql/latest/guide/configurationreference.html#io.micronaut.configuration.jdbc.unpooled.DatasourceConfiguration[DatasourceConfiguration]
+|link:jdbc-unpooled.html[Unpooled JDBC DataSources]
+
 |=======
+
+NOTE: The unpooled implementation creates a new connection for each request. It should only be used for testing, serverless, or very low-volume applications. See link:jdbc-unpooled.html[Unpooled JDBC DataSources] for details.

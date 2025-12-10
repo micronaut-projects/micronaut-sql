@@ -5,6 +5,7 @@ jdbc:
   title: Configuring JDBC
   jdbc-disable: Disable Micronaut JDBC Data Sources
   jdbc-connection-pools: Configuring JDBC Connection Pools
+  jdbc-unpooled: Unpooled JDBC DataSources
   jdbc-multiple-datasources: Configuring Multiple Data Sources
   jdbc-healthchecks: JDBC Health Checks
 hibernate:
