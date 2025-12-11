@@ -25,6 +25,7 @@
  * a connection from a pool. This implementation should only be used for:</p>
  *
  * <ul>
+ *   <li>When connection pool is delegated to a database proxy like CNAM, pgpool or Open J Proxy.</li>
  *   <li>Testing scenarios that require clean connection state</li>
  *   <li>Serverless/FaaS applications with short-lived executions</li>
  *   <li>Very low-volume applications (less than 1 request/second)</li>

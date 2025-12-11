@@ -2,7 +2,7 @@
 
 Micronaut SQL provides support for unpooled JDBC datasources through the `micronaut-jdbc-unpooled` module. Unlike traditional connection pools, unpooled datasources create a new database connection for each `getConnection()` call and actually close the connection when `close()` is called, rather than returning it to a pool.
 
-WARNING: Unpooled datasources have significant performance implications. Creating a new connection typically takes 10-100ms, compared to ~1ms for retrieving a connection from a pool. This implementation should only be used for specific use cases such as testing, serverless applications, or very low-volume scenarios.
+WARNING: Unpooled datasources have significant performance implications. Creating a new connection typically takes 10-100ms, compared to ~1ms for retrieving a connection from a pool. This implementation should only be used for specific use cases such as externalized connection pooling (CNAM, pgpool, Open J Proxy), testing, serverless applications, or very low-volume scenarios.
 
 === Installation
 
@@ -48,10 +48,8 @@ Unpooled datasources are appropriate for:
 
 Do NOT use unpooled datasources for:
 
-* *Production applications*: With normal or high load
 * *High-performance requirements*: Where connection creation overhead (10-100ms) is unacceptable
 * *High-volume applications*: With more than 1 request per second
-* *Microservices*: With multiple concurrent requests
 
 For these scenarios, use a pooled datasource implementation such as link:../jdbc-connection-pools.html[HikariCP, Tomcat JDBC Pool, or Apache DBCP].
 
@@ -177,6 +175,8 @@ The following table shows the approximate performance difference between pooled 
 |Database Authentication |Once (pooled) |Every request
 |Overhead per Request |Minimal |High
 |=======
+
+NOTE: If using a solution like Open J Proxy which provides virtual connections, handling real connections at the proxy layer, these performance considerations do not apply as the proxy manages the actual connection pooling.
 
 *Recommendation:* Only use unpooled datasources for the specific use cases listed above. For production applications with normal load, always use a pooled datasource.
 
