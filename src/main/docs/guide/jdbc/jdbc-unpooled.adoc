@@ -1,0 +1,195 @@
+== Unpooled JDBC DataSources
+
+Micronaut SQL provides support for unpooled JDBC datasources through the `micronaut-jdbc-unpooled` module. Unlike traditional connection pools, unpooled datasources create a new database connection for each `getConnection()` call and actually close the connection when `close()` is called, rather than returning it to a pool.
+
+WARNING: Unpooled datasources have significant performance implications. Creating a new connection typically takes 10-100ms, compared to ~1ms for retrieving a connection from a pool. This implementation should only be used for specific use cases such as externalized connection pooling (CNAM, pgpool, Open J Proxy), testing, serverless applications, or very low-volume scenarios.
+
+=== Installation
+
+To use unpooled datasources, add the following dependency:
+
+dependency:micronaut-jdbc-unpooled[groupId="io.micronaut.sql", scope="runtime"]
+
+You also need to add a JDBC driver dependency to your classpath. For example, to add the H2 In-Memory Database:
+
+dependency:h2[groupId="com.h2database", scope="runtime"]
+
+=== Configuration
+
+Configure an unpooled datasource in `application.yml`:
+
+[configuration]
+----
+datasources:
+  default:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ""
+----
+
+The configuration is identical to pooled datasources. The same automatic defaults apply:
+
+* If the URL is not configured, Micronaut will search for an embedded database driver on the classpath
+* If the driver class is not configured, it will be derived from the URL
+* For embedded databases, default username and password will be provided
+
+=== When to Use Unpooled Datasources
+
+Unpooled datasources are appropriate for:
+
+* *Testing*: Integration tests that require clean connection state between tests
+* *Serverless/FaaS*: Short-lived functions where connection pool overhead outweighs benefits
+* *Very low-volume applications*: Applications with fewer than 1 request per second
+* *Educational or prototype applications*: Learning JDBC without pool complexity
+* *Connection-per-request isolation*: Scenarios requiring strict isolation between requests
+
+=== When NOT to Use Unpooled Datasources
+
+Do NOT use unpooled datasources for:
+
+* *High-performance requirements*: Where connection creation overhead (10-100ms) is unacceptable
+* *High-volume applications*: With more than 1 request per second
+
+For these scenarios, use a pooled datasource implementation such as link:../jdbc-connection-pools.html[HikariCP, Tomcat JDBC Pool, or Apache DBCP].
+
+=== How It Works
+
+The unpooled datasource uses the JDBC `DriverManager` to create connections:
+
+[source,java]
+----
+@Inject
+DataSource dataSource;
+
+public void query() {
+    try (Connection conn = dataSource.getConnection()) {
+        // New connection created here
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users");
+        ResultSet rs = stmt.executeQuery();
+        // ... process results
+    } // Connection actually closed here (not returned to pool)
+}
+----
+
+Each call to `getConnection()` creates a new physical database connection, and each call to `close()` actually closes the connection. This is fundamentally different from pooled datasources where `close()` returns the connection to the pool for reuse.
+
+=== Multiple Datasources
+
+Multiple unpooled datasources can be configured just like pooled datasources:
+
+[configuration]
+----
+datasources:
+  default:
+    url: jdbc:h2:mem:default
+  warehouse:
+    url: jdbc:postgresql://localhost:5432/warehouse
+    username: warehouse_user
+    password: secret
+----
+
+Access them by name using qualifiers:
+
+[source,java]
+----
+@Inject
+@Named("default")
+DataSource defaultDs;
+
+@Inject
+@Named("warehouse")
+DataSource warehouseDs;
+----
+
+=== Credential Refresh
+
+Unpooled datasources support dynamic credential refresh through Micronaut's configuration refresh mechanism. When datasource credentials are updated, new connections will use the updated credentials:
+
+[source,java]
+----
+@Inject
+DataSource dataSource;
+
+@Inject
+ApplicationContext applicationContext;
+
+// Update credentials
+System.setProperty("datasources.default.password", "new_password");
+Map<String, Object> changes = applicationContext.getEnvironment().refreshAndDiff();
+applicationContext.publishEvent(new RefreshEvent(changes));
+
+// New connections will use updated password
+try (Connection conn = dataSource.getConnection()) {
+    // Uses new password
+}
+----
+
+=== Migration Between Pooled and Unpooled
+
+Switching between pooled and unpooled datasources requires only a dependency change. The configuration remains the same.
+
+*From HikariCP to Unpooled:*
+
+[source,gradle]
+----
+// Remove HikariCP
+// runtimeOnly("io.micronaut.sql:micronaut-jdbc-hikari")
+
+// Add unpooled
+runtimeOnly("io.micronaut.sql:micronaut-jdbc-unpooled")
+----
+
+*From Unpooled to HikariCP:*
+
+[source,gradle]
+----
+// Remove unpooled
+// runtimeOnly("io.micronaut.sql:micronaut-jdbc-unpooled")
+
+// Add HikariCP
+runtimeOnly("io.micronaut.sql:micronaut-jdbc-hikari")
+----
+
+Optionally add HikariCP-specific configuration:
+
+[configuration]
+----
+datasources:
+  default:
+    url: jdbc:h2:mem:default
+    # HikariCP-specific settings
+    maximum-pool-size: 10
+    minimum-idle: 5
+----
+
+=== Performance Considerations
+
+The following table shows the approximate performance difference between pooled and unpooled datasources:
+
+[cols="30%,35%,35%"]
+|=======
+|Metric |Pooled (HikariCP) |Unpooled
+|Connection Acquisition |~1ms |~10-100ms
+|Network Handshake |Once (pooled) |Every request
+|Database Authentication |Once (pooled) |Every request
+|Overhead per Request |Minimal |High
+|=======
+
+NOTE: If using a solution like Open J Proxy which provides virtual connections, handling real connections at the proxy layer, these performance considerations do not apply as the proxy manages the actual connection pooling.
+
+*Recommendation:* Only use unpooled datasources for the specific use cases listed above. For production applications with normal load, always use a pooled datasource.
+
+=== Integration with Micronaut Features
+
+Unpooled datasources work seamlessly with:
+
+* *Micronaut Data JDBC*: JPA repositories and data access
+* *Micronaut Data JPA*: Hibernate integration
+* *jOOQ*: Type-safe SQL queries
+* *JDBI*: SQL object mapping
+* *Health Checks*: Datasource health indicators
+* *Metrics*: Basic connection tracking
+* *Transaction Management*: @Transactional support
+
+All Micronaut SQL features that work with pooled datasources also work with unpooled datasources.

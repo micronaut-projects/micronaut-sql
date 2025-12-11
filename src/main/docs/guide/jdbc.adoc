@@ -1,4 +1,4 @@
-Java data sources can be configured for one of four currently provided implementations. Apache DBCP2, Hikari, Tomcat, and Oracle Universal Connection Pool are supported by default.
+Java data sources can be configured for one of five currently provided implementations. Apache DBCP2, Hikari, Tomcat, Oracle Universal Connection Pool, and Unpooled are supported by default.
 
 [TIP]
 .Using the CLI
@@ -18,6 +18,10 @@ dependency:micronaut-jdbc-hikari[groupId="io.micronaut.sql", scope="runtime"]
 dependency:micronaut-jdbc-dbcp[groupId="io.micronaut.sql", scope="runtime"]
 
 dependency:micronaut-jdbc-ucp[groupId="io.micronaut.sql", scope="runtime"]
+
+dependency:micronaut-jdbc-unpooled[groupId="io.micronaut.sql", scope="runtime"]
+
+WARNING: The unpooled datasource creates a new connection for each request and should only be used for testing, serverless, or very low-volume applications or when using a database proxy like CNAM, pgpool or Open J Proxy. See the link:jdbc-unpooled.html[Unpooled JDBC DataSources] documentation for details.
 
 You also need to add a JDBC driver dependency to your classpath. For example to add the http://www.h2database.com[H2 In-Memory Database]:
 
