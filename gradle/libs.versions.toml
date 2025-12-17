@@ -27,7 +27,7 @@ managed-jooq = "3.20.9"
 managed-hibernate = "7.1.11.Final"
 managed-hibernate-reactive = "4.1.8.Final"
 managed-jasync = "2.2.4"
-managed-jdbi = "3.50.0"
+managed-jdbi = "3.51.0"
 
 # JDBC Drivers
 
