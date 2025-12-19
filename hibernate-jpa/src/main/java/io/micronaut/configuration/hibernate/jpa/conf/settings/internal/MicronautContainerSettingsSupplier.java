@@ -18,6 +18,7 @@ package io.micronaut.configuration.hibernate.jpa.conf.settings.internal;
 import io.micronaut.configuration.hibernate.jpa.JpaConfiguration;
 import io.micronaut.configuration.hibernate.jpa.conf.settings.SettingsSupplier;
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.BeanContext;
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.inject.qualifiers.Qualifiers;
@@ -57,6 +58,15 @@ final class MicronautContainerSettingsSupplier implements SettingsSupplier {
                 return new ContainedBean<>() {
                     @Override
                     public Class<B> getBeanClass() {
+                        // Workaround for issue introduced in Hibernate 7.2.0
+                        // when comparing requested class name has to be the same as
+                        // returned bean - thus failing when there is interface registered
+                        // and returned an implementation so classes won't match. For example
+                        // BeanContext.class != DefaultApplicationContext.class
+                        // They should have checked if retrieved bean is extending beanClass
+                        if (bean instanceof BeanContext) {
+                            return (Class<B>) BeanContext.class;
+                        }
                         return (Class<B>) bean.getClass();
                     }
 
@@ -77,6 +87,9 @@ final class MicronautContainerSettingsSupplier implements SettingsSupplier {
                 return new ContainedBean<>() {
                     @Override
                     public Class<B> getBeanClass() {
+                        if (bean instanceof BeanContext) {
+                            return (Class<B>) BeanContext.class;
+                        }
                         return (Class<B>) bean.getClass();
                     }
 
