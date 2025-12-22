@@ -19,7 +19,6 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource
 import io.micronaut.context.exceptions.NoSuchBeanException
-import io.micronaut.inject.qualifiers.Qualifiers
 import spock.lang.Specification
 
 import javax.sql.DataSource
@@ -65,7 +64,10 @@ class UnpooledDatasourceFactorySpec extends Specification {
         ApplicationContext applicationContext = new DefaultApplicationContext("test")
         applicationContext.environment.addPropertySource(MapPropertySource.of(
                 'test',
-                ['datasources.default': [:],
+                ['datasources.default.url': 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+                 'datasources.default.driver-class-name': 'org.h2.Driver',
+                 'datasources.default.username': 'sa',
+                 'datasources.default.password': '',
                  'datasources.allow-unpooled': true]
         ))
         applicationContext.start()
@@ -78,7 +80,7 @@ class UnpooledDatasourceFactorySpec extends Specification {
         when:
         UnpooledDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource)) as UnpooledDataSource
 
-        then: "The default configuration is supplied because H2 is on the classpath"
+        then: "The configured datasource is created"
         dataSource.url == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
         dataSource.username == 'sa'
         dataSource.password == ''
@@ -98,86 +100,12 @@ class UnpooledDatasourceFactorySpec extends Specification {
         applicationContext.close()
     }
 
-    void "test datasource created with per-datasource allow-unpooled flag"() {
-        given:
-        ApplicationContext applicationContext = new DefaultApplicationContext("test")
-        applicationContext.environment.addPropertySource(MapPropertySource.of(
-                'test',
-                ['datasources.default': [:],
-                 'datasources.default.allow-unpooled': true]
-        ))
-        applicationContext.start()
-        DataSourceResolver dataSourceResolver = applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
-
-        expect:
-        applicationContext.containsBean(DataSource)
-        applicationContext.containsBean(UnpooledDatasourceConfiguration)
-
-        when:
-        UnpooledDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource)) as UnpooledDataSource
-
-        then: "The default configuration is supplied because H2 is on the classpath"
-        dataSource.url == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
-        dataSource.username == 'sa'
-        dataSource.password == ''
-        dataSource.driverClassName == 'org.h2.Driver'
-
-        cleanup:
-        applicationContext.close()
-    }
-
-    void "test per-datasource flag overrides global flag"() {
-        given:
-        ApplicationContext applicationContext = new DefaultApplicationContext("test")
-        applicationContext.environment.addPropertySource(MapPropertySource.of(
-                'test',
-                ['datasources.default': [:],
-                 'datasources.default.allow-unpooled': false,
-                 'datasources.allow-unpooled': true]
-        ))
-        applicationContext.start()
-
-        when:
-        applicationContext.getBean(DataSource)
-
-        then: "Per-datasource flag set to false overrides global flag"
-        thrown(NoSuchBeanException)
-
-        cleanup:
-        applicationContext.close()
-    }
-
-    void "test multiple datasources with mixed flags"() {
-        given:
-        ApplicationContext applicationContext = new DefaultApplicationContext("test")
-        applicationContext.environment.addPropertySource(MapPropertySource.of(
-                'test',
-                ['datasources.default': [:],
-                 'datasources.default.allow-unpooled': true,
-                 'datasources.foo': [:],
-                 'datasources.foo.allow-unpooled': false]
-        ))
-        applicationContext.start()
-
-        expect: "Default datasource is created"
-        applicationContext.containsBean(DataSource)
-
-        when: "Try to get the 'foo' datasource"
-        applicationContext.getBean(DataSource, Qualifiers.byName("foo"))
-
-        then: "Foo datasource is not created because allow-unpooled is false"
-        thrown(NoSuchBeanException)
-
-        cleanup:
-        applicationContext.close()
-    }
-
     void "test connections are truly unpooled"() {
         given:
         ApplicationContext applicationContext = new DefaultApplicationContext("test")
         applicationContext.environment.addPropertySource(MapPropertySource.of(
                 'test',
-                ['datasources.default': [:],
+                ['datasources.default.url': 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
                  'datasources.allow-unpooled': true]
         ))
         applicationContext.start()
@@ -202,7 +130,7 @@ class UnpooledDatasourceFactorySpec extends Specification {
         ApplicationContext applicationContext = new DefaultApplicationContext("test")
         applicationContext.environment.addPropertySource(MapPropertySource.of(
                 'test',
-                ['datasources.default': [:],
+                ['datasources.default.url': 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
                  'datasources.allow-unpooled': true]
         ))
         applicationContext.start()

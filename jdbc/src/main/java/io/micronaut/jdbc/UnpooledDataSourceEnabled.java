@@ -15,18 +15,12 @@
  */
 package io.micronaut.jdbc;
 
-import io.micronaut.context.BeanResolutionContext;
-import io.micronaut.context.Qualifier;
 import io.micronaut.context.condition.Condition;
 import io.micronaut.context.condition.ConditionContext;
-import io.micronaut.core.naming.Named;
-import io.micronaut.inject.BeanDefinition;
 
 /**
  * Condition checking whether unpooled datasource is enabled.
- * If there is property datasources.datasource-name.allow-unpooled=true or
- * datasources.allow-unpooled=true then this condition will be satisfied
- * for datasource with given datasource-name.
+ * This condition is satisfied when the property datasources.allow-unpooled=true is set.
  *
  * @author Micronaut Team
  * @since 6.3.0
@@ -34,31 +28,6 @@ import io.micronaut.inject.BeanDefinition;
 public final class UnpooledDataSourceEnabled implements Condition {
     @Override
     public boolean matches(ConditionContext context) {
-        BeanResolutionContext beanResolutionContext = context.getBeanResolutionContext();
-        String dataSourceName;
-        if (beanResolutionContext == null) {
-            // Check global property when no bean context available
-            String globalProperty = "datasources.allow-unpooled";
-            return context.getProperty(globalProperty, Boolean.class, false);
-        } else {
-            Qualifier<?> currentQualifier = beanResolutionContext.getCurrentQualifier();
-            if (currentQualifier == null && context.getComponent() instanceof BeanDefinition<?> definition) {
-                currentQualifier = definition.getDeclaredQualifier();
-            }
-            if (currentQualifier instanceof Named named) {
-                dataSourceName = named.getName();
-            } else {
-                dataSourceName = "default";
-            }
-        }
-        
-        // Check datasource-specific property first
-        String specificProperty = "datasources." + dataSourceName + ".allow-unpooled";
-        Boolean specificValue = context.getProperty(specificProperty, Boolean.class).orElse(null);
-        if (specificValue != null) {
-            return specificValue;
-        }
-        
         // Check global property
         String globalProperty = "datasources.allow-unpooled";
         return context.getProperty(globalProperty, Boolean.class, false);
