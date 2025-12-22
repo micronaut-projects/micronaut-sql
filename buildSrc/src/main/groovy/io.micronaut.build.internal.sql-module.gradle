@@ -8,3 +8,9 @@ ossIndexAudit {
             "com.h2database:h2:2.4.240" // no version patched https://ossindex.sonatype.org/component/pkg:maven/com.h2database/h2
     ]
 }
+
+micronautBuild {
+    descriptor {
+        parentModuleId = "io.micronaut.sql:micronaut-sql-jdbc"
+    }
+}

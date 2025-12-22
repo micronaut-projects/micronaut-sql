@@ -21,7 +21,7 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.inject.qualifiers.Qualifiers;
-import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.ManagedBeanSettings;
 import org.hibernate.resource.beans.container.spi.BeanContainer;
 import org.hibernate.resource.beans.container.spi.ContainedBean;
 import org.hibernate.resource.beans.spi.BeanInstanceProducer;
@@ -57,7 +57,7 @@ final class MicronautContainerSettingsSupplier implements SettingsSupplier {
                 return new ContainedBean<>() {
                     @Override
                     public Class<B> getBeanClass() {
-                        return (Class<B>) bean.getClass();
+                        return beanType;
                     }
 
                     @Override
@@ -77,7 +77,7 @@ final class MicronautContainerSettingsSupplier implements SettingsSupplier {
                 return new ContainedBean<>() {
                     @Override
                     public Class<B> getBeanClass() {
-                        return (Class<B>) bean.getClass();
+                        return beanType;
                     }
 
                     @Override
@@ -93,6 +93,6 @@ final class MicronautContainerSettingsSupplier implements SettingsSupplier {
             }
         };
 
-        return Collections.singletonMap(AvailableSettings.BEAN_CONTAINER, beanContainer);
+        return Collections.singletonMap(ManagedBeanSettings.BEAN_CONTAINER, beanContainer);
     }
 }

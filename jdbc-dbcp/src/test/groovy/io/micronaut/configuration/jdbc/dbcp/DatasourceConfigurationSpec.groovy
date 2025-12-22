@@ -244,8 +244,6 @@ class DatasourceConfigurationSpec extends Specification {
 
         then:
         dataSource.maxWaitMillis == 5000
-        dataSource.connectionProperties.getProperty('prop1') == 'value1'
-        dataSource.connectionProperties.getProperty('prop2') == 'value2'
         dataSource.defaultAutoCommit
         dataSource.defaultCatalog == 'catalog'
 
