@@ -1,14 +1,14 @@
 == Unpooled JDBC DataSources
 
-Micronaut SQL provides support for unpooled JDBC datasources through the `micronaut-jdbc-unpooled` module. Unlike traditional connection pools, unpooled datasources create a new database connection for each `getConnection()` call and actually close the connection when `close()` is called, rather than returning it to a pool.
+Micronaut SQL provides support for unpooled JDBC datasources built into the `micronaut-jdbc` module. Unlike traditional connection pools, unpooled datasources create a new database connection for each `getConnection()` call and actually close the connection when `close()` is called, rather than returning it to a pool.
 
 WARNING: Unpooled datasources have significant performance implications. Creating a new connection typically takes 10-100ms, compared to ~1ms for retrieving a connection from a pool. This implementation should only be used for specific use cases such as externalized connection pooling (CNAM, pgpool, Open J Proxy), testing, serverless applications, or very low-volume scenarios.
 
 === Installation
 
-To use unpooled datasources, add the following dependency:
+To enable unpooled datasources, add the `micronaut-jdbc` module and set the `datasources.allow-unpooled` property to `true`:
 
-dependency:micronaut-jdbc-unpooled[groupId="io.micronaut.sql", scope="runtime"]
+dependency:micronaut-jdbc[groupId="io.micronaut.sql", scope="implementation"]
 
 You also need to add a JDBC driver dependency to your classpath. For example, to add the H2 In-Memory Database:
 
@@ -21,6 +21,7 @@ Configure an unpooled datasource in `application.yml`:
 [configuration]
 ----
 datasources:
+  allow-unpooled: true  # Required to enable unpooled datasources
   default:
     url: jdbc:h2:mem:testdb
     driverClassName: org.h2.Driver
@@ -127,41 +128,33 @@ try (Connection conn = dataSource.getConnection()) {
 
 === Migration Between Pooled and Unpooled
 
-Switching between pooled and unpooled datasources requires only a dependency change. The configuration remains the same.
+Switching between pooled and unpooled datasources can be done by toggling the `datasources.allow-unpooled` property:
 
 *From HikariCP to Unpooled:*
-
-[source,gradle]
-----
-// Remove HikariCP
-// runtimeOnly("io.micronaut.sql:micronaut-jdbc-hikari")
-
-// Add unpooled
-runtimeOnly("io.micronaut.sql:micronaut-jdbc-unpooled")
-----
-
-*From Unpooled to HikariCP:*
-
-[source,gradle]
-----
-// Remove unpooled
-// runtimeOnly("io.micronaut.sql:micronaut-jdbc-unpooled")
-
-// Add HikariCP
-runtimeOnly("io.micronaut.sql:micronaut-jdbc-hikari")
-----
-
-Optionally add HikariCP-specific configuration:
 
 [configuration]
 ----
 datasources:
+  allow-unpooled: true  # Enable unpooled mode
+  default:
+    url: jdbc:h2:mem:default
+    # HikariCP-specific settings are ignored when unpooled is enabled
+----
+
+*From Unpooled to HikariCP:*
+
+[configuration]
+----
+datasources:
+  allow-unpooled: false  # Or remove this property entirely
   default:
     url: jdbc:h2:mem:default
     # HikariCP-specific settings
     maximum-pool-size: 10
     minimum-idle: 5
 ----
+
+Make sure you have the appropriate JDBC pool dependency (e.g., `micronaut-jdbc-hikari`) in your build when disabling unpooled mode.
 
 === Performance Considerations
 

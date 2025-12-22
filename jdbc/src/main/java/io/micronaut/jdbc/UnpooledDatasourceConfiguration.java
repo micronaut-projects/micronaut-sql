@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.jdbc.unpooled;
+package io.micronaut.jdbc;
 
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
-import io.micronaut.jdbc.BasicJdbcConfiguration;
-import io.micronaut.jdbc.CalculatedSettings;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
@@ -46,7 +45,8 @@ import java.util.Properties;
  * @since 6.3.0
  */
 @EachProperty(value = BasicJdbcConfiguration.PREFIX, primary = "default")
-public class DatasourceConfiguration implements BasicJdbcConfiguration {
+@Requires(condition = UnpooledDataSourceEnabled.class)
+public class UnpooledDatasourceConfiguration implements BasicJdbcConfiguration {
 
     private final CalculatedSettings calculatedSettings;
     private final String name;
@@ -63,7 +63,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
      *
      * @param name The name of the datasource from configuration
      */
-    public DatasourceConfiguration(@Parameter String name) {
+    public UnpooledDatasourceConfiguration(@Parameter String name) {
         this.name = name;
         this.calculatedSettings = new CalculatedSettings(this);
     }

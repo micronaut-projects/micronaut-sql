@@ -33,7 +33,6 @@ include 'jdbc-dbcp'
 include 'jdbc-hikari'
 include 'jdbc-tomcat'
 include 'jdbc-ucp'
-include 'jdbc-unpooled'
 include 'jasync-sql'
 include 'hibernate-jpa'
 

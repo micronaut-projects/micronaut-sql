@@ -8,4 +8,6 @@ dependencies {
     api(mn.micronaut.inject)
     api(mn.micronaut.context)
     compileOnly("org.jspecify:jspecify:1.0.0")
+
+    testRuntimeOnly(libs.managed.h2)
 }

@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.jdbc.unpooled;
+package io.micronaut.jdbc;
 
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.jdbc.BaseDatasourceFactory;
-import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,13 +38,16 @@ import java.util.Map;
  * <p><strong>Warning:</strong> Unpooled datasources have significant performance implications
  * and should only be used for testing, serverless, or very low-volume applications.</p>
  *
+ * <p>This factory is only activated when the property {@code datasources.allow-unpooled=true} 
+ * is set globally, or {@code datasources.<name>.allow-unpooled=true} is set for a specific datasource.</p>
+ *
  * @author Micronaut Team
  * @since 6.3.0
  */
 @Factory
-public class DatasourceFactory extends BaseDatasourceFactory implements AutoCloseable {
+public class UnpooledDatasourceFactory extends BaseDatasourceFactory implements AutoCloseable {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UnpooledDatasourceFactory.class);
     private final Map<String, UnpooledDataSource> dataSources = new LinkedHashMap<>(2);
 
     /**
@@ -54,20 +55,20 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
      *
      * @param applicationContext The application context
      */
-    public DatasourceFactory(ApplicationContext applicationContext) {
+    public UnpooledDatasourceFactory(ApplicationContext applicationContext) {
         super(applicationContext);
     }
 
     /**
-     * Creates an unpooled datasource for each {@link DatasourceConfiguration}.
+     * Creates an unpooled datasource for each {@link UnpooledDatasourceConfiguration}.
      *
      * @param datasourceConfiguration The datasource configuration
      * @return An unpooled {@link DataSource}
      */
     @Context
-    @EachBean(DatasourceConfiguration.class)
+    @EachBean(UnpooledDatasourceConfiguration.class)
     @Requires(condition = JdbcDataSourceEnabled.class)
-    public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
+    public DataSource dataSource(UnpooledDatasourceConfiguration datasourceConfiguration) {
         UnpooledDataSource ds = new UnpooledDataSource(
                 datasourceConfiguration.getUrl(),
                 datasourceConfiguration.getUsername(),
