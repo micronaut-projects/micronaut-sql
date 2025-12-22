@@ -1,11 +1,11 @@
-Java data sources can be configured for one of five currently provided implementations. Apache DBCP2, Hikari, Tomcat, Oracle Universal Connection Pool, and Unpooled are supported by default.
+Java data sources can be configured for one of four currently provided pooled implementations. Apache DBCP2, Hikari, Tomcat, and Oracle Universal Connection Pool are supported by default. Additionally, unpooled datasources can be enabled via configuration.
 
 [TIP]
 .Using the CLI
 ====
 If you are creating your project using the Micronaut CLI, supply one of the `jdbc-tomcat`, `jdbc-hikari`, `jdbc-dbcp`, or `jdbc-ucp` features to preconfigure a simple JDBC connection in your project, along with a default H2 database driver:
 ----
-$ mn create-app my-app --features jdbc-tomcat
+$ mn create-app my-app --features jdbc-hikari
 ----
 ====
 
@@ -19,9 +19,7 @@ dependency:micronaut-jdbc-dbcp[groupId="io.micronaut.sql", scope="runtime"]
 
 dependency:micronaut-jdbc-ucp[groupId="io.micronaut.sql", scope="runtime"]
 
-dependency:micronaut-jdbc-unpooled[groupId="io.micronaut.sql", scope="runtime"]
-
-WARNING: The unpooled datasource creates a new connection for each request and should only be used for testing, serverless, or very low-volume applications or when using a database proxy like CNAM, pgpool or Open J Proxy. See the link:jdbc-unpooled.html[Unpooled JDBC DataSources] documentation for details.
+NOTE: Unpooled datasources are also available by setting `datasources.allow-unpooled=true` in your configuration when using the `micronaut-jdbc` module. The unpooled datasource creates a new connection for each request and should only be used for testing, serverless, or very low-volume applications or when using a database proxy like CNAM, pgpool or Open J Proxy. See the link:jdbc-unpooled.html[Unpooled JDBC DataSources] documentation for details.
 
 You also need to add a JDBC driver dependency to your classpath. For example to add the http://www.h2database.com[H2 In-Memory Database]:
 
