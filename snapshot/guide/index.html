@@ -113,6 +113,8 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-healthchecks"><a href="#jdbc-healthchecks"><strong>4.4</strong><span>JDBC Health Checks</span></a></div>
         
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-runtime-password-update"><a href="#jdbc-runtime-password-update"><strong>4.5</strong><span>Data Source Runtime Password Change</span></a></div>
+        
         <div class="toc-item" style="margin-left:0px" id="toc-item-hibernate"><a href="#hibernate"><strong>5</strong><span>Configuring Hibernate</span></a></div>
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-disable"><a href="#hibernate-disable"><strong>5.1</strong><span>Disable Micronaut Hibernate JPA</span></a></div>
@@ -776,6 +778,207 @@ datasources.warehouse=...</code></pre>
 </div>
 <div class="paragraph">
 <p>See the section on the <a href="https://docs.micronaut.io/latest/guide/index.html#healthEndpoint">Health Endpoint</a> for more information.</p>
+</div>
+
+<h2 id="jdbc-runtime-password-update"><a class="anchor" href="#jdbc-runtime-password-update"></a>4.5 Data Source Runtime Password Change</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jdbc/jdbc-runtime-password-update.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Micronaut SQL supports updating JDBC datasource credentials at runtime without restarting the application.</p>
+</div>
+<div class="paragraph">
+<p>When a RefreshEvent occurs and a datasource&#8217;s username or password property changes, the framework detects the change and propagates the new credentials to the underlying connection pool, then evicts existing connections so new ones are created with the updated credentials.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_it_works">How it works</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>The application observes <code>datasources.&lt;name&gt;.password</code> and <code>datasources.&lt;name&gt;.username</code> configuration keys</p>
+</li>
+<li>
+<p>On a <code>RefreshEvent</code>, it checks if either password or username change have been sent in refresh event and builds a change set per datasource</p>
+</li>
+<li>
+<p>Implementations for the supported pools set the new username and/or password on the pool and trigger a soft eviction of connections so subsequent connections use the updated credentials.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>By default, runtime credential changes are handled automatically for each datasource.</p>
+</div>
+<div class="paragraph">
+<p>Example configuration:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">datasources.default.url=jdbc:postgresql://localhost:5432/app
+datasources.default.driver-class-name=org.postgresql.Driver
+datasources.default.username=app_user
+datasources.default.password=${DB_PASSWORD}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/app
+    driver-class-name: org.postgresql.Driver
+    username: app_user
+    password: ${DB_PASSWORD}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources]
+  [datasources.default]
+    url="jdbc:postgresql://localhost:5432/app"
+    driver-class-name="org.postgresql.Driver"
+    username="app_user"
+    password="${DB_PASSWORD}"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">datasources {
+  'default' {
+    url = "jdbc:postgresql://localhost:5432/app"
+    driverClassName = "org.postgresql.Driver"
+    username = "app_user"
+    password = "${DB_PASSWORD}"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  datasources {
+    default {
+      url = "jdbc:postgresql://localhost:5432/app"
+      driver-class-name = "org.postgresql.Driver"
+      username = "app_user"
+      password = "${DB_PASSWORD}"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "datasources": {
+    "default": {
+      "url": "jdbc:postgresql://localhost:5432/app",
+      "driver-class-name": "org.postgresql.Driver",
+      "username": "app_user",
+      "password": "${DB_PASSWORD}"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>When <code>DB_PASSWORD</code> is rotated and your configuration refreshes, the datasource password is updated and the pool evicts existing connections so new ones authenticate with the new password.</p>
+</div>
+<div class="paragraph">
+<p>Example of datasource password rotation implementation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Singleton
+final class DbPasswordRefresher {
+
+    private final ApplicationContext applicationContext;
+    private String currentPassword;
+
+    public DbPasswordRefresher(@Value("${datasources.default.password}") String currentPassword,
+                               ApplicationContext applicationContext) {
+        this.currentPassword = currentPassword;
+        this.applicationContext = applicationContext;
+    }
+
+    @Scheduled(cron = "0 * * * * *") // Runs every minute
+    void refresh() {
+        String password = getSecretDbPassword(); // Read from Vault, Secret Service, etc.
+        if (StringUtils.isNotEmpty(password) &amp;&amp; !password.equals(currentPassword)) {
+            // This refresh() call is required before publishing event since datasources.default.password
+            // needs to be refreshed in the application configuration
+            applicationContext.getEnvironment().refresh();
+            // publishEvent with such RefreshEvent will trigger connection pool update and old connections eviction
+            // The datasource event handler for this event will get actual password from the
+            // application configuration that has been refreshed in refresh() call above
+            // and sending such event without prior calling refresh() will not work properly
+            applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", password)));
+            this.currentPassword = password;
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternative way to implement password rotation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Singleton
+final class DbPasswordRefresher {
+
+    private final ApplicationContext applicationContext;
+
+    public DbPasswordRefresher(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
+    @Scheduled(cron = "0 * * * * *")
+    void refresh() {
+        // refreshAndDiff() will register if there were changes in config values (Vault, Secret, etc.),
+        // update application configuration and populate the changes map.
+        Map&lt;String, Object&gt; changes = applicationContext.getEnvironment().refreshAndDiff();
+        // ${DB_PASSWORD} placeholder in refreshAndDiff() call will be populated as `db-password` key in changes map
+        if (changes.containsKey("db-password")) {
+            String password = (String) changes.get("db-password");
+            // The datasource event handler for this event will get actual password from the
+            // application configuration that has been refreshed in refreshAndDiff() call above
+            applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", password)));
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_notes">Notes</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>This mechanism is event-driven. Any mechanism that results in a Micronaut RefreshEvent with changed datasources.* username/password properties will be handled.</p>
+</li>
+<li>
+<p>Username changes are supported as well; if both username and password change in the same refresh cycle, both are applied.</p>
+</li>
+<li>
+<p>Existing connections are softly evicted where supported by the pool; new connections will be established with the updated credentials.</p>
+</li>
+<li>
+<p>Supported pools: HikariCP, Tomcat JDBC, Oracle UCP.</p>
+</li>
+</ul>
+</div>
 </div>
 
 <h1 id="hibernate"><a class="anchor" href="#hibernate"></a>5 Configuring Hibernate</h1>
