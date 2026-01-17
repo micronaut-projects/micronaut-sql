@@ -9,10 +9,13 @@ dependencies {
         exclude module: 'jdbc'
         exclude group: 'micronaut-data'
     }
-    api libs.managed.hibernate.reactive.core
+    api (libs.managed.hibernate.reactive.core) {
+        exclude group: 'io.vertx'
+        exclude module: 'vertx-sql-client'
+    }
     api mn.micronaut.runtime
 
-    compileOnly libs.managed.vertx.sql.client
+    api libs.managed.vertx.sql.client
     runtimeOnly libs.managed.ongres.scram.client
 
     testAnnotationProcessor mn.micronaut.inject.java
