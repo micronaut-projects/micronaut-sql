@@ -2,7 +2,7 @@
 
 # Micronaut
 
-micronaut = "4.10.4"
+micronaut = "4.10.14"
 micronaut-docs = "3.0.0"
 micronaut-gradle-plugin = "4.5.5"
 micronaut-test-resources = "2.10.1"
@@ -22,7 +22,7 @@ micronaut-validation = "4.11.0"
 
 # Frameworks
 
-managed-vertx = "4.5.21"
+managed-vertx = "4.5.24"
 managed-jooq = "3.19.18"
 managed-hibernate = "6.6.32.Final"
 managed-hibernate-reactive = "2.4.8.Final"
