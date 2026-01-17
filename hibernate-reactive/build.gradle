@@ -15,7 +15,7 @@ dependencies {
     }
     api mn.micronaut.runtime
 
-    api libs.managed.vertx.sql.client
+    compileOnly libs.managed.vertx.sql.client
     runtimeOnly libs.managed.ongres.scram.client
 
     testAnnotationProcessor mn.micronaut.inject.java
