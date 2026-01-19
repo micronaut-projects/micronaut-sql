@@ -44,6 +44,7 @@ public class DatasourceFactory extends BaseDatasourceFactory {
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
 
     private final DataSourceResolver dataSourceResolver;
+
     /**
      * Default constructor.
      * @param dataSourceResolver The data source resolver
