@@ -1,4 +1,4 @@
-package example.jdbc.ucp.sync;
+package example.jdbc.hikari.sync;
 
 import example.domain.IPet;
 import example.sync.IPetRepository;

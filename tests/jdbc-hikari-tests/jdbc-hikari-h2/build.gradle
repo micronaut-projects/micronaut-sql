@@ -4,6 +4,11 @@ plugins {
 
 dependencies {
     implementation projects.micronautJdbcHikari
+    implementation projects.micronautTests.micronautCommonSync
+
     runtimeOnly libs.managed.h2
+
     testImplementation projects.micronautTests.micronautCommonTests
+    testImplementation(mnData.micronaut.data.tx.jdbc)
+    testImplementation(mnMicrometer.micronaut.micrometer.core)
 }

@@ -2,49 +2,49 @@
 
 # Micronaut
 
-micronaut = "4.9.8"
-micronaut-docs = "2.0.0"
-micronaut-gradle-plugin = "4.5.4"
-micronaut-test-resources = "2.8.0"
+micronaut = "4.10.14"
+micronaut-docs = "3.0.0"
+micronaut-gradle-plugin = "4.5.5"
+micronaut-test-resources = "2.10.1"
 
 # Platform dependencies
-micronaut-cache = "5.2.0"
-micronaut-data = "4.13.3"
-micronaut-hibernate-validator = "4.7.0"
-micronaut-logging = "1.6.1"
-micronaut-micrometer = "5.11.0"
-micronaut-r2dbc = "6.0.0"
-micronaut-reactor = "3.7.0"
-micronaut-serde = "2.14.1"
-micronaut-spring = "5.10.1"
-micronaut-test = "4.7.0"
-micronaut-validation = "4.9.0"
+micronaut-cache = "5.3.0"
+micronaut-data = "4.13.5"
+micronaut-hibernate-validator = "4.8.0"
+micronaut-logging = "1.7.1"
+micronaut-micrometer = "5.12.0"
+micronaut-r2dbc = "6.1.0"
+micronaut-reactor = "3.8.0"
+micronaut-serde = "2.15.4"
+micronaut-spring = "5.11.2"
+micronaut-test = "4.9.0"
+micronaut-validation = "4.11.0"
 
 # Frameworks
 
-managed-vertx = "4.5.16"
+managed-vertx = "4.5.24"
 managed-jooq = "3.19.18"
-managed-hibernate = "6.6.21.Final"
-managed-hibernate-reactive = "2.4.8.Final"
+managed-hibernate = "6.6.32.Final"
+managed-hibernate-reactive = "2.4.11.Final"
 managed-jasync = "2.2.4"
-managed-jdbi = "3.49.5"
+managed-jdbi = "3.49.6"
 
 # JDBC Drivers
 
-managed-ojdbc = "23.8.0.25.04"
-managed-ojdbcdms = "21.17.0.0"
+managed-ojdbc = "23.9.0.25.07"
+managed-ojdbcdms = "21.19.0.0"
 managed-dms = "23.3.0.23.09"
-managed-postgres-driver = "42.7.7"
-managed-mariadb-driver = "3.5.4"
+managed-postgres-driver = "42.7.8"
+managed-mariadb-driver = "3.5.6"
 managed-mssql-driver = "12.10.1.jre11"
 managed-mysql-driver = "8.0.33"
-managed-mysql-connector-j = "9.2.0"
+managed-mysql-connector-j = "9.4.0"
 
 # JDBC Pools
 
-managed-hikari = "6.3.0"
+managed-hikari = "6.3.3"
 managed-commons-dbcp = "2.13.0"
-managed-tomcat-jdbc = "11.0.9"
+managed-tomcat-jdbc = "11.0.12"
 
 # JPA
 
@@ -57,13 +57,12 @@ managed-h2 = "2.3.232"
 
 sfm-reflect = "9.0.2"
 # Needed for vertx pg client and micronaut-data hibernate reactive
-managed-ongres-scram = "2.1"
-sonatype-scan = "3.1.1"
+managed-ongres-scram = "3.2"
 
 # Testing
 
 groovy = "4.0.11"
-sonar-gradle-plugin = "6.2.0.5505"
+sonar-gradle-plugin = "6.3.1.5724"
 
 [libraries]
 # Core
@@ -150,8 +149,7 @@ managed-jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transa
 # Others
 
 sfm-reflect = { module = "org.simpleflatmapper:sfm-reflect", version.ref = "sfm-reflect" }
-managed-ongres-scram-client = { module = "com.ongres.scram:client", version.ref = "managed-ongres-scram" }
-sonatype-scan = { module = "org.sonatype.gradle.plugins:scan-gradle-plugin", version.ref = "sonatype-scan" }
+managed-ongres-scram-client = { module = "com.ongres.scram:scram-client", version.ref = "managed-ongres-scram" }
 
 # Testresources
 

@@ -1,4 +1,4 @@
-package example.jdbc.ucp.sync;
+package example.jdbc.dbcp.sync;
 
 import example.domain.IOwner;
 import example.domain.IPet;

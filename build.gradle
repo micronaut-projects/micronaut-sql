@@ -1,6 +1,5 @@
 plugins {
-    id "io.micronaut.build.internal.docs"
-    id "io.micronaut.build.internal.quality-reporting"
+    id "io.micronaut.build.internal.parent"
 }
 
 repositories {
@@ -13,4 +12,10 @@ if (System.getenv("SONAR_TOKEN") != null) {
             property "sonar.exclusions", "**/example/**"
         }
     }
+}
+
+// TODO: Workaround for duplicated doc file
+// Entry io.vertx.sqlclient.PoolOptions.adoc is a duplicate
+tasks.named("processConfigProps") {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
