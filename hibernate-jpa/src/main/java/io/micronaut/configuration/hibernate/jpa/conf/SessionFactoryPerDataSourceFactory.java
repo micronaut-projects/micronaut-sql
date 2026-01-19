@@ -41,6 +41,8 @@ import org.hibernate.service.ServiceRegistry;
 
 import javax.sql.DataSource;
 import java.util.List;
+import jakarta.inject.Inject;
+import io.micronaut.inject.qualifiers.Qualifiers;
 
 /**
  * Factory that builds {@link SessionFactory} per {@link DataSource}.
@@ -56,15 +58,40 @@ final class SessionFactoryPerDataSourceFactory extends AbstractHibernateFactory 
 
     private final JpaConfiguration defaultJpaConfiguration;
 
+    /**
+     * Backward-compatible constructor that previously injected a primary JpaConfiguration.
+     * Deprecated: prefer the new constructor without JpaConfiguration to avoid DI ambiguity when multiple JPA configs exist.
+     */
+    @Deprecated
     SessionFactoryPerDataSourceFactory(Environment environment,
                                        List<SessionFactoryBuilderConfigurer> configures,
                                        StandardServiceRegistryBuilderCreator serviceRegistryBuilderSupplier,
                                        List<StandardServiceRegistryBuilderConfigurer> standardServiceRegistryBuilderConfigurers,
-                                       @Primary @Nullable JpaConfiguration jpaConfiguration,
+                                       @Primary @Nullable JpaConfiguration ignoredJpaConfiguration,
+                                       ApplicationContext applicationContext,
+                                       @Primary @Nullable Integrator integrator) {
+        this(environment, configures, serviceRegistryBuilderSupplier, standardServiceRegistryBuilderConfigurers, applicationContext, integrator);
+    }
+
+    /**
+     * Preferred constructor: constructs a neutral fallback JpaConfiguration and avoids injecting a primary bean.
+     */
+    @Inject
+    SessionFactoryPerDataSourceFactory(Environment environment,
+                                       List<SessionFactoryBuilderConfigurer> configures,
+                                       StandardServiceRegistryBuilderCreator serviceRegistryBuilderSupplier,
+                                       List<StandardServiceRegistryBuilderConfigurer> standardServiceRegistryBuilderConfigurers,
                                        ApplicationContext applicationContext,
                                        @Primary @Nullable Integrator integrator) {
         super(environment, configures, serviceRegistryBuilderSupplier, standardServiceRegistryBuilderConfigurers);
-        this.defaultJpaConfiguration = jpaConfiguration != null ? jpaConfiguration : new JpaConfiguration(applicationContext, integrator);
+        JpaConfiguration def = applicationContext.findBean(JpaConfiguration.class, Qualifiers.byName(JpaConfiguration.PRIMARY)).orElse(null);
+        if (def == null) {
+            var all = applicationContext.getBeansOfType(JpaConfiguration.class);
+            if (all.size() == 1) {
+                def = all.iterator().next();
+            }
+        }
+        this.defaultJpaConfiguration = def != null ? def : new JpaConfiguration(applicationContext, integrator);
     }
 
     @EachBean(DataSource.class)
