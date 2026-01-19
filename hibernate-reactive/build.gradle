@@ -10,8 +10,7 @@ dependencies {
         exclude group: 'micronaut-data'
     }
     api (libs.managed.hibernate.reactive.core) {
-        exclude group: 'io.vertx'
-        exclude module: 'vertx-sql-client'
+        exclude group: 'io.vertx', module: 'vertx-sql-client'
     }
     api mn.micronaut.runtime
 
