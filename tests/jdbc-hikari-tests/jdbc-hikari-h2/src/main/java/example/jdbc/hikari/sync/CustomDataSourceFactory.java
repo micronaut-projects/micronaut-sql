@@ -14,20 +14,14 @@ import org.slf4j.LoggerFactory;
 import javax.sql.DataSource;
 
 @Factory
-@Replaces(factory = DatasourceFactory.class, bean = DatasourceFactory.class)
-@Primary
-public class CustomDataSourceFactory extends DatasourceFactory {
+@Replaces(DatasourceFactory.class)
+public class CustomDataSourceFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(CustomDataSourceFactory.class);
 
-    public CustomDataSourceFactory(ApplicationContext applicationContext) {
-        super(applicationContext);
-        LOG.info("CustomDataSourceFactory created");
-    }
-
-    @Override
     @Context
     @EachBean(DatasourceConfiguration.class)
+    @Replaces(bean = DataSource.class, factory = DatasourceFactory.class)
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         LOG.info("Created custom datasource");
         return new CustomHikariUrlDataSource(datasourceConfiguration);
