@@ -20,6 +20,7 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.exceptions.ConfigurationException;
+import io.micronaut.context.env.Environment;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
@@ -64,9 +65,12 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
      *
      * @param name name that comes from properties
      */
-    public DatasourceConfiguration(@Parameter String name) throws SQLException {
+    private final Environment environment;
+
+    public DatasourceConfiguration(@Parameter String name, Environment environment) throws SQLException {
         super();
         this.name = name;
+        this.environment = environment;
         this.delegate.setConnectionPoolName(name);
         this.calculatedSettings = new CalculatedSettings(this);
     }
@@ -220,7 +224,6 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         return delegate.getSQLForValidateConnection();
     }
 
-
     /**
      * Configures the missing properties of the data source from the calculated settings.
      *
@@ -284,7 +287,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
             }
             setPassword(getPassword());
         }
-        
+
         try {
             applyOracleSessionProgram();
         } catch (Exception e) {
@@ -296,21 +299,32 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     }
 
     private void applyOracleSessionProgram() throws SQLException {
+        String dsName = getName();
         String url = getConfiguredUrl();
-        if (url == null || !url.toLowerCase().startsWith("jdbc:oracle")) {
+        String dialect = environment.getProperty("datasources." + dsName + ".dialect", String.class).orElse(null);
+        boolean isOracle = (dialect != null && "oracle".equalsIgnoreCase(dialect)) || (url != null && url.toLowerCase().startsWith("jdbc:oracle"));
+        if (!isOracle) {
             return;
         }
-        String dsName = getName();
-        boolean enabled = oracleEnabled(dsName);
+        boolean enabled = environment.getProperty("datasources." + dsName + ".oracle.session.enabled", boolean.class).orElse(true);
         if (!enabled) {
             return;
         }
         Properties props = delegate.getConnectionProperties();
+        String envOverride = environment.getProperty("datasources." + dsName + ".data-source-properties.v$session.program", String.class).orElse(null);
+        if (envOverride != null) {
+            if (props == null) {
+                props = new Properties();
+            }
+            props.put("v$session.program", envOverride);
+            delegate.setConnectionProperties(props);
+            return;
+        }
         if (props != null && props.containsKey("v$session.program")) {
             return;
         }
-        String program = getProperty("datasources." + dsName + ".oracle.session.program",
-            getProperty("micronaut.application.name", "Micronaut"));
+        String program = environment.getProperty("datasources." + dsName + ".oracle.session.program", String.class)
+            .orElseGet(() -> environment.getProperty("micronaut.application.name", String.class).orElse("Micronaut"));
         if (program == null) {
             program = "Micronaut";
         }
@@ -319,19 +333,5 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         }
         props.put("v$session.program", program);
         delegate.setConnectionProperties(props);
-    }
-
-    private boolean oracleEnabled(String dsName) {
-        return getProperty("datasources." + dsName + ".oracle.session.enabled", true);
-    }
-
-    private String getProperty(String key, String def) {
-        return this.delegate.getConnectionProperties() != null ? this.delegate.getConnectionProperties().getProperty(key, def) : def;
-    }
-
-    private boolean getProperty(String key, boolean def) {
-        Properties p = this.delegate.getConnectionProperties();
-        String v = p != null ? p.getProperty(key) : null;
-        return v == null ? def : Boolean.parseBoolean(v);
     }
 }

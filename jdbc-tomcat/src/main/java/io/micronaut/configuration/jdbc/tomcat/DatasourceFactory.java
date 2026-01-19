@@ -21,7 +21,7 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import org.jspecify.annotations.Nullable;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
@@ -50,7 +50,9 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
 
     /**
      * Default constructor.
+     *
      * @param dataSourceResolver The data source resolver
+     * @param applicationContext The application context
      */
     public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
                              ApplicationContext applicationContext) {
@@ -79,15 +81,13 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     }
 
     private void applyOracleSessionProgram(DatasourceConfiguration cfg) {
-        String url = cfg.getUrl();
-        if (url == null) {
-            return;
-        }
-        String lower = url.toLowerCase();
-        if (!lower.startsWith("jdbc:oracle")) {
-            return;
-        }
         String dsName = cfg.getName();
+        String url = cfg.getUrl();
+        String dialect = applicationContext.getProperty("datasources." + dsName + ".dialect", String.class).orElse(null);
+        boolean isOracle = (dialect != null && "oracle".equalsIgnoreCase(dialect)) || (url != null && url.toLowerCase().startsWith("jdbc:oracle"));
+        if (!isOracle) {
+            return;
+        }
         boolean enabled = applicationContext.getProperty("datasources." + dsName + ".oracle.session.enabled", boolean.class).orElse(true);
         if (!enabled) {
             return;
