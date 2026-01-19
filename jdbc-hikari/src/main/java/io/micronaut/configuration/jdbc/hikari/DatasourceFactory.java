@@ -65,10 +65,39 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     @EachBean(DatasourceConfiguration.class)
     @Requires(condition = JdbcDataSourceEnabled.class)
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
+        try {
+            applyOracleSessionProgram(datasourceConfiguration);
+        } catch (Exception e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
+            }
+        }
         HikariUrlDataSource ds = new HikariUrlDataSource(datasourceConfiguration);
         addMeterRegistry(ds);
         dataSources.put(datasourceConfiguration.getName(), ds);
         return ds;
+    }
+
+    private void applyOracleSessionProgram(DatasourceConfiguration cfg) {
+        String dsName = cfg.getName();
+        String url = cfg.getUrl();
+        String dialect = applicationContext.getProperty("datasources." + dsName + ".dialect", String.class).orElse(null);
+        boolean isOracle = (dialect != null && "oracle".equalsIgnoreCase(dialect)) || (url != null && url.toLowerCase().startsWith("jdbc:oracle"));
+        if (!isOracle) {
+            return;
+        }
+        boolean enabled = applicationContext.getProperty("datasources." + dsName + ".oracle.session.enabled", boolean.class).orElse(true);
+        if (!enabled) {
+            return;
+        }
+        if (cfg.getDataSourceProperties() != null && cfg.getDataSourceProperties().containsKey("v$session.program")) {
+            return;
+        }
+        String program = applicationContext.getProperty("datasources." + dsName + ".oracle.session.program", String.class)
+                .orElseGet(() -> applicationContext.getProperty("micronaut.application.name", String.class).orElse("Micronaut"));
+        if (program != null) {
+            cfg.getDataSourceProperties().put("v$session.program", program);
+        }
     }
 
     @Override

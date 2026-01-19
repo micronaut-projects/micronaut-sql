@@ -66,9 +66,43 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     @EachBean(DatasourceConfiguration.class)
     @Requires(condition = JdbcDataSourceEnabled.class)
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
+        try {
+            applyOracleSessionProgram(datasourceConfiguration);
+        } catch (Exception e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
+            }
+        }
         org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource(datasourceConfiguration);
         dataSources.put(datasourceConfiguration.getName(), ds);
         return ds;
+    }
+
+    private void applyOracleSessionProgram(DatasourceConfiguration cfg) {
+        String url = cfg.getUrl();
+        if (url == null) {
+            return;
+        }
+        String lower = url.toLowerCase();
+        if (!lower.startsWith("jdbc:oracle")) {
+            return;
+        }
+        String dsName = cfg.getName();
+        boolean enabled = applicationContext.getProperty("datasources." + dsName + ".oracle.session.enabled", boolean.class).orElse(true);
+        if (!enabled) {
+            return;
+        }
+        java.util.Properties props = cfg.getDbProperties();
+        if (props != null && props.containsKey("v$session.program")) {
+            return;
+        }
+        String program = applicationContext.getProperty("datasources." + dsName + ".oracle.session.program", String.class)
+            .orElseGet(() -> applicationContext.getProperty("micronaut.application.name", String.class).orElse("Micronaut"));
+        if (props == null) {
+            props = new java.util.Properties();
+            cfg.setDbProperties(props);
+        }
+        props.put("v$session.program", program);
     }
 
     /**

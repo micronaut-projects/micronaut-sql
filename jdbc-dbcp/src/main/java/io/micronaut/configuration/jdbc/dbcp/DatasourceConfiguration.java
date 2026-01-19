@@ -19,6 +19,7 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Property;
+import io.micronaut.context.env.Environment;
 import io.micronaut.context.exceptions.DisabledBeanException;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.format.MapFormat;
@@ -52,14 +53,18 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
     private final CalculatedSettings calculatedSettings;
     private final String name;
+    private final Environment environment;
+    private boolean oracleProgramProvided;
+
 
     /**
      * Constructor.
      * @param name name configured from properties
      */
-    public DatasourceConfiguration(@Parameter String name) {
+    public DatasourceConfiguration(@Parameter String name, Environment environment) {
         super();
         this.name = name;
+        this.environment = environment;
         this.calculatedSettings = new CalculatedSettings(this);
     }
 
@@ -85,7 +90,33 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
         if (getConfiguredValidationQuery() == null) {
             setValidationQuery(getValidationQuery());
         }
+        try {
+            applyOracleSessionProgram();
+        } catch (Exception e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
+            }
+        }
     }
+
+    private void applyOracleSessionProgram() {
+        String dsName = getName();
+        String url = getUrl();
+        String dialect = environment.getProperty("datasources." + dsName + ".dialect", String.class).orElse(null);
+        boolean isOracle = (dialect != null && "oracle".equalsIgnoreCase(dialect)) || (url != null && url.toLowerCase().startsWith("jdbc:oracle"));
+        if (!isOracle) {
+            return;
+        }
+        boolean enabled = environment.getProperty("datasources." + dsName + ".oracle.session.enabled", boolean.class).orElse(true);
+        if (!enabled || oracleProgramProvided) {
+            return;
+        }
+        String program = environment.getProperty("datasources." + dsName + ".oracle.session.program", String.class)
+                .orElseGet(() -> environment.getProperty("micronaut.application.name", String.class).orElse("Micronaut"));
+        addConnectionProperty("v$session.program", program);
+        oracleProgramProvided = true;
+    }
+
 
     /**
      * Before this bean is destroyed close the connection.

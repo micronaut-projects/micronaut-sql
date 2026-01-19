@@ -20,6 +20,51 @@ For example:
 datasources.default: {}
 ----
 
+=== Oracle Session Program Auto-Configuration
+
+Micronaut SQL can automatically set the Oracle `v$session.program` connection property so your application's sessions are easily identifiable in Oracle tools (such as `v$session`).
+
+- Applied only to Oracle datasources (when `dialect: ORACLE` is set or the JDBC URL starts with `jdbc:oracle`).
+- Default value is taken from `micronaut.application.name`. If not present, it falls back to `"Micronaut"`.
+- Does not override a user-provided `v$session.program`.
+- Supported for HikariCP, Tomcat JDBC, Apache DBCP2, and Oracle UCP.
+- Scope limited to `v$session.program` only (it does not set ClientId/Module/Action).
+
+Configure per datasource:
+
+[configuration]
+----
+micronaut:
+  application:
+    name: my-app
+
+datasources:
+  default:
+    url: jdbc:oracle:thin:@localhost:1521/orcl
+    username: user
+    password: pass
+    dialect: ORACLE   # Auto-sets v$session.program = "my-app"
+
+  custom:
+    url: jdbc:oracle:thin:@localhost:1521/orcl
+    username: user
+    password: pass
+    dialect: ORACLE
+    oracle:
+      session:
+        enabled: true
+        program: CustomProgramName
+
+  disabled:
+    url: jdbc:oracle:thin:@localhost:1521/orcl
+    username: user
+    password: pass
+    dialect: ORACLE
+    oracle:
+      session:
+        enabled: false   # v$session.program not auto-set
+----
+
 The above configuration will result in a single link:{jdkapi}/java.sql/javax/sql/DataSource.html[DataSource] bean being registered with the named qualifier of `default`.
 
 If for example, the H2 driver is on the classpath, it is equivalent to the following:

@@ -284,5 +284,54 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
             }
             setPassword(getPassword());
         }
+        
+        try {
+            applyOracleSessionProgram();
+        } catch (Exception e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
+            }
+        }
+
+    }
+
+    private void applyOracleSessionProgram() throws SQLException {
+        String url = getConfiguredUrl();
+        if (url == null || !url.toLowerCase().startsWith("jdbc:oracle")) {
+            return;
+        }
+        String dsName = getName();
+        boolean enabled = oracleEnabled(dsName);
+        if (!enabled) {
+            return;
+        }
+        Properties props = delegate.getConnectionProperties();
+        if (props != null && props.containsKey("v$session.program")) {
+            return;
+        }
+        String program = getProperty("datasources." + dsName + ".oracle.session.program",
+            getProperty("micronaut.application.name", "Micronaut"));
+        if (program == null) {
+            program = "Micronaut";
+        }
+        if (props == null) {
+            props = new Properties();
+        }
+        props.put("v$session.program", program);
+        delegate.setConnectionProperties(props);
+    }
+
+    private boolean oracleEnabled(String dsName) {
+        return getProperty("datasources." + dsName + ".oracle.session.enabled", true);
+    }
+
+    private String getProperty(String key, String def) {
+        return this.delegate.getConnectionProperties() != null ? this.delegate.getConnectionProperties().getProperty(key, def) : def;
+    }
+
+    private boolean getProperty(String key, boolean def) {
+        Properties p = this.delegate.getConnectionProperties();
+        String v = p != null ? p.getProperty(key) : null;
+        return v == null ? def : Boolean.parseBoolean(v);
     }
 }
