@@ -20,8 +20,10 @@ import io.micronaut.context.event.BeanCreatedEvent;
 import io.micronaut.context.event.BeanCreatedEventListener;
 import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.order.Ordered;
 import io.micronaut.core.util.StringUtils;
+import io.micronaut.jdbc.DataSourceResolver;
 import jakarta.inject.Singleton;
 import oracle.ucp.UniversalConnectionPoolAdapter;
 import oracle.ucp.UniversalConnectionPoolException;
@@ -31,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 
 
 /**
@@ -49,35 +52,52 @@ public class ConnectionPoolManagerListener implements BeanCreatedEventListener<D
 
     private final UniversalConnectionPoolManager connectionPoolManager;
 
-    public ConnectionPoolManagerListener(UniversalConnectionPoolManager connectionPoolManager) {
+    private final DataSourceResolver dataSourceResolver;
+
+    public ConnectionPoolManagerListener(UniversalConnectionPoolManager connectionPoolManager,
+                                         @Nullable DataSourceResolver dataSourceResolver) {
         this.connectionPoolManager = connectionPoolManager;
+        this.dataSourceResolver = dataSourceResolver == null ? DataSourceResolver.DEFAULT : dataSourceResolver;
     }
 
     @Override
     public DataSource onCreated(BeanCreatedEvent<DataSource> event) {
-        final DataSource dataSource = event.getBean();
-        if (dataSource instanceof PoolDataSource) {
-            final PoolDataSource poolDataSource = (PoolDataSource) dataSource;
-            final String poolName = poolDataSource.getConnectionPoolName();
+        final DataSource dataSource = dataSourceResolver.resolve(event.getBean());
+
+        if (dataSource instanceof PoolDataSource poolDataSource) {
+            createAndStartConnectionPool(poolDataSource);
+        } else {
             try {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Creating connection pool named: {}", poolName);
+                if (dataSource.isWrapperFor(PoolDataSource.class)) {
+                    createAndStartConnectionPool(dataSource.unwrap(PoolDataSource.class));
                 }
-                connectionPoolManager.createConnectionPool((UniversalConnectionPoolAdapter) dataSource);
-
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Starting connection pool named: {}", poolName);
-                }
-                connectionPoolManager.startConnectionPool(poolName);
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("Connection pool named: {} started", poolName);
-                }
-
-            } catch (UniversalConnectionPoolException e) {
-                throw new ConfigurationException(String.format("Failed to start connection pool named: %s", poolName), e);
+            } catch (SQLException e) {
+                throw new ConfigurationException(String.format("Failed to unwrap PoolDataSource from DataSource bean: %s", event.getBeanIdentifier()), e);
             }
         }
+
         return event.getBean();
+    }
+
+    private void createAndStartConnectionPool(PoolDataSource poolDataSource) {
+        final String poolName = poolDataSource.getConnectionPoolName();
+        try {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Creating connection pool named: {}", poolName);
+            }
+            connectionPoolManager.createConnectionPool((UniversalConnectionPoolAdapter) poolDataSource);
+
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Starting connection pool named: {}", poolName);
+            }
+            connectionPoolManager.startConnectionPool(poolName);
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Connection pool named: {} started", poolName);
+            }
+
+        } catch (UniversalConnectionPoolException e) {
+            throw new ConfigurationException(String.format("Failed to start connection pool named: %s", poolName), e);
+        }
     }
 
     @Override
