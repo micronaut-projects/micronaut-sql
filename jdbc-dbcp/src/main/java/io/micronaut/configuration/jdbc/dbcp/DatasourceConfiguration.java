@@ -119,7 +119,6 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
         }
     }
 
-
     /**
      * Before this bean is destroyed close the connection.
      */
