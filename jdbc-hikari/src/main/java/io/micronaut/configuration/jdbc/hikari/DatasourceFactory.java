@@ -21,6 +21,7 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import org.slf4j.Logger;
@@ -93,9 +94,8 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         if (cfg.getDataSourceProperties() != null && cfg.getDataSourceProperties().containsKey("v$session.program")) {
             return;
         }
-        String program = applicationContext.getProperty("datasources." + dsName + ".oracle.session.program", String.class)
-                .orElseGet(() -> applicationContext.getProperty("micronaut.application.name", String.class).orElse("Micronaut"));
-        if (program != null) {
+        String program = applicationContext.getProperty("micronaut.application.name", String.class).orElse(null);
+        if (StringUtils.isNotEmpty(program)) {
             cfg.getDataSourceProperties().put("v$session.program", program);
         }
     }

@@ -21,17 +21,19 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.annotation.Nullable;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import jakarta.annotation.PreDestroy;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Creates a tomcat data source for each configuration bean.
@@ -92,17 +94,18 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         if (!enabled) {
             return;
         }
-        java.util.Properties props = cfg.getDbProperties();
+        Properties props = cfg.getDbProperties();
         if (props != null && props.containsKey("v$session.program")) {
             return;
         }
-        String program = applicationContext.getProperty("datasources." + dsName + ".oracle.session.program", String.class)
-            .orElseGet(() -> applicationContext.getProperty("micronaut.application.name", String.class).orElse("Micronaut"));
-        if (props == null) {
-            props = new java.util.Properties();
-            cfg.setDbProperties(props);
+        String program = applicationContext.getProperty("micronaut.application.name", String.class).orElse(null);
+        if (StringUtils.isNotEmpty(program)) {
+            if (props == null) {
+                props = new Properties();
+                cfg.setDbProperties(props);
+            }
+            props.put("v$session.program", program);
         }
-        props.put("v$session.program", program);
     }
 
     /**

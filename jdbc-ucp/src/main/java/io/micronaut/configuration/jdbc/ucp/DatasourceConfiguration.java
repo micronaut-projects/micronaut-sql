@@ -323,10 +323,9 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         if (props != null && props.containsKey("v$session.program")) {
             return;
         }
-        String program = environment.getProperty("datasources." + dsName + ".oracle.session.program", String.class)
-            .orElseGet(() -> environment.getProperty("micronaut.application.name", String.class).orElse("Micronaut"));
+        String program = environment.getProperty("micronaut.application.name", String.class).orElse(null);
         if (program == null) {
-            program = "Micronaut";
+            return;
         }
         if (props == null) {
             props = new Properties();

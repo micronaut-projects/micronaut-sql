@@ -24,6 +24,7 @@ import io.micronaut.context.exceptions.DisabledBeanException;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -111,10 +112,11 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
         if (!enabled || oracleProgramProvided) {
             return;
         }
-        String program = environment.getProperty("datasources." + dsName + ".oracle.session.program", String.class)
-                .orElseGet(() -> environment.getProperty("micronaut.application.name", String.class).orElse("Micronaut"));
-        addConnectionProperty("v$session.program", program);
-        oracleProgramProvided = true;
+        String program = environment.getProperty("micronaut.application.name", String.class).orElse(null);
+        if (StringUtils.isNotEmpty(program)) {
+            addConnectionProperty("v$session.program", program);
+            oracleProgramProvided = true;
+        }
     }
 
 
