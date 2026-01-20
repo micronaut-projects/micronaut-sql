@@ -21,10 +21,10 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.util.StringUtils;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
+import io.micronaut.jdbc.OracleSessionProgramHelper;
 import jakarta.annotation.PreDestroy;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -70,42 +70,30 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     @EachBean(DatasourceConfiguration.class)
     @Requires(condition = JdbcDataSourceEnabled.class)
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
+        org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource(datasourceConfiguration);
         try {
-            applyOracleSessionProgram(datasourceConfiguration);
+            OracleSessionProgramHelper.apply(
+                    datasourceConfiguration.getName(),
+                    datasourceConfiguration.getUrl(),
+                    applicationContext.getProperty("datasources." + datasourceConfiguration.getName() + ".dialect", String.class).orElse(null),
+                    applicationContext.getEnvironment(),
+                    (k, v) -> {
+                        Properties p = ds.getDbProperties();
+                        if (p == null) {
+                            p = new Properties();
+                            ds.setDbProperties(p);
+                        }
+                        p.setProperty(k, v);
+                    },
+                    () -> ds.getDbProperties() != null && ds.getDbProperties().containsKey("v$session.program")
+            );
         } catch (Exception e) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
             }
         }
-        org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource(datasourceConfiguration);
         dataSources.put(datasourceConfiguration.getName(), ds);
         return ds;
-    }
-
-    private void applyOracleSessionProgram(DatasourceConfiguration cfg) {
-        String dsName = cfg.getName();
-        String url = cfg.getUrl();
-        String dialect = applicationContext.getProperty("datasources." + dsName + ".dialect", String.class).orElse(null);
-        boolean isOracle = (dialect != null && "oracle".equalsIgnoreCase(dialect)) || (url != null && url.toLowerCase().startsWith("jdbc:oracle"));
-        if (!isOracle) {
-            return;
-        }
-        boolean enabled = applicationContext.getProperty("datasources." + dsName + ".oracle.session.enabled", boolean.class).orElse(true);
-        if (!enabled) {
-            return;
-        }
-        Properties props = cfg.getDbProperties();
-        if (props != null && props.containsKey("v$session.program")) {
-            return;
-        }
-        String program = applicationContext.getProperty("micronaut.application.name", String.class).orElse(null);
-        if (StringUtils.isNotEmpty(program)) {
-            if (props == null) {
-                props = new Properties();
-                cfg.setDbProperties(props);
-            }
-            props.put("v$session.program", program);
-        }
     }
 
     /**

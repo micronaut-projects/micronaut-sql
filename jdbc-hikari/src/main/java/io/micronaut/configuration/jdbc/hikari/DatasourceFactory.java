@@ -21,9 +21,9 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.util.StringUtils;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
+import io.micronaut.jdbc.OracleSessionProgramHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,7 +67,14 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     @Requires(condition = JdbcDataSourceEnabled.class)
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         try {
-            applyOracleSessionProgram(datasourceConfiguration);
+            OracleSessionProgramHelper.apply(
+                    datasourceConfiguration.getName(),
+                    datasourceConfiguration.getUrl(),
+                    applicationContext.getProperty("datasources." + datasourceConfiguration.getName() + ".dialect", String.class).orElse(null),
+                    applicationContext.getEnvironment(),
+                    datasourceConfiguration::addDataSourceProperty,
+                    () -> datasourceConfiguration.getDataSourceProperties() != null && datasourceConfiguration.getDataSourceProperties().containsKey("v$session.program")
+            );
         } catch (Exception e) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
@@ -77,27 +84,6 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         addMeterRegistry(ds);
         dataSources.put(datasourceConfiguration.getName(), ds);
         return ds;
-    }
-
-    private void applyOracleSessionProgram(DatasourceConfiguration configuration) {
-        String dsName = configuration.getName();
-        String url = configuration.getUrl();
-        String dialect = applicationContext.getProperty("datasources." + dsName + ".dialect", String.class).orElse(null);
-        boolean isOracle = (dialect != null && "oracle".equalsIgnoreCase(dialect)) || (url != null && url.toLowerCase().startsWith("jdbc:oracle"));
-        if (!isOracle) {
-            return;
-        }
-        boolean enabled = applicationContext.getProperty("datasources." + dsName + ".oracle.session.enabled", boolean.class).orElse(true);
-        if (!enabled) {
-            return;
-        }
-        if (configuration.getDataSourceProperties() != null && configuration.getDataSourceProperties().containsKey("v$session.program")) {
-            return;
-        }
-        String program = applicationContext.getProperty("micronaut.application.name", String.class).orElse(null);
-        if (StringUtils.isNotEmpty(program)) {
-            configuration.getDataSourceProperties().put("v$session.program", program);
-        }
     }
 
     @Override

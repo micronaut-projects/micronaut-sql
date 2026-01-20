@@ -24,6 +24,7 @@ import io.micronaut.context.env.Environment;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
+import io.micronaut.jdbc.OracleSessionProgramHelper;
 import jakarta.annotation.PostConstruct;
 import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
@@ -287,7 +288,14 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         }
 
         try {
-            applyOracleSessionProgram();
+            OracleSessionProgramHelper.apply(
+                    getName(),
+                    getConfiguredUrl(),
+                    environment.getProperty(DATASOURCES_PREFIX + getName() + ".dialect", String.class).orElse(null),
+                    environment,
+                    (k, v) -> dataSourceProperties.put(k, v),
+                    () -> dataSourceProperties.containsKey(ORACLE_VSESSION_PROGRAM)
+            );
         } catch (Exception e) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
@@ -302,30 +310,5 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         }
     }
 
-    private void applyOracleSessionProgram() {
-        if (dataSourceProperties.containsKey(ORACLE_VSESSION_PROGRAM)) {
-            return;
-        }
-        String dsName = getName();
-        String url = getConfiguredUrl();
-        String dialect = environment.getProperty(DATASOURCES_PREFIX + dsName + ".dialect", String.class).orElse(null);
-        boolean isOracle = (dialect != null && "oracle".equalsIgnoreCase(dialect)) || (url != null && url.toLowerCase().startsWith("jdbc:oracle"));
-        if (!isOracle) {
-            return;
-        }
-        boolean enabled = environment.getProperty(DATASOURCES_PREFIX + dsName + ".oracle.session.enabled", boolean.class).orElse(true);
-        if (!enabled) {
-            return;
-        }
-        String envOverride = environment.getProperty(DATASOURCES_PREFIX + dsName + ".data-source-properties." + ORACLE_VSESSION_PROGRAM, String.class).orElse(null);
-        if (envOverride != null) {
-            dataSourceProperties.put(ORACLE_VSESSION_PROGRAM, envOverride);
-            return;
-        }
-        String program = environment.getProperty("micronaut.application.name", String.class).orElse(null);
-        if (program == null) {
-            return;
-        }
-        dataSourceProperties.put(ORACLE_VSESSION_PROGRAM, program);
-    }
+
 }

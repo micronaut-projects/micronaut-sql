@@ -24,9 +24,9 @@ import io.micronaut.context.exceptions.DisabledBeanException;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
-import io.micronaut.core.util.StringUtils;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
+import io.micronaut.jdbc.OracleSessionProgramHelper;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,30 +94,21 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
             setValidationQuery(getValidationQuery());
         }
         try {
-            applyOracleSessionProgram();
+            boolean provided = OracleSessionProgramHelper.apply(
+                    getName(),
+                    getUrl(),
+                    environment.getProperty("datasources." + getName() + ".dialect", String.class).orElse(null),
+                    environment,
+                    this::addConnectionProperty,
+                    () -> oracleProgramProvided
+            );
+            if (provided) {
+                oracleProgramProvided = true;
+            }
         } catch (Exception e) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
             }
-        }
-    }
-
-    private void applyOracleSessionProgram() {
-        String dsName = getName();
-        String url = getUrl();
-        String dialect = environment.getProperty("datasources." + dsName + ".dialect", String.class).orElse(null);
-        boolean isOracle = (dialect != null && "oracle".equalsIgnoreCase(dialect)) || (url != null && url.toLowerCase().startsWith("jdbc:oracle"));
-        if (!isOracle) {
-            return;
-        }
-        boolean enabled = environment.getProperty("datasources." + dsName + ".oracle.session.enabled", boolean.class).orElse(true);
-        if (!enabled || oracleProgramProvided) {
-            return;
-        }
-        String program = environment.getProperty("micronaut.application.name", String.class).orElse(null);
-        if (StringUtils.isNotEmpty(program)) {
-            addConnectionProperty(ORACLE_VSESSION_PROGRAM, program);
-            oracleProgramProvided = true;
         }
     }
 
