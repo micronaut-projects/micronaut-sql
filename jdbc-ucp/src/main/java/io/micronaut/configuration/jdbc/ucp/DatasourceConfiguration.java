@@ -51,6 +51,9 @@ import java.util.Properties;
 @EachProperty(value = BasicJdbcConfiguration.PREFIX, primary = "default")
 @Context
 public class DatasourceConfiguration implements BasicJdbcConfiguration {
+
+    private static final String ORACLE_VSESSION_PROGRAM = "v$session.program";
+
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
 
     @ConfigurationBuilder(allowZeroArgs = true, excludes = {"connectionFactoryProperties", "URL", "username", "password"})
@@ -299,7 +302,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     }
 
     private void applyOracleSessionProgram() {
-        if (dataSourceProperties.containsKey("v$session.program")) {
+        if (dataSourceProperties.containsKey(ORACLE_VSESSION_PROGRAM)) {
             return;
         }
         String dsName = getName();
@@ -313,15 +316,15 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         if (!enabled) {
             return;
         }
-        String envOverride = environment.getProperty("datasources." + dsName + ".data-source-properties.v$session.program", String.class).orElse(null);
+        String envOverride = environment.getProperty("datasources." + dsName + ".data-source-properties." + ORACLE_VSESSION_PROGRAM, String.class).orElse(null);
         if (envOverride != null) {
-            dataSourceProperties.put("v$session.program", envOverride);
+            dataSourceProperties.put(ORACLE_VSESSION_PROGRAM, envOverride);
             return;
         }
         String program = environment.getProperty("micronaut.application.name", String.class).orElse(null);
         if (program == null) {
             return;
         }
-        dataSourceProperties.put("v$session.program", program);
+        dataSourceProperties.put(ORACLE_VSESSION_PROGRAM, program);
     }
 }
