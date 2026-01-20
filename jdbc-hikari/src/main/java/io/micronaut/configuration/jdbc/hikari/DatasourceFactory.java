@@ -79,9 +79,9 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         return ds;
     }
 
-    private void applyOracleSessionProgram(DatasourceConfiguration cfg) {
-        String dsName = cfg.getName();
-        String url = cfg.getUrl();
+    private void applyOracleSessionProgram(DatasourceConfiguration configuration) {
+        String dsName = configuration.getName();
+        String url = configuration.getUrl();
         String dialect = applicationContext.getProperty("datasources." + dsName + ".dialect", String.class).orElse(null);
         boolean isOracle = (dialect != null && "oracle".equalsIgnoreCase(dialect)) || (url != null && url.toLowerCase().startsWith("jdbc:oracle"));
         if (!isOracle) {
@@ -91,12 +91,12 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         if (!enabled) {
             return;
         }
-        if (cfg.getDataSourceProperties() != null && cfg.getDataSourceProperties().containsKey("v$session.program")) {
+        if (configuration.getDataSourceProperties() != null && configuration.getDataSourceProperties().containsKey("v$session.program")) {
             return;
         }
         String program = applicationContext.getProperty("micronaut.application.name", String.class).orElse(null);
         if (StringUtils.isNotEmpty(program)) {
-            cfg.getDataSourceProperties().put("v$session.program", program);
+            configuration.getDataSourceProperties().put("v$session.program", program);
         }
     }
 

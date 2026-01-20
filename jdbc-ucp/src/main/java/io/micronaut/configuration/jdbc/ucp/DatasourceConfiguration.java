@@ -53,6 +53,7 @@ import java.util.Properties;
 public class DatasourceConfiguration implements BasicJdbcConfiguration {
 
     private static final String ORACLE_VSESSION_PROGRAM = "v$session.program";
+    private static final String DATASOURCES_PREFIX = "datasources.";
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
 
@@ -307,16 +308,16 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         }
         String dsName = getName();
         String url = getConfiguredUrl();
-        String dialect = environment.getProperty("datasources." + dsName + ".dialect", String.class).orElse(null);
+        String dialect = environment.getProperty(DATASOURCES_PREFIX + dsName + ".dialect", String.class).orElse(null);
         boolean isOracle = (dialect != null && "oracle".equalsIgnoreCase(dialect)) || (url != null && url.toLowerCase().startsWith("jdbc:oracle"));
         if (!isOracle) {
             return;
         }
-        boolean enabled = environment.getProperty("datasources." + dsName + ".oracle.session.enabled", boolean.class).orElse(true);
+        boolean enabled = environment.getProperty(DATASOURCES_PREFIX + dsName + ".oracle.session.enabled", boolean.class).orElse(true);
         if (!enabled) {
             return;
         }
-        String envOverride = environment.getProperty("datasources." + dsName + ".data-source-properties." + ORACLE_VSESSION_PROGRAM, String.class).orElse(null);
+        String envOverride = environment.getProperty(DATASOURCES_PREFIX + dsName + ".data-source-properties." + ORACLE_VSESSION_PROGRAM, String.class).orElse(null);
         if (envOverride != null) {
             dataSourceProperties.put(ORACLE_VSESSION_PROGRAM, envOverride);
             return;
