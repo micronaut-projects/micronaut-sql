@@ -17,15 +17,14 @@ package io.micronaut.configuration.vertx.mysql.client;
 
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import io.micronaut.core.util.StringUtils;
 import io.vertx.core.Vertx;
+import io.vertx.core.Future;
 import io.vertx.mysqlclient.MySQLConnectOptions;
 import io.vertx.mysqlclient.spi.MySQLDriver;
 import io.vertx.sqlclient.Pool;
 import jakarta.inject.Singleton;
-
-import java.util.Collections;
 
 /**
  * The Factory for creating Vertx MySQL client.
@@ -62,8 +61,8 @@ class MySQLDriverFactory {
         String connectionUri = connectionConfiguration.getUri();
         if (StringUtils.isNotEmpty(connectionUri)) {
             MySQLConnectOptions pgConnectOptions = MySQLDriver.INSTANCE.parseConnectionUri(connectionUri);
-            return MySQLDriver.INSTANCE.createPool(vertx, Collections.singletonList(pgConnectOptions), connectionConfiguration.poolOptions);
+            return MySQLDriver.INSTANCE.createPool(vertx, () -> Future.succeededFuture(pgConnectOptions), connectionConfiguration.poolOptions, connectionConfiguration.netClientOptions, null);
         }
-        return MySQLDriver.INSTANCE.createPool(vertx, Collections.singletonList(connectionConfiguration.connectOptions), connectionConfiguration.poolOptions);
+        return MySQLDriver.INSTANCE.createPool(vertx, () -> Future.succeededFuture(connectionConfiguration.connectOptions), connectionConfiguration.poolOptions, connectionConfiguration.netClientOptions, null);
     }
 }

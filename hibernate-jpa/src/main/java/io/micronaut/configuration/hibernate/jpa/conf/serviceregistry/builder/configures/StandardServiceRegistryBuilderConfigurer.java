@@ -17,7 +17,7 @@ package io.micronaut.configuration.hibernate.jpa.conf.serviceregistry.builder.co
 
 import io.micronaut.configuration.hibernate.jpa.JpaConfiguration;
 import io.micronaut.core.annotation.Indexed;
-import io.micronaut.core.annotation.NonNull;
+import org.jspecify.annotations.NonNull;
 import io.micronaut.core.order.Ordered;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 

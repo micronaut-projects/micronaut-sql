@@ -17,30 +17,34 @@ package io.micronaut.configuration.vertx.pg.client;
 
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
-import io.micronaut.core.annotation.Nullable;
+import io.micronaut.context.annotation.Requires;
+import org.jspecify.annotations.Nullable;
 import io.micronaut.core.util.StringUtils;
-import io.vertx.reactivex.core.Vertx;
-import io.vertx.reactivex.pgclient.PgPool;
+import io.vertx.core.Vertx;
+import io.vertx.pgclient.PgConnectOptions;
+import io.vertx.pgclient.spi.PgDriver;
+import io.vertx.sqlclient.Pool;
 import jakarta.inject.Singleton;
 
+import io.vertx.core.Future;
+
 /**
- * The Factory for creating Vertx Pg client.
- *
+ * The Factory for creating Vert.x Pg client.
  */
 @Factory
 public class PgClientFactory {
     private final PgClientConfiguration connectionConfiguration;
 
     /**
-     * The Vertx instance if you are running with Vert.x.
+     * The Vert.x instance if you are running with Vert.x.
      */
     private final Vertx vertx;
 
     /**
      * Create the factory with given Pg Client configuration.
      *
-     * @param connectionConfiguration The  Pg ClientOption configurations
-     * @param vertx  The vertx instance
+     * @param connectionConfiguration The Pg client configuration
+     * @param vertx                   The Vert.x instance
      */
     public PgClientFactory(PgClientConfiguration connectionConfiguration, @Nullable Vertx vertx) {
         this.connectionConfiguration = connectionConfiguration;
@@ -51,42 +55,27 @@ public class PgClientFactory {
      * @return client A pool of connections.
      */
     @Singleton
+    @Requires(missingBeans = Pool.class)
     @Bean(preDestroy = "close")
-    public PgPool client() {
-        if (this.vertx == null) {
-            return createClient();
-        } else {
-            return createClient(vertx);
-        }
+    public Pool client() {
+        return createClient();
     }
 
     /**
      * Create a connection pool to the database configured with the
      * {@link PgClientConfiguration}.
+     *
      * @return A pool of connections.
      */
-    private PgPool createClient() {
+    private Pool createClient() {
         PgClientConfiguration configuration = this.connectionConfiguration;
         String connectionUri = configuration.getUri();
+        Vertx v = this.vertx != null ? this.vertx : Vertx.vertx();
         if (StringUtils.isNotEmpty(connectionUri)) {
-            return PgPool.pool(connectionUri, configuration.poolOptions);
+            PgConnectOptions options = PgDriver.INSTANCE.parseConnectionUri(connectionUri);
+            return PgDriver.INSTANCE.createPool(v, () -> Future.succeededFuture(options), configuration.poolOptions, configuration.netClientOptions, null);
         } else {
-            return PgPool.pool(configuration.connectOptions, configuration.poolOptions);
-        }
-    }
-
-    /**
-     * Create a connection pool to the database configured with the {@link PgClientConfiguration }.
-     * @param vertx The Vertx instance.
-     * @return A pool of connections.
-     */
-    private PgPool createClient(Vertx vertx) {
-        PgClientConfiguration configuration = this.connectionConfiguration;
-        String connectionUri = configuration.getUri();
-        if (StringUtils.isNotEmpty(connectionUri)) {
-            return PgPool.pool(vertx, connectionUri, configuration.poolOptions);
-        } else {
-            return PgPool.pool(vertx, configuration.connectOptions, configuration.poolOptions);
+            return PgDriver.INSTANCE.createPool(v, () -> Future.succeededFuture(configuration.connectOptions), configuration.poolOptions, configuration.netClientOptions, null);
         }
     }
 }

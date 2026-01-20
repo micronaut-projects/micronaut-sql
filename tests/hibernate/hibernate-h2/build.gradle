@@ -1,0 +1,16 @@
+plugins {
+    id("io.micronaut.build.internal.test-application-hibernate")
+}
+
+dependencies {
+    implementation projects.micronautTests.micronautHibernate.micronautHibernateSyncCommon
+    testImplementation projects.micronautTests.micronautCommonTests
+
+    runtimeOnly projects.micronautJdbcHikari
+
+    runtimeOnly libs.managed.h2
+}
+
+configurations {
+    all*.exclude module: "javassist"
+}

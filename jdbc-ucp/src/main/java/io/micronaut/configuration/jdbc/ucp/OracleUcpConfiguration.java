@@ -17,7 +17,7 @@ package io.micronaut.configuration.jdbc.ucp;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import static io.micronaut.configuration.jdbc.ucp.OracleUcpConfiguration.PREFIX;
 

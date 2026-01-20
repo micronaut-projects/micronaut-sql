@@ -5,9 +5,9 @@ plugins {
 dependencies {
     api(mn.micronaut.inject)
     api(libs.managed.vertx.mysql.client)
-    api(libs.managed.vertx.rx.java2)
 
     implementation(libs.managed.vertx.codegen)
+    implementation(mnReactor.micronaut.reactor)
 
     compileOnly(mn.micronaut.management)
 

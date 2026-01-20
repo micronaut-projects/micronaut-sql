@@ -17,6 +17,7 @@ package io.micronaut.configuration.vertx.mysql.client;
 
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
+import io.vertx.core.net.NetClientOptions;
 import io.vertx.mysqlclient.MySQLConnectOptions;
 import io.vertx.sqlclient.PoolOptions;
 
@@ -32,6 +33,9 @@ public class MySQLClientConfiguration {
 
     @ConfigurationBuilder
     protected PoolOptions poolOptions = new PoolOptions();
+
+    @ConfigurationBuilder
+    protected NetClientOptions netClientOptions = new NetClientOptions();
 
     protected String uri;
 
@@ -56,5 +60,13 @@ public class MySQLClientConfiguration {
      */
     public PoolOptions getPoolOptions() {
         return poolOptions;
+    }
+
+    /**
+     *
+     * @return The net client options for configuring client.
+     */
+    public NetClientOptions getNetClientOptions() {
+        return netClientOptions;
     }
 }

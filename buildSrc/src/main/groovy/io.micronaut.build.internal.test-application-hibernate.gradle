@@ -1,0 +1,24 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application'
+}
+dependencies {
+    testImplementation(mnData.micronaut.data.tx.hibernate) {
+        exclude(group: "org.hibernate.orm")
+    }
+}
+
+graalvmNative {
+    toolchainDetection = false
+    binaries {
+        all {
+            buildArgs.add("--report-unsupported-elements-at-runtime")
+            if (System.getenv("GRAALVM_HOME")?.contains("graal") && System.getenv("GRAALVM_HOME")?.contains("25")) {
+                logger.quiet("Enabling SharedArenaSupport for GraalVM 25")
+                buildArgs.add("-H:+SharedArenaSupport")
+            }
+        }
+    }
+    metadataRepository {
+        enabled = true
+    }
+}

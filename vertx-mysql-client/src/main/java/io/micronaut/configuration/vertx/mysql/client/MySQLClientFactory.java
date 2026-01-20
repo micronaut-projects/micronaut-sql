@@ -17,10 +17,14 @@ package io.micronaut.configuration.vertx.mysql.client;
 
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
-import io.micronaut.core.annotation.Nullable;
+import io.micronaut.context.annotation.Requires;
+import org.jspecify.annotations.Nullable;
 import io.micronaut.core.util.StringUtils;
-import io.vertx.reactivex.core.Vertx;
-import io.vertx.reactivex.mysqlclient.MySQLPool;
+import io.vertx.core.Vertx;
+import io.vertx.core.Future;
+import io.vertx.mysqlclient.MySQLConnectOptions;
+import io.vertx.mysqlclient.spi.MySQLDriver;
+import io.vertx.sqlclient.Pool;
 import jakarta.inject.Singleton;
 
 /**
@@ -51,13 +55,10 @@ public class MySQLClientFactory {
      * @return client A pool of connections.
      */
     @Singleton
+    @Requires(missingBeans = Pool.class)
     @Bean(preDestroy = "close")
-    public MySQLPool client() {
-        if (this.vertx == null) {
-            return createClient();
-        } else {
-            return createClient(vertx);
-        }
+    public Pool client() {
+        return createClient();
     }
 
     /**
@@ -65,28 +66,16 @@ public class MySQLClientFactory {
      * {@link MySQLClientConfiguration}.
      * @return A pool of connections.
      */
-    private MySQLPool createClient() {
+    private Pool createClient() {
         MySQLClientConfiguration configuration = this.connectionConfiguration;
         String connectionUri = configuration.getUri();
+        Vertx v = this.vertx != null ? this.vertx : Vertx.vertx();
         if (StringUtils.isNotEmpty(connectionUri)) {
-            return MySQLPool.pool(connectionUri, configuration.poolOptions);
+            MySQLConnectOptions options = MySQLDriver.INSTANCE.parseConnectionUri(connectionUri);
+            return MySQLDriver.INSTANCE.createPool(v, () -> Future.succeededFuture(options), configuration.poolOptions, configuration.netClientOptions, null);
         } else {
-            return MySQLPool.pool(configuration.connectOptions, configuration.poolOptions);
+            return MySQLDriver.INSTANCE.createPool(v, () -> Future.succeededFuture(configuration.connectOptions), configuration.poolOptions, configuration.netClientOptions, null);
         }
     }
 
-    /**
-     * Create a connection pool to the database configured with the {@link MySQLClientConfiguration }.
-     * @param vertx The Vertx instance.
-     * @return A pool of connections.
-     */
-    private MySQLPool createClient(Vertx vertx) {
-        MySQLClientConfiguration configuration = this.connectionConfiguration;
-        String connectionUri = configuration.getUri();
-        if (StringUtils.isNotEmpty(connectionUri)) {
-            return MySQLPool.pool(vertx, connectionUri, configuration.poolOptions);
-        } else {
-            return MySQLPool.pool(vertx, configuration.connectOptions, configuration.poolOptions);
-        }
-    }
 }
