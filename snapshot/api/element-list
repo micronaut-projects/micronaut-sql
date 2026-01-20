@@ -29,3 +29,4 @@ io.micronaut.configuration.vertx.pg.client.condition
 io.micronaut.configuration.vertx.pg.client.health
 io.micronaut.jdbc
 io.micronaut.jdbc.metadata
+io.micronaut.sql.info
