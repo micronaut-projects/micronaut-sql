@@ -38,7 +38,7 @@ public final class OracleSessionProgramHelper {
     }
 
     /**
-     * Applies the v$session.program property to the given connection properties if the
+     * Applies the <code>v$session.program</code> property to the given connection properties if the
      * following conditions are met:
      * <ul>
      *     <li>The dialect is 'oracle' or the URL starts with 'jdbc:oracle'</li>
