@@ -9,11 +9,7 @@ dependencies {
         exclude module: 'jdbc'
         exclude group: 'micronaut-data'
     }
-    api (libs.managed.hibernate.reactive.core) {
-        // TODO: Temp exclude since hibernate-reactive brings in vert-sql-client 4.5.22
-        // which has vulnerability and we will use 4.5.24 override from the catalog
-        exclude group: 'io.vertx', module: 'vertx-sql-client'
-    }
+    api libs.managed.hibernate.reactive.core
     api mn.micronaut.runtime
 
     compileOnly libs.managed.vertx.sql.client
