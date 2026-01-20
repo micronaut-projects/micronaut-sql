@@ -238,6 +238,7 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
      * The Oracle program is considered provided if it has been explicitly set
      * through the 'datasources.*.data-source-properties' or 'datasources.*.oracle.session.enabled'
      * configuration properties (using Micronaut Application as value).
+     * Currently used for testing purposes.
      *
      * @return true if the Oracle program has been provided, false otherwise
      */

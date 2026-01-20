@@ -282,7 +282,13 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
             setPassword(getPassword());
         }
 
-        applyOracleSessionProgram();
+        try {
+            applyOracleSessionProgram();
+        } catch (Exception e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
+            }
+        }
         if (!dataSourceProperties.isEmpty()) {
             try {
                 this.delegate.setConnectionProperties(dataSourceProperties);
