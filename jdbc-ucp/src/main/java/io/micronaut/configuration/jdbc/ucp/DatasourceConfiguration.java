@@ -59,6 +59,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     private String name;
     private String username;
     private String password;
+    private Properties dataSourceProperties = new Properties();
 
     /**
      * Constructor.
@@ -204,18 +205,11 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     @Override
     public void setDataSourceProperties(Map<String, ?> dsProperties) {
         if (dsProperties != null) {
-            Properties properties = new Properties();
             dsProperties.forEach((key, value) -> {
                 if (value != null) {
-                    properties.put(key, value.toString());
+                    dataSourceProperties.put(key, value.toString());
                 }
             });
-
-            try {
-                this.delegate.setConnectionProperties(properties);
-            } catch (SQLException e) {
-                throw new ConfigurationException("Unable to set datasource properties: " + e.getMessage(), e);
-            }
         }
     }
 
@@ -288,17 +282,20 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
             setPassword(getPassword());
         }
 
-        try {
-            applyOracleSessionProgram();
-        } catch (Exception e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
+        applyOracleSessionProgram();
+        if (!dataSourceProperties.isEmpty()) {
+            try {
+                this.delegate.setConnectionProperties(dataSourceProperties);
+            } catch (SQLException e) {
+                throw new ConfigurationException("Unable to set datasource properties: " + e.getMessage(), e);
             }
         }
-
     }
 
-    private void applyOracleSessionProgram() throws SQLException {
+    private void applyOracleSessionProgram() {
+        if (dataSourceProperties.containsKey("v$session.program")) {
+            return;
+        }
         String dsName = getName();
         String url = getConfiguredUrl();
         String dialect = environment.getProperty("datasources." + dsName + ".dialect", String.class).orElse(null);
@@ -310,27 +307,15 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         if (!enabled) {
             return;
         }
-        Properties props = delegate.getConnectionProperties();
         String envOverride = environment.getProperty("datasources." + dsName + ".data-source-properties.v$session.program", String.class).orElse(null);
         if (envOverride != null) {
-            if (props == null) {
-                props = new Properties();
-            }
-            props.put("v$session.program", envOverride);
-            delegate.setConnectionProperties(props);
-            return;
-        }
-        if (props != null && props.containsKey("v$session.program")) {
+            dataSourceProperties.put("v$session.program", envOverride);
             return;
         }
         String program = environment.getProperty("micronaut.application.name", String.class).orElse(null);
         if (program == null) {
             return;
         }
-        if (props == null) {
-            props = new Properties();
-        }
-        props.put("v$session.program", program);
-        delegate.setConnectionProperties(props);
+        dataSourceProperties.put("v$session.program", program);
     }
 }
