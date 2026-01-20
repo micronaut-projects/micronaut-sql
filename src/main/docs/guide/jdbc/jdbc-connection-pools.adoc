@@ -120,3 +120,21 @@ datasources:
 ----
 <1> The `default` data source auto-sets v$session.program = "my-app"
 <2> The `other` data source v$session.program not auto-set because `datasources.other.oracle.session.enabled` is set to `false`
+
+Alternatively, this configuration will set "My Program" as session name for the Oracle connection and Micronaut
+will not try to use application name for it:
+
+[configuration]
+----
+micronaut:
+  application:
+    name: my-app
+datasources:
+  default:
+    url: jdbc:oracle:thin:@localhost:1521/orcl
+    username: user
+    password: pass
+    dialect: ORACLE
+    data-source-properties:
+      v$session.program: "My Program"
+----
