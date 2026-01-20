@@ -20,7 +20,6 @@ import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.util.StringUtils;
 
 import java.util.Objects;
-import java.util.Properties;
 import java.util.function.BiConsumer;
 import java.util.function.BooleanSupplier;
 
@@ -91,35 +90,5 @@ public final class OracleSessionProgramHelper {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Convenience overload using Properties holder. Applies the v$session.program property to the given Properties.
-     *
-     * @param dataSourceName the name of the data source
-     * @param url the JDBC URL
-     * @param dialect the database dialect
-     * @param environment the Micronaut environment
-     * @param props the Properties to be updated with the v$session.program property
-     */
-    public static void apply(
-            String dataSourceName,
-            String url,
-            String dialect,
-            Environment environment,
-            Properties props
-    ) {
-        apply(
-                dataSourceName,
-                url,
-                dialect,
-                environment,
-                (k, v) -> {
-                    if (props != null) {
-                        props.setProperty(k, v);
-                    }
-                },
-                () -> props != null && props.containsKey(KEY_PROGRAM)
-        );
     }
 }
