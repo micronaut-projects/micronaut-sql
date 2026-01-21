@@ -687,6 +687,308 @@ More about it can be read here <a href="https://docs.oracle.com/en/database/orac
 </tr>
 </tbody>
 </table>
+<div class="sect2">
+<h3 id="_oracle_session_program_auto_configuration">Oracle Session Program Auto-Configuration</h3>
+<div class="paragraph">
+<p>Micronaut SQL can automatically set the Oracle <code>v$session.program</code> connection property so your application&#8217;s sessions are easily identifiable in Oracle tools (such as <code>v$session</code>).</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Applied only to Oracle datasources (when <code>dialect: ORACLE</code> is set or the JDBC URL starts with <code>jdbc:oracle</code>).</p>
+</li>
+<li>
+<p>The value is taken from <code>micronaut.application.name</code>.</p>
+</li>
+<li>
+<p>Does not override a user-provided <code>v$session.program</code>.</p>
+</li>
+<li>
+<p>Supported for HikariCP, Tomcat JDBC, Apache DBCP2, and Oracle UCP.</p>
+</li>
+<li>
+<p>Scope limited to <code>v$session.program</code> only (it does not set ClientId/Module/Action).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Configure per datasource:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">micronaut.application.name=my-app
+datasources.default.url=jdbc:oracle:thin:@localhost:1521/orcl
+datasources.default.username=user
+datasources.default.password=pass
+datasources.default.dialect=ORACLE
+datasources.other.url=jdbc:oracle:thin:@localhost:1521/orcl
+datasources.other.username=user
+datasources.other.password=pass
+datasources.other.dialect=ORACLE
+datasources.other.oracle.session.enabled=false</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
+  application:
+    name: my-app
+
+datasources:
+  default:
+    url: jdbc:oracle:thin:@localhost:1521/orcl
+    username: user
+    password: pass
+    dialect: ORACLE
+
+  other:
+    url: jdbc:oracle:thin:@localhost:1521/orcl
+    username: user
+    password: pass
+    dialect: ORACLE
+    oracle:
+      session:
+        enabled: false</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[micronaut]
+  [micronaut.application]
+    name="my-app"
+[datasources]
+  [datasources.default]
+    url="jdbc:oracle:thin:@localhost:1521/orcl"
+    username="user"
+    password="pass"
+    dialect="ORACLE"
+  [datasources.other]
+    url="jdbc:oracle:thin:@localhost:1521/orcl"
+    username="user"
+    password="pass"
+    dialect="ORACLE"
+    [datasources.other.oracle]
+      [datasources.other.oracle.session]
+        enabled=false</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">micronaut {
+  application {
+    name = "my-app"
+  }
+}
+datasources {
+  'default' {
+    url = "jdbc:oracle:thin:@localhost:1521/orcl"
+    username = "user"
+    password = "pass"
+    dialect = "ORACLE"
+  }
+  other {
+    url = "jdbc:oracle:thin:@localhost:1521/orcl"
+    username = "user"
+    password = "pass"
+    dialect = "ORACLE"
+    oracle {
+      session {
+        enabled = false
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  micronaut {
+    application {
+      name = "my-app"
+    }
+  }
+  datasources {
+    default {
+      url = "jdbc:oracle:thin:@localhost:1521/orcl"
+      username = "user"
+      password = "pass"
+      dialect = "ORACLE"
+    }
+    other {
+      url = "jdbc:oracle:thin:@localhost:1521/orcl"
+      username = "user"
+      password = "pass"
+      dialect = "ORACLE"
+      oracle {
+        session {
+          enabled = false
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "micronaut": {
+    "application": {
+      "name": "my-app"
+    }
+  },
+  "datasources": {
+    "default": {
+      "url": "jdbc:oracle:thin:@localhost:1521/orcl",
+      "username": "user",
+      "password": "pass",
+      "dialect": "ORACLE"
+    },
+    "other": {
+      "url": "jdbc:oracle:thin:@localhost:1521/orcl",
+      "username": "user",
+      "password": "pass",
+      "dialect": "ORACLE",
+      "oracle": {
+        "session": {
+          "enabled": false
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>default</code> data source auto-sets v$session.program = "my-app"</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>other</code> data source v$session.program not auto-set because <code>datasources.other.oracle.session.enabled</code> is set to <code>false</code></td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Alternatively, this configuration will set "My Program" as session name for the Oracle connection and Micronaut
+will not try to use application name for it:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">micronaut.application.name=my-app
+datasources.default.url=jdbc:oracle:thin:@localhost:1521/orcl
+datasources.default.username=user
+datasources.default.password=pass
+datasources.default.dialect=ORACLE
+datasources.default.data-source-properties.v$session.program=My Program</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
+  application:
+    name: my-app
+datasources:
+  default:
+    url: jdbc:oracle:thin:@localhost:1521/orcl
+    username: user
+    password: pass
+    dialect: ORACLE
+    data-source-properties:
+      v$session.program: "My Program"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[micronaut]
+  [micronaut.application]
+    name="my-app"
+[datasources]
+  [datasources.default]
+    url="jdbc:oracle:thin:@localhost:1521/orcl"
+    username="user"
+    password="pass"
+    dialect="ORACLE"
+    [datasources.default.data-source-properties]
+      "v$session.program"="My Program"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">micronaut {
+  application {
+    name = "my-app"
+  }
+}
+datasources {
+  'default' {
+    url = "jdbc:oracle:thin:@localhost:1521/orcl"
+    username = "user"
+    password = "pass"
+    dialect = "ORACLE"
+    dataSourceProperties {
+      v$session.program = "My Program"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  micronaut {
+    application {
+      name = "my-app"
+    }
+  }
+  datasources {
+    default {
+      url = "jdbc:oracle:thin:@localhost:1521/orcl"
+      username = "user"
+      password = "pass"
+      dialect = "ORACLE"
+      data-source-properties {
+        "v$session.program" = "My Program"
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "micronaut": {
+    "application": {
+      "name": "my-app"
+    }
+  },
+  "datasources": {
+    "default": {
+      "url": "jdbc:oracle:thin:@localhost:1521/orcl",
+      "username": "user",
+      "password": "pass",
+      "dialect": "ORACLE",
+      "data-source-properties": {
+        "v$session.program": "My Program"
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 
 <h2 id="jdbc-multiple-datasources"><a class="anchor" href="#jdbc-multiple-datasources"></a>4.3 Configuring Multiple Data Sources</h2>
 

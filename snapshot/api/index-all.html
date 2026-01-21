@@ -73,6 +73,17 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/jdbc/BaseDatasourceFactory.html#applicationContext" class="member-name-link">applicationContext</a> - Variable in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/BaseDatasourceFactory.html" title="class in io.micronaut.jdbc">BaseDatasourceFactory</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/jdbc/OracleSessionProgramHelper.html#apply(java.lang.String,java.lang.String,java.lang.String,io.micronaut.context.env.Environment,java.util.function.BiConsumer,java.util.function.BooleanSupplier)" class="member-name-link">apply(String, String, String, Environment, BiConsumer, BooleanSupplier)</a> - Static method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/OracleSessionProgramHelper.html" title="class in io.micronaut.jdbc">OracleSessionProgramHelper</a></dt>
+<dd>
+<div class="block">Applies the <code>v$session.program</code> property to the given connection properties if the
+following conditions are met:
+
+    The dialect is 'oracle' or the URL starts with 'jdbc:oracle'
+    The property 'datasources.{dataSourceName}.oracle.session.enabled' is true (default)
+    The 'micronaut.application.name' property is non-empty
+    The 'v$session.program' property is not already provided
+</div>
+</dd>
 </dl>
 <h2 class="title" id="I:B">B</h2>
 <dl class="index">
@@ -210,10 +221,6 @@ to successfully configure a data source.</div>
 <dd>
 <div class="block">Allows the configuration of UCP JDBC data sources.</div>
 </dd>
-<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#%3Cinit%3E(java.lang.String)" class="member-name-link">DatasourceConfiguration(String)</a> - Constructor for class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
-<dd>
-<div class="block">Constructor.</div>
-</dd>
 <dt><a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#%3Cinit%3E(java.lang.String)" class="member-name-link">DatasourceConfiguration(String)</a> - Constructor for class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration</a></dt>
 <dd>
 <div class="block">Constructor.</div>
@@ -222,7 +229,11 @@ to successfully configure a data source.</div>
 <dd>
 <div class="block">Constructor.</div>
 </dd>
-<dt><a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html#%3Cinit%3E(java.lang.String)" class="member-name-link">DatasourceConfiguration(String)</a> - Constructor for class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceConfiguration</a></dt>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#%3Cinit%3E(java.lang.String,io.micronaut.context.env.Environment)" class="member-name-link">DatasourceConfiguration(String, Environment)</a> - Constructor for class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>
+<div class="block">Constructor.</div>
+</dd>
+<dt><a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html#%3Cinit%3E(java.lang.String,io.micronaut.context.env.Environment)" class="member-name-link">DatasourceConfiguration(String, Environment)</a> - Constructor for class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceConfiguration</a></dt>
 <dd>
 <div class="block">Constructor.</div>
 </dd>
@@ -870,6 +881,10 @@ more compliant with the other datasource types.</div>
 <dd>
 <div class="block">If enable <a href="io/micronaut/configuration/jooq/JsonConverterProvider.html" title="class in io.micronaut.configuration.jooq"><code>JsonConverterProvider</code></a> bean to use Jackson for JSON and JSONB types.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#isOracleProgramProvided()" class="member-name-link">isOracleProgramProvided()</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>
+<div class="block">Checks if the Oracle program has been provided.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/hibernate/jpa/validation/JPATraversableResolver.html#isReachable(java.lang.Object,jakarta.validation.Path.Node,java.lang.Class,jakarta.validation.Path,java.lang.annotation.ElementType)" class="member-name-link">isReachable(Object, Path.Node, Class, Path, ElementType)</a> - Method in class io.micronaut.configuration.hibernate.jpa.validation.<a href="io/micronaut/configuration/hibernate/jpa/validation/JPATraversableResolver.html" title="class in io.micronaut.configuration.hibernate.jpa.validation">JPATraversableResolver</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#isReactive()" class="member-name-link">isReactive()</a> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration</a></dt>
@@ -1114,6 +1129,11 @@ query the reachability of a property.</div>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbc/ucp/ConnectionPoolManagerListener.html#onCreated(io.micronaut.context.event.BeanCreatedEvent)" class="member-name-link">onCreated(BeanCreatedEvent)</a> - Method in class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/ConnectionPoolManagerListener.html" title="class in io.micronaut.configuration.jdbc.ucp">ConnectionPoolManagerListener</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/jdbc/OracleSessionProgramHelper.html" class="type-name-link" title="class in io.micronaut.jdbc">OracleSessionProgramHelper</a> - Class in <a href="io/micronaut/jdbc/package-summary.html">io.micronaut.jdbc</a></dt>
+<dd>
+<div class="block">Shared helper to apply Oracle session program (v$session.program)
+consistently across JDBC pools.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/jdbc/ucp/OracleUcpConfiguration.html" class="type-name-link" title="class in io.micronaut.configuration.jdbc.ucp">OracleUcpConfiguration</a> - Record Class in <a href="io/micronaut/configuration/jdbc/ucp/package-summary.html">io.micronaut.configuration.jdbc.ucp</a></dt>
 <dd>
 <div class="block">Configuration properties for Oracle Universal Connection Pooling (UCP).</div>
