@@ -21,17 +21,19 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import org.jspecify.annotations.Nullable;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
+import io.micronaut.jdbc.OracleSessionProgramHelper;
 import jakarta.annotation.PreDestroy;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Creates a tomcat data source for each configuration bean.
@@ -50,7 +52,9 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
 
     /**
      * Default constructor.
+     *
      * @param dataSourceResolver The data source resolver
+     * @param applicationContext The application context
      */
     public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
                              ApplicationContext applicationContext) {
@@ -67,6 +71,27 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     @Requires(condition = JdbcDataSourceEnabled.class)
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource(datasourceConfiguration);
+        try {
+            OracleSessionProgramHelper.apply(
+                    datasourceConfiguration.getName(),
+                    datasourceConfiguration.getUrl(),
+                    applicationContext.getProperty("datasources." + datasourceConfiguration.getName() + ".dialect", String.class).orElse(null),
+                    applicationContext.getEnvironment(),
+                    (k, v) -> {
+                        Properties p = ds.getDbProperties();
+                        if (p == null) {
+                            p = new Properties();
+                            ds.setDbProperties(p);
+                        }
+                        p.setProperty(k, v);
+                    },
+                    () -> ds.getDbProperties() != null && ds.getDbProperties().containsKey("v$session.program")
+            );
+        } catch (Exception e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
+            }
+        }
         dataSources.put(datasourceConfiguration.getName(), ds);
         return ds;
     }

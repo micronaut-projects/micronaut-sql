@@ -19,12 +19,14 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Property;
+import io.micronaut.context.env.Environment;
 import io.micronaut.context.exceptions.DisabledBeanException;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
+import io.micronaut.jdbc.OracleSessionProgramHelper;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,17 +51,23 @@ import java.util.Map;
 @EachProperty(value = BasicJdbcConfiguration.PREFIX, primary = "default")
 public class DatasourceConfiguration extends BasicDataSource implements BasicJdbcConfiguration {
 
+    private static final String ORACLE_VSESSION_PROGRAM = "v$session.program";
+
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
     private final CalculatedSettings calculatedSettings;
     private final String name;
+    private final Environment environment;
+    private boolean oracleProgramProvided;
 
     /**
      * Constructor.
      * @param name name configured from properties
+     * @param environment The environment
      */
-    public DatasourceConfiguration(@Parameter String name) {
+    public DatasourceConfiguration(@Parameter String name, Environment environment) {
         super();
         this.name = name;
+        this.environment = environment;
         this.calculatedSettings = new CalculatedSettings(this);
     }
 
@@ -84,6 +92,23 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
         }
         if (getConfiguredValidationQuery() == null) {
             setValidationQuery(getValidationQuery());
+        }
+        try {
+            boolean provided = OracleSessionProgramHelper.apply(
+                    getName(),
+                    getUrl(),
+                    environment.getProperty("datasources." + getName() + ".dialect", String.class).orElse(null),
+                    environment,
+                    this::addConnectionProperty,
+                    () -> oracleProgramProvided
+            );
+            if (provided) {
+                oracleProgramProvided = true;
+            }
+        } catch (Exception e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
+            }
         }
     }
 
@@ -168,6 +193,9 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
         if (dsProperties != null) {
             dsProperties.forEach((s, o) -> {
                 if (o != null) {
+                    if (ORACLE_VSESSION_PROGRAM.equalsIgnoreCase(s)) {
+                        oracleProgramProvided = true;
+                    }
                     addConnectionProperty(s, o.toString());
                 }
             });
@@ -193,5 +221,19 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
             // because dbcp doesn't have datasource factory like other datasource implementations
             throw new DisabledBeanException("The datasource \"" + name + "\" is disabled");
         }
+    }
+
+    /**
+     * Checks if the Oracle program has been provided.
+     *
+     * The Oracle program is considered provided if it has been explicitly set
+     * through the 'datasources.*.data-source-properties' or 'datasources.*.oracle.session.enabled'
+     * configuration properties (using Micronaut Application as value).
+     * Currently used for testing purposes.
+     *
+     * @return true if the Oracle program has been provided, false otherwise
+     */
+    public boolean isOracleProgramProvided() {
+        return oracleProgramProvided;
     }
 }

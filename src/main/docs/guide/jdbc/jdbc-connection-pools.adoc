@@ -61,17 +61,17 @@ For a list of other properties able to be configured, simply refer to the implem
 |=======
 |Connection Pool |Javadoc |Configuration |Pool Documentation
 
-|Tomcat 
+|Tomcat
 |link:https://tomcat.apache.org/tomcat-9.0-doc/api/org/apache/tomcat/jdbc/pool/PoolProperties.html[PoolProperties]
 |https://micronaut-projects.github.io/micronaut-sql/latest/guide/configurationreference.html#io.micronaut.configuration.jdbc.tomcat.DatasourceConfiguration[DatasourceConfiguration]
 |https://tomcat.apache.org/tomcat-7.0-doc/jdbc-pool.html[Tomcat Connection Pool]
 
-|Hikari 
+|Hikari
 |link:http://static.javadoc.io/com.zaxxer/HikariCP/2.7.1/com/zaxxer/hikari/HikariConfig.html[HikariConfig]
 |https://micronaut-projects.github.io/micronaut-sql/latest/guide/configurationreference.html#io.micronaut.configuration.jdbc.hikari.DatasourceConfiguration[DatasourceConfiguration]
 |https://github.com/brettwooldridge/HikariCP?tab=readme-ov-file#gear-configuration-knobs-baby[Hikari Docs]
 
-|Apache DBCP 
+|Apache DBCP
 |link:http://commons.apache.org/proper/commons-dbcp/api-2.1.1/org/apache/commons/dbcp2/BasicDataSource.html[BasicDataSource]
 |https://micronaut-projects.github.io/micronaut-sql/latest/guide/configurationreference.html#io.micronaut.configuration.jdbc.dbcp.DatasourceConfiguration[DatasourceConfiguration]
 |https://commons.apache.org/proper/commons-dbcp/configuration.html[Apache DBCP Configuration]
@@ -83,3 +83,58 @@ For a list of other properties able to be configured, simply refer to the implem
 |https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/intro.html#GUID-197BA5D3-86DA-43BE-AFC6-E8CBED4883EF[Oracle UCP]
 
 |=======
+
+=== Oracle Session Program Auto-Configuration
+
+Micronaut SQL can automatically set the Oracle `v$session.program` connection property so your application's sessions are easily identifiable in Oracle tools (such as `v$session`).
+
+- Applied only to Oracle datasources (when `dialect: ORACLE` is set or the JDBC URL starts with `jdbc:oracle`).
+- The value is taken from `micronaut.application.name`.
+- Does not override a user-provided `v$session.program`.
+- Supported for HikariCP, Tomcat JDBC, Apache DBCP2, and Oracle UCP.
+- Scope limited to `v$session.program` only (it does not set ClientId/Module/Action).
+
+Configure per datasource:
+
+[configuration]
+----
+micronaut:
+  application:
+    name: my-app
+
+datasources:
+  default:
+    url: jdbc:oracle:thin:@localhost:1521/orcl
+    username: user
+    password: pass
+    dialect: ORACLE
+
+  other:
+    url: jdbc:oracle:thin:@localhost:1521/orcl
+    username: user
+    password: pass
+    dialect: ORACLE
+    oracle:
+      session:
+        enabled: false
+----
+<1> The `default` data source auto-sets v$session.program = "my-app"
+<2> The `other` data source v$session.program not auto-set because `datasources.other.oracle.session.enabled` is set to `false`
+
+Alternatively, this configuration will set "My Program" as session name for the Oracle connection and Micronaut
+will not try to use application name for it:
+
+[configuration]
+----
+micronaut:
+  application:
+    name: my-app
+datasources:
+  default:
+    url: jdbc:oracle:thin:@localhost:1521/orcl
+    username: user
+    password: pass
+    dialect: ORACLE
+    data-source-properties:
+      v$session.program: "My Program"
+----
