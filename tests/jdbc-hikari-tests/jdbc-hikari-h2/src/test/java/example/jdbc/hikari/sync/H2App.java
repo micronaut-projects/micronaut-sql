@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @MicronautTest
 @Property(name = "datasources.default.db-type", value = "h2")
 @Property(name = "datasources.default.pool-name", value = H2App.POOL_NAME)
+@Property(name = "custom-ds-factory", value = "false")
 public class H2App extends AbstractApp {
 
     static final String POOL_NAME = "H2Pool";
