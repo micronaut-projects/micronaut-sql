@@ -23,6 +23,7 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
+import io.micronaut.jdbc.OracleSessionProgramHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,6 +66,20 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     @EachBean(DatasourceConfiguration.class)
     @Requires(condition = JdbcDataSourceEnabled.class)
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
+        try {
+            OracleSessionProgramHelper.apply(
+                    datasourceConfiguration.getName(),
+                    datasourceConfiguration.getUrl(),
+                    applicationContext.getProperty("datasources." + datasourceConfiguration.getName() + ".dialect", String.class).orElse(null),
+                    applicationContext.getEnvironment(),
+                    datasourceConfiguration::addDataSourceProperty,
+                    () -> datasourceConfiguration.getDataSourceProperties() != null && datasourceConfiguration.getDataSourceProperties().containsKey("v$session.program")
+            );
+        } catch (Exception e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
+            }
+        }
         HikariUrlDataSource ds = new HikariUrlDataSource(datasourceConfiguration);
         addMeterRegistry(ds);
         dataSources.put(datasourceConfiguration.getName(), ds);

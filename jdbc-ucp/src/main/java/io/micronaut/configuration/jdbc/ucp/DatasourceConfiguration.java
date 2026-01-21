@@ -20,9 +20,11 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.exceptions.ConfigurationException;
+import io.micronaut.context.env.Environment;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
+import io.micronaut.jdbc.OracleSessionProgramHelper;
 import jakarta.annotation.PostConstruct;
 import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
@@ -50,6 +52,10 @@ import java.util.Properties;
 @EachProperty(value = BasicJdbcConfiguration.PREFIX, primary = "default")
 @Context
 public class DatasourceConfiguration implements BasicJdbcConfiguration {
+
+    private static final String ORACLE_VSESSION_PROGRAM = "v$session.program";
+    private static final String DATASOURCES_PREFIX = "datasources.";
+
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
 
     @ConfigurationBuilder(allowZeroArgs = true, excludes = {"connectionFactoryProperties", "URL", "username", "password"})
@@ -58,15 +64,19 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     private String name;
     private String username;
     private String password;
+    private final Properties dataSourceProperties = new Properties();
+    private final Environment environment;
 
     /**
      * Constructor.
      *
      * @param name name that comes from properties
+     * @param environment The Micronaut {@link Environment}
      */
-    public DatasourceConfiguration(@Parameter String name) throws SQLException {
+    public DatasourceConfiguration(@Parameter String name, Environment environment) throws SQLException {
         super();
         this.name = name;
+        this.environment = environment;
         this.delegate.setConnectionPoolName(name);
         this.calculatedSettings = new CalculatedSettings(this);
     }
@@ -200,18 +210,11 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     @Override
     public void setDataSourceProperties(Map<String, ?> dsProperties) {
         if (dsProperties != null) {
-            Properties properties = new Properties();
             dsProperties.forEach((key, value) -> {
                 if (value != null) {
-                    properties.put(key, value.toString());
+                    dataSourceProperties.put(key, value.toString());
                 }
             });
-
-            try {
-                this.delegate.setConnectionProperties(properties);
-            } catch (SQLException e) {
-                throw new ConfigurationException("Unable to set datasource properties: " + e.getMessage(), e);
-            }
         }
     }
 
@@ -220,7 +223,6 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         return delegate.getSQLForValidateConnection();
     }
 
-
     /**
      * Configures the missing properties of the data source from the calculated settings.
      *
@@ -228,13 +230,24 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
      */
     @PostConstruct
     public void initialize() {
+        initializeDriverClassName();
+        initializeUrl();
+        initializeValidationQuery();
+        initializeUsername();
+        initializePassword();
+        initializeDataSourceProperties();
+    }
+
+    private void initializeDriverClassName() {
         if (StringUtils.isEmpty(getConfiguredDriverClassName()) && !StringUtils.isEmpty(getDriverClassName())) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Configuring calculated driver class name: {}", getDriverClassName());
             }
             setDriverClassName(getDriverClassName());
         }
+    }
 
+    private void initializeUrl() {
         if (StringUtils.isEmpty(getConfiguredUrl())) {
             String url = null;
             try {
@@ -252,7 +265,9 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
                 setUrl(url);
             }
         }
+    }
 
+    private void initializeValidationQuery() {
         if (StringUtils.isEmpty(getConfiguredValidationQuery())) {
             String validationQuery = null;
             try {
@@ -270,19 +285,47 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
                 setValidationQuery(validationQuery);
             }
         }
+    }
 
+    private void initializeUsername() {
         if (StringUtils.isEmpty(getConfiguredUsername()) && !StringUtils.isEmpty(calculatedSettings.getUsername())) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Configuring calculated username: {}", calculatedSettings.getUsername());
             }
             setUsername(calculatedSettings.getUsername());
         }
+    }
 
+    private void initializePassword() {
         if (StringUtils.isEmpty(getConfiguredPassword())) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Configuring calculated password: *****");
             }
             setPassword(getPassword());
+        }
+    }
+
+    private void initializeDataSourceProperties() {
+        try {
+            OracleSessionProgramHelper.apply(
+                getName(),
+                getConfiguredUrl(),
+                environment.getProperty(DATASOURCES_PREFIX + getName() + ".dialect", String.class).orElse(null),
+                environment,
+                dataSourceProperties::put,
+                () -> dataSourceProperties.containsKey(ORACLE_VSESSION_PROGRAM)
+            );
+        } catch (Exception e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
+            }
+        }
+        if (!dataSourceProperties.isEmpty()) {
+            try {
+                this.delegate.setConnectionProperties(dataSourceProperties);
+            } catch (SQLException e) {
+                throw new ConfigurationException("Unable to set datasource properties: " + e.getMessage(), e);
+            }
         }
     }
 }
