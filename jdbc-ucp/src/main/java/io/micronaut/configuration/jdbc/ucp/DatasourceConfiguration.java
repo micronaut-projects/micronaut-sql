@@ -64,15 +64,15 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     private String name;
     private String username;
     private String password;
-    private Properties dataSourceProperties = new Properties();
+    private final Properties dataSourceProperties = new Properties();
+    private final Environment environment;
 
     /**
      * Constructor.
      *
      * @param name name that comes from properties
+     * @param environment The Micronaut {@link Environment}
      */
-    private final Environment environment;
-
     public DatasourceConfiguration(@Parameter String name, Environment environment) throws SQLException {
         super();
         this.name = name;
@@ -230,13 +230,24 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
      */
     @PostConstruct
     public void initialize() {
+        initializeDriverClassName();
+        initializeUrl();
+        initializeValidationQuery();
+        initializeUsername();
+        initializePassword();
+        initializeDataSourceProperties();
+    }
+
+    private void initializeDriverClassName() {
         if (StringUtils.isEmpty(getConfiguredDriverClassName()) && !StringUtils.isEmpty(getDriverClassName())) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Configuring calculated driver class name: {}", getDriverClassName());
             }
             setDriverClassName(getDriverClassName());
         }
+    }
 
+    private void initializeUrl() {
         if (StringUtils.isEmpty(getConfiguredUrl())) {
             String url = null;
             try {
@@ -254,7 +265,9 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
                 setUrl(url);
             }
         }
+    }
 
+    private void initializeValidationQuery() {
         if (StringUtils.isEmpty(getConfiguredValidationQuery())) {
             String validationQuery = null;
             try {
@@ -272,29 +285,35 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
                 setValidationQuery(validationQuery);
             }
         }
+    }
 
+    private void initializeUsername() {
         if (StringUtils.isEmpty(getConfiguredUsername()) && !StringUtils.isEmpty(calculatedSettings.getUsername())) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Configuring calculated username: {}", calculatedSettings.getUsername());
             }
             setUsername(calculatedSettings.getUsername());
         }
+    }
 
+    private void initializePassword() {
         if (StringUtils.isEmpty(getConfiguredPassword())) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Configuring calculated password: *****");
             }
             setPassword(getPassword());
         }
+    }
 
+    private void initializeDataSourceProperties() {
         try {
             OracleSessionProgramHelper.apply(
-                    getName(),
-                    getConfiguredUrl(),
-                    environment.getProperty(DATASOURCES_PREFIX + getName() + ".dialect", String.class).orElse(null),
-                    environment,
-                    (k, v) -> dataSourceProperties.put(k, v),
-                    () -> dataSourceProperties.containsKey(ORACLE_VSESSION_PROGRAM)
+                getName(),
+                getConfiguredUrl(),
+                environment.getProperty(DATASOURCES_PREFIX + getName() + ".dialect", String.class).orElse(null),
+                environment,
+                dataSourceProperties::put,
+                () -> dataSourceProperties.containsKey(ORACLE_VSESSION_PROGRAM)
             );
         } catch (Exception e) {
             if (LOG.isDebugEnabled()) {
@@ -309,5 +328,4 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
             }
         }
     }
-
 }
