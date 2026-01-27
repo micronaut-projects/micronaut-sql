@@ -7,7 +7,7 @@ micronaut-test-resources = "3.0.0-M3"
 
 # Platform dependencies
 micronaut-cache = "6.0.0-M1"
-micronaut-data = "4.14.2"
+micronaut-data = "4.14.3"
 micronaut-hibernate-validator = "4.8.0"
 micronaut-logging = "1.7.1"
 micronaut-micrometer = "5.13.2"
