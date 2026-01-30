@@ -6,7 +6,7 @@ micronaut-gradle-plugin = "4.6.1"
 micronaut-test-resources = "3.0.0-M4"
 
 # Platform dependencies
-micronaut-cache = "6.0.0-M1"
+micronaut-cache = "6.0.0-M2"
 micronaut-data = "4.14.3"
 micronaut-hibernate-validator = "4.8.0"
 micronaut-logging = "1.7.1"
