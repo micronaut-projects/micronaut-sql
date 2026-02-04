@@ -15,6 +15,7 @@
  */
 package io.micronaut.configuration.jdbc.ucp
 
+import io.micronaut.configuration.jdbc.ucp.metadata.OracleUcpDataSourcePoolMetadata
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource
@@ -40,6 +41,7 @@ class DatasourceConfigurationSpec extends Specification {
         expect: "No beans are created"
         !applicationContext.containsBean(PoolDataSource)
         !applicationContext.containsBean(DatasourceConfiguration)
+        !applicationContext.containsBean(OracleUcpDataSourcePoolMetadata)
 
         cleanup:
         applicationContext.close()
@@ -65,6 +67,7 @@ class DatasourceConfigurationSpec extends Specification {
         expect:
         applicationContext.containsBean(PoolDataSource)
         applicationContext.containsBean(DatasourceConfiguration)
+        applicationContext.containsBean(OracleUcpDataSourcePoolMetadata)
 
         when:
         PoolDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
@@ -94,6 +97,7 @@ class DatasourceConfigurationSpec extends Specification {
         expect:
         applicationContext.containsBean(PoolDataSource)
         applicationContext.containsBean(DatasourceConfiguration)
+        applicationContext.containsBean(OracleUcpDataSourcePoolMetadata)
 
         when:
         PoolDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
@@ -179,6 +183,11 @@ class DatasourceConfigurationSpec extends Specification {
         when:
         applicationContext.getBean(DataSource, Qualifiers.byName('default'))
 
+        then:
+        thrown(NoSuchBeanException)
+
+        when:
+        applicationContext.getBean(OracleUcpDataSourcePoolMetadata, Qualifiers.byName('default'))
         then:
         thrown(NoSuchBeanException)
 
@@ -361,6 +370,47 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.getInactiveConnectionTimeout() == 10
         dataSource.getConnectionWaitDuration() == Duration.ofSeconds(10)
         dataSource.getLoginTimeout() == 20
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    void "test multiple datasources metadata props"() {
+        given:
+        String context = UUID.randomUUID().toString()
+        ApplicationContext applicationContext = new DefaultApplicationContext(context)
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                context,
+                [
+                        'datasources.default.initialPoolSize'          : 5,
+                        'datasources.default.minPoolSize'              : 5,
+                        'datasources.default.maxPoolSize'              : 20,
+
+                        'datasources.person.initialPoolSize'           : 1,
+                        'datasources.person.minPoolSize'               : 1,
+                        'datasources.person.maxPoolSize'               : 10,
+                ]
+        ))
+        applicationContext.start()
+
+        def metadataDefault = applicationContext.getBean(OracleUcpDataSourcePoolMetadata, Qualifiers.byName("default"))
+        def metadataPerson = applicationContext.getBean(OracleUcpDataSourcePoolMetadata, Qualifiers.byName("person"))
+
+        expect:
+        verifyAll {
+            applicationContext.getBeansOfType(DataSource).size() == 2
+            applicationContext.getBeansOfType(DatasourceConfiguration).size() == 2
+
+            metadataDefault.max == 20
+            metadataDefault.min == 5
+            metadataDefault.active == 0
+            metadataDefault.idle >= 0
+
+            metadataPerson.max == 10
+            metadataPerson.min == 1
+            metadataPerson.active == 0
+            metadataPerson.idle >= 0
+        }
 
         cleanup:
         applicationContext.close()
