@@ -58,7 +58,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
 <li><a href="#constructor-detail" tabindex="0">Constructor Details</a>
 <ol class="toc-list">
-<li><a href="#%3Cinit%3E(oracle.ucp.admin.UniversalConnectionPoolManager)" tabindex="0">ConnectionPoolManagerListener(UniversalConnectionPoolManager)</a></li>
+<li><a href="#%3Cinit%3E(oracle.ucp.admin.UniversalConnectionPoolManager,io.micronaut.jdbc.DataSourceResolver)" tabindex="0">ConnectionPoolManagerListener(UniversalConnectionPoolManager, DataSourceResolver)</a></li>
 </ol>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
@@ -118,7 +118,8 @@ implements io.micronaut.context.event.BeanCreatedEventListener&lt;<a href="https
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(oracle.ucp.admin.UniversalConnectionPoolManager)" class="member-name-link">ConnectionPoolManagerListener</a><wbr>(oracle.ucp.admin.UniversalConnectionPoolManager&nbsp;connectionPoolManager)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(oracle.ucp.admin.UniversalConnectionPoolManager,io.micronaut.jdbc.DataSourceResolver)" class="member-name-link">ConnectionPoolManagerListener</a><wbr>(oracle.ucp.admin.UniversalConnectionPoolManager&nbsp;connectionPoolManager,
+ @Nullable <a href="../../../jdbc/DataSourceResolver.html" title="interface in io.micronaut.jdbc">DataSourceResolver</a>&nbsp;dataSourceResolver)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -158,10 +159,12 @@ implements io.micronaut.context.event.BeanCreatedEventListener&lt;<a href="https
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(oracle.ucp.admin.UniversalConnectionPoolManager)">
+<section class="detail" id="&lt;init&gt;(oracle.ucp.admin.UniversalConnectionPoolManager,io.micronaut.jdbc.DataSourceResolver)">
 <h3>ConnectionPoolManagerListener</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ConnectionPoolManagerListener</span><wbr><span class="parameters">(oracle.ucp.admin.UniversalConnectionPoolManager&nbsp;connectionPoolManager)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ConnectionPoolManagerListener</span><wbr><span class="parameters">(oracle.ucp.admin.UniversalConnectionPoolManager&nbsp;connectionPoolManager,
+ @Nullable
+ @Nullable <a href="../../../jdbc/DataSourceResolver.html" title="interface in io.micronaut.jdbc">DataSourceResolver</a>&nbsp;dataSourceResolver)</span></div>
 </div>
 </section>
 </li>

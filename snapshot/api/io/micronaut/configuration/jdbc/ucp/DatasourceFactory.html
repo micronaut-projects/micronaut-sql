@@ -59,12 +59,13 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
 <li><a href="#constructor-detail" tabindex="0">Constructor Details</a>
 <ol class="toc-list">
-<li><a href="#%3Cinit%3E(io.micronaut.context.ApplicationContext)" tabindex="0">DatasourceFactory(ApplicationContext)</a></li>
+<li><a href="#%3Cinit%3E(io.micronaut.jdbc.DataSourceResolver,io.micronaut.context.ApplicationContext)" tabindex="0">DatasourceFactory(DataSourceResolver, ApplicationContext)</a></li>
 </ol>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#dataSource(io.micronaut.configuration.jdbc.ucp.DatasourceConfiguration)" tabindex="0">dataSource(DatasourceConfiguration)</a></li>
+<li><a href="#ucpDataSourcePoolMetadata(javax.sql.DataSource)" tabindex="0">ucpDataSourcePoolMetadata(DataSource)</a></li>
 <li><a href="#close()" tabindex="0">close()</a></li>
 <li><a href="#dataSourceCredentialsChanged(java.lang.String,io.micronaut.jdbc.BaseDatasourceFactory.DataSourceCredentials)" tabindex="0">dataSourceCredentialsChanged(String, BaseDatasourceFactory.DataSourceCredentials)</a></li>
 </ol>
@@ -135,7 +136,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(io.micronaut.context.ApplicationContext)" class="member-name-link">DatasourceFactory</a><wbr>(io.micronaut.context.ApplicationContext&nbsp;applicationContext)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(io.micronaut.jdbc.DataSourceResolver,io.micronaut.context.ApplicationContext)" class="member-name-link">DatasourceFactory</a><wbr>(@Nullable <a href="../../../jdbc/DataSourceResolver.html" title="interface in io.micronaut.jdbc">DataSourceResolver</a>&nbsp;dataSourceResolver,
+ io.micronaut.context.ApplicationContext&nbsp;applicationContext)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Default constructor.</div>
 </div>
@@ -167,6 +169,11 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Called when the datasource credentials have changed.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="metadata/OracleUcpDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.ucp.metadata">OracleUcpDataSourcePoolMetadata</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ucpDataSourcePoolMetadata(javax.sql.DataSource)" class="member-name-link">ucpDataSourcePoolMetadata</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link">DataSource</a>&nbsp;dataSource)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Method to create a metadata object that allows pool value lookup for each datasource object.</div>
+</div>
 </div>
 </div>
 </div>
@@ -191,13 +198,15 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(io.micronaut.context.ApplicationContext)">
+<section class="detail" id="&lt;init&gt;(io.micronaut.jdbc.DataSourceResolver,io.micronaut.context.ApplicationContext)">
 <h3>DatasourceFactory</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DatasourceFactory</span><wbr><span class="parameters">(io.micronaut.context.ApplicationContext&nbsp;applicationContext)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DatasourceFactory</span><wbr><span class="parameters">(@Nullable <a href="../../../jdbc/DataSourceResolver.html" title="interface in io.micronaut.jdbc">DataSourceResolver</a>&nbsp;dataSourceResolver,
+ io.micronaut.context.ApplicationContext&nbsp;applicationContext)</span></div>
 <div class="block">Default constructor.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>dataSourceResolver</code> - The data source resolver</dd>
 <dd><code>applicationContext</code> - The application context</dd>
 </dl>
 </div>
@@ -225,6 +234,23 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <dd><code>datasourceConfiguration</code> - A <a href="DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp"><code>DatasourceConfiguration</code></a></dd>
 <dt>Returns:</dt>
 <dd>A <code>PoolDataSource</code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ucpDataSourcePoolMetadata(javax.sql.DataSource)">
+<h3>ucpDataSourcePoolMetadata</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="annotations">@EachBean(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link">DataSource</a>.class)
+@Requires(beans=<a href="DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceConfiguration</a>.class)
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="metadata/OracleUcpDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.ucp.metadata">OracleUcpDataSourcePoolMetadata</a></span>&nbsp;<span class="element-name">ucpDataSourcePoolMetadata</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link">DataSource</a>&nbsp;dataSource)</span></div>
+<div class="block">Method to create a metadata object that allows pool value lookup for each datasource object.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataSource</code> - The actual datasource</dd>
+<dt>Returns:</dt>
+<dd>a <a href="metadata/OracleUcpDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.ucp.metadata"><code>OracleUcpDataSourcePoolMetadata</code></a></dd>
 </dl>
 </div>
 </section>
