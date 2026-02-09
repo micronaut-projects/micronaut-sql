@@ -15,6 +15,7 @@
  */
 package io.micronaut.configuration.jdbc.ucp;
 
+import io.micronaut.configuration.jdbc.ucp.metadata.OracleUcpDataSourcePoolMetadata;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
@@ -22,14 +23,17 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.exceptions.NoSuchBeanException;
 import io.micronaut.jdbc.BaseDatasourceFactory;
+import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
 import oracle.ucp.jdbc.PoolDataSource;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.annotation.PreDestroy;
 
+import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -48,13 +52,16 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
 
     private final Map<String, PoolDataSource> dataSources = new LinkedHashMap<>(2);
     private UniversalConnectionPoolManager connectionPoolManager;
+    private final DataSourceResolver dataSourceResolver;
 
     /**
      * Default constructor.
      *
+     * @param dataSourceResolver The data source resolver
      * @param applicationContext The application context
      */
-    public DatasourceFactory(ApplicationContext applicationContext) {
+    public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
+                             ApplicationContext applicationContext) {
         super(applicationContext);
         this.configuration = applicationContext.getBean(UniversalConnectionPoolManagerConfiguration.class);
         try {
@@ -62,6 +69,7 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         } catch (NoSuchBeanException e) {
             // no-op
         }
+        this.dataSourceResolver = dataSourceResolver == null ? DataSourceResolver.DEFAULT : dataSourceResolver;
     }
 
     /**
@@ -78,6 +86,23 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         dataSources.put(datasourceConfiguration.getName(), ds);
 
         return ds;
+    }
+
+    /**
+     * Method to create a metadata object that allows pool value lookup for each datasource object.
+     *
+     * @param dataSource The actual datasource
+     * @return a {@link OracleUcpDataSourcePoolMetadata}
+     */
+    @EachBean(DataSource.class)
+    @Requires(beans = {DatasourceConfiguration.class})
+    public OracleUcpDataSourcePoolMetadata ucpDataSourcePoolMetadata(DataSource dataSource) {
+        OracleUcpDataSourcePoolMetadata ucpDataSourcePoolMetadata = null;
+
+        if (dataSourceResolver.resolve(dataSource) instanceof PoolDataSource resolved) {
+            ucpDataSourcePoolMetadata = new OracleUcpDataSourcePoolMetadata(resolved, connectionPoolManager);
+        }
+        return ucpDataSourcePoolMetadata;
     }
 
     @Override
