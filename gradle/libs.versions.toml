@@ -14,7 +14,7 @@ micronaut-micrometer = "5.13.2"
 micronaut-r2dbc = "7.0.0"
 micronaut-reactor = "4.0.0-M1"
 micronaut-serde = "3.0.0-M2"
-micronaut-spring = "5.12.0"
+micronaut-spring = "5.12.1"
 micronaut-test = "5.0.0-M6"
 micronaut-validation = "5.0.0-M1"
 
