@@ -1,11 +1,11 @@
 package example.hibernate.reactive;
 
 import io.micronaut.context.annotation.EachBean;
+import io.micronaut.data.connection.reactive.DefaultReactiveConnectionStatus;
 import org.jspecify.annotations.NonNull;
 import io.micronaut.data.connection.ConnectionDefinition;
 import io.micronaut.data.connection.ConnectionStatus;
 import io.micronaut.data.connection.DefaultConnectionDefinition;
-import io.micronaut.data.connection.support.DefaultConnectionStatus;
 import io.micronaut.transaction.TransactionDefinition;
 import io.micronaut.transaction.reactive.ReactiveTransactionOperations;
 import io.micronaut.transaction.reactive.ReactiveTransactionStatus;
@@ -36,7 +36,7 @@ public class TxManager implements ReactiveTransactionOperations<Stage.Session> {
 
                         @Override
                         public @NonNull ConnectionStatus<Stage.Session> getConnectionStatus() {
-                            return new DefaultConnectionStatus<>(session, new DefaultConnectionDefinition(ConnectionDefinition.Propagation.REQUIRED), true);
+                            return new DefaultReactiveConnectionStatus<>(session, new DefaultConnectionDefinition(ConnectionDefinition.Propagation.REQUIRED), null, false);
                         }
 
                         @Override
@@ -69,5 +69,11 @@ public class TxManager implements ReactiveTransactionOperations<Stage.Session> {
                 throw new RuntimeException(e);
             }
         }));
+    }
+
+    @Override
+    public boolean managesTransaction(@NonNull ReactiveTransactionStatus<Stage.Session> transactionStatus) {
+        // TODO: How to check this
+        return false;
     }
 }
