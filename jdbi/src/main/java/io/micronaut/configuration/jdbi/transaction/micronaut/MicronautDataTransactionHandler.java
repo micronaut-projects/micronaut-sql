@@ -77,7 +77,7 @@ public class MicronautDataTransactionHandler implements TransactionHandler {
     }
 
     @Override
-    public <R, X extends Exception> R inTransaction(Handle handle, TransactionIsolationLevel level, HandleCallback<R, X> callback) throws X {
+    public <R, X extends Exception> R inTransaction(Handle handle, TransactionIsolationLevel level, HandleCallback<R, X> callback) {
         DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition(TransactionDefinition.Propagation.REQUIRED);
         transactionDefinition.setIsolationLevel(switch (level) {
             case NONE, UNKNOWN -> TransactionDefinition.Isolation.DEFAULT;
@@ -121,7 +121,7 @@ public class MicronautDataTransactionHandler implements TransactionHandler {
     }
 
     private DefaultTransactionStatus<Connection> getRequiredTxStatus() {
-        return transactionManager.findTransactionStatus()
+        return transactionManager.findTransactionStatusInternal()
             .orElseThrow(() -> new IllegalStateException("No transaction status found"));
     }
 
