@@ -30,27 +30,6 @@ import javax.sql.DataSource
 
 class TxDslContextSpec extends Specification {
 
-    @jakarta.inject.Singleton
-    static class TxWrapper {
-        private final DSLContext db
-
-        TxWrapper(DSLContext db) {
-            this.db = db
-        }
-
-        @io.micronaut.transaction.annotation.Transactional
-        int simpleSelect() {
-            return db.selectOne().fetchSingle(0, Integer)
-        }
-
-        @io.micronaut.transaction.annotation.Transactional
-        void deleteAllAndThrow() {
-            db.execute("DELETE FROM foo;")
-            def count = db.fetchCount(DSL.table("foo"))
-            throw new RuntimeException("count=" + count)
-        }
-    }
-
     void "test no configuration"() {
         given:
         ApplicationContext applicationContext = new DefaultApplicationContext("test")
@@ -118,8 +97,10 @@ class TxDslContextSpec extends Specification {
                 ['datasources.default': [:]]
         ))
         applicationContext.start()
-        TxWrapper wrapper = applicationContext.getBean(TxWrapper)
-        int result = wrapper.simpleSelect()
+        DSLContext db = applicationContext.getBean(DSLContext)
+        int result = db.transactionResult((TransactionalCallable<Integer>) { conf ->
+            return db.selectOne().fetchSingle(0, Integer)
+        })
 
         expect:
         result == 1
@@ -136,14 +117,18 @@ class TxDslContextSpec extends Specification {
                 ['datasources.default': [:]]
         ))
         applicationContext.start()
-        TxWrapper wrapper = applicationContext.getBean(TxWrapper)
+        DSLContext db = applicationContext.getBean(DSLContext)
         TxTestService service = applicationContext.getBean(TxTestService)
 
         expect:
         service.count() == 1
 
         when:
-        wrapper.deleteAllAndThrow()
+        db.transaction((TransactionalRunnable) { conf ->
+            DSL.using(conf).execute("DELETE FROM foo;")
+            def count = DSL.using(conf).fetchCount(DSL.table("foo"))
+            throw new RuntimeException("count=" + count)
+        })
 
         then:
         RuntimeException ex = thrown()

@@ -15,6 +15,7 @@
  */
 package io.micronaut.configuration.jooq;
 
+import io.micronaut.core.propagation.PropagatedContext;
 import io.micronaut.transaction.TransactionStatus;
 import org.jooq.Transaction;
 
@@ -32,14 +33,17 @@ import java.sql.Connection;
 class MicronautTransaction implements Transaction {
 
     private final TransactionStatus<Connection> transactionStatus;
+    private final PropagatedContext.Scope propagatedContextScope;
 
     /**
      * Wrap existing {@link TransactionStatus} object with jOOQ transaction.
      *
      * @param transactionStatus The transaction status object
+     * @param propagatedContextScope The active propagated context scope for this transaction
      */
-    MicronautTransaction(TransactionStatus<Connection> transactionStatus) {
+    MicronautTransaction(TransactionStatus<Connection> transactionStatus, PropagatedContext.Scope propagatedContextScope) {
         this.transactionStatus = transactionStatus;
+        this.propagatedContextScope = propagatedContextScope;
     }
 
     /**
@@ -49,6 +53,15 @@ class MicronautTransaction implements Transaction {
      */
     public TransactionStatus<Connection> getTxStatus() {
         return this.transactionStatus;
+    }
+
+    /**
+     * Get propagated context scope associated with this transaction.
+     *
+     * @return The propagated context scope
+     */
+    public PropagatedContext.Scope getPropagatedContextScope() {
+        return propagatedContextScope;
     }
 
 }

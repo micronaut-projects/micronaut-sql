@@ -17,6 +17,7 @@ package io.micronaut.configuration.jooq;
 
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.propagation.PropagatedContext;
 import io.micronaut.transaction.TransactionDefinition;
 import io.micronaut.transaction.TransactionStatus;
 import io.micronaut.transaction.jdbc.DataSourceTransactionManager;
@@ -54,22 +55,47 @@ public class MicronautTransactionProvider implements TransactionProvider {
     public void begin(TransactionContext context) throws DataAccessException {
         TransactionDefinition definition = TransactionDefinition.DEFAULT;
         TransactionStatus<Connection> status = transactionManager.getTransaction(definition);
-        context.transaction(new MicronautTransaction(status));
+        PropagatedContext.Scope scope = PropagatedContext.getOrEmpty()
+            .plus(status.getConnectionStatus())
+            .plus(status)
+            .propagate();
+        context.transaction(new MicronautTransaction(status, scope));
     }
 
     @Override
     public void commit(TransactionContext ctx) throws DataAccessException {
-        transactionManager.commit(getTransactionStatus(ctx));
+        MicronautTransaction transaction = getMicronautTransaction(ctx);
+        try {
+            transactionManager.commit(transaction.getTxStatus());
+        } finally {
+            transaction.getPropagatedContextScope().close();
+        }
     }
 
     @Override
     public void rollback(TransactionContext ctx) throws DataAccessException {
-        transactionManager.rollback(getTransactionStatus(ctx));
+        MicronautTransaction transaction = getMicronautTransaction(ctx);
+        try {
+            transactionManager.rollback(transaction.getTxStatus());
+        } finally {
+            transaction.getPropagatedContextScope().close();
+        }
     }
 
-    private TransactionStatus<Connection> getTransactionStatus(TransactionContext ctx) {
-        MicronautTransaction transaction = (MicronautTransaction) ctx.transaction();
-        return transaction.getTxStatus();
+    /**
+     * Resolve the Micronaut transaction stored in jOOQ context and fail fast when
+     * jOOQ transaction callbacks are invoked with an unexpected transaction object.
+     *
+     * @param ctx jOOQ transaction context
+     * @return Micronaut transaction adapter
+     * @throws DataAccessException if transaction is missing or incompatible
+     */
+    private MicronautTransaction getMicronautTransaction(TransactionContext ctx) {
+        Object transaction = ctx.transaction();
+        if (!(transaction instanceof MicronautTransaction micronautTransaction)) {
+            throw new DataAccessException("Missing Micronaut transaction in jOOQ TransactionContext");
+        }
+        return micronautTransaction;
     }
 
 }
