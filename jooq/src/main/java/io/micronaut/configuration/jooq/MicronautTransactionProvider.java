@@ -26,6 +26,7 @@ import org.jooq.TransactionProvider;
 import org.jooq.exception.DataAccessException;
 
 import java.sql.Connection;
+import java.util.function.Supplier;
 
 /**
  * Allows Micronaut Transaction to be used with JOOQ.
@@ -55,9 +56,8 @@ public class MicronautTransactionProvider implements TransactionProvider {
     public void begin(TransactionContext context) throws DataAccessException {
         TransactionDefinition definition = TransactionDefinition.DEFAULT;
         TransactionStatus<Connection> status = transactionManager.getTransaction(definition);
-        PropagatedContext.Scope scope = PropagatedContext.getOrEmpty()
-            .plus(status.getConnectionStatus())
-            .plus(status)
+        PropagatedContext propagatedContext = status.propagate((Supplier<PropagatedContext>) PropagatedContext::get);
+        PropagatedContext.Scope scope = propagatedContext
             .propagate();
         context.transaction(new MicronautTransaction(status, scope));
     }
