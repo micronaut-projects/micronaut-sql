@@ -18,8 +18,13 @@ package io.micronaut.configuration.jooq;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.transaction.TransactionStatus;
+import io.micronaut.transaction.support.ExceptionUtil;
 import org.jooq.Configuration;
+import org.jooq.ContextTransactionalCallable;
 import org.jooq.DSLContext;
+import org.jooq.TransactionProvider;
+import org.jooq.TransactionalCallable;
 import org.jooq.impl.DefaultDSLContext;
 
 /**
@@ -40,7 +45,28 @@ final class DSLContextFactory {
      */
     @EachBean(Configuration.class)
     DSLContext dslContext(Configuration configuration) {
-        return new DefaultDSLContext(configuration);
+        return new DefaultDSLContext(configuration) {
+
+            @Override
+            public <T> T transactionResult(TransactionalCallable<T> transactional) {
+                return super.transactionResult(new TransactionalCallable<T>() {
+                    @Override
+                    public T run(Configuration configuration) throws Throwable {
+                        io.micronaut.transaction.TransactionStatus<?> transactionStatus = (TransactionStatus<?>) configuration.data().get(MicronautTransactionProvider.TX_KEY);
+                        if (transactionStatus != null) {
+                            return transactionStatus.propagate(() -> {
+                                try {
+                                    return transactional.run(configuration);
+                                } catch (Throwable e) {
+                                    return ExceptionUtil.sneakyThrow(e);
+                                }
+                            });
+                        }
+                        return transactional.run(configuration);
+                    }
+                });
+            }
+        };
     }
 
 }

@@ -39,6 +39,11 @@ import java.sql.Connection;
 @EachBean(DataSourceTransactionManager.class)
 public class MicronautTransactionProvider implements TransactionProvider {
 
+    /**
+     * The key to store the transaction.
+     */
+    static final String TX_KEY = "io.micronaut.transaction";
+
     private final DataSourceTransactionManager transactionManager;
 
     /**
@@ -55,6 +60,7 @@ public class MicronautTransactionProvider implements TransactionProvider {
         TransactionDefinition definition = TransactionDefinition.DEFAULT;
         TransactionStatus<Connection> status = transactionManager.getTransaction(definition);
         context.transaction(new MicronautTransaction(status));
+        context.configuration().data().put(TX_KEY, status);
     }
 
     @Override
