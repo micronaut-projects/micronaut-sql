@@ -21,9 +21,7 @@ import io.micronaut.core.annotation.Internal;
 import io.micronaut.transaction.TransactionStatus;
 import io.micronaut.transaction.support.ExceptionUtil;
 import org.jooq.Configuration;
-import org.jooq.ContextTransactionalCallable;
 import org.jooq.DSLContext;
-import org.jooq.TransactionProvider;
 import org.jooq.TransactionalCallable;
 import org.jooq.impl.DefaultDSLContext;
 
