@@ -22,7 +22,9 @@ import io.micronaut.transaction.TransactionStatus;
 import io.micronaut.transaction.support.ExceptionUtil;
 import org.jooq.Configuration;
 import org.jooq.DSLContext;
+import org.jooq.TransactionProperty;
 import org.jooq.TransactionalCallable;
+import org.jooq.TransactionalRunnable;
 import org.jooq.impl.DefaultDSLContext;
 
 /**
@@ -47,10 +49,29 @@ final class DSLContextFactory {
 
             @Override
             public <T> T transactionResult(TransactionalCallable<T> transactional) {
-                return super.transactionResult(new TransactionalCallable<T>() {
+                return super.transactionResult(propagateTransaction(transactional));
+            }
+
+            @Override
+            public <T> T transactionResult(TransactionalCallable<T> transactional, TransactionProperty... properties) {
+                return super.transactionResult(propagateTransaction(transactional), properties);
+            }
+
+            @Override
+            public void transaction(TransactionalRunnable transactional) {
+                super.transaction(propagateTransaction(transactional));
+            }
+
+            @Override
+            public void transaction(TransactionalRunnable transactional, TransactionProperty... properties) {
+                super.transaction(propagateTransaction(transactional), properties);
+            }
+
+            private <T> TransactionalCallable<T> propagateTransaction(TransactionalCallable<T> transactional) {
+                return new TransactionalCallable<>() {
                     @Override
                     public T run(Configuration configuration) throws Throwable {
-                        io.micronaut.transaction.TransactionStatus<?> transactionStatus = (TransactionStatus<?>) configuration.data().get(MicronautTransactionProvider.TX_KEY);
+                        TransactionStatus<?> transactionStatus = (TransactionStatus<?>) configuration.data().get(MicronautTransactionProvider.TX_KEY);
                         if (transactionStatus != null) {
                             return transactionStatus.propagate(() -> {
                                 try {
@@ -62,7 +83,19 @@ final class DSLContextFactory {
                         }
                         return transactional.run(configuration);
                     }
-                });
+                };
+            }
+
+            private TransactionalRunnable propagateTransaction(TransactionalRunnable transactional) {
+                return new TransactionalRunnable() {
+                    @Override
+                    public void run(Configuration configuration) throws Throwable {
+                        propagateTransaction((TransactionalCallable<Void>) innerConfiguration -> {
+                            transactional.run(innerConfiguration);
+                            return null;
+                        }).run(configuration);
+                    }
+                };
             }
         };
     }
