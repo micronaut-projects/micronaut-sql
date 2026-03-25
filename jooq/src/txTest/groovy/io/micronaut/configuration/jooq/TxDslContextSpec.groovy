@@ -21,6 +21,7 @@ import io.micronaut.context.env.MapPropertySource
 import org.jooq.Configuration
 import org.jooq.DSLContext
 import org.jooq.SQLDialect
+import org.jooq.TransactionProperty
 import org.jooq.TransactionalCallable
 import org.jooq.TransactionalRunnable
 import org.jooq.impl.DSL
@@ -152,5 +153,35 @@ class TxDslContextSpec extends Specification {
         cleanup:
         applicationContext.close()
     }
+
+    void "test transaction sql with properties"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                'test',
+                ['datasources.default': [:]]
+        ))
+        applicationContext.start()
+        DSLContext db = applicationContext.getBean(DSLContext)
+        TxTestService service = applicationContext.getBean(TxTestService)
+        TransactionProperty property = new TransactionProperty() { }
+        int countBefore = service.count()
+
+        when:
+        db.transaction((TransactionalRunnable) { conf ->
+            DSL.using(conf).execute("DELETE FROM foo;")
+            def count = DSL.using(conf).fetchCount(DSL.table("foo"))
+            throw new RuntimeException("count=" + count)
+        }, property)
+
+        then:
+        RuntimeException ex = thrown()
+        ex.message == "count=0"
+        service.count() == countBefore
+
+        cleanup:
+        applicationContext.close()
+    }
+
 
 }
