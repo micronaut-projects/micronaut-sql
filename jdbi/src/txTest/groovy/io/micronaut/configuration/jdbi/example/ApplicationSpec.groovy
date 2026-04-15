@@ -1,5 +1,6 @@
 package io.micronaut.configuration.jdbi.example
 
+import io.micronaut.configuration.jdbi.example.jdbitransaction.ExecutorTransactionIsolationService
 import io.micronaut.configuration.jdbi.example.jdbitransaction.ConcurrentTransactionsBug
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
@@ -112,6 +113,29 @@ class ApplicationSpec extends Specification {
             bugService.noTransactionOrConnectionInDefaultMethod()
         then:
             noExceptionThrown()
+
+        cleanup:
+            dbSetup.drop()
+            applicationContext.close()
+    }
+
+    def "test executor work after commit uses a separate transaction"() {
+        given:
+            ApplicationContext applicationContext = new DefaultApplicationContext("test")
+            applicationContext.environment.addPropertySource(MapPropertySource.of(
+                    'test',
+                    ['datasources.default': [:]]
+            ))
+            applicationContext.start()
+
+        when:
+            def dbSetup = applicationContext.getBean(DatabaseSetup)
+            def service = applicationContext.getBean(ExecutorTransactionIsolationService)
+            dbSetup.initialize()
+            def count = service.executeAsyncTransactionAfterCommit()
+
+        then:
+            count == 2
 
         cleanup:
             dbSetup.drop()
