@@ -1,0 +1,42 @@
+plugins {
+    id 'io.micronaut.build.internal.testing-base'
+    id 'io.micronaut.application'
+}
+
+micronaut {
+    importMicronautPlatform = false
+    runtime "netty"
+    testRuntime "junit"
+}
+
+dependencies {
+    runtimeOnly mnLogging.logback.classic
+    implementation mn.micronaut.http.client
+    implementation projects.micronautVertxPgClient
+
+    testImplementation mnTest.micronaut.test.core
+    testImplementation mnTest.micronaut.test.junit5
+
+    micronautBoms(platform(mn.micronaut.core.bom))
+    micronautBoms(platform(mnData.micronaut.data.bom))
+}
+
+application {
+    mainClass = "example.Application"
+}
+
+configurations.all {
+    resolutionStrategy.preferProjectModules()
+}
+
+graalvmNative {
+    toolchainDetection = false
+    binaries {
+        all {
+            buildArgs.add("--report-unsupported-elements-at-runtime")
+        }
+    }
+    metadataRepository {
+        enabled = true
+    }
+}
