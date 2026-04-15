@@ -60,7 +60,8 @@ abstract class AbstractJooqConfigurationFactory {
      * @return A {@link org.jooq.Configuration}
      */
     @SuppressWarnings("checkstyle:ParameterNumber")
-    protected DefaultConfiguration jooqConfiguration(
+    protected <T extends DefaultConfiguration> T configureConfiguration(
+        T configuration,
         @Parameter String name,
         @Parameter @Nullable TransactionProvider transactionProvider,
         @Parameter @Nullable Settings settings,
@@ -72,8 +73,6 @@ abstract class AbstractJooqConfigurationFactory {
         AbstractJooqConfigurationProperties properties,
         ApplicationContext ctx
     ) {
-        DefaultConfiguration configuration = new DefaultConfiguration();
-
         if (transactionProvider != null) {
             configuration.setTransactionProvider(transactionProvider);
         }

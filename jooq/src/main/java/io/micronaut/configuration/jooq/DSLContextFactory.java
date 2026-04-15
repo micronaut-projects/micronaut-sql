@@ -17,6 +17,8 @@ package io.micronaut.configuration.jooq;
 
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Parameter;
+import io.micronaut.context.annotation.Primary;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.transaction.TransactionStatus;
 import io.micronaut.transaction.support.ExceptionUtil;
@@ -43,8 +45,18 @@ final class DSLContextFactory {
      * @param configuration The {@link Configuration}
      * @return A {@link DSLContext}
      */
-    @EachBean(Configuration.class)
-    DSLContext dslContext(Configuration configuration) {
+    @EachBean(JdbcConfiguration.class)
+    DSLContext dslContext(@Parameter JdbcConfiguration configuration) {
+        return createDslContext(configuration);
+    }
+
+    @Primary
+    @EachBean(R2dbcConfiguration.class)
+    DSLContext r2dbcDslContext(@Parameter R2dbcConfiguration configuration) {
+        return createDslContext(configuration);
+    }
+
+    private DSLContext createDslContext(Configuration configuration) {
         return new DefaultDSLContext(configuration) {
 
             @Override
