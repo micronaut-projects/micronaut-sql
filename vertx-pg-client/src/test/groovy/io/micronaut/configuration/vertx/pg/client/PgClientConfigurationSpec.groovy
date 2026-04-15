@@ -22,6 +22,7 @@ import spock.lang.Specification
 
 import java.net.ConnectException
 import java.util.concurrent.ExecutionException
+import java.util.concurrent.TimeoutException
 import java.util.concurrent.TimeUnit
 
 
@@ -54,10 +55,13 @@ class PgClientConfigurationSpec extends Specification {
     }
 
     void "test vertx-pg-client connects with direct options when verify-ca trust options are configured"() {
+        given:
+        int port = findFreePort()
+
         when:
         ApplicationContext applicationContext = ApplicationContext.run(
                 'vertx.pg.client.host': 'localhost',
-                'vertx.pg.client.port': '65432',
+                'vertx.pg.client.port': port,
                 'vertx.pg.client.ssl': true,
                 'vertx.pg.client.ssl-mode': 'VERIFY_CA',
                 'vertx.pg.client.pem-trust-options.cert-paths[0]': 'certs/ca.crt'
@@ -72,9 +76,12 @@ class PgClientConfigurationSpec extends Specification {
     }
 
     void "test vertx-pg-client uri mode keeps verify-ca trust options during connect"() {
+        given:
+        int port = findFreePort()
+
         when:
         ApplicationContext applicationContext = ApplicationContext.run(
-                'vertx.pg.client.uri': 'postgresql://user:secret@localhost:65432/the-db',
+                'vertx.pg.client.uri': "postgresql://user:secret@localhost:${port}/the-db",
                 'vertx.pg.client.ssl': true,
                 'vertx.pg.client.ssl-mode': 'VERIFY_CA',
                 'vertx.pg.client.pem-trust-options.cert-paths[0]': 'certs/ca.crt'
@@ -88,12 +95,21 @@ class PgClientConfigurationSpec extends Specification {
         applicationContext?.stop()
     }
 
+    private static int findFreePort() {
+        new ServerSocket(0).withCloseable { it.localPort }
+    }
+
     private static Throwable connectFailure(Pool pool) {
         try {
             pool.getConnection().toCompletionStage().toCompletableFuture().get(5, TimeUnit.SECONDS)
             return null
         } catch (ExecutionException e) {
             return e.cause
+        } catch (TimeoutException e) {
+            return e
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt()
+            return e
         }
     }
 
@@ -104,7 +120,5 @@ class PgClientConfigurationSpec extends Specification {
         }
         current
     }
-
-
 
 }

@@ -63,7 +63,6 @@ public class PgClientConfiguration {
     }
 
     /**
-     *
      * @return The net client options for configuring the client.
      */
     public NetClientOptions getNetClientOptions() {

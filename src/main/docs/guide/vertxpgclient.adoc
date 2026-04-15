@@ -38,7 +38,7 @@ vertx:
   pg:
     client:
       ssl: true
-      ssl-mode: verify-ca
+      ssl-mode: VERIFY_CA
       pem-trust-options:
         cert-paths:
           - certs/ca.crt
