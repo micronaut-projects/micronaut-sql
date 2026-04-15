@@ -17,7 +17,12 @@ package io.micronaut.configuration.vertx.pg.client
 
 
 import io.micronaut.context.ApplicationContext
+import io.vertx.sqlclient.Pool
 import spock.lang.Specification
+
+import java.net.ConnectException
+import java.util.concurrent.ExecutionException
+import java.util.concurrent.TimeUnit
 
 
 class PgClientConfigurationSpec extends Specification {
@@ -46,6 +51,58 @@ class PgClientConfigurationSpec extends Specification {
 
         cleanup:
         applicationContext?.stop()
+    }
+
+    void "test vertx-pg-client connects with direct options when verify-ca trust options are configured"() {
+        when:
+        ApplicationContext applicationContext = ApplicationContext.run(
+                'vertx.pg.client.host': 'localhost',
+                'vertx.pg.client.port': '65432',
+                'vertx.pg.client.ssl': true,
+                'vertx.pg.client.ssl-mode': 'VERIFY_CA',
+                'vertx.pg.client.pem-trust-options.cert-paths[0]': 'certs/ca.crt'
+        )
+        Throwable failure = connectFailure(applicationContext.getBean(Pool))
+
+        then:
+        rootCause(failure) instanceof ConnectException
+
+        cleanup:
+        applicationContext?.stop()
+    }
+
+    void "test vertx-pg-client uri mode keeps verify-ca trust options during connect"() {
+        when:
+        ApplicationContext applicationContext = ApplicationContext.run(
+                'vertx.pg.client.uri': 'postgresql://user:secret@localhost:65432/the-db',
+                'vertx.pg.client.ssl': true,
+                'vertx.pg.client.ssl-mode': 'VERIFY_CA',
+                'vertx.pg.client.pem-trust-options.cert-paths[0]': 'certs/ca.crt'
+        )
+        Throwable failure = connectFailure(applicationContext.getBean(Pool))
+
+        then:
+        rootCause(failure) instanceof ConnectException
+
+        cleanup:
+        applicationContext?.stop()
+    }
+
+    private static Throwable connectFailure(Pool pool) {
+        try {
+            pool.getConnection().toCompletionStage().toCompletableFuture().get(5, TimeUnit.SECONDS)
+            return null
+        } catch (ExecutionException e) {
+            return e.cause
+        }
+    }
+
+    private static Throwable rootCause(Throwable throwable) {
+        Throwable current = throwable
+        while (current?.cause != null) {
+            current = current.cause
+        }
+        current
     }
 
 

@@ -30,6 +30,20 @@ vertx:
 
 TIP: You can also connect to PostgreSQL using `uri` instead of the other properties.
 
+When you need to trust a PostgreSQL or CockroachDB CA certificate for SSL connections, configure PEM trust certificates with `pem-trust-options`:
+
+[configuration]
+----
+vertx:
+  pg:
+    client:
+      ssl: true
+      ssl-mode: verify-ca
+      pem-trust-options:
+        cert-paths:
+          - certs/ca.crt
+----
+
 Once you have the above configuration in place then you can inject the `io.vertx.reactivex.pgclient.PgPool` bean. The following is the simplest way to connect:
 
 [source,groovy]

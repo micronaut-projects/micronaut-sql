@@ -19,7 +19,6 @@ import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import org.jspecify.annotations.Nullable;
-import io.micronaut.core.util.StringUtils;
 import io.vertx.core.Vertx;
 import io.vertx.pgclient.PgConnectOptions;
 import io.vertx.pgclient.spi.PgDriver;
@@ -34,6 +33,7 @@ import io.vertx.core.Future;
 @Factory
 public class PgClientFactory {
     private final PgClientConfiguration connectionConfiguration;
+    private final PgPemTrustOptionsConfiguration pemTrustOptionsConfiguration;
 
     /**
      * The Vert.x instance if you are running with Vert.x.
@@ -45,10 +45,14 @@ public class PgClientFactory {
      *
      * @param connectionConfiguration The Pg client configuration
      * @param vertx                   The Vert.x instance
+     * @param pemTrustOptionsConfiguration The PEM trust options configuration
      */
-    public PgClientFactory(PgClientConfiguration connectionConfiguration, @Nullable Vertx vertx) {
+    public PgClientFactory(PgClientConfiguration connectionConfiguration,
+                           @Nullable Vertx vertx,
+                           @Nullable PgPemTrustOptionsConfiguration pemTrustOptionsConfiguration) {
         this.connectionConfiguration = connectionConfiguration;
         this.vertx = vertx;
+        this.pemTrustOptionsConfiguration = pemTrustOptionsConfiguration;
     }
 
     /**
@@ -69,13 +73,8 @@ public class PgClientFactory {
      */
     private Pool createClient() {
         PgClientConfiguration configuration = this.connectionConfiguration;
-        String connectionUri = configuration.getUri();
         Vertx v = this.vertx != null ? this.vertx : Vertx.vertx();
-        if (StringUtils.isNotEmpty(connectionUri)) {
-            PgConnectOptions options = PgDriver.INSTANCE.parseConnectionUri(connectionUri);
-            return PgDriver.INSTANCE.createPool(v, () -> Future.succeededFuture(options), configuration.poolOptions, configuration.netClientOptions, null);
-        } else {
-            return PgDriver.INSTANCE.createPool(v, () -> Future.succeededFuture(configuration.connectOptions), configuration.poolOptions, configuration.netClientOptions, null);
-        }
+        PgConnectOptions options = PgConnectOptionsResolver.resolve(configuration, pemTrustOptionsConfiguration);
+        return PgDriver.INSTANCE.createPool(v, () -> Future.succeededFuture(options), configuration.poolOptions, configuration.netClientOptions, null);
     }
 }

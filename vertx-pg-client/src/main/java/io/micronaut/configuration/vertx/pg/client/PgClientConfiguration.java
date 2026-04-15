@@ -62,4 +62,12 @@ public class PgClientConfiguration {
         return poolOptions;
     }
 
+    /**
+     *
+     * @return The net client options for configuring the client.
+     */
+    public NetClientOptions getNetClientOptions() {
+        return netClientOptions;
+    }
+
 }
