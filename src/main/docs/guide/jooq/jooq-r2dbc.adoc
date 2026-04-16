@@ -1,0 +1,21 @@
+Micronaut also configures jOOQ for each named `ConnectionFactory` when R2DBC is on the classpath.
+Use the same logical data source name for both `r2dbc.datasources.*` and `jooq.r2dbc-datasources.*`.
+
+[configuration]
+----
+r2dbc:
+  datasources:
+    default:
+      db-type: postgres
+      options:
+        driver: pool
+        protocol: postgresql
+jooq:
+  r2dbc-datasources:
+    default:
+      sql-dialect: postgres
+----
+
+The `sql-dialect` setting is optional. When it is not configured, jOOQ falls back to `DEFAULT`.
+
+include::{includedir}configurationProperties/io.micronaut.configuration.jooq.R2dbcJooqConfigurationProperties.adoc[]
