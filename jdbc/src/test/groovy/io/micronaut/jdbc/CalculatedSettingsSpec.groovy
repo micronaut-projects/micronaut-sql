@@ -148,7 +148,7 @@ class CalculatedSettingsSpec extends Specification {
         url == "jdbc:sqlite:file:bar?mode=memory&cache=shared"
     }
 
-    void "test getUrl will throw an exception if its not configured and a driver can't be found"() {
+    void "test getUrl will throw an exception if its not configured and the driver is not embedded"() {
         given:
         BasicJdbcConfiguration basicConfiguration = Mock(BasicJdbcConfiguration) {
             1 * getConfiguredUrl() >> null
