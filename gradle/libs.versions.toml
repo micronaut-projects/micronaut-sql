@@ -89,6 +89,7 @@ managed-vertx-pg-client = { module = "io.vertx:vertx-pg-client", version.ref = "
 managed-vertx-mssql-client = { module = "io.vertx:vertx-mssql-client", version.ref = "managed-vertx" }
 managed-vertx-oracle-client = { module = "io.vertx:vertx-oracle-client", version.ref = "managed-vertx" }
 managed-vertx-rx-java2 = { module = "io.vertx:vertx-rx-java2", version.ref = "managed-vertx" }
+managed-vertx-rx-java3 = { module = "io.vertx:vertx-rx-java3", version.ref = "managed-vertx" }
 
 boms-jooq = { module = "org.jooq:jooq-bom", version.ref = "managed-jooq" }
 managed-jooq = { module = "org.jooq:jooq", version.ref = "managed-jooq" }

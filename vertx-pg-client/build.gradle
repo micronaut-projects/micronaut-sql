@@ -9,10 +9,12 @@ dependencies {
     implementation(libs.managed.vertx.codegen)
     implementation(mnReactor.micronaut.reactor)
 
+    compileOnly(libs.managed.vertx.rx.java3)
+
     compileOnly(mn.micronaut.management)
     runtimeOnly libs.managed.ongres.scram.client
 
     testImplementation(mn.micronaut.management)
+    testImplementation(libs.managed.vertx.rx.java3)
     testImplementation(mnTestResources.testcontainers.postgres)
 }
-
