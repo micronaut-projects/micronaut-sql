@@ -26,7 +26,6 @@ public class OwnerRepository implements IOwnerRepository {
     }
 
     @PostConstruct
-    @Transactional
     public void init() throws SQLException {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement("""

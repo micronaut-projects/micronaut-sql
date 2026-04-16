@@ -28,7 +28,6 @@ public class PetRepository implements IPetRepository {
     }
 
     @PostConstruct
-    @Transactional
     public void init() throws SQLException {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement("""
