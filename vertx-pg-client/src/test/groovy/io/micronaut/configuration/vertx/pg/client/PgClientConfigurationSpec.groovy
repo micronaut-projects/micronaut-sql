@@ -17,6 +17,7 @@ package io.micronaut.configuration.vertx.pg.client
 
 
 import io.micronaut.context.ApplicationContext
+import io.vertx.sqlclient.Pool
 import spock.lang.Specification
 
 
@@ -48,6 +49,27 @@ class PgClientConfigurationSpec extends Specification {
         applicationContext?.stop()
     }
 
+    void "test rxjava3 sql client pool bean is exposed when rxjava3 is on the classpath"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run(
+                'vertx.pg.client.port': '5432',
+                'vertx.pg.client.host': 'the-host',
+                'vertx.pg.client.database': 'the-db',
+                'vertx.pg.client.user': 'user',
+                'vertx.pg.client.password': 'secret',
+                'vertx.pg.client.maxSize': '5'
+        )
+
+        when:
+        Pool pool = applicationContext.getBean(Pool)
+
+        then:
+        applicationContext.containsBean(io.vertx.rxjava3.sqlclient.Pool)
+        applicationContext.getBean(io.vertx.rxjava3.sqlclient.Pool).delegate.is(pool)
+
+        cleanup:
+        applicationContext?.stop()
+    }
 
 
 }
