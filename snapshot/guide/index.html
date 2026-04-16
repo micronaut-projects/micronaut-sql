@@ -3086,7 +3086,7 @@ You can also connect to PostgreSQL using <code>uri</code> instead of the other p
 </table>
 </div>
 <div class="paragraph">
-<p>Once you have the above configuration in place then you can inject the <code>io.vertx.reactivex.pgclient.PgPool</code> bean. The following is the simplest way to connect:</p>
+<p>Once you have the above configuration in place then you can inject the core <code>io.vertx.sqlclient.Pool</code> bean. If <code>io.vertx:vertx-rx-java3</code> is on the classpath, Micronaut also exposes the RxJava3 <code>io.vertx.rxjava3.sqlclient.Pool</code> wrapper bean. The following is the simplest way to connect:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3104,7 +3104,7 @@ result = "Size: ${size}"</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td><code>client</code> is an instance of the <code>io.vertx.reactivex.pgclient.PgPool</code> bean.</td>
+<td><code>client</code> is an instance of the <code>io.vertx.sqlclient.Pool</code> bean.</td>
 </tr>
 </table>
 </div>
