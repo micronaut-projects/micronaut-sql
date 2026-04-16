@@ -16,6 +16,7 @@
 package io.micronaut.jdbc
 
 import io.micronaut.context.exceptions.ConfigurationException
+import org.sqlite.JDBC
 import spock.lang.Specification
 
 class CalculatedSettingsSpec extends Specification {
@@ -58,7 +59,7 @@ class CalculatedSettingsSpec extends Specification {
             1 * getUrl() >> null
         }
         URL h2Jar = this.class.classLoader.getResource("h2.jar")
-        CalculatedSettings settings = new CalculatedSettings(basicConfiguration, new URLClassLoader(h2Jar))
+        CalculatedSettings settings = new CalculatedSettings(basicConfiguration, new URLClassLoader([h2Jar] as URL[], ClassLoader.getPlatformClassLoader()))
 
         when:
         String driverClassName = settings.getDriverClassName()
@@ -75,7 +76,7 @@ class CalculatedSettingsSpec extends Specification {
             1 * getName() >> "bar"
         }
         URL mysqlJar = this.class.classLoader.getResource("mysql.jar") //mysql is not embedded
-        CalculatedSettings settings = new CalculatedSettings(basicConfiguration, new URLClassLoader(mysqlJar))
+        CalculatedSettings settings = new CalculatedSettings(basicConfiguration, new URLClassLoader([mysqlJar] as URL[], ClassLoader.getPlatformClassLoader()))
 
         when:
         settings.getDriverClassName()
@@ -106,7 +107,7 @@ class CalculatedSettingsSpec extends Specification {
             1 * getName() >> "bar"
         }
         URL h2Jar = this.class.classLoader.getResource("h2.jar")
-        CalculatedSettings settings = new CalculatedSettings(basicConfiguration, new URLClassLoader(h2Jar))
+        CalculatedSettings settings = new CalculatedSettings(basicConfiguration, new URLClassLoader([h2Jar] as URL[], ClassLoader.getPlatformClassLoader()))
 
         when:
         String url = settings.getUrl()
@@ -122,7 +123,7 @@ class CalculatedSettingsSpec extends Specification {
             1 * getName() >> null
         }
         URL h2Jar = this.class.classLoader.getResource("h2.jar")
-        CalculatedSettings settings = new CalculatedSettings(basicConfiguration, new URLClassLoader(h2Jar))
+        CalculatedSettings settings = new CalculatedSettings(basicConfiguration, new URLClassLoader([h2Jar] as URL[], ClassLoader.getPlatformClassLoader()))
 
         when:
         String url = settings.getUrl()
@@ -131,13 +132,30 @@ class CalculatedSettingsSpec extends Specification {
         url == "jdbc:h2:mem:devDb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
     }
 
+    void "test getUrl will use a sqlite shared in-memory URL when sqlite is the embedded driver"() {
+        given:
+        BasicJdbcConfiguration basicConfiguration = Mock(BasicJdbcConfiguration) {
+            1 * getConfiguredUrl() >> null
+            1 * getName() >> "bar"
+        }
+        URL sqliteJar = JDBC.protectionDomain.codeSource.location
+        CalculatedSettings settings = new CalculatedSettings(basicConfiguration, new URLClassLoader([sqliteJar] as URL[], ClassLoader.getPlatformClassLoader()))
+
+        when:
+        String url = settings.getUrl()
+
+        then:
+        url == "jdbc:sqlite:file:bar?mode=memory&cache=shared"
+    }
+
     void "test getUrl will throw an exception if its not configured and a driver can't be found"() {
         given:
         BasicJdbcConfiguration basicConfiguration = Mock(BasicJdbcConfiguration) {
             1 * getConfiguredUrl() >> null
             1 * getName() >> "bar"
         }
-        CalculatedSettings settings = new CalculatedSettings(basicConfiguration)
+        URL mysqlJar = this.class.classLoader.getResource("mysql.jar") //mysql is not embedded
+        CalculatedSettings settings = new CalculatedSettings(basicConfiguration, new URLClassLoader([mysqlJar] as URL[], ClassLoader.getPlatformClassLoader()))
 
         when:
         settings.getUrl()
@@ -180,6 +198,20 @@ class CalculatedSettingsSpec extends Specification {
         "org.hsqldb.jdbc.JDBCDriver"           | _
     }
 
+    void "test getUsername returns null if the embedded driver does not use credentials"() {
+        BasicJdbcConfiguration basicConfiguration = Mock(BasicJdbcConfiguration) {
+            1 * getConfiguredUsername() >> null
+            1 * getDriverClassName() >> "org.sqlite.JDBC"
+        }
+        CalculatedSettings settings = new CalculatedSettings(basicConfiguration)
+
+        when:
+        String username = settings.getUsername()
+
+        then:
+        username == null
+    }
+
     void "test getPassword returns the configured password"() {
         BasicJdbcConfiguration basicConfiguration = Mock(BasicJdbcConfiguration) {
             1 * getConfiguredPassword() >> "pw"
@@ -213,6 +245,20 @@ class CalculatedSettingsSpec extends Specification {
         "org.hsqldb.jdbc.JDBCDriver"           | _
     }
 
+    void "test getPassword returns null if the embedded driver does not use credentials"() {
+        BasicJdbcConfiguration basicConfiguration = Mock(BasicJdbcConfiguration) {
+            1 * getConfiguredPassword() >> null
+            1 * getDriverClassName() >> "org.sqlite.JDBC"
+        }
+        CalculatedSettings settings = new CalculatedSettings(basicConfiguration)
+
+        when:
+        String password = settings.getPassword()
+
+        then:
+        password == null
+    }
+
     void "test getValidationQuery returns the configured value"() {
         BasicJdbcConfiguration basicConfiguration = Mock(BasicJdbcConfiguration) {
             1 * getConfiguredValidationQuery() >> "x"
@@ -244,5 +290,6 @@ class CalculatedSettingsSpec extends Specification {
         "jdbc:as400:x"   | "SELECT 1 FROM SYSIBM.SYSDUMMY1"
         "jdbc:mariadb:x" | "SELECT 1"
         "jdbc:oracle:x"  | "SELECT 1 FROM DUAL"
+        "jdbc:sqlite:x"  | "SELECT 1"
     }
 }

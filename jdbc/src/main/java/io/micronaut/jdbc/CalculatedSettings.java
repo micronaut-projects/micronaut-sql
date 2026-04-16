@@ -124,8 +124,10 @@ public class CalculatedSettings {
         final String username = basicJdbcConfiguration.getConfiguredUsername();
         if (calculatedUsername == null || StringUtils.hasText(username)) {
             calculatedUsername = username;
-            if (!StringUtils.hasText(calculatedUsername) && JdbcDatabaseManager.isEmbedded(basicJdbcConfiguration.getDriverClassName())) {
-                calculatedUsername = "sa";
+            if (!StringUtils.hasText(calculatedUsername)) {
+                calculatedUsername = JdbcDatabaseManager.findEmbeddedDatabase(basicJdbcConfiguration.getDriverClassName())
+                    .map(JdbcDatabaseManager.EmbeddedJdbcDatabase::getDefaultUsername)
+                    .orElse(null);
             }
         }
 
@@ -143,8 +145,10 @@ public class CalculatedSettings {
         final String password = basicJdbcConfiguration.getConfiguredPassword();
         if (calculatedPassword == null || StringUtils.hasText(password)) {
             calculatedPassword = password;
-            if (!StringUtils.hasText(calculatedPassword) && JdbcDatabaseManager.isEmbedded(basicJdbcConfiguration.getDriverClassName())) {
-                calculatedPassword = "";
+            if (!StringUtils.hasText(calculatedPassword)) {
+                calculatedPassword = JdbcDatabaseManager.findEmbeddedDatabase(basicJdbcConfiguration.getDriverClassName())
+                    .map(JdbcDatabaseManager.EmbeddedJdbcDatabase::getDefaultPassword)
+                    .orElse(null);
             }
         }
 
