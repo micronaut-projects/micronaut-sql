@@ -7,6 +7,7 @@ import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,20 +28,18 @@ public class PetRepository implements IPetRepository {
     }
 
     @PostConstruct
-    public void init() throws SQLException {
-        runInit();
-    }
-
     @Transactional
-    public void runInit() throws SQLException {
-        PreparedStatement stmt = dataSource.getConnection().prepareStatement("""
-            CREATE TABLE IF NOT EXISTS pets (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name VARCHAR(200) NOT NULL,
-                type VARCHAR(200),
-                owner INTEGER
-            )""");
-        stmt.executeUpdate();
+    public void init() throws SQLException {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("""
+                 CREATE TABLE IF NOT EXISTS pets (
+                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     name VARCHAR(200) NOT NULL,
+                     type VARCHAR(200),
+                     owner INTEGER NOT NULL
+                 )""")) {
+            stmt.executeUpdate();
+        }
     }
 
     @Override
@@ -51,16 +50,17 @@ public class PetRepository implements IPetRepository {
     @Transactional(Transactional.TxType.MANDATORY)
     @Override
     public void save(IPet pet) {
-        try {
-            PreparedStatement stmt = dataSource.getConnection().prepareStatement("INSERT INTO pets (name, type, owner) VALUES (?, ?, ?)",
-                new String[]{"id"});
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO pets (name, type, owner) VALUES (?, ?, ?)",
+                 new String[]{"id"})) {
             stmt.setString(1, pet.getName());
             stmt.setString(2, pet.getType() != null ? pet.getType().name() : null);
             stmt.setLong(3, pet.getOwner().getId());
             stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
-            if (rs.next()) {
-                pet.setId(rs.getLong(1));
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    pet.setId(rs.getLong(1));
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Failed to insert pet", e);
@@ -70,8 +70,8 @@ public class PetRepository implements IPetRepository {
     @Transactional(Transactional.TxType.MANDATORY)
     @Override
     public void delete(IPet pet) {
-        try {
-            PreparedStatement stmt = dataSource.getConnection().prepareStatement("DELETE FROM pets WHERE id = ?");
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("DELETE FROM pets WHERE id = ?")) {
             stmt.setLong(1, pet.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -81,9 +81,9 @@ public class PetRepository implements IPetRepository {
 
     @Override
     public Collection<IPet> findAll() {
-        try {
-            PreparedStatement stmt = dataSource.getConnection().prepareStatement("SELECT id, name, type, owner FROM pets");
-            ResultSet rs = stmt.executeQuery();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT id, name, type, owner FROM pets");
+             ResultSet rs = stmt.executeQuery()) {
             List<IPet> resultList = new ArrayList<>();
             while (rs.next()) {
                 resultList.add(map(rs));
@@ -96,12 +96,13 @@ public class PetRepository implements IPetRepository {
 
     @Override
     public Optional<IPet> findByName(String name) {
-        try {
-            PreparedStatement stmt = dataSource.getConnection().prepareStatement("SELECT id, name, type, owner FROM pets WHERE name = ?");
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT id, name, type, owner FROM pets WHERE name = ?")) {
             stmt.setString(1, name);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return Optional.of(map(rs));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(map(rs));
+                }
             }
             return Optional.empty();
         } catch (SQLException e) {

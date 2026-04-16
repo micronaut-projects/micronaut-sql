@@ -7,6 +7,7 @@ import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,19 +26,17 @@ public class OwnerRepository implements IOwnerRepository {
     }
 
     @PostConstruct
-    public void init() throws SQLException {
-        runInit();
-    }
-
     @Transactional
-    public void runInit() throws SQLException {
-        PreparedStatement stmt = dataSource.getConnection().prepareStatement("""
-            CREATE TABLE IF NOT EXISTS owners (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name VARCHAR(200) NOT NULL,
-                age INTEGER NOT NULL
-            )""");
-        stmt.executeUpdate();
+    public void init() throws SQLException {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("""
+                 CREATE TABLE IF NOT EXISTS owners (
+                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     name VARCHAR(200) NOT NULL,
+                     age INTEGER NOT NULL
+                 )""")) {
+            stmt.executeUpdate();
+        }
     }
 
     @Override
@@ -48,15 +47,16 @@ public class OwnerRepository implements IOwnerRepository {
     @Transactional(Transactional.TxType.MANDATORY)
     @Override
     public void save(IOwner owner) {
-        try {
-            PreparedStatement stmt = dataSource.getConnection().prepareStatement("INSERT INTO owners (name, age) VALUES (?, ?)",
-                new String[]{"id"});
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO owners (name, age) VALUES (?, ?)",
+                 new String[]{"id"})) {
             stmt.setString(1, owner.getName());
             stmt.setInt(2, owner.getAge());
             stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
-            if (rs.next()) {
-                owner.setId(rs.getLong(1));
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    owner.setId(rs.getLong(1));
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Failed to insert owner", e);
@@ -66,8 +66,8 @@ public class OwnerRepository implements IOwnerRepository {
     @Transactional(Transactional.TxType.MANDATORY)
     @Override
     public void delete(IOwner owner) {
-        try {
-            PreparedStatement stmt = dataSource.getConnection().prepareStatement("DELETE FROM owners WHERE id = ?");
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("DELETE FROM owners WHERE id = ?")) {
             stmt.setLong(1, owner.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -77,12 +77,13 @@ public class OwnerRepository implements IOwnerRepository {
 
     @Override
     public IOwner findById(Long id) {
-        try {
-            PreparedStatement stmt = dataSource.getConnection().prepareStatement("SELECT * FROM owners WHERE id = ?");
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM owners WHERE id = ?")) {
             stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return map(rs);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return map(rs);
+                }
             }
             return null;
         } catch (SQLException e) {
@@ -92,9 +93,9 @@ public class OwnerRepository implements IOwnerRepository {
 
     @Override
     public Collection<IOwner> findAll() {
-        try {
-            PreparedStatement stmt = dataSource.getConnection().prepareStatement("SELECT * FROM owners");
-            ResultSet rs = stmt.executeQuery();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM owners");
+             ResultSet rs = stmt.executeQuery()) {
             List<IOwner> resultList = new ArrayList<>();
             while (rs.next()) {
                 resultList.add(map(rs));
@@ -107,12 +108,13 @@ public class OwnerRepository implements IOwnerRepository {
 
     @Override
     public Optional<IOwner> findByName(String name) {
-        try {
-            PreparedStatement stmt = dataSource.getConnection().prepareStatement("SELECT * FROM owners WHERE name = ?");
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM owners WHERE name = ?")) {
             stmt.setString(1, name);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return Optional.of(map(rs));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(map(rs));
+                }
             }
             return Optional.empty();
         } catch (SQLException e) {
