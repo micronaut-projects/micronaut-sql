@@ -137,6 +137,4 @@ class PgClientConfigurationSpec extends Specification {
     private static int findFreePort() {
         new ServerSocket(0).withCloseable { it.localPort }
     }
-
 }
-
