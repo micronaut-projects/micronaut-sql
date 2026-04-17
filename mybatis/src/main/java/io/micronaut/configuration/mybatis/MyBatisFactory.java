@@ -35,7 +35,7 @@ import javax.sql.DataSource;
  * Configures MyBatis beans from Micronaut {@link DataSource} beans.
  *
  * @author Graeme Rocher
- * @since 7.0.0
+ * @since 6.0.0
  */
 @Factory
 public class MyBatisFactory {

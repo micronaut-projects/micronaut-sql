@@ -22,7 +22,7 @@ import org.apache.ibatis.session.Configuration;
  * Customizers may be annotated with {@link jakarta.inject.Named} to target a specific datasource.
  *
  * @author Graeme Rocher
- * @since 7.0.0
+ * @since 6.0.0
  */
 public interface MyBatisConfigurationCustomizer {
 
