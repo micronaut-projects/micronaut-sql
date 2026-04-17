@@ -139,13 +139,15 @@
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-jooq"><a href="#jooq"><strong>7</strong><span>Configuring jOOQ</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-dialect"><a href="#jooq-dialect"><strong>7.1</strong><span>Configuring SQL dialect</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-r2dbc"><a href="#jooq-r2dbc"><strong>7.1</strong><span>Configuring R2DBC connection factories</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-provider-beans"><a href="#jooq-provider-beans"><strong>7.2</strong><span>Configuring additional provider beans</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-dialect"><a href="#jooq-dialect"><strong>7.2</strong><span>Configuring SQL dialect</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-jsonb"><a href="#jooq-jsonb"><strong>7.3</strong><span>Using JsonMapper to convert JSON(B) types</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-provider-beans"><a href="#jooq-provider-beans"><strong>7.3</strong><span>Configuring additional provider beans</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-graalvm"><a href="#jooq-graalvm"><strong>7.4</strong><span>GraalVM native image</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-jsonb"><a href="#jooq-jsonb"><strong>7.4</strong><span>Using JsonMapper to convert JSON(B) types</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-graalvm"><a href="#jooq-graalvm"><strong>7.5</strong><span>GraalVM native image</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-jdbi"><a href="#jdbi"><strong>8</strong><span>Configuring Jdbi</span></a></div>
         
@@ -2454,8 +2456,8 @@ jasync.client.maxActiveConnections=5</code></pre>
 </p>
 </div>
 <div class="paragraph">
-<p>You should then <a href="#jdbc">configure one or many DataSources</a>.
-For each registered <code>DataSource</code>, Micronaut will configure the following jOOQ beans using <a href="../api/io/micronaut/configuration/jooq/JooqConfigurationFactory.html">JooqConfigurationFactory</a>:</p>
+<p>You should then either <a href="#jdbc">configure one or many DataSources</a> or <a href="#jooq-r2dbc">configure one or many R2DBC ConnectionFactory instances</a>.
+For each registered <code>DataSource</code> or <code>ConnectionFactory</code>, Micronaut will configure the following jOOQ beans using <a href="../api/io/micronaut/configuration/jooq/JooqConfigurationFactory.html">JooqConfigurationFactory</a> or <a href="../api/io/micronaut/configuration/jooq/R2dbcJooqConfigurationFactory.html">R2dbcJooqConfigurationFactory</a>:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2481,7 +2483,168 @@ For each registered <code>DataSource</code>, Micronaut will configure the follow
 </ul>
 </div>
 
-<h2 id="jooq-dialect"><a class="anchor" href="#jooq-dialect"></a>7.1 Configuring SQL dialect</h2>
+<h2 id="jooq-r2dbc"><a class="anchor" href="#jooq-r2dbc"></a>7.1 Configuring R2DBC connection factories</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jooq/jooq-r2dbc.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Micronaut also configures jOOQ for each named <code>ConnectionFactory</code> when R2DBC is on the classpath.
+Use the same logical data source name for both <code>r2dbc.datasources.<strong></code> and <code>jooq.r2dbc-datasources.</strong></code>.</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">r2dbc.datasources.default.db-type=postgres
+r2dbc.datasources.default.options.driver=pool
+r2dbc.datasources.default.options.protocol=postgresql
+jooq.r2dbc-datasources.default.sql-dialect=postgres</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">r2dbc:
+  datasources:
+    default:
+      db-type: postgres
+      options:
+        driver: pool
+        protocol: postgresql
+jooq:
+  r2dbc-datasources:
+    default:
+      sql-dialect: postgres</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[r2dbc]
+  [r2dbc.datasources]
+    [r2dbc.datasources.default]
+      db-type="postgres"
+      [r2dbc.datasources.default.options]
+        driver="pool"
+        protocol="postgresql"
+[jooq]
+  [jooq.r2dbc-datasources]
+    [jooq.r2dbc-datasources.default]
+      sql-dialect="postgres"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">r2dbc {
+  datasources {
+    'default' {
+      dbType = "postgres"
+      options {
+        driver = "pool"
+        protocol = "postgresql"
+      }
+    }
+  }
+}
+jooq {
+  r2dbcDatasources {
+    'default' {
+      sqlDialect = "postgres"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  r2dbc {
+    datasources {
+      default {
+        db-type = "postgres"
+        options {
+          driver = "pool"
+          protocol = "postgresql"
+        }
+      }
+    }
+  }
+  jooq {
+    r2dbc-datasources {
+      default {
+        sql-dialect = "postgres"
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "r2dbc": {
+    "datasources": {
+      "default": {
+        "db-type": "postgres",
+        "options": {
+          "driver": "pool",
+          "protocol": "postgresql"
+        }
+      }
+    }
+  },
+  "jooq": {
+    "r2dbc-datasources": {
+      "default": {
+        "sql-dialect": "postgres"
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>sql-dialect</code> setting is optional. When it is not configured, jOOQ falls back to <code>DEFAULT</code>.</p>
+</div>
+<a id="io.micronaut.configuration.jooq.R2dbcJooqConfigurationProperties" href="#io.micronaut.configuration.jooq.R2dbcJooqConfigurationProperties">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/configuration/jooq/R2dbcJooqConfigurationProperties.html">R2dbcJooqConfigurationProperties</a></caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jooq.r2dbc-datasources.*.sql-dialect</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">org.jooq.SQLDialect</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SQL dialect to use. Will be detected automatically by default.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jooq.r2dbc-datasources.*.json-converter-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set if enable {@link JsonConverterProvider} bean to use Jackson for JSON and JSONB types.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="jooq-dialect"><a class="anchor" href="#jooq-dialect"></a>7.2 Configuring SQL dialect</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jooq/jooq-dialect.adoc"'>
@@ -2560,7 +2723,7 @@ For each registered <code>DataSource</code>, Micronaut will configure the follow
 </div>
 </div>
 
-<h2 id="jooq-provider-beans"><a class="anchor" href="#jooq-provider-beans"></a>7.2 Configuring additional provider beans</h2>
+<h2 id="jooq-provider-beans"><a class="anchor" href="#jooq-provider-beans"></a>7.3 Configuring additional provider beans</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jooq/jooq-provider-beans.adoc"'>
@@ -2620,7 +2783,7 @@ Only beans with the same name qualifier as the data source name will be used.</p
 </ul>
 </div>
 
-<h2 id="jooq-jsonb"><a class="anchor" href="#jooq-jsonb"></a>7.3 Using JsonMapper to convert JSON(B) types</h2>
+<h2 id="jooq-jsonb"><a class="anchor" href="#jooq-jsonb"></a>7.4 Using JsonMapper to convert JSON(B) types</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jooq/jooq-jsonb.adoc"'>
@@ -2642,7 +2805,7 @@ Only beans with the same name qualifier as the data source name will be used.</p
 </div>
 </div>
 
-<h2 id="jooq-graalvm"><a class="anchor" href="#jooq-graalvm"></a>7.4 GraalVM native image</h2>
+<h2 id="jooq-graalvm"><a class="anchor" href="#jooq-graalvm"></a>7.5 GraalVM native image</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jooq/jooq-graalvm.adoc"'>
