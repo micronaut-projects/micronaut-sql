@@ -17,7 +17,7 @@
  * Configuration for MyBatis integration.
  *
  * @author Graeme Rocher
- * @since 6.0.0
+ * @since 7.0.0
  */
 @Configuration
 @Requires(classes = SqlSessionFactory.class)
