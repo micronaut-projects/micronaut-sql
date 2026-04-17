@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -195,20 +196,23 @@ public class DriverManagerDataSource implements DataSource {
     @Override
     public void setLoginTimeout(int seconds) {
         Integer configuredTimeout = CONFIGURED_LOGIN_TIMEOUT.get();
+        if (configuredTimeout == null && CONFIGURED_LOGIN_TIMEOUT.compareAndSet(null, seconds)) {
+            DriverManager.setLoginTimeout(seconds);
+            return;
+        }
+        configuredTimeout = CONFIGURED_LOGIN_TIMEOUT.get();
         if (configuredTimeout == null) {
-            if (CONFIGURED_LOGIN_TIMEOUT.compareAndSet(null, seconds)) {
-                DriverManager.setLoginTimeout(seconds);
-            } else {
-                setLoginTimeout(seconds);
-            }
             return;
         }
         if (configuredTimeout == seconds) {
-            LOGGER.info("DriverManager login timeout already configured to " + seconds + " seconds; repeated call from datasource '" + name + "' ignored.");
+            LOGGER.log(Level.INFO,
+                "DriverManager login timeout already configured to {0} seconds; repeated call from datasource ''{1}'' ignored.",
+                new Object[]{seconds, name});
             return;
         }
-        LOGGER.warning("Ignoring loginTimeout " + seconds + " for datasource '" + name
-            + "' because DriverManager login timeout is a JVM-global setting and is already set to " + configuredTimeout + ".");
+        LOGGER.log(Level.WARNING,
+            "Ignoring loginTimeout {0} for datasource ''{1}'' because DriverManager login timeout is a JVM-global setting and is already set to {2}.",
+            new Object[]{seconds, name, configuredTimeout});
     }
 
     @Override
@@ -218,6 +222,9 @@ public class DriverManagerDataSource implements DataSource {
 
     @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        if (StringUtils.isEmpty(url)) {
+            throw new SQLFeatureNotSupportedException("Unable to resolve parent logger for JDBC driver because JDBC URL is not configured");
+        }
         try {
             return DriverManager.getDriver(url).getParentLogger();
         } catch (SQLException e) {
