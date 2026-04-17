@@ -58,6 +58,8 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#getUrl(java.lang.String)" tabindex="0">getUrl(String)</a></li>
+<li><a href="#getDefaultUsername()" tabindex="0">getDefaultUsername()</a></li>
+<li><a href="#getDefaultPassword()" tabindex="0">getDefaultPassword()</a></li>
 <li><a href="#isEmbedded()" tabindex="0">isEmbedded()</a></li>
 </ol>
 </li>
@@ -105,6 +107,12 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDefaultPassword()" class="member-name-link">getDefaultPassword</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDefaultUsername()" class="member-name-link">getDefaultUsername</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUrl(java.lang.String)" class="member-name-link">getUrl</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Obtain an embedded database URL for the given database name.</div>
@@ -143,6 +151,30 @@ loadScripts(document, 'script');</script>
 <dd><code>databaseName</code> - The database name</dd>
 <dt>Returns:</dt>
 <dd>The URL</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getDefaultUsername()">
+<h3>getDefaultUsername</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDefaultUsername</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>The default username, or <code>null</code> if the driver does not use one</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getDefaultPassword()">
+<h3>getDefaultPassword</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDefaultPassword</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>The default password, or <code>null</code> if the driver does not use one</dd>
 </dl>
 </div>
 </section>

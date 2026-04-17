@@ -349,6 +349,30 @@
 </div>
 </p>
 </div>
+<div class="paragraph">
+<p>To use SQLite, add the Xerial JDBC driver:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">runtimeOnly(<span class="hljs-string">"org.xerial:sqlite-jdbc")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;org.xerial&lt;/groupId&gt;
+    &lt;artifactId&gt;sqlite-jdbc&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>When the SQLite driver is present, Micronaut can automatically configure an embedded shared in-memory datasource for <code>db-type: sqlite</code> if you do not provide an explicit JDBC URL.</p>
+</div>
 
 <h2 id="jdbc-disable"><a class="anchor" href="#jdbc-disable"></a>4.1 Disable Micronaut JDBC Data Sources</h2>
 

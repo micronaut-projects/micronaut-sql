@@ -66,6 +66,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#findDatabase(java.lang.String)" tabindex="0">findDatabase(String)</a></li>
 <li><a href="#get(java.lang.ClassLoader)" tabindex="0">get(ClassLoader)</a></li>
 <li><a href="#isEmbedded(java.lang.String)" tabindex="0">isEmbedded(String)</a></li>
+<li><a href="#findEmbeddedDatabase(java.lang.String)" tabindex="0">findEmbeddedDatabase(String)</a></li>
 </ol>
 </li>
 </ol>
@@ -147,13 +148,18 @@ validation query.</div>
 <div class="block">Searches defined database where the URL prefix matches one of the prefixes defined in a <a href="JdbcDatabaseManager.JdbcDatabase.html" title="class in io.micronaut.jdbc"><code>JdbcDatabaseManager.JdbcDatabase</code></a>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a><wbr>&lt;<a href="JdbcDatabaseManager.EmbeddedJdbcDatabase.html" title="class in io.micronaut.jdbc">JdbcDatabaseManager.EmbeddedJdbcDatabase</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#get(java.lang.ClassLoader)" class="member-name-link">get</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/ClassLoader.html" title="class or interface in java.lang" class="external-link">ClassLoader</a>&nbsp;classLoader)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#findEmbeddedDatabase(java.lang.String)" class="member-name-link">findEmbeddedDatabase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;driverClassName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Searches embedded databases where the driver matches the argument.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a><wbr>&lt;<a href="JdbcDatabaseManager.EmbeddedJdbcDatabase.html" title="class in io.micronaut.jdbc">JdbcDatabaseManager.EmbeddedJdbcDatabase</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#get(java.lang.ClassLoader)" class="member-name-link">get</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/ClassLoader.html" title="class or interface in java.lang" class="external-link">ClassLoader</a>&nbsp;classLoader)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Searches the provided classloader for an embedded database driver.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isEmbedded(java.lang.String)" class="member-name-link">isEmbedded</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;driverClassName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isEmbedded(java.lang.String)" class="member-name-link">isEmbedded</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;driverClassName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Searches embedded databases where the driver matches the argument.</div>
 </div>
 </div>
@@ -233,6 +239,21 @@ jdbc:prefix:...</div>
 <dd><code>driverClassName</code> - The driver class name to search on</dd>
 <dt>Returns:</dt>
 <dd>True if the driver matches an embedded database type</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="findEmbeddedDatabase(java.lang.String)">
+<h3>findEmbeddedDatabase</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="JdbcDatabaseManager.EmbeddedJdbcDatabase.html" title="class in io.micronaut.jdbc">JdbcDatabaseManager.EmbeddedJdbcDatabase</a>&gt;</span>&nbsp;<span class="element-name">findEmbeddedDatabase</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;driverClassName)</span></div>
+<div class="block">Searches embedded databases where the driver matches the argument.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>driverClassName</code> - The driver class name to search on</dd>
+<dt>Returns:</dt>
+<dd>An optional embedded database definition</dd>
 </dl>
 </div>
 </section>
