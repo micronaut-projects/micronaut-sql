@@ -18,6 +18,7 @@ package io.micronaut.configuration.vertx.pg.client;
 import io.micronaut.core.util.StringUtils;
 import io.vertx.core.net.ClientSSLOptions;
 import io.vertx.pgclient.PgConnectOptions;
+import io.vertx.pgclient.SslMode;
 import io.vertx.pgclient.spi.PgDriver;
 import org.jspecify.annotations.Nullable;
 
@@ -43,9 +44,18 @@ final class PgConnectOptionsResolver {
      */
     static PgConnectOptions resolve(PgClientConfiguration configuration, @Nullable PgPemTrustOptionsConfiguration pemTrustOptionsConfiguration) {
         String connectionUri = configuration.getUri();
-        PgConnectOptions connectOptions = StringUtils.isNotEmpty(connectionUri)
-            ? Objects.requireNonNull(PgDriver.INSTANCE.parseConnectionUri(connectionUri))
-            : new PgConnectOptions(configuration.getConnectOptions());
+        PgConnectOptions connectOptions;
+        if (StringUtils.isNotEmpty(connectionUri)) {
+            connectOptions = Objects.requireNonNull(PgDriver.INSTANCE.parseConnectionUri(connectionUri));
+            // When using URI mode, also propagate SSL mode from property config if explicitly configured
+            PgConnectOptions propertyOptions = configuration.getConnectOptions();
+            SslMode sslMode = propertyOptions.getSslMode();
+            if (sslMode != PgConnectOptions.DEFAULT_SSLMODE) {
+                connectOptions.setSslMode(sslMode);
+            }
+        } else {
+            connectOptions = new PgConnectOptions(configuration.getConnectOptions());
+        }
         applyPemTrustOptions(connectOptions, pemTrustOptionsConfiguration);
         return connectOptions;
     }

@@ -17,13 +17,11 @@ package io.micronaut.configuration.vertx.pg.client
 
 
 import io.micronaut.context.ApplicationContext
+import io.vertx.core.net.PemTrustOptions
+import io.vertx.pgclient.PgConnectOptions
+import io.vertx.pgclient.SslMode
 import io.vertx.sqlclient.Pool
 import spock.lang.Specification
-
-import java.net.ConnectException
-import java.util.concurrent.ExecutionException
-import java.util.concurrent.TimeoutException
-import java.util.concurrent.TimeUnit
 
 
 class PgClientConfigurationSpec extends Specification {
@@ -54,6 +52,28 @@ class PgClientConfigurationSpec extends Specification {
         applicationContext?.stop()
     }
 
+    void "test rxjava3 sql client pool bean is exposed when rxjava3 is on the classpath"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run(
+                'vertx.pg.client.port': '5432',
+                'vertx.pg.client.host': 'the-host',
+                'vertx.pg.client.database': 'the-db',
+                'vertx.pg.client.user': 'user',
+                'vertx.pg.client.password': 'secret',
+                'vertx.pg.client.maxSize': '5'
+        )
+
+        when:
+        Pool pool = applicationContext.getBean(Pool)
+
+        then:
+        applicationContext.containsBean(io.vertx.rxjava3.sqlclient.Pool)
+        applicationContext.getBean(io.vertx.rxjava3.sqlclient.Pool).delegate.is(pool)
+
+        cleanup:
+        applicationContext?.stop()
+    }
+
     void "test vertx-pg-client connects with direct options when verify-ca trust options are configured"() {
         given:
         int port = findFreePort()
@@ -66,10 +86,18 @@ class PgClientConfigurationSpec extends Specification {
                 'vertx.pg.client.ssl-mode': 'VERIFY_CA',
                 'vertx.pg.client.pem-trust-options.cert-paths[0]': 'certs/ca.crt'
         )
-        Throwable failure = connectFailure(applicationContext.getBean(Pool))
+        PgConnectOptions options = PgConnectOptionsResolver.resolve(
+                applicationContext.getBean(PgClientConfiguration),
+                applicationContext.getBean(PgPemTrustOptionsConfiguration)
+        )
+        PemTrustOptions trustOptions = (PemTrustOptions) options.sslOptions.trustOptions
 
         then:
-        rootCause(failure) instanceof ConnectException
+        options.host == 'localhost'
+        options.port == port
+        options.sslMode == SslMode.VERIFY_CA
+        options.sslOptions != null
+        trustOptions.certPaths == ['certs/ca.crt']
 
         cleanup:
         applicationContext?.stop()
@@ -86,10 +114,21 @@ class PgClientConfigurationSpec extends Specification {
                 'vertx.pg.client.ssl-mode': 'VERIFY_CA',
                 'vertx.pg.client.pem-trust-options.cert-paths[0]': 'certs/ca.crt'
         )
-        Throwable failure = connectFailure(applicationContext.getBean(Pool))
+        PgConnectOptions options = PgConnectOptionsResolver.resolve(
+                applicationContext.getBean(PgClientConfiguration),
+                applicationContext.getBean(PgPemTrustOptionsConfiguration)
+        )
+        PemTrustOptions trustOptions = (PemTrustOptions) options.sslOptions.trustOptions
 
         then:
-        rootCause(failure) instanceof ConnectException
+        options.host == 'localhost'
+        options.port == port
+        options.database == 'the-db'
+        options.user == 'user'
+        options.password == 'secret'
+        options.sslMode == SslMode.VERIFY_CA
+        options.sslOptions != null
+        trustOptions.certPaths == ['certs/ca.crt']
 
         cleanup:
         applicationContext?.stop()
@@ -99,26 +138,5 @@ class PgClientConfigurationSpec extends Specification {
         new ServerSocket(0).withCloseable { it.localPort }
     }
 
-    private static Throwable connectFailure(Pool pool) {
-        try {
-            pool.getConnection().toCompletionStage().toCompletableFuture().get(5, TimeUnit.SECONDS)
-            return null
-        } catch (ExecutionException e) {
-            return e.cause
-        } catch (TimeoutException e) {
-            return e
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt()
-            return e
-        }
-    }
-
-    private static Throwable rootCause(Throwable throwable) {
-        Throwable current = throwable
-        while (current?.cause != null) {
-            current = current.cause
-        }
-        current
-    }
-
 }
+

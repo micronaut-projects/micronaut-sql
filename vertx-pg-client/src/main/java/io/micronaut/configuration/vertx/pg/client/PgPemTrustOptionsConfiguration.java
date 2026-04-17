@@ -27,7 +27,7 @@ import java.util.List;
  * This configuration maps the {@code vertx.pg.client.pem-trust-options} namespace and allows
  * specifying certificate files that should be trusted for SSL connections.
  *
- * @since 6.7.0
+ * @since 7.0.0
  */
 @ConfigurationProperties(PgClientSettings.PREFIX + ".pem-trust-options")
 final class PgPemTrustOptionsConfiguration {

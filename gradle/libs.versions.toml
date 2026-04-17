@@ -15,13 +15,13 @@ micronaut-r2dbc = "7.0.1-M1"
 micronaut-reactor = "4.0.0-M2"
 micronaut-serde = "3.0.0-M6"
 micronaut-spring = "6.0.0-M1"
-micronaut-test = "5.0.0-M7"
+micronaut-test = "5.0.0-M8"
 micronaut-validation = "5.0.0-M1"
 
 # Frameworks
 
 managed-vertx = "5.0.10"
-managed-jooq = "3.21.1"
+managed-jooq = "3.21.2"
 managed-hibernate = "7.3.1.Final"
 managed-hibernate-reactive = "4.3.2.Final"
 managed-jasync = "2.2.4"
@@ -37,6 +37,7 @@ managed-mariadb-driver = "3.5.8"
 managed-mssql-driver = "13.4.0.jre11"
 managed-mysql-driver = "8.0.33"
 managed-mysql-connector-j = "9.6.0"
+managed-sqlite-jdbc = "3.53.0.0"
 
 # JDBC Pools
 
@@ -89,6 +90,7 @@ managed-vertx-pg-client = { module = "io.vertx:vertx-pg-client", version.ref = "
 managed-vertx-mssql-client = { module = "io.vertx:vertx-mssql-client", version.ref = "managed-vertx" }
 managed-vertx-oracle-client = { module = "io.vertx:vertx-oracle-client", version.ref = "managed-vertx" }
 managed-vertx-rx-java2 = { module = "io.vertx:vertx-rx-java2", version.ref = "managed-vertx" }
+managed-vertx-rx-java3 = { module = "io.vertx:vertx-rx-java3", version.ref = "managed-vertx" }
 
 boms-jooq = { module = "org.jooq:jooq-bom", version.ref = "managed-jooq" }
 managed-jooq = { module = "org.jooq:jooq", version.ref = "managed-jooq" }
@@ -132,6 +134,7 @@ managed-mariadb-java-client = { module = "org.mariadb.jdbc:mariadb-java-client",
 managed-mssql-jdbc = { module = "com.microsoft.sqlserver:mssql-jdbc", version.ref = "managed-mssql-driver" }
 managed-mysql-connector-java = { module = "mysql:mysql-connector-java", version.ref = "managed-mysql-driver" }
 managed-mysql-connector-j = { module = "com.mysql:mysql-connector-j", version.ref = "managed-mysql-connector-j" }
+managed-sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "managed-sqlite-jdbc" }
 
 managed-ojdbc8 = { module = "com.oracle.database.jdbc:ojdbc8", version.ref = "managed-ojdbc" }
 managed-ojdbc11 = { module = "com.oracle.database.jdbc:ojdbc11", version.ref = "managed-ojdbc" }
