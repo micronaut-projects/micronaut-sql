@@ -38,12 +38,12 @@ public class JdbcDatabaseManager {
         databases.add(new EmbeddedJdbcDatabase("org.h2.Driver", "h2", "jdbc:h2:mem:%s;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"));
         databases.add(new EmbeddedJdbcDatabase("org.apache.derby.jdbc.EmbeddedDriver", "SELECT 1 FROM SYSIBM.SYSDUMMY1", new String[]{"derby"}, "jdbc:derby:memory:%s;create=true"));
         databases.add(new EmbeddedJdbcDatabase("org.hsqldb.jdbc.JDBCDriver", "select 1 from INFORMATION_SCHEMA.SYSTEM_USERS", new String[]{"hsqldb"}, "jdbc:hsqldb:mem:%s"));
+        databases.add(new EmbeddedJdbcDatabase("org.sqlite.JDBC", "sqlite", "jdbc:sqlite:file:%s?mode=memory&cache=shared", null, null));
 
         databases.add(new JdbcDatabase("com.mysql.cj.jdbc.Driver", "mysql"));
         databases.add(new JdbcDatabase("oracle.jdbc.OracleDriver", "SELECT 1 FROM DUAL", new String[]{"oracle"}));
         databases.add(new JdbcDatabase("org.postgresql.Driver", "postgresql"));
         databases.add(new JdbcDatabase("com.microsoft.sqlserver.jdbc.SQLServerDriver", "sqlserver"));
-        databases.add(new JdbcDatabase("org.sqlite.JDBC", "sqlite"));
         databases.add(new JdbcDatabase("org.mariadb.jdbc.Driver", "mariadb"));
         databases.add(new JdbcDatabase("com.google.appengine.api.rdbms.AppEngineDriver", "gae"));
         databases.add(new JdbcDatabase("net.sourceforge.jtds.jdbc.Driver", "jtds"));
@@ -103,6 +103,21 @@ public class JdbcDatabaseManager {
             .stream()
             .filter(JdbcDatabase::isEmbedded)
             .anyMatch(db -> db.driverClassName.equals(driverClassName));
+    }
+
+    /**
+     * Searches embedded databases where the driver matches the argument.
+     *
+     * @param driverClassName The driver class name to search on
+     * @return An optional embedded database definition
+     */
+    public static Optional<EmbeddedJdbcDatabase> findEmbeddedDatabase(String driverClassName) {
+        return databases
+            .stream()
+            .filter(JdbcDatabase::isEmbedded)
+            .map(EmbeddedJdbcDatabase.class::cast)
+            .filter(db -> db.getDriverClassName().equals(driverClassName))
+            .findFirst();
     }
 
     /**
@@ -180,6 +195,8 @@ public class JdbcDatabaseManager {
 
         private String defaultUrl;
         private String defaultName = "devDb";
+        private String defaultUsername = "sa";
+        private String defaultPassword = "";
 
         /**
          * @param driverClassName The jdbc driver class name
@@ -213,6 +230,19 @@ public class JdbcDatabaseManager {
         }
 
         /**
+         * @param driverClassName The jdbc driver class name
+         * @param urlPrefix       The url prefix
+         * @param defaultUrl      The default url
+         * @param defaultUsername The default username
+         * @param defaultPassword The default password
+         */
+        EmbeddedJdbcDatabase(String driverClassName, String urlPrefix, String defaultUrl, String defaultUsername, String defaultPassword) {
+            this(driverClassName, urlPrefix, defaultUrl);
+            this.defaultUsername = defaultUsername;
+            this.defaultPassword = defaultPassword;
+        }
+
+        /**
          * Obtain an embedded database URL for the given database name.
          *
          * @param databaseName The database name
@@ -223,6 +253,20 @@ public class JdbcDatabaseManager {
                 databaseName = defaultName;
             }
             return String.format(this.defaultUrl, databaseName);
+        }
+
+        /**
+         * @return The default username, or {@code null} if the driver does not use one
+         */
+        public String getDefaultUsername() {
+            return defaultUsername;
+        }
+
+        /**
+         * @return The default password, or {@code null} if the driver does not use one
+         */
+        public String getDefaultPassword() {
+            return defaultPassword;
         }
 
         @Override
