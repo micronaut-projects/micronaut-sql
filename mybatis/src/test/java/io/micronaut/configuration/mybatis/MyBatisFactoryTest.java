@@ -103,7 +103,6 @@ class MyBatisFactoryTest {
              Statement statement = connection.createStatement()) {
             statement.execute("CREATE TABLE foo(id INT PRIMARY KEY)");
             statement.execute("INSERT INTO foo(id) VALUES(1)");
-            connection.commit();
         }
     }
 }
