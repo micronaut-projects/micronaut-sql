@@ -52,7 +52,7 @@ public class MyBatisFactory {
     @EachBean(DataSource.class)
     public Configuration myBatisConfiguration(
         @Parameter String name,
-        DataSource dataSource,
+        @Parameter DataSource dataSource,
         @Parameter @Nullable TransactionFactory transactionFactory,
         ApplicationContext applicationContext
     ) {
