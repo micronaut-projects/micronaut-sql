@@ -29,16 +29,19 @@ public class PetRepository implements IPetRepository {
 
     @PostConstruct
     public void init() throws SQLException {
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("""
-                 CREATE TABLE IF NOT EXISTS pets (
-                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                     name VARCHAR(200) NOT NULL,
-                     type VARCHAR(200),
-                     owner INTEGER NOT NULL
-                 )""")) {
-            stmt.executeUpdate();
-        }
+        runInit();
+    }
+
+    @Transactional
+    public void runInit() throws SQLException {
+        PreparedStatement stmt = dataSource.getConnection().prepareStatement("""
+            CREATE TABLE IF NOT EXISTS pets (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name VARCHAR(200) NOT NULL,
+                type VARCHAR(200),
+                owner INTEGER NOT NULL
+            )""");
+        stmt.executeUpdate();
     }
 
     @Override

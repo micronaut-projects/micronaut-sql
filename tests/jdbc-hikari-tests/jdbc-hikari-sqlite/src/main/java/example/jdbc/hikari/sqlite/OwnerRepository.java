@@ -27,15 +27,18 @@ public class OwnerRepository implements IOwnerRepository {
 
     @PostConstruct
     public void init() throws SQLException {
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("""
-                 CREATE TABLE IF NOT EXISTS owners (
-                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                     name VARCHAR(200) NOT NULL,
-                     age INTEGER NOT NULL
-                 )""")) {
-            stmt.executeUpdate();
-        }
+        runInit();
+    }
+
+    @Transactional
+    public void runInit() throws SQLException {
+        PreparedStatement stmt = dataSource.getConnection().prepareStatement("""
+            CREATE TABLE IF NOT EXISTS owners (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name VARCHAR(200) NOT NULL,
+                age INTEGER NOT NULL
+            )""");
+        stmt.executeUpdate();
     }
 
     @Override
