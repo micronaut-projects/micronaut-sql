@@ -42,7 +42,6 @@ include 'jooq'
 include 'vertx-mysql-client'
 include 'vertx-pg-client'
 include 'jdbi'
-include 'mybatis'
 
 include 'tests:common'
 include 'tests:common-reactive'

@@ -1,8 +1,2 @@
-This project includes modules to support SQL database access in Micronaut.
+This project includes modules to support SQL Database access in Micronaut.
 
-Available integrations include:
-
-* JDBC connection pool integrations for Apache DBCP2, HikariCP, Tomcat JDBC, and Oracle UCP
-* ORM integrations for Hibernate ORM and Hibernate Reactive
-* Query and mapper integrations for Jdbi, jOOQ, and MyBatis
-* Reactive SQL client integrations for Vert.x MySQL and PostgreSQL clients
