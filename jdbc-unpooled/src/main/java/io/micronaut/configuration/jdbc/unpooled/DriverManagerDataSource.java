@@ -27,6 +27,7 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 /**
@@ -38,6 +39,7 @@ import java.util.logging.Logger;
 public class DriverManagerDataSource implements DataSource {
 
     private static final Logger LOGGER = Logger.getLogger(DriverManagerDataSource.class.getName());
+    private static final AtomicReference<Integer> CONFIGURED_LOGIN_TIMEOUT = new AtomicReference<>();
 
     private final String name;
     private final Properties dataSourceProperties = new Properties();
@@ -162,6 +164,14 @@ public class DriverManagerDataSource implements DataSource {
         dataSourceProperties.setProperty(key, value);
     }
 
+    /**
+     * @param key The property name
+     * @return Whether the configured datasource properties contain the given key
+     */
+    public boolean hasDataSourceProperty(String key) {
+        return dataSourceProperties.containsKey(key);
+    }
+
     @Override
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url, buildConnectionProperties(username, password));
@@ -184,7 +194,21 @@ public class DriverManagerDataSource implements DataSource {
 
     @Override
     public void setLoginTimeout(int seconds) {
-        DriverManager.setLoginTimeout(seconds);
+        Integer configuredTimeout = CONFIGURED_LOGIN_TIMEOUT.get();
+        if (configuredTimeout == null) {
+            if (CONFIGURED_LOGIN_TIMEOUT.compareAndSet(null, seconds)) {
+                DriverManager.setLoginTimeout(seconds);
+            } else {
+                setLoginTimeout(seconds);
+            }
+            return;
+        }
+        if (configuredTimeout == seconds) {
+            LOGGER.info("DriverManager login timeout already configured to " + seconds + " seconds; repeated call from datasource '" + name + "' ignored.");
+            return;
+        }
+        LOGGER.warning("Ignoring loginTimeout " + seconds + " for datasource '" + name
+            + "' because DriverManager login timeout is a JVM-global setting and is already set to " + configuredTimeout + ".");
     }
 
     @Override
@@ -194,7 +218,14 @@ public class DriverManagerDataSource implements DataSource {
 
     @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-        return LOGGER;
+        try {
+            return DriverManager.getDriver(url).getParentLogger();
+        } catch (SQLException e) {
+            SQLFeatureNotSupportedException exception =
+                new SQLFeatureNotSupportedException("Unable to resolve parent logger for JDBC driver");
+            exception.initCause(e);
+            throw exception;
+        }
     }
 
     @Override

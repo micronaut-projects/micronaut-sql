@@ -27,8 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Creates an unpooled datasource for each datasource configuration.
@@ -41,7 +41,7 @@ public class DatasourceFactory extends BaseDatasourceFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
 
-    private final Map<String, DriverManagerDataSource> dataSources = new LinkedHashMap<>(2);
+    private final Map<String, DriverManagerDataSource> dataSources = new ConcurrentHashMap<>(2);
 
     /**
      * @param applicationContext The application context
@@ -66,7 +66,7 @@ public class DatasourceFactory extends BaseDatasourceFactory {
                     applicationContext.getProperty("datasources." + datasourceConfiguration.getName() + ".dialect", String.class).orElse(null),
                     applicationContext.getEnvironment(),
                     dataSource::addDataSourceProperty,
-                    () -> dataSource.getDataSourceProperties().containsKey("v$session.program")
+                    () -> dataSource.hasDataSourceProperty("v$session.program")
             );
         } catch (Exception e) {
             if (LOG.isDebugEnabled()) {
