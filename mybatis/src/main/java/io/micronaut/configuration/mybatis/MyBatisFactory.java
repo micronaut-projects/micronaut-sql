@@ -52,8 +52,8 @@ public class MyBatisFactory {
     @EachBean(DataSource.class)
     public Configuration myBatisConfiguration(
         @Parameter String name,
-        DataSource dataSource,
-        @Nullable TransactionFactory transactionFactory,
+        @Parameter DataSource dataSource,
+        @Nullable @Parameter TransactionFactory transactionFactory,
         ApplicationContext applicationContext
     ) {
         TransactionFactory resolvedTransactionFactory = transactionFactory == null
@@ -75,7 +75,7 @@ public class MyBatisFactory {
      * @param configuration The MyBatis configuration
      * @return The session factory
      */
-    @EachBean(DataSource.class)
+    @EachBean(Configuration.class)
     public SqlSessionFactory sqlSessionFactory(Configuration configuration) {
         return new SqlSessionFactoryBuilder().build(configuration);
     }
@@ -86,7 +86,7 @@ public class MyBatisFactory {
      * @param sqlSessionFactory The session factory
      * @return The session manager
      */
-    @EachBean(DataSource.class)
+    @EachBean(SqlSessionFactory.class)
     public SqlSessionManager sqlSessionManager(SqlSessionFactory sqlSessionFactory) {
         return SqlSessionManager.newInstance(sqlSessionFactory);
     }
