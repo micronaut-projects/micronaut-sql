@@ -4,13 +4,11 @@
 [![Build Status](https://github.com/micronaut-projects/micronaut-sql/workflows/Java%20CI/badge.svg)](https://github.com/micronaut-projects/micronaut-sql/actions)
 [![Revved up by Develocity](https://img.shields.io/badge/Revved%20up%20by-Develocity-06A0CE?logo=Gradle&labelColor=02303A)](https://ge.micronaut.io/scans)
 
-Projects to support SQL database access in Micronaut, including JDBC connection pools and integrations for Hibernate, Jasync SQL, Jdbi, jOOQ, MyBatis, and Vert.x SQL clients.
+Projects to support SQL Database access in Micronaut
 
 ## Documentation
 
 See the [Documentation](https://micronaut-projects.github.io/micronaut-sql/latest/guide) for more information.
-
-The guide includes setup and usage details for the `micronaut-mybatis` module alongside the existing SQL integrations.
 
 ## Snapshots and Releases
 

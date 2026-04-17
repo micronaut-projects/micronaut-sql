@@ -21,12 +21,11 @@ micronaut-validation = "5.0.0-M1"
 # Frameworks
 
 managed-vertx = "5.0.10"
-managed-jooq = "3.21.1"
+managed-jooq = "3.21.2"
 managed-hibernate = "7.3.1.Final"
 managed-hibernate-reactive = "4.3.2.Final"
 managed-jasync = "2.2.4"
 managed-jdbi = "3.52.1"
-managed-mybatis = "3.5.19"
 
 # JDBC Drivers
 
@@ -38,6 +37,7 @@ managed-mariadb-driver = "3.5.8"
 managed-mssql-driver = "13.4.0.jre11"
 managed-mysql-driver = "8.0.33"
 managed-mysql-connector-j = "9.6.0"
+managed-sqlite-jdbc = "3.53.0.0"
 
 # JDBC Pools
 
@@ -114,10 +114,6 @@ boms-jdbi3 = { module = "org.jdbi:jdbi3-bom", version.ref = "managed-jdbi" }
 jdbi3-sqlobject = { module = "org.jdbi:jdbi3-sqlobject", version.ref = "managed-jdbi" }
 jdbi3-core = { module = "org.jdbi:jdbi3-core", version.ref = "managed-jdbi" }
 
-# MyBatis
-
-managed-mybatis = { module = "org.mybatis:mybatis", version.ref = "managed-mybatis" }
-
 # JDBC pools
 
 managed-hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "managed-hikari" }
@@ -138,6 +134,7 @@ managed-mariadb-java-client = { module = "org.mariadb.jdbc:mariadb-java-client",
 managed-mssql-jdbc = { module = "com.microsoft.sqlserver:mssql-jdbc", version.ref = "managed-mssql-driver" }
 managed-mysql-connector-java = { module = "mysql:mysql-connector-java", version.ref = "managed-mysql-driver" }
 managed-mysql-connector-j = { module = "com.mysql:mysql-connector-j", version.ref = "managed-mysql-connector-j" }
+managed-sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "managed-sqlite-jdbc" }
 
 managed-ojdbc8 = { module = "com.oracle.database.jdbc:ojdbc8", version.ref = "managed-ojdbc" }
 managed-ojdbc11 = { module = "com.oracle.database.jdbc:ojdbc11", version.ref = "managed-ojdbc" }

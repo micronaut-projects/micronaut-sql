@@ -55,7 +55,7 @@ public class PetRepository extends AbstractRepository implements IPetRepository 
     @Transactional(Transactional.TxType.MANDATORY)
     @Override
     public Mono<Void> save(IPet pet) {
-        return withDSLContextMono(dslContext -> ctx.insertInto(PET_TABLE)
+        return withDSLContextMono(dslContext -> dslContext.insertInto(PET_TABLE)
             .columns(PET_NAME, PET_TYPE, PET_OWNER)
             .values(pet.getName(), pet.getType() == null ? null : pet.getType().name(), pet.getOwner().getId())
             .returning(PET_ID)).map(q -> q.get(PET_ID))

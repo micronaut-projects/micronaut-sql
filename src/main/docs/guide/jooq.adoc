@@ -4,8 +4,8 @@ To configure jOOQ library you should first add `jooq` module to your classpath:
 
 dependency:micronaut-jooq[groupId="io.micronaut.sql"]
 
-You should then <<jdbc, configure one or many DataSources>>.
-For each registered `DataSource`, Micronaut will configure the following jOOQ beans using api:configuration.jooq.JooqConfigurationFactory[]:
+You should then either <<jdbc, configure one or many DataSources>> or <<jooq-r2dbc, configure one or many R2DBC ConnectionFactory instances>>.
+For each registered `DataSource` or `ConnectionFactory`, Micronaut will configure the following jOOQ beans using api:configuration.jooq.JooqConfigurationFactory[] or api:configuration.jooq.R2dbcJooqConfigurationFactory[]:
 
 * link:{jooqapi}/org/jooq/Configuration.html[Configuration] - jOOQ `Configuration`
 * link:{jooqapi}/org/jooq/DSLContext.html[DSLContext] - jOOQ `DSLContext`
@@ -14,4 +14,3 @@ If Spring transaction management is in use, it will additionally create the foll
 
 * api:configuration.jooq.JooqExceptionTranslatorProvider[] for each `DataSource`
 * api:configuration.jooq.SpringTransactionProvider[] for each Spring `PlatformTransactionManager`
-

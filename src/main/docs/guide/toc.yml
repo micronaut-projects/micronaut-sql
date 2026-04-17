@@ -23,6 +23,7 @@ jasync:
   jasync-healthchecks: Database Health Checks
 jooq:
   title: Configuring jOOQ
+  jooq-r2dbc: Configuring R2DBC connection factories
   jooq-dialect: Configuring SQL dialect
   jooq-provider-beans: Configuring additional provider beans
   jooq-jsonb: Using JsonMapper to convert JSON(B) types
@@ -30,10 +31,6 @@ jooq:
 jdbi:
   title: Configuring Jdbi
   jdbi-provider-beans: Configuring additional provider beans
-mybatis:
-  title: Configuring MyBatis
-  mybatis-session-access: Injecting MyBatis runtime beans
-  mybatis-customizers: Configuring MyBatis customizers
 vertxmysqlclient:
   title: Configuring Reactive MySQL Client
   vertxmysqlclient-healthchecks: MySQL Health Checks
