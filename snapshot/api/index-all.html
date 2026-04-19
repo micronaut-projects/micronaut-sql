@@ -196,10 +196,6 @@ to successfully configure a data source.</div>
 <dd>
 <div class="block">Returns the value of the <a href="./io/micronaut/configuration/jdbc/ucp/OracleUcpConfiguration.html#param-createConnectionInBorrowThread"><code>createConnectionInBorrowThread</code></a> record component.</div>
 </dd>
-<dt><a href="io/micronaut/configuration/mybatis/MyBatisConfigurationCustomizer.html#customize(org.apache.ibatis.session.Configuration)" class="member-name-link">customize(Configuration)</a> - Method in interface io.micronaut.configuration.mybatis.<a href="io/micronaut/configuration/mybatis/MyBatisConfigurationCustomizer.html" title="interface in io.micronaut.configuration.mybatis">MyBatisConfigurationCustomizer</a></dt>
-<dd>
-<div class="block">Performs custom configuration operations on the given MyBatis configuration.</div>
-</dd>
 <dt><a href="io/micronaut/configuration/jdbi/JdbiCustomizer.html#customize(org.jdbi.v3.core.Jdbi)" class="member-name-link">customize(Jdbi)</a> - Method in interface io.micronaut.configuration.jdbi.<a href="io/micronaut/configuration/jdbi/JdbiCustomizer.html" title="interface in io.micronaut.configuration.jdbi">JdbiCustomizer</a></dt>
 <dd>
 <div class="block">Performs custom configuration operations on the given Jdbi instance.</div>
@@ -851,10 +847,6 @@ more compliant with the other datasource types.</div>
 <dd>
 <div class="block">Classes specific to combining JOOQ with Spring JdbcTemplate.</div>
 </dd>
-<dt><a href="io/micronaut/configuration/mybatis/package-summary.html">io.micronaut.configuration.mybatis</a> - package io.micronaut.configuration.mybatis</dt>
-<dd>
-<div class="block">Configuration for MyBatis integration.</div>
-</dd>
 <dt><a href="io/micronaut/configuration/vertx/mysql/client/package-summary.html">io.micronaut.configuration.vertx.mysql.client</a> - package io.micronaut.configuration.vertx.mysql.client</dt>
 <dd>
 <div class="block">Vertx MySQL Client MySQLConnectionConfiguration classes.</div>
@@ -1109,10 +1101,6 @@ query the reachability of a property.</div>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/sql/info/MicronautJooqModuleInfo.html#%3Cinit%3E()" class="member-name-link">MicronautJooqModuleInfo()</a> - Constructor for class io.micronaut.sql.info.<a href="io/micronaut/sql/info/MicronautJooqModuleInfo.html" title="class in io.micronaut.sql.info">MicronautJooqModuleInfo</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="io/micronaut/sql/info/MicronautMybatisModuleInfo.html" class="type-name-link" title="class in io.micronaut.sql.info">MicronautMybatisModuleInfo</a> - Class in <a href="io/micronaut/sql/info/package-summary.html">io.micronaut.sql.info</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="io/micronaut/sql/info/MicronautMybatisModuleInfo.html#%3Cinit%3E()" class="member-name-link">MicronautMybatisModuleInfo()</a> - Constructor for class io.micronaut.sql.info.<a href="io/micronaut/sql/info/MicronautMybatisModuleInfo.html" title="class in io.micronaut.sql.info">MicronautMybatisModuleInfo</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jooq/MicronautTransactionProvider.html" class="type-name-link" title="class in io.micronaut.configuration.jooq">MicronautTransactionProvider</a> - Class in <a href="io/micronaut/configuration/jooq/package-summary.html">io.micronaut.configuration.jooq</a></dt>
 <dd>
 <div class="block">Allows Micronaut Transaction to be used with JOOQ.</div>
@@ -1128,20 +1116,6 @@ query the reachability of a property.</div>
 <dt><a href="io/micronaut/sql/info/MicronautVertxPgClientModuleInfo.html" class="type-name-link" title="class in io.micronaut.sql.info">MicronautVertxPgClientModuleInfo</a> - Class in <a href="io/micronaut/sql/info/package-summary.html">io.micronaut.sql.info</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/sql/info/MicronautVertxPgClientModuleInfo.html#%3Cinit%3E()" class="member-name-link">MicronautVertxPgClientModuleInfo()</a> - Constructor for class io.micronaut.sql.info.<a href="io/micronaut/sql/info/MicronautVertxPgClientModuleInfo.html" title="class in io.micronaut.sql.info">MicronautVertxPgClientModuleInfo</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="io/micronaut/configuration/mybatis/MyBatisFactory.html#myBatisConfiguration(java.lang.String,javax.sql.DataSource,org.apache.ibatis.transaction.TransactionFactory,io.micronaut.context.ApplicationContext)" class="member-name-link">myBatisConfiguration(String, DataSource, TransactionFactory, ApplicationContext)</a> - Method in class io.micronaut.configuration.mybatis.<a href="io/micronaut/configuration/mybatis/MyBatisFactory.html" title="class in io.micronaut.configuration.mybatis">MyBatisFactory</a></dt>
-<dd>
-<div class="block">Creates the MyBatis <code>Configuration</code> for a datasource.</div>
-</dd>
-<dt><a href="io/micronaut/configuration/mybatis/MyBatisConfigurationCustomizer.html" class="type-name-link" title="interface in io.micronaut.configuration.mybatis">MyBatisConfigurationCustomizer</a> - Interface in <a href="io/micronaut/configuration/mybatis/package-summary.html">io.micronaut.configuration.mybatis</a></dt>
-<dd>
-<div class="block">Allows custom actions to be performed on a MyBatis <code>Configuration</code>.</div>
-</dd>
-<dt><a href="io/micronaut/configuration/mybatis/MyBatisFactory.html" class="type-name-link" title="class in io.micronaut.configuration.mybatis">MyBatisFactory</a> - Class in <a href="io/micronaut/configuration/mybatis/package-summary.html">io.micronaut.configuration.mybatis</a></dt>
-<dd>
-<div class="block">Configures MyBatis beans from Micronaut <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link"><code>DataSource</code></a> beans.</div>
-</dd>
-<dt><a href="io/micronaut/configuration/mybatis/MyBatisFactory.html#%3Cinit%3E()" class="member-name-link">MyBatisFactory()</a> - Constructor for class io.micronaut.configuration.mybatis.<a href="io/micronaut/configuration/mybatis/MyBatisFactory.html" title="class in io.micronaut.configuration.mybatis">MyBatisFactory</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html" class="type-name-link" title="class in io.micronaut.configuration.vertx.mysql.client">MySQLClientConfiguration</a> - Class in <a href="io/micronaut/configuration/vertx/mysql/client/package-summary.html">io.micronaut.configuration.vertx.mysql.client</a></dt>
 <dd>
@@ -1475,14 +1449,6 @@ if not set manually.</div>
 <dt><a href="io/micronaut/configuration/jooq/spring/SpringTransactionProvider.html#%3Cinit%3E(org.springframework.transaction.PlatformTransactionManager)" class="member-name-link">SpringTransactionProvider(PlatformTransactionManager)</a> - Constructor for class io.micronaut.configuration.jooq.spring.<a href="io/micronaut/configuration/jooq/spring/SpringTransactionProvider.html" title="class in io.micronaut.configuration.jooq.spring">SpringTransactionProvider</a></dt>
 <dd>
 <div class="block">Adapt a <code>PlatformTransactionManager</code> to jOOQ transaction provider interface.</div>
-</dd>
-<dt><a href="io/micronaut/configuration/mybatis/MyBatisFactory.html#sqlSessionFactory(org.apache.ibatis.session.Configuration)" class="member-name-link">sqlSessionFactory(Configuration)</a> - Method in class io.micronaut.configuration.mybatis.<a href="io/micronaut/configuration/mybatis/MyBatisFactory.html" title="class in io.micronaut.configuration.mybatis">MyBatisFactory</a></dt>
-<dd>
-<div class="block">Creates the MyBatis <code>SqlSessionFactory</code> for a datasource.</div>
-</dd>
-<dt><a href="io/micronaut/configuration/mybatis/MyBatisFactory.html#sqlSessionManager(org.apache.ibatis.session.SqlSessionFactory)" class="member-name-link">sqlSessionManager(SqlSessionFactory)</a> - Method in class io.micronaut.configuration.mybatis.<a href="io/micronaut/configuration/mybatis/MyBatisFactory.html" title="class in io.micronaut.configuration.mybatis">MyBatisFactory</a></dt>
-<dd>
-<div class="block">Creates the thread-safe <code>SqlSessionManager</code> for a datasource.</div>
 </dd>
 <dt><a href="io/micronaut/configuration/hibernate/jpa/conf/serviceregistry/builder/configures/StandardServiceRegistryBuilderConfigurer.html" class="type-name-link" title="interface in io.micronaut.configuration.hibernate.jpa.conf.serviceregistry.builder.configures">StandardServiceRegistryBuilderConfigurer</a> - Interface in <a href="io/micronaut/configuration/hibernate/jpa/conf/serviceregistry/builder/configures/package-summary.html">io.micronaut.configuration.hibernate.jpa.conf.serviceregistry.builder.configures</a></dt>
 <dd>
