@@ -5,6 +5,7 @@ plugins {
 
 ossIndexAudit {
     excludeCoordinates = [
+            "org.hibernate.reactive:hibernate-reactive-core:2.4.17.Final", // no 2.14.x version patched https://ossindex.sonatype.org/component/pkg:maven/org.hibernate.reactive/hibernate-reactive-core
             "com.h2database:h2:2.3.232" // no version patched https://ossindex.sonatype.org/component/pkg:maven/com.h2database/h2
     ]
 }
