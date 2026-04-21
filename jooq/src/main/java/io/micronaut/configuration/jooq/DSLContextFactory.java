@@ -22,6 +22,7 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.annotation.Secondary;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.transaction.TransactionStatus;
@@ -51,11 +52,13 @@ final class DSLContextFactory {
      * @return A {@link DSLContext}
      */
     @EachBean(JdbcConfiguration.class)
+    @Secondary
     DSLContext dslContext(@Parameter JdbcConfiguration configuration) {
         return createDslContext(configuration);
     }
 
     @EachBean(R2dbcConfiguration.class)
+    @Secondary
     DSLContext r2dbcDslContext(@Parameter R2dbcConfiguration configuration) {
         return createDslContext(configuration);
     }
@@ -66,8 +69,20 @@ final class DSLContextFactory {
     DSLContext primaryR2dbcDslContext(@Any BeanProvider<R2dbcConfiguration> configurations) {
         R2dbcConfiguration configuration = configurations.find(Qualifiers.byStereotype(Primary.class))
             .or(() -> configurations.find(Qualifiers.byName("default")))
-            .orElseGet(() -> configurations.iterator().next());
+            .orElseGet(() -> singleConfiguration(configurations));
         return createDslContext(configuration);
+    }
+
+    private R2dbcConfiguration singleConfiguration(BeanProvider<R2dbcConfiguration> configurations) {
+        var iterator = configurations.iterator();
+        if (!iterator.hasNext()) {
+            throw new IllegalStateException("No R2DBC configuration found");
+        }
+        var configuration = iterator.next();
+        if (iterator.hasNext()) {
+            throw new IllegalStateException("Multiple R2DBC configurations found. Mark one @Primary or name one 'default'");
+        }
+        return configuration;
     }
 
     private DSLContext createDslContext(Configuration configuration) {
