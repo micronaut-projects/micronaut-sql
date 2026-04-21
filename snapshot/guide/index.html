@@ -3294,6 +3294,94 @@ You can also connect to PostgreSQL using <code>uri</code> instead of the other p
 </table>
 </div>
 <div class="paragraph">
+<p>When you need to trust a PostgreSQL or CockroachDB CA certificate for SSL connections, configure PEM trust certificates with <code>pem-trust-options</code>:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">vertx.pg.client.ssl=true
+vertx.pg.client.ssl-mode=VERIFY_CA
+vertx.pg.client.pem-trust-options.cert-paths[0]=certs/ca.crt</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">vertx:
+  pg:
+    client:
+      ssl: true
+      ssl-mode: VERIFY_CA
+      pem-trust-options:
+        cert-paths:
+          - certs/ca.crt</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[vertx]
+  [vertx.pg]
+    [vertx.pg.client]
+      ssl=true
+      ssl-mode="VERIFY_CA"
+      [vertx.pg.client.pem-trust-options]
+        cert-paths=[
+          "certs/ca.crt"
+        ]</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">vertx {
+  pg {
+    client {
+      ssl = true
+      sslMode = "VERIFY_CA"
+      pemTrustOptions {
+        certPaths = ["certs/ca.crt"]
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  vertx {
+    pg {
+      client {
+        ssl = true
+        ssl-mode = "VERIFY_CA"
+        pem-trust-options {
+          cert-paths = ["certs/ca.crt"]
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "vertx": {
+    "pg": {
+      "client": {
+        "ssl": true,
+        "ssl-mode": "VERIFY_CA",
+        "pem-trust-options": {
+          "cert-paths": ["certs/ca.crt"]
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
 <p>Once you have the above configuration in place then you can inject the core <code>io.vertx.sqlclient.Pool</code> bean. If <code>io.vertx:vertx-rx-java3</code> is on the classpath, Micronaut also exposes the RxJava3 <code>io.vertx.rxjava3.sqlclient.Pool</code> wrapper bean. The following is the simplest way to connect:</p>
 </div>
 <div class="listingblock">
