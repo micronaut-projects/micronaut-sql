@@ -1,5 +1,7 @@
 All of the implementation specific parameters can be configured. Effort was made to allow basic configuration to be consistent across the implementations.
 
+If you want Micronaut to avoid connection pooling entirely, add the `micronaut-jdbc-unpooled` module instead. It uses the same common datasource settings, creates a new physical JDBC connection for each `getConnection()` call, and closes that physical connection when the caller closes it.
+
 * Hikari: The URL is able to be configured through `url` in addition to `jdbcUrl`. The JNDI name can be configured through `jndiName` in addition to `dataSourceJNDI`.
 * Tomcat: The JNDI name can be configured through `jndiName` in addition to `dataSourceJNDI`.
 
