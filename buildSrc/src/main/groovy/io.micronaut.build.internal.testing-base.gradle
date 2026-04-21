@@ -6,6 +6,11 @@ plugins {
 
 group "io.micronaut.example"
 
+java {
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
+}
+
 tasks.register("testExamples") {
     dependsOn "test"
 }

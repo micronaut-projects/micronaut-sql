@@ -41,6 +41,7 @@ import org.hibernate.service.ServiceRegistry;
 
 import javax.sql.DataSource;
 import java.util.List;
+import io.micronaut.inject.qualifiers.Qualifiers;
 
 /**
  * Factory that builds {@link SessionFactory} per {@link DataSource}.
@@ -60,11 +61,17 @@ final class SessionFactoryPerDataSourceFactory extends AbstractHibernateFactory 
                                        List<SessionFactoryBuilderConfigurer> configures,
                                        StandardServiceRegistryBuilderCreator serviceRegistryBuilderSupplier,
                                        List<StandardServiceRegistryBuilderConfigurer> standardServiceRegistryBuilderConfigurers,
-                                       @Primary @Nullable JpaConfiguration jpaConfiguration,
                                        ApplicationContext applicationContext,
                                        @Primary @Nullable Integrator integrator) {
         super(environment, configures, serviceRegistryBuilderSupplier, standardServiceRegistryBuilderConfigurers);
-        this.defaultJpaConfiguration = jpaConfiguration != null ? jpaConfiguration : new JpaConfiguration(applicationContext, integrator);
+        JpaConfiguration def = applicationContext.findBean(JpaConfiguration.class, Qualifiers.byName(JpaConfiguration.PRIMARY)).orElse(null);
+        if (def == null) {
+            var all = applicationContext.getBeansOfType(JpaConfiguration.class);
+            if (all.size() == 1) {
+                def = all.iterator().next();
+            }
+        }
+        this.defaultJpaConfiguration = def != null ? def : new JpaConfiguration(applicationContext, integrator);
     }
 
     @EachBean(DataSource.class)
