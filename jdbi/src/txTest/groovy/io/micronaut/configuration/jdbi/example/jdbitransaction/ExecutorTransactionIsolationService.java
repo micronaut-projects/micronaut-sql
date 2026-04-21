@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Singleton
@@ -30,27 +31,36 @@ public class ExecutorTransactionIsolationService {
         this.executorService = executorService;
     }
 
-    public int executeAsyncTransactionAfterCommit() throws InterruptedException {
+    public ExecutionResult executeAsyncTransactionAfterCommit() throws InterruptedException {
         CountDownLatch completed = new CountDownLatch(1);
         AtomicReference<Throwable> failure = new AtomicReference<>();
+        AtomicBoolean innerNewTransaction = new AtomicBoolean(false);
 
         transactionOperations.executeWrite(status -> {
-            jdbi.useHandle(handle -> handle.execute("INSERT INTO books(id, name) VALUES(10, 'outer')"));
+            int outerBookId = nextBookId();
+            jdbi.useHandle(handle -> handle.execute("INSERT INTO books(id, name) VALUES(" + outerBookId + ", 'outer')"));
             status.registerSynchronization(new TransactionSynchronization() {
                 @Override
                 public void afterCommit() {
-                    executorService.submit(() -> {
-                        try {
-                            transactionOperations.executeWrite(inner -> {
-                                jdbi.useHandle(handle -> handle.execute("INSERT INTO books(id, name) VALUES(11, 'inner')"));
-                                return null;
-                            });
-                        } catch (Throwable e) {
-                            failure.set(e);
-                        } finally {
-                            completed.countDown();
-                        }
-                    });
+                    try {
+                        executorService.submit(() -> {
+                            try {
+                                transactionOperations.executeWrite(inner -> {
+                                    innerNewTransaction.set(inner.isNewTransaction());
+                                    int innerBookId = nextBookId();
+                                    jdbi.useHandle(handle -> handle.execute("INSERT INTO books(id, name) VALUES(" + innerBookId + ", 'inner')"));
+                                    return null;
+                                });
+                            } catch (Throwable e) {
+                                failure.set(e);
+                            } finally {
+                                completed.countDown();
+                            }
+                        });
+                    } catch (Throwable e) {
+                        failure.set(e);
+                        completed.countDown();
+                    }
                 }
             });
             return null;
@@ -66,8 +76,20 @@ public class ExecutorTransactionIsolationService {
         if (throwable != null) {
             throw new RuntimeException(throwable);
         }
-        return transactionOperations.executeRead(status ->
+        int count = transactionOperations.executeRead(status ->
             jdbi.withHandle(handle -> handle.createQuery("SELECT COUNT(*) FROM books").mapTo(Integer.class).one())
         );
+        return new ExecutionResult(count, innerNewTransaction.get());
+    }
+
+    private int nextBookId() {
+        return jdbi.withHandle(handle ->
+            handle.createQuery("SELECT COALESCE(MAX(id), 0) + 1 FROM books")
+                .mapTo(Integer.class)
+                .one()
+        );
+    }
+
+    public record ExecutionResult(int count, boolean innerNewTransaction) {
     }
 }

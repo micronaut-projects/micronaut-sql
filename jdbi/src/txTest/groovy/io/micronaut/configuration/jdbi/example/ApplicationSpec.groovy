@@ -127,18 +127,22 @@ class ApplicationSpec extends Specification {
                     ['datasources.default': [:]]
             ))
             applicationContext.start()
+            DatabaseSetup dbSetup = null
 
         when:
-            def dbSetup = applicationContext.getBean(DatabaseSetup)
+            dbSetup = applicationContext.getBean(DatabaseSetup)
             def service = applicationContext.getBean(ExecutorTransactionIsolationService)
             dbSetup.initialize()
-            def count = service.executeAsyncTransactionAfterCommit()
+            def result = service.executeAsyncTransactionAfterCommit()
 
         then:
-            count == 2
+            result.count() == 2
+            result.innerNewTransaction()
 
         cleanup:
-            dbSetup.drop()
+            if (dbSetup != null) {
+                dbSetup.drop()
+            }
             applicationContext.close()
     }
 }
