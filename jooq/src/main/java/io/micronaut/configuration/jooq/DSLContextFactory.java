@@ -15,13 +15,18 @@
  */
 package io.micronaut.configuration.jooq;
 
+import io.micronaut.context.BeanProvider;
+import io.micronaut.context.annotation.Any;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Primary;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.transaction.TransactionStatus;
 import io.micronaut.transaction.support.ExceptionUtil;
+import jakarta.inject.Singleton;
 import org.jooq.Configuration;
 import org.jooq.DSLContext;
 import org.jooq.TransactionProperty;
@@ -50,9 +55,18 @@ final class DSLContextFactory {
         return createDslContext(configuration);
     }
 
-    @Primary
     @EachBean(R2dbcConfiguration.class)
     DSLContext r2dbcDslContext(@Parameter R2dbcConfiguration configuration) {
+        return createDslContext(configuration);
+    }
+
+    @Primary
+    @Singleton
+    @Requires(beans = R2dbcConfiguration.class)
+    DSLContext primaryR2dbcDslContext(@Any BeanProvider<R2dbcConfiguration> configurations) {
+        R2dbcConfiguration configuration = configurations.find(Qualifiers.byStereotype(Primary.class))
+            .or(() -> configurations.find(Qualifiers.byName("default")))
+            .orElseGet(() -> configurations.iterator().next());
         return createDslContext(configuration);
     }
 

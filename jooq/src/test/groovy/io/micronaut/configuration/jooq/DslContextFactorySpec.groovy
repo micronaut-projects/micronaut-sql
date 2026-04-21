@@ -72,6 +72,12 @@ class DslContextFactorySpec extends Specification {
         }
 
         @Singleton
+        @Named("analytics")
+        ConnectionFactory analyticsConnectionFactory() {
+            return proxy(ConnectionFactory)
+        }
+
+        @Singleton
         @Named("default")
         JooqConfigurationProperties jdbcJooqProperties() {
             JooqConfigurationProperties configurationProperties = new JooqConfigurationProperties()
@@ -84,6 +90,14 @@ class DslContextFactorySpec extends Specification {
         R2dbcJooqConfigurationProperties r2dbcJooqProperties() {
             R2dbcJooqConfigurationProperties configurationProperties = new R2dbcJooqConfigurationProperties()
             configurationProperties.sqlDialect = SQLDialect.POSTGRES
+            return configurationProperties
+        }
+
+        @Singleton
+        @Named("analytics")
+        R2dbcJooqConfigurationProperties analyticsR2dbcJooqProperties() {
+            R2dbcJooqConfigurationProperties configurationProperties = new R2dbcJooqConfigurationProperties()
+            configurationProperties.sqlDialect = SQLDialect.MYSQL
             return configurationProperties
         }
 
