@@ -17,6 +17,9 @@ package io.micronaut.configuration.vertx.pg.client
 
 
 import io.micronaut.context.ApplicationContext
+import io.vertx.core.net.PemTrustOptions
+import io.vertx.pgclient.PgConnectOptions
+import io.vertx.pgclient.SslMode
 import io.vertx.sqlclient.Pool
 import spock.lang.Specification
 
@@ -71,5 +74,67 @@ class PgClientConfigurationSpec extends Specification {
         applicationContext?.stop()
     }
 
+    void "test vertx-pg-client connects with direct options when verify-ca trust options are configured"() {
+        given:
+        int port = findFreePort()
 
+        when:
+        ApplicationContext applicationContext = ApplicationContext.run(
+                'vertx.pg.client.host': 'localhost',
+                'vertx.pg.client.port': port,
+                'vertx.pg.client.ssl': true,
+                'vertx.pg.client.ssl-mode': 'VERIFY_CA',
+                'vertx.pg.client.pem-trust-options.cert-paths[0]': 'certs/ca.crt'
+        )
+        PgConnectOptions options = PgConnectOptionsResolver.resolve(
+                applicationContext.getBean(PgClientConfiguration),
+                applicationContext.getBean(PgPemTrustOptionsConfiguration)
+        )
+        PemTrustOptions trustOptions = (PemTrustOptions) options.sslOptions.trustOptions
+
+        then:
+        options.host == 'localhost'
+        options.port == port
+        options.sslMode == SslMode.VERIFY_CA
+        options.sslOptions != null
+        trustOptions.certPaths == ['certs/ca.crt']
+
+        cleanup:
+        applicationContext?.stop()
+    }
+
+    void "test vertx-pg-client uri mode keeps verify-ca trust options during connect"() {
+        given:
+        int port = findFreePort()
+
+        when:
+        ApplicationContext applicationContext = ApplicationContext.run(
+                'vertx.pg.client.uri': "postgresql://user:secret@localhost:${port}/the-db",
+                'vertx.pg.client.ssl': true,
+                'vertx.pg.client.ssl-mode': 'VERIFY_CA',
+                'vertx.pg.client.pem-trust-options.cert-paths[0]': 'certs/ca.crt'
+        )
+        PgConnectOptions options = PgConnectOptionsResolver.resolve(
+                applicationContext.getBean(PgClientConfiguration),
+                applicationContext.getBean(PgPemTrustOptionsConfiguration)
+        )
+        PemTrustOptions trustOptions = (PemTrustOptions) options.sslOptions.trustOptions
+
+        then:
+        options.host == 'localhost'
+        options.port == port
+        options.database == 'the-db'
+        options.user == 'user'
+        options.password == 'secret'
+        options.sslMode == SslMode.VERIFY_CA
+        options.sslOptions != null
+        trustOptions.certPaths == ['certs/ca.crt']
+
+        cleanup:
+        applicationContext?.stop()
+    }
+
+    private static int findFreePort() {
+        new ServerSocket(0).withCloseable { it.localPort }
+    }
 }
