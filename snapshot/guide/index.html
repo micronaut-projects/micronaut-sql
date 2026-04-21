@@ -231,7 +231,7 @@
 
 
 <div class="paragraph">
-<p>Java data sources can be configured for one of four currently provided implementations. Apache DBCP2, Hikari, Tomcat, and Oracle Universal Connection Pool are supported by default.</p>
+<p>Java data sources can be configured for one of five currently provided implementations. Apache DBCP2, Hikari, Tomcat, Oracle Universal Connection Pool, and an unpooled DriverManager-backed datasource are supported by default.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -329,6 +329,24 @@
 </p>
 </div>
 <div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">runtimeOnly(<span class="hljs-string">"io.micronaut.sql:micronaut-jdbc-unpooled")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.sql&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-jdbc-unpooled&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
 <p>You also need to add a JDBC driver dependency to your classpath. For example to add the <a href="http://www.h2database.com">H2 In-Memory Database</a>:</p>
 </div>
 <div class="paragraph">
@@ -413,6 +431,9 @@ Micronaut SQL 5.7.0 allowed disabling datasources via setting <code>datasources.
 
 <div class="paragraph">
 <p>All of the implementation specific parameters can be configured. Effort was made to allow basic configuration to be consistent across the implementations.</p>
+</div>
+<div class="paragraph">
+<p>If you want Micronaut to avoid connection pooling entirely, add the <code>micronaut-jdbc-unpooled</code> module instead. It uses the same common datasource settings, creates a new physical JDBC connection for each <code>getConnection()</code> call, and closes that physical connection when the caller closes it.</p>
 </div>
 <div class="ulist">
 <ul>

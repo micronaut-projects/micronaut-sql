@@ -16,6 +16,7 @@ io.micronaut.configuration.jdbc.tomcat
 io.micronaut.configuration.jdbc.tomcat.metadata
 io.micronaut.configuration.jdbc.ucp
 io.micronaut.configuration.jdbc.ucp.metadata
+io.micronaut.configuration.jdbc.unpooled
 io.micronaut.configuration.jdbi
 io.micronaut.configuration.jdbi.transaction
 io.micronaut.configuration.jdbi.transaction.micronaut
