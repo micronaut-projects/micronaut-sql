@@ -38,7 +38,7 @@ public class ExecutorTransactionIsolationService {
 
         transactionOperations.executeWrite(status -> {
             int outerBookId = nextBookId();
-            jdbi.useHandle(handle -> handle.execute("INSERT INTO books(id, name) VALUES(" + outerBookId + ", 'outer')"));
+            jdbi.useHandle(handle -> handle.execute("INSERT INTO books(id, name) VALUES(?, ?)", outerBookId, "outer"));
             status.registerSynchronization(new TransactionSynchronization() {
                 @Override
                 public void afterCommit() {
@@ -48,7 +48,7 @@ public class ExecutorTransactionIsolationService {
                                 transactionOperations.executeWrite(inner -> {
                                     innerNewTransaction.set(inner.isNewTransaction());
                                     int innerBookId = nextBookId();
-                                    jdbi.useHandle(handle -> handle.execute("INSERT INTO books(id, name) VALUES(" + innerBookId + ", 'inner')"));
+                                    jdbi.useHandle(handle -> handle.execute("INSERT INTO books(id, name) VALUES(?, ?)", innerBookId, "inner"));
                                     return null;
                                 });
                             } catch (Throwable e) {
