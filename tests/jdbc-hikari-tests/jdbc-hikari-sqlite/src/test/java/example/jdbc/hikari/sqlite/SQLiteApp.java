@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @MicronautTest(transactional = false)
 @Property(name = "datasources.default.db-type", value = "sqlite")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class SQLiteApp implements TestPropertyProvider {
+public class SQLiteApp {
 
     @Inject
     @Client("/")
@@ -46,13 +46,6 @@ public class SQLiteApp implements TestPropertyProvider {
     @Inject
     DataSourceResolver dataSourceResolver;
 
-    @Override
-    public Map<String, String> getProperties() {
-        Map<String, String> properties = new HashMap<>();
-        properties.put("micronaut.test.resources.scope", getClass().getName());
-        return properties;
-    }
-
     @BeforeAll
     void init() {
         HttpResponse<Void> response = client.toBlocking().exchange(HttpRequest.GET("/init"));
@@ -61,17 +54,8 @@ public class SQLiteApp implements TestPropertyProvider {
 
     @AfterAll
     void cleanup() {
-        try {
-            HttpResponse<Void> response = client.toBlocking().exchange(HttpRequest.GET("/destroy"));
-            assertEquals(HttpStatus.OK, response.getStatus());
-        } finally {
-            try {
-                TestResourcesClient testResourcesClient = TestResourcesClientFactory.extractFrom(context);
-                testResourcesClient.closeScope(getClass().getName());
-            } catch (Exception e) {
-                // ignore
-            }
-        }
+        HttpResponse<Void> response = client.toBlocking().exchange(HttpRequest.GET("/destroy"));
+        assertEquals(HttpStatus.OK, response.getStatus());
     }
 
     @Test
