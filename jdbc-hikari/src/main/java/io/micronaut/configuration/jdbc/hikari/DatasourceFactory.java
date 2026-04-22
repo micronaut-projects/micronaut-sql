@@ -23,6 +23,7 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
+import io.micronaut.jdbc.JdbcSqliteSupport;
 import io.micronaut.jdbc.OracleSessionProgramHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +84,7 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         HikariUrlDataSource ds = new HikariUrlDataSource(datasourceConfiguration);
         addMeterRegistry(ds);
         dataSources.put(datasourceConfiguration.getName(), ds);
-        return ds;
+        return JdbcSqliteSupport.wrapDataSource(ds, ds.getDriverClassName(), ds.getJdbcUrl());
     }
 
     @Override

@@ -25,6 +25,7 @@ import io.micronaut.context.exceptions.NoSuchBeanException;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
+import io.micronaut.jdbc.JdbcSqliteSupport;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
 import oracle.ucp.jdbc.PoolDataSource;
 import org.jspecify.annotations.Nullable;
@@ -81,11 +82,11 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     @Context
     @EachBean(DatasourceConfiguration.class)
     @Requires(condition = JdbcDataSourceEnabled.class)
-    public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
+    public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         PoolDataSource ds = datasourceConfiguration.getPoolDataSource();
         dataSources.put(datasourceConfiguration.getName(), ds);
 
-        return ds;
+        return JdbcSqliteSupport.wrapDataSource(ds, datasourceConfiguration.getDriverClassName(), datasourceConfiguration.getUrl());
     }
 
     /**

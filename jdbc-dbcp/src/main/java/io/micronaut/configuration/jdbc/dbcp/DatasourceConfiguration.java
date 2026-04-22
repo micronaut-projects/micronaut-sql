@@ -26,6 +26,7 @@ import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
+import io.micronaut.jdbc.JdbcSqliteSupport;
 import io.micronaut.jdbc.OracleSessionProgramHelper;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
@@ -33,6 +34,8 @@ import org.slf4j.LoggerFactory;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Map;
 
 /**
@@ -205,6 +208,16 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     @Override
     public String getConfiguredValidationQuery() {
         return super.getValidationQuery();
+    }
+
+    @Override
+    public Connection getConnection() throws SQLException {
+        return JdbcSqliteSupport.wrapConnection(super.getConnection(), getDriverClassName(), getUrl());
+    }
+
+    @Override
+    public Connection getConnection(String username, String password) throws SQLException {
+        return JdbcSqliteSupport.wrapConnection(super.getConnection(username, password), getDriverClassName(), getUrl());
     }
 
     /**

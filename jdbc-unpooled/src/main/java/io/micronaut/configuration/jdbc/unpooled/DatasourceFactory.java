@@ -22,6 +22,7 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
+import io.micronaut.jdbc.JdbcSqliteSupport;
 import io.micronaut.jdbc.OracleSessionProgramHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +75,7 @@ public class DatasourceFactory extends BaseDatasourceFactory {
             }
         }
         dataSources.put(datasourceConfiguration.getName(), dataSource);
-        return dataSource;
+        return JdbcSqliteSupport.wrapDataSource(dataSource, dataSource.getDriverClassName(), dataSource.getUrl());
     }
 
     @Override
