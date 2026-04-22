@@ -7,7 +7,7 @@ dependencies {
     implementation projects.micronautTests.micronautCommonSync
 
     runtimeOnly libs.managed.sqlite.jdbc
-
+    testRuntimeOnly(mnLogging.logback.classic)
     testImplementation projects.micronautTests.micronautCommonTests
     testImplementation(mnData.micronaut.data.tx.jdbc)
 }

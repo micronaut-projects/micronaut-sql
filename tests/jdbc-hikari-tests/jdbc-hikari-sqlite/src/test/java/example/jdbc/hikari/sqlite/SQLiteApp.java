@@ -1,5 +1,6 @@
 package example.jdbc.hikari.sqlite;
 
+import example.sync.AbstractApp;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Property;
 import io.micronaut.http.HttpRequest;
@@ -31,65 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @MicronautTest(transactional = false)
 @Property(name = "datasources.default.db-type", value = "sqlite")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class SQLiteApp {
+public class SQLiteApp extends AbstractApp {
 
-    @Inject
-    @Client("/")
-    HttpClient client;
-
-    @Inject
-    ApplicationContext context;
-
-    @Inject
-    DataSource dataSource;
-
-    @Inject
-    DataSourceResolver dataSourceResolver;
-
-    @BeforeAll
-    void init() {
-        HttpResponse<Void> response = client.toBlocking().exchange(HttpRequest.GET("/init"));
-        assertEquals(HttpStatus.OK, response.getStatus());
-    }
-
-    @AfterAll
-    void cleanup() {
-        HttpResponse<Void> response = client.toBlocking().exchange(HttpRequest.GET("/destroy"));
-        assertEquals(HttpStatus.OK, response.getStatus());
-    }
-
-    @Test
-    void shouldInitializeOwners() throws SQLException {
-        try (Connection connection = dataSourceResolver.resolve(dataSource).getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM owners")) {
-            assertEquals(2, singleLong(resultSet));
-        }
-    }
-
-    @Test
-    void shouldInitializePets() throws SQLException {
-        try (Connection connection = dataSourceResolver.resolve(dataSource).getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM pets")) {
-            assertEquals(3, singleLong(resultSet));
-        }
-    }
-
-    @Test
-    void shouldPersistOwnerNames() throws SQLException {
-        try (Connection connection = dataSourceResolver.resolve(dataSource).getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT name FROM owners ORDER BY id")) {
-            resultSet.next();
-            assertEquals("Fred", resultSet.getString(1));
-            resultSet.next();
-            assertEquals("Barney", resultSet.getString(1));
-        }
-    }
-
-    private long singleLong(ResultSet resultSet) throws SQLException {
-        resultSet.next();
-        return resultSet.getLong(1);
-    }
 }
