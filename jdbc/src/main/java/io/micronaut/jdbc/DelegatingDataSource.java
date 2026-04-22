@@ -16,24 +16,19 @@
 package io.micronaut.jdbc;
 
 import io.micronaut.core.annotation.Internal;
-import jakarta.inject.Singleton;
 
 import javax.sql.DataSource;
 
 /**
- * Resolves wrapped SQLite-aware data sources to their underlying target datasource.
+ * Internal contract for datasource wrappers that can expose their underlying target datasource.
  *
  * @since 7.0.0
  */
-@Singleton
 @Internal
-public final class SQLiteAwareDataSourceResolver implements DataSourceResolver {
+public interface DelegatingDataSource extends DataSource {
 
-    @Override
-    public DataSource resolve(DataSource dataSource) {
-        if (dataSource instanceof DelegatingDataSource delegatingDataSource) {
-            return delegatingDataSource.getTargetDataSource();
-        }
-        return dataSource;
-    }
+    /**
+     * @return The underlying target datasource
+     */
+    DataSource getTargetDataSource();
 }

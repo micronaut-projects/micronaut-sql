@@ -85,7 +85,7 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         PoolDataSource ds = datasourceConfiguration.getPoolDataSource();
         dataSources.put(datasourceConfiguration.getName(), ds);
 
-        return ds;
+        return UcpSqliteProxyFactory.wrap(ds, datasourceConfiguration.getDriverClassName(), datasourceConfiguration.getUrl());
     }
 
     /**

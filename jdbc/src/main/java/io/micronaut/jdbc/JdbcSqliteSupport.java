@@ -105,7 +105,7 @@ public final class JdbcSqliteSupport {
         );
     }
 
-    static final class SQLiteAwareDataSource implements DataSource {
+    static final class SQLiteAwareDataSource implements DelegatingDataSource {
 
         private final DataSource targetDataSource;
 
@@ -113,7 +113,8 @@ public final class JdbcSqliteSupport {
             this.targetDataSource = targetDataSource;
         }
 
-        DataSource getTargetDataSource() {
+        @Override
+        public DataSource getTargetDataSource() {
             return targetDataSource;
         }
 
