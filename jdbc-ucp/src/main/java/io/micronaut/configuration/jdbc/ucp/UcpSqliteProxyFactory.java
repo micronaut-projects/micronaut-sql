@@ -25,7 +25,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * Creates SQLite-aware proxies for UCP datasources while preserving the {@link PoolDataSource} type.
@@ -99,8 +98,6 @@ final class UcpSqliteProxyFactory {
                 return JdbcSqliteSupport.wrapSqliteConnection((Connection) method.invoke(target, args));
             } catch (InvocationTargetException e) {
                 throw e.getCause();
-            } catch (SQLException e) {
-                throw e;
             }
         }
     }
