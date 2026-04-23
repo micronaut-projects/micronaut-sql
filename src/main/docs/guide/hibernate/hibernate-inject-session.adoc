@@ -16,4 +16,6 @@ EntityManager entityManager;
 EntityManager otherManager;
 ----
 
-Micronaut will inject a compile time scoped proxy that retrieves the `EntityManager` associated with the current transaction when using `@Transactional` (see <<jdbc-transactions, Transaction Management>>).
+Micronaut will inject a compile time scoped proxy that retrieves the `EntityManager` associated with the current transaction when using `jakarta.transaction.Transactional` (or `io.micronaut.transaction.annotation.Transactional`).
+
+For Hibernate/JPA transaction management, use `micronaut-data-tx-hibernate` as described in <<hibernate, Setting up a Hibernate/JPA EntityManager>>.
