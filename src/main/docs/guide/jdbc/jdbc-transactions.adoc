@@ -1,0 +1,26 @@
+Spring is not required for transaction management with JDBC. To enable Micronaut-managed JDBC transactions, add the following dependency:
+
+dependency:micronaut-data-tx-jdbc[groupId="io.micronaut.data"]
+
+This module configures the JDBC transaction manager and includes the Jakarta Transactions API.
+
+You can annotate transactional methods with either `jakarta.transaction.Transactional` or `io.micronaut.transaction.annotation.Transactional`. For read-only operations, you can also use `io.micronaut.transaction.annotation.ReadOnly`.
+
+[source,java]
+.Using `@Transactional` with JDBC
+----
+import jakarta.transaction.Transactional;
+
+@Transactional
+void saveBook(Book book) {
+    // use the injected DataSource here
+}
+----
+
+If you need Micronaut-specific options such as `readOnly`, `transactionManager`, or `propagation`, use `io.micronaut.transaction.annotation.Transactional`.
+
+This transaction support works with plain JDBC access and with integrations built on top of a JDBC `DataSource`, such as Jdbi and JDBC-backed jOOQ.
+
+When using direct JDBC access, obtain connections from the injected `DataSource` inside a transactional method, or from a method that is invoked within a transaction boundary, so Micronaut can associate the connection with the active transaction.
+
+Spring transaction management remains optional and should only be added if your application specifically needs Spring transaction APIs.
