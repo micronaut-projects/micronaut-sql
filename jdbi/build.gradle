@@ -18,7 +18,7 @@ dependencies {
     api projects.micronautJdbc
     api(mn.micronaut.aop)
     api(mn.micronaut.inject)
-    implementation(platform(libs.boms.jdbi3))
+    api(platform(libs.boms.jdbi3))
     api(libs.jdbi3.core) {
         exclude group:'com.github.ben-manes.caffeine', module:'caffeine'
     }
