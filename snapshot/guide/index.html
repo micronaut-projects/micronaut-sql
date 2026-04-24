@@ -2960,6 +2960,44 @@ Find more information in the <a href="https://www.jooq.org/doc/latest/manual/cod
 </p>
 </div>
 <div class="paragraph">
+<p>If you need additional Jdbi modules such as <code>jdbi3-sqlobject</code>, Gradle consumers can declare them without an explicit version because <code>micronaut-jdbi</code> publishes the Jdbi BOM through Gradle module metadata:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("io.micronaut.sql:micronaut-jdbi")
+implementation("org.jdbi:jdbi3-sqlobject")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For Maven, import <code>micronaut-sql-bom</code> in <code>dependencyManagement</code> before declaring extra Jdbi modules, because Maven does not consume transitive BOM imports from regular dependencies:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;io.micronaut.sql&lt;/groupId&gt;
+      &lt;artifactId&gt;micronaut-sql-bom&lt;/artifactId&gt;
+      &lt;version&gt;${micronaut.sql.version}&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+
+&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.sql&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-jdbi&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.jdbi&lt;/groupId&gt;
+    &lt;artifactId&gt;jdbi3-sqlobject&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>You should then <a href="#jdbc">configure one or many DataSources</a>.
 For each registered <code>DataSource</code>, Micronaut will configure the following Jdbi beans using <a href="../api/io/micronaut/configuration/jdbi/JdbiFactory.html">JdbiFactory</a>:</p>
 </div>
