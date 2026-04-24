@@ -1,0 +1,93 @@
+To run Hibernate on GraalVM native image you need to configure more than entity scanning alone. The Hibernate runtime normally depends on reflective model inspection and runtime proxy generation, both of which need extra setup in a native image.
+
+For Hibernate applications on GraalVM, make sure all of the following are true:
+
+* Entity discovery uses Micronaut entity scanning, not full classpath scanning
+* Lazy associations use compile-time Hibernate proxies instead of runtime-generated proxies
+* Types that Hibernate still needs to inspect reflectively are registered for reflection
+
+== Entity Scanning
+
+Micronaut's default entity scanning works in native image because it relies on Micronaut metadata instead of scanning the full classpath.
+
+Avoid enabling `jpa.*.entity-scan.classpath=true` for GraalVM native image. Full classpath scanning does not work in a native executable.
+
+If your entities are not compiled by Micronaut, generate introspection metadata for them instead:
+
+[source,java]
+----
+@Introspected(packages = "example.domain")
+----
+
+See the entity scan configuration section for the full set of options.
+
+== Lazy Associations
+
+If your model uses lazy associations, Hibernate must create proxies for the associated entity types. Runtime proxy generation is not a good fit for GraalVM native image, so use Micronaut's compile-time Hibernate proxies instead.
+
+[configuration]
+.Enable Compile-Time Hibernate Proxies
+----
+jpa:
+  default:
+    compile-time-hibernate-proxies: true
+----
+
+Each entity type that Hibernate may proxy must be annotated with `@GenerateProxy`:
+
+[source,java]
+----
+@Entity
+@GenerateProxy
+public class Owner {
+    // ...
+}
+----
+
+Then any lazy association pointing to that entity can be resolved without falling back to Hibernate's runtime proxy generation:
+
+[source,java]
+----
+@Entity
+public class Pet {
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Owner owner;
+}
+----
+
+[NOTE]
+Compile-time Hibernate proxies are enabled by default for the GraalVM environment. The `@GenerateProxy` annotation is still required on each entity type that Hibernate may proxy.
+
+== Reflection Requirements
+
+Even with Micronaut entity scanning and compile-time proxies enabled, Hibernate may still need reflective access to some model types at runtime.
+
+In particular, embeddable identifier types used with `@EmbeddedId` should be annotated with `@ReflectiveAccess`:
+
+[source,java]
+----
+@Embeddable
+@ReflectiveAccess
+public class OrderId implements Serializable {
+    // ...
+}
+----
+
+And then used from the entity as usual:
+
+[source,java]
+----
+@Entity
+public class Order {
+
+    @EmbeddedId
+    private OrderId id;
+}
+----
+
+If a native-image build works on the JVM but fails only once Hibernate starts inspecting metadata or creating proxies in the native executable, check these three areas first:
+
+* Entity scanning is not using classpath scanning
+* Lazy association targets are annotated with `@GenerateProxy`
+* Embeddable identifier types and other reflectively accessed model types are annotated with `@ReflectiveAccess`

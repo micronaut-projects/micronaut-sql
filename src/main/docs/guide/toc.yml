@@ -14,6 +14,7 @@ hibernate:
   hibernate-inject-session: Injecting an EntityManager or Hibernate Session
   hibernate-customizing: Customizing Hibernate/JPA Configuration
   hibernate-entity-scan: Entity Scan Configuration
+  hibernate-graalvm: GraalVM native image
   hibernate-reactive: Configuring Hibernate Reactive
   hibernate-proxies: Using compile-time Hibernate proxies
   hibernate-lazy-initialization: Understanding LazyInitializationException
