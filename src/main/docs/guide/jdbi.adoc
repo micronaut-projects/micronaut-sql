@@ -4,6 +4,42 @@ To configure the Jdbi library you should first add the `jdbi` module to your cla
 
 dependency:micronaut-jdbi[groupId="io.micronaut.sql"]
 
+If you need additional Jdbi modules such as `jdbi3-sqlobject`, Gradle consumers can declare them without an explicit version because `micronaut-jdbi` publishes the Jdbi BOM through Gradle module metadata:
+
+[source,groovy]
+----
+implementation("io.micronaut.sql:micronaut-jdbi")
+implementation("org.jdbi:jdbi3-sqlobject")
+----
+
+For Maven, import `micronaut-sql-bom` in `dependencyManagement` before declaring extra Jdbi modules, because Maven does not consume transitive BOM imports from regular dependencies:
+
+[source,xml]
+----
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>io.micronaut.sql</groupId>
+      <artifactId>micronaut-sql-bom</artifactId>
+      <version>${micronaut.sql.version}</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+
+<dependencies>
+  <dependency>
+    <groupId>io.micronaut.sql</groupId>
+    <artifactId>micronaut-jdbi</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>org.jdbi</groupId>
+    <artifactId>jdbi3-sqlobject</artifactId>
+  </dependency>
+</dependencies>
+----
+
 You should then <<jdbc, configure one or many DataSources>>.
 For each registered `DataSource`, Micronaut will configure the following Jdbi beans using api:configuration.jdbi.JdbiFactory[]:
 
