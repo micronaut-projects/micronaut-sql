@@ -30,3 +30,5 @@ To use SQLite, add the Xerial JDBC driver:
 dependency:sqlite-jdbc[groupId="org.xerial", scope="runtime"]
 
 When the SQLite driver is present, Micronaut can automatically configure an embedded shared in-memory datasource for `db-type: sqlite` if you do not provide an explicit JDBC URL.
+
+To configure Micronaut-managed JDBC transactions without Spring, see <<jdbc-transactions, Transaction Management>>.

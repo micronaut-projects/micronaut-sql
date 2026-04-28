@@ -45,6 +45,8 @@ For each registered `DataSource`, Micronaut will configure the following Jdbi be
 
 * link:{jdbiapi}/org/jdbi/v3/core/Jdbi.html[Jdbi] - the `Jdbi` instance
 
+For Jdbi applications that use Micronaut transaction management, configure <<jdbc-transactions, Transaction Management>>.
+
 If Spring transaction management is in use, it will additionally create the following beans :
 
 * api:configuration.jdbi.spring.SpringTransactionHandler[SpringTransactionHandler] for each Spring `PlatformTransactionManager`
