@@ -19,7 +19,7 @@ If your entities are not compiled by Micronaut, generate introspection metadata 
 @Introspected(packages = "example.domain")
 ----
 
-See the entity scan configuration section for the full set of options.
+See the <<hibernate-entity-scan,entity scan configuration section>> for the full set of options.
 
 == Lazy Associations
 
@@ -86,7 +86,7 @@ public class Order {
 }
 ----
 
-If a native-image build works on the JVM but fails only once Hibernate starts inspecting metadata or creating proxies in the native executable, check these three areas first:
+If the application works on the JVM but fails only once Hibernate starts inspecting metadata or creating proxies in the native executable, check these three areas first:
 
 * Entity scanning is not using classpath scanning
 * Lazy association targets are annotated with `@GenerateProxy`
