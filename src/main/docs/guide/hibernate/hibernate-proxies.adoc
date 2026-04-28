@@ -41,6 +41,6 @@ public class Owner {
 ----
 
 [NOTE]
-Compile-time proxies are enabled by default for GraalVM environment.
+For GraalVM native image, enable compile-time proxies with the configuration shown above.
 
 For the full set of Hibernate native image requirements, including entity scanning and reflective access for embeddable identifier types, see the <<hibernate-graalvm,GraalVM native image section>> in this chapter.

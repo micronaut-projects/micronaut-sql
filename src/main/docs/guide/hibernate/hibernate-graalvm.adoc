@@ -57,7 +57,7 @@ public class Pet {
 ----
 
 [NOTE]
-Compile-time Hibernate proxies are enabled by default for the GraalVM environment. The `@GenerateProxy` annotation is still required on each entity type that Hibernate may proxy.
+For GraalVM native image, enable compile-time Hibernate proxies as shown above. The `@GenerateProxy` annotation is still required on each entity type that Hibernate may proxy.
 
 == Reflection Requirements
 
