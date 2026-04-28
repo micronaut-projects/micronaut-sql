@@ -111,9 +111,11 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-multiple-datasources"><a href="#jdbc-multiple-datasources"><strong>4.3</strong><span>Configuring Multiple Data Sources</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-healthchecks"><a href="#jdbc-healthchecks"><strong>4.4</strong><span>JDBC Health Checks</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-transactions"><a href="#jdbc-transactions"><strong>4.4</strong><span>Transaction Management</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-runtime-password-update"><a href="#jdbc-runtime-password-update"><strong>4.5</strong><span>Data Source Runtime Password Change</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-healthchecks"><a href="#jdbc-healthchecks"><strong>4.5</strong><span>JDBC Health Checks</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-runtime-password-update"><a href="#jdbc-runtime-password-update"><strong>4.6</strong><span>Data Source Runtime Password Change</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-hibernate"><a href="#hibernate"><strong>5</strong><span>Configuring Hibernate</span></a></div>
         
@@ -390,6 +392,9 @@
 </div>
 <div class="paragraph">
 <p>When the SQLite driver is present, Micronaut can automatically configure an embedded shared in-memory datasource for <code>db-type: sqlite</code> if you do not provide an explicit JDBC URL.</p>
+</div>
+<div class="paragraph">
+<p>To configure Micronaut-managed JDBC transactions without Spring, see <a href="#jdbc-transactions">Transaction Management</a>.</p>
 </div>
 
 <h2 id="jdbc-disable"><a class="anchor" href="#jdbc-disable"></a>4.1 Disable Micronaut JDBC Data Sources</h2>
@@ -1113,7 +1118,86 @@ datasources.warehouse=...</code></pre>
 </div>
 </div>
 
-<h2 id="jdbc-healthchecks"><a class="anchor" href="#jdbc-healthchecks"></a>4.4 JDBC Health Checks</h2>
+<h2 id="jdbc-transactions"><a class="anchor" href="#jdbc-transactions"></a>4.4 Transaction Management</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jdbc/jdbc-transactions.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Spring is not required for transaction management with plain JDBC access or other integrations built on top of a JDBC <code>DataSource</code>. To enable Micronaut-managed transactions for those JDBC-backed integrations, add the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.data:micronaut-data-tx-jdbc")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.data&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-data-tx-jdbc&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>This module configures the JDBC transaction manager and includes the Jakarta Transactions API.</p>
+</div>
+<div class="paragraph">
+<p>If you are using Hibernate/JPA, do not add <code>micronaut-data-tx-jdbc</code> for transaction management. Use the Hibernate transaction module instead:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.data:micronaut-data-tx-hibernate")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.data&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-data-tx-hibernate&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>You can annotate transactional methods with either <code>jakarta.transaction.Transactional</code> or <code>io.micronaut.transaction.annotation.Transactional</code>. For read-only operations, you can also use <code>io.micronaut.transaction.annotation.ReadOnly</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Using <code>@Transactional</code> with JDBC</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import jakarta.transaction.Transactional;
+
+@Transactional
+void saveBook(Book book) {
+    // use the injected DataSource here
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you need Micronaut-specific options such as <code>readOnly</code>, <code>transactionManager</code>, or <code>propagation</code>, use <code>io.micronaut.transaction.annotation.Transactional</code>.</p>
+</div>
+<div class="paragraph">
+<p>This transaction support works with plain JDBC access and with integrations built on top of a JDBC <code>DataSource</code>, such as Jdbi and JDBC-backed jOOQ.</p>
+</div>
+<div class="paragraph">
+<p>When using direct JDBC access, obtain connections from the injected <code>DataSource</code> inside a transactional method, or from a method that is invoked within a transaction boundary, so Micronaut can associate the connection with the active transaction.</p>
+</div>
+<div class="paragraph">
+<p>Spring transaction management remains optional and should only be added if your application specifically needs Spring transaction APIs.</p>
+</div>
+
+<h2 id="jdbc-healthchecks"><a class="anchor" href="#jdbc-healthchecks"></a>4.5 JDBC Health Checks</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jdbc/jdbc-healthchecks.adoc"'>
@@ -1129,7 +1213,7 @@ datasources.warehouse=...</code></pre>
 <p>See the section on the <a href="https://docs.micronaut.io/latest/guide/index.html#healthEndpoint">Health Endpoint</a> for more information.</p>
 </div>
 
-<h2 id="jdbc-runtime-password-update"><a class="anchor" href="#jdbc-runtime-password-update"></a>4.5 Data Source Runtime Password Change</h2>
+<h2 id="jdbc-runtime-password-update"><a class="anchor" href="#jdbc-runtime-password-update"></a>4.6 Data Source Runtime Password Change</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jdbc/jdbc-runtime-password-update.adoc"'>
@@ -1467,7 +1551,10 @@ EntityManager otherManager;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Micronaut will inject a compile time scoped proxy that retrieves the <code>EntityManager</code> associated with the current transaction when using <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Transactional.html">@Transactional</a> (see "Using Spring Transaction Management" below).</p>
+<p>Micronaut will inject a compile time scoped proxy that retrieves the <code>EntityManager</code> associated with the current transaction when using <code>jakarta.transaction.Transactional</code> (or <code>io.micronaut.transaction.annotation.Transactional</code>).</p>
+</div>
+<div class="paragraph">
+<p>For Hibernate/JPA transaction management, use <code>micronaut-data-tx-hibernate</code> as described in <a href="#hibernate">Setting up a Hibernate/JPA EntityManager</a>.</p>
 </div>
 
 <h2 id="hibernate-customizing"><a class="anchor" href="#hibernate-customizing"></a>5.3 Customizing Hibernate/JPA Configuration</h2>
@@ -2266,7 +2353,7 @@ Compile-time proxies are enabled by default for GraalVM environment.
 <p>Micronaut is built on Netty which is based on a non-blocking, event loop model. JDBC and Hibernate are blocking APIs and hence when they are used in a Micronaut application the work is shifted to a blocking I/O thread pool.</p>
 </div>
 <div class="paragraph">
-<p>When using <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Transactional.html">@Transactional</a> the Hibernate <code>Session</code> will only be open for the duration of this method execution and then will automatically be closed. This ensures that the blocking operation is kept as short as possible.</p>
+<p>When using <code>jakarta.transaction.Transactional</code> (or <code>io.micronaut.transaction.annotation.Transactional</code>) the Hibernate <code>Session</code> will only be open for the duration of this method execution and then will automatically be closed. This ensures that the blocking operation is kept as short as possible.</p>
 </div>
 <div class="paragraph">
 <p>There is no notion of OpenSessionInView (OSIV) in Micronaut and never will be, since it is <a href="https://vladmihalcea.com/the-open-session-in-view-anti-pattern/">sub-optimal and not recommended</a>. You should optimize the queries that you write to return all the necessary data Micronaut will need to encode your objects into JSON either by using the appropriate join queries or using a <a href="https://vladmihalcea.com/the-best-way-to-map-a-projection-query-to-a-dto-with-jpa-and-hibernate/">data transfer object (DTO)</a>.</p>
@@ -2513,6 +2600,9 @@ For each registered <code>DataSource</code> or <code>ConnectionFactory</code>, M
 <p><a href="https://www.jooq.org/javadoc/latest/org/jooq/DSLContext.html">DSLContext</a> - jOOQ <code>DSLContext</code></p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>For JDBC-backed jOOQ applications that use Micronaut transaction management, configure <a href="#jdbc-transactions">Transaction Management</a>.</p>
 </div>
 <div class="paragraph">
 <p>If Spring transaction management is in use, it will additionally create the following beans :</p>
@@ -3007,6 +3097,9 @@ For each registered <code>DataSource</code>, Micronaut will configure the follow
 <p><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Jdbi.html">Jdbi</a> - the <code>Jdbi</code> instance</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>For Jdbi applications that use Micronaut transaction management, configure <a href="#jdbc-transactions">Transaction Management</a>.</p>
 </div>
 <div class="paragraph">
 <p>If Spring transaction management is in use, it will additionally create the following beans :</p>
