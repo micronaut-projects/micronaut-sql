@@ -127,11 +127,13 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-entity-scan"><a href="#hibernate-entity-scan"><strong>5.4</strong><span>Entity Scan Configuration</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-reactive"><a href="#hibernate-reactive"><strong>5.5</strong><span>Configuring Hibernate Reactive</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-graalvm"><a href="#hibernate-graalvm"><strong>5.5</strong><span>GraalVM native image</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-proxies"><a href="#hibernate-proxies"><strong>5.6</strong><span>Using compile-time Hibernate proxies</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-reactive"><a href="#hibernate-reactive"><strong>5.6</strong><span>Configuring Hibernate Reactive</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-lazy-initialization"><a href="#hibernate-lazy-initialization"><strong>5.7</strong><span>Understanding LazyInitializationException</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-proxies"><a href="#hibernate-proxies"><strong>5.7</strong><span>Using compile-time Hibernate proxies</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-lazy-initialization"><a href="#hibernate-lazy-initialization"><strong>5.8</strong><span>Understanding LazyInitializationException</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-jasync"><a href="#jasync"><strong>6</strong><span>Configuring JAsync SQL</span></a></div>
         
@@ -1891,7 +1893,207 @@ jpa.default.entity-scan.packages[0]=foo.bar</code></pre>
 </ul>
 </div>
 
-<h2 id="hibernate-reactive"><a class="anchor" href="#hibernate-reactive"></a>5.5 Configuring Hibernate Reactive</h2>
+<h2 id="hibernate-graalvm"><a class="anchor" href="#hibernate-graalvm"></a>5.5 GraalVM native image</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/hibernate/hibernate-graalvm.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To run Hibernate on GraalVM native image you need to configure more than entity scanning alone. The Hibernate runtime normally depends on reflective model inspection and runtime proxy generation, both of which need extra setup in a native image.</p>
+</div>
+<div class="paragraph">
+<p>For Hibernate applications on GraalVM, make sure all of the following are true:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Entity discovery uses Micronaut entity scanning, not full classpath scanning</p>
+</li>
+<li>
+<p>Lazy associations use compile-time Hibernate proxies instead of runtime-generated proxies</p>
+</li>
+<li>
+<p>Types that Hibernate still needs to inspect reflectively are registered for reflection</p>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_entity_scanning">Entity Scanning</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Micronaut&#8217;s default entity scanning works in native image because it relies on Micronaut metadata instead of scanning the full classpath.</p>
+</div>
+<div class="paragraph">
+<p>Avoid enabling <code>jpa.*.entity-scan.classpath=true</code> for GraalVM native image. Full classpath scanning does not work in a native executable.</p>
+</div>
+<div class="paragraph">
+<p>If your entities are not compiled by Micronaut, generate introspection metadata for them instead:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Introspected(packages = "example.domain")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See the <a href="#hibernate-entity-scan">entity scan configuration section</a> for the full set of options.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_lazy_associations">Lazy Associations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If your model uses lazy associations, Hibernate must create proxies for the associated entity types. Runtime proxy generation is not a good fit for GraalVM native image, so use Micronaut&#8217;s compile-time Hibernate proxies instead.</p>
+</div>
+<div class="openblock">
+<div class="title">Enable Compile-Time Hibernate Proxies</div>
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">jpa.default.compile-time-hibernate-proxies=true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">jpa:
+  default:
+    compile-time-hibernate-proxies: true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa]
+  [jpa.default]
+    compile-time-hibernate-proxies=true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">jpa {
+  'default' {
+    compileTimeHibernateProxies = true
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  jpa {
+    default {
+      compile-time-hibernate-proxies = true
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "jpa": {
+    "default": {
+      "compile-time-hibernate-proxies": true
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Each entity type that Hibernate may proxy must be annotated with <code>@GenerateProxy</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Entity
+@GenerateProxy
+public class Owner {
+    // ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then any lazy association pointing to that entity can be resolved without falling back to Hibernate&#8217;s runtime proxy generation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Entity
+public class Pet {
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Owner owner;
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For GraalVM native image, enable compile-time Hibernate proxies as shown above. The <code>@GenerateProxy</code> annotation is still required on each entity type that Hibernate may proxy.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_reflection_requirements">Reflection Requirements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Even with Micronaut entity scanning and compile-time proxies enabled, Hibernate may still need reflective access to some model types at runtime.</p>
+</div>
+<div class="paragraph">
+<p>In particular, embeddable identifier types used with <code>@EmbeddedId</code> should be annotated with <code>@ReflectiveAccess</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Embeddable
+@ReflectiveAccess
+public class OrderId implements Serializable {
+    // ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And then used from the entity as usual:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Entity
+public class Order {
+
+    @EmbeddedId
+    private OrderId id;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the application works on the JVM but fails only once Hibernate starts inspecting metadata or creating proxies in the native executable, check these three areas first:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Entity scanning is not using classpath scanning</p>
+</li>
+<li>
+<p>Lazy association targets are annotated with <code>@GenerateProxy</code></p>
+</li>
+<li>
+<p>Embeddable identifier types and other reflectively accessed model types are annotated with <code>@ReflectiveAccess</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<h2 id="hibernate-reactive"><a class="anchor" href="#hibernate-reactive"></a>5.6 Configuring Hibernate Reactive</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/hibernate/hibernate-reactive.adoc"'>
@@ -2262,7 +2464,7 @@ vertx.pg.client.max-size=10</code></pre>
 <p>The integration will automatically integrate Vertx driver instance of <code>io.vertx.sqlclient.Pool</code> found in the bean context.</p>
 </div>
 
-<h2 id="hibernate-proxies"><a class="anchor" href="#hibernate-proxies"></a>5.6 Using compile-time Hibernate proxies</h2>
+<h2 id="hibernate-proxies"><a class="anchor" href="#hibernate-proxies"></a>5.7 Using compile-time Hibernate proxies</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/hibernate/hibernate-proxies.adoc"'>
@@ -2290,15 +2492,62 @@ vertx.pg.client.max-size=10</code></pre>
 <div class="paragraph">
 <p>If you wish to use lazy entity associations and avoid runtime proxies you can enable compile-time proxies:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">jpa.default.compile-time-hibernate-proxies=true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">jpa:
   default:
     compile-time-hibernate-proxies: true</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa]
+  [jpa.default]
+    compile-time-hibernate-proxies=true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">jpa {
+  'default' {
+    compileTimeHibernateProxies = true
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  jpa {
+    default {
+      compile-time-hibernate-proxies = true
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "jpa": {
+    "default": {
+      "compile-time-hibernate-proxies": true
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
 <div class="paragraph">
-<p>Compile-time proxies require for an entity which needs to have a proxy to be annotated with <code>@GenerateProxy</code>:</p>
+<p>Compile-time proxies require every entity type that Hibernate may proxy to be annotated with <code>@GenerateProxy</code>:</p>
 </div>
 <div class="paragraph">
 <p>For example:</p>
@@ -2316,7 +2565,7 @@ public class Pet {
 </div>
 </div>
 <div class="paragraph">
-<p>The entity <code>Owner</code> needs to be annotated with <code>@GenerateProxy</code> to have a proxy generated and the compile-time.</p>
+<p>The entity <code>Owner</code> needs to be annotated with <code>@GenerateProxy</code> to have a proxy generated at compile time.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2334,13 +2583,16 @@ public class Owner {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Compile-time proxies are enabled by default for GraalVM environment.
+For GraalVM native image, enable compile-time proxies with the configuration shown above.
 </td>
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>For the full set of Hibernate native image requirements, including entity scanning and reflective access for embeddable identifier types, see the <a href="#hibernate-graalvm">GraalVM native image section</a> in this chapter.</p>
+</div>
 
-<h2 id="hibernate-lazy-initialization"><a class="anchor" href="#hibernate-lazy-initialization"></a>5.7 Understanding LazyInitializationException</h2>
+<h2 id="hibernate-lazy-initialization"><a class="anchor" href="#hibernate-lazy-initialization"></a>5.8 Understanding LazyInitializationException</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/hibernate/hibernate-lazy-initialization.adoc"'>
