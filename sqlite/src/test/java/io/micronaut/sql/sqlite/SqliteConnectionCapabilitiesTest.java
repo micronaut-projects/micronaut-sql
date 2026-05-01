@@ -1,0 +1,58 @@
+package io.micronaut.sql.sqlite;
+
+import io.micronaut.data.connection.ConnectionCapabilities;
+import org.junit.jupiter.api.condition.DisabledInNativeImage;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import java.lang.reflect.Proxy;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class SqliteConnectionCapabilitiesTest {
+
+    private final ConnectionCapabilities capabilities = new SqliteConnectionCapabilities();
+
+    @DisabledInNativeImage
+    @ParameterizedTest
+    @CsvSource({
+        "MySQL, true",
+        "MariaDB, true",
+        "PostgreSQL, true",
+        "H2, true",
+        "SQLite, false",
+        "Oracle, true",
+        "'Microsoft SQL Server', true"
+    })
+    void supportsReadOnlyForDifferentDatabaseProducts(String databaseProductName, boolean expected) {
+        assertEquals(expected, capabilities.supports(ConnectionCapabilities.Capability.READ_ONLY, connection(databaseProductName)));
+    }
+
+    private Connection connection(String databaseProductName) {
+        DatabaseMetaData metaData = (DatabaseMetaData) Proxy.newProxyInstance(
+            DatabaseMetaData.class.getClassLoader(),
+            new Class<?>[]{DatabaseMetaData.class},
+            (proxy, method, args) -> switch (method.getName()) {
+                case "getDatabaseProductName" -> databaseProductName;
+                case "unwrap" -> null;
+                case "isWrapperFor" -> false;
+                default -> throw new UnsupportedOperationException(method.getName());
+            }
+        );
+        return connection(metaData);
+    }
+
+    private Connection connection(DatabaseMetaData metaData) {
+        return (Connection) Proxy.newProxyInstance(
+            Connection.class.getClassLoader(),
+            new Class<?>[]{Connection.class},
+            (proxy, method, args) -> switch (method.getName()) {
+                case "getMetaData" -> metaData;
+                case "unwrap" -> null;
+                case "isWrapperFor" -> false;
+                default -> throw new UnsupportedOperationException(method.getName());
+            }
+        );
+    }
+}

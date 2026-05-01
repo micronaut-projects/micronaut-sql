@@ -2,6 +2,8 @@ package example.jdbc.hikari.sqlite;
 
 import example.domain.IPet;
 import example.sync.IPetRepository;
+import io.micronaut.data.connection.ConnectionOperations;
+import io.micronaut.transaction.annotation.ReadOnly;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
@@ -21,27 +23,32 @@ public class PetRepository implements IPetRepository {
 
     private final DataSource dataSource;
     private final OwnerRepository ownerRepository;
+    private final ConnectionOperations<Connection> connectionOperations;
 
-    public PetRepository(DataSource dataSource, OwnerRepository ownerRepository) {
+    public PetRepository(DataSource dataSource,
+                         OwnerRepository ownerRepository,
+                         ConnectionOperations<Connection> connectionOperations) {
         this.dataSource = dataSource;
         this.ownerRepository = ownerRepository;
+        this.connectionOperations = connectionOperations;
     }
 
     @PostConstruct
-    public void init() throws SQLException {
-        runInit();
-    }
-
-    @Transactional
-    public void runInit() throws SQLException {
-        PreparedStatement stmt = dataSource.getConnection().prepareStatement("""
-            CREATE TABLE IF NOT EXISTS pets (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name VARCHAR(200) NOT NULL,
-                type VARCHAR(200),
-                owner INTEGER NOT NULL
-            )""");
-        stmt.executeUpdate();
+    public void init() {
+        connectionOperations.executeWrite(status -> {
+            try (PreparedStatement stmt = status.getConnection().prepareStatement("""
+                CREATE TABLE IF NOT EXISTS pets (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name VARCHAR(200) NOT NULL,
+                    type VARCHAR(200),
+                    owner INTEGER NOT NULL
+                )""")) {
+                stmt.executeUpdate();
+                return null;
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to initialize pets table", e);
+            }
+        });
     }
 
     @Override
@@ -49,7 +56,7 @@ public class PetRepository implements IPetRepository {
         return new Pet();
     }
 
-    @Transactional(Transactional.TxType.MANDATORY)
+    @Transactional
     @Override
     public void save(IPet pet) {
         try (Connection conn = dataSource.getConnection();
@@ -69,7 +76,7 @@ public class PetRepository implements IPetRepository {
         }
     }
 
-    @Transactional(Transactional.TxType.MANDATORY)
+    @Transactional
     @Override
     public void delete(IPet pet) {
         try (Connection conn = dataSource.getConnection();
@@ -81,6 +88,7 @@ public class PetRepository implements IPetRepository {
         }
     }
 
+    @ReadOnly
     @Override
     public Collection<IPet> findAll() {
         try (Connection conn = dataSource.getConnection();
@@ -96,6 +104,7 @@ public class PetRepository implements IPetRepository {
         }
     }
 
+    @ReadOnly
     @Override
     public Optional<IPet> findByName(String name) {
         try (Connection conn = dataSource.getConnection();

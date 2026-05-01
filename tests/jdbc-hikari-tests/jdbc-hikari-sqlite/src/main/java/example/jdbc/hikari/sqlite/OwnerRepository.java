@@ -2,6 +2,8 @@ package example.jdbc.hikari.sqlite;
 
 import example.domain.IOwner;
 import example.sync.IOwnerRepository;
+import io.micronaut.data.connection.ConnectionOperations;
+import io.micronaut.transaction.annotation.ReadOnly;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
@@ -20,25 +22,28 @@ import java.util.Optional;
 public class OwnerRepository implements IOwnerRepository {
 
     private final DataSource dataSource;
+    private final ConnectionOperations<Connection> connectionOperations;
 
-    public OwnerRepository(DataSource dataSource) {
+    public OwnerRepository(DataSource dataSource, ConnectionOperations<Connection> connectionOperations) {
         this.dataSource = dataSource;
+        this.connectionOperations = connectionOperations;
     }
 
     @PostConstruct
-    public void init() throws SQLException {
-        runInit();
-    }
-
-    @Transactional
-    public void runInit() throws SQLException {
-        PreparedStatement stmt = dataSource.getConnection().prepareStatement("""
-            CREATE TABLE IF NOT EXISTS owners (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name VARCHAR(200) NOT NULL,
-                age INTEGER NOT NULL
-            )""");
-        stmt.executeUpdate();
+    public void init() {
+        connectionOperations.executeWrite(status -> {
+            try (PreparedStatement stmt = status.getConnection().prepareStatement("""
+                CREATE TABLE IF NOT EXISTS owners (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name VARCHAR(200) NOT NULL,
+                    age INTEGER NOT NULL
+                )""")) {
+                stmt.executeUpdate();
+                return null;
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to initialize owners table", e);
+            }
+        });
     }
 
     @Override
@@ -46,7 +51,7 @@ public class OwnerRepository implements IOwnerRepository {
         return new Owner();
     }
 
-    @Transactional(Transactional.TxType.MANDATORY)
+    @Transactional
     @Override
     public void save(IOwner owner) {
         try (Connection conn = dataSource.getConnection();
@@ -65,7 +70,7 @@ public class OwnerRepository implements IOwnerRepository {
         }
     }
 
-    @Transactional(Transactional.TxType.MANDATORY)
+    @Transactional
     @Override
     public void delete(IOwner owner) {
         try (Connection conn = dataSource.getConnection();
@@ -77,6 +82,7 @@ public class OwnerRepository implements IOwnerRepository {
         }
     }
 
+    @ReadOnly
     @Override
     public IOwner findById(Long id) {
         try (Connection conn = dataSource.getConnection();
@@ -93,6 +99,7 @@ public class OwnerRepository implements IOwnerRepository {
         }
     }
 
+    @ReadOnly
     @Override
     public Collection<IOwner> findAll() {
         try (Connection conn = dataSource.getConnection();
@@ -108,6 +115,7 @@ public class OwnerRepository implements IOwnerRepository {
         }
     }
 
+    @ReadOnly
     @Override
     public Optional<IOwner> findByName(String name) {
         try (Connection conn = dataSource.getConnection();

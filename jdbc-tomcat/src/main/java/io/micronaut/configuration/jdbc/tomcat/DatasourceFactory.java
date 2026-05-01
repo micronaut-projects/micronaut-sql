@@ -24,7 +24,6 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
-import io.micronaut.jdbc.JdbcSqliteSupport;
 import io.micronaut.jdbc.OracleSessionProgramHelper;
 import jakarta.annotation.PreDestroy;
 import org.jspecify.annotations.Nullable;
@@ -94,7 +93,7 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
             }
         }
         dataSources.put(datasourceConfiguration.getName(), ds);
-        return JdbcSqliteSupport.wrapDataSource(ds, ds.getDriverClassName(), ds.getUrl());
+        return ds;
     }
 
     /**
