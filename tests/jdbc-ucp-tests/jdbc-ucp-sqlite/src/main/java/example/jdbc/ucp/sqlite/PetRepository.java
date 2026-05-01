@@ -40,7 +40,8 @@ public class PetRepository implements IPetRepository {
                      id INTEGER PRIMARY KEY AUTOINCREMENT,
                      name VARCHAR(200) NOT NULL,
                      type VARCHAR(200),
-                     owner INTEGER NOT NULL
+                     owner INTEGER NOT NULL,
+                     FOREIGN KEY (owner) REFERENCES owners(id)
                  )""")) {
             stmt.executeUpdate();
         }
