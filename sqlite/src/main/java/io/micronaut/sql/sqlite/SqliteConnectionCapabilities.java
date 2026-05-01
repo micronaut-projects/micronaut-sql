@@ -24,7 +24,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * {@link ConnectionCapabilities} implementation used by the SQLite JDBC example.
+ * {@link ConnectionCapabilities} implementation for SQLite connections.
+ * <p>
+ * SQLite does not support the {@link Capability#READ_ONLY} capability, so this
+ * implementation returns {@code false} for that capability when the connection
+ * identifies itself as SQLite.
  */
 public final class SqliteConnectionCapabilities implements ConnectionCapabilities {
     private static final Logger LOG = LoggerFactory.getLogger(SqliteConnectionCapabilities.class);
