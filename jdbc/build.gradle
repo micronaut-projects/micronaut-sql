@@ -8,5 +8,5 @@ dependencies {
     api(mn.micronaut.inject)
     api(mn.micronaut.context)
 
-    testImplementation(projects.micronautSqlite)
+    testImplementation(libs.managed.sqlite.jdbc)
 }
