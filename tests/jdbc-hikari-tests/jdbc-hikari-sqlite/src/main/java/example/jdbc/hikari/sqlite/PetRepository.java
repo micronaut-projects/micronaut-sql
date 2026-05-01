@@ -2,7 +2,6 @@ package example.jdbc.hikari.sqlite;
 
 import example.domain.IPet;
 import example.sync.IPetRepository;
-import io.micronaut.data.connection.ConnectionOperations;
 import io.micronaut.transaction.annotation.ReadOnly;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Singleton;
@@ -23,32 +22,31 @@ public class PetRepository implements IPetRepository {
 
     private final DataSource dataSource;
     private final OwnerRepository ownerRepository;
-    private final ConnectionOperations<Connection> connectionOperations;
 
     public PetRepository(DataSource dataSource,
-                         OwnerRepository ownerRepository,
-                         ConnectionOperations<Connection> connectionOperations) {
+                         OwnerRepository ownerRepository) {
         this.dataSource = dataSource;
         this.ownerRepository = ownerRepository;
-        this.connectionOperations = connectionOperations;
     }
 
     @PostConstruct
-    public void init() {
-        connectionOperations.executeWrite(status -> {
-            try (PreparedStatement stmt = status.getConnection().prepareStatement("""
-                CREATE TABLE IF NOT EXISTS pets (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    name VARCHAR(200) NOT NULL,
-                    type VARCHAR(200),
-                    owner INTEGER NOT NULL
-                )""")) {
-                stmt.executeUpdate();
-                return null;
-            } catch (SQLException e) {
-                throw new RuntimeException("Failed to initialize pets table", e);
-            }
-        });
+    public void init() throws SQLException {
+        runInit();
+    }
+
+    @Transactional
+    public void runInit() throws SQLException {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("""
+                 CREATE TABLE IF NOT EXISTS pets (
+                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     name VARCHAR(200) NOT NULL,
+                     type VARCHAR(200),
+                     owner INTEGER NOT NULL,
+                     FOREIGN KEY (owner) REFERENCES owners(id)
+                 )""")) {
+            stmt.executeUpdate();
+        }
     }
 
     @Override

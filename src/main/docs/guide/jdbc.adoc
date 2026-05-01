@@ -24,9 +24,3 @@ dependency:micronaut-jdbc-unpooled[groupId="io.micronaut.sql", scope="runtime"]
 You also need to add a JDBC driver dependency to your classpath. For example to add the http://www.h2database.com[H2 In-Memory Database]:
 
 dependency:h2[groupId="com.h2database", scope="runtime"]
-
-To use SQLite, add the Xerial JDBC driver:
-
-dependency:sqlite-jdbc[groupId="org.xerial", scope="runtime"]
-
-When the SQLite driver is present, Micronaut can automatically configure an embedded shared in-memory datasource for `db-type: sqlite` if you do not provide an explicit JDBC URL.

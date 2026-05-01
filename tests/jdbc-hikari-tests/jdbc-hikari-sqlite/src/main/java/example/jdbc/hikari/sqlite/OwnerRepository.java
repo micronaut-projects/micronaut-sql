@@ -2,7 +2,6 @@ package example.jdbc.hikari.sqlite;
 
 import example.domain.IOwner;
 import example.sync.IOwnerRepository;
-import io.micronaut.data.connection.ConnectionOperations;
 import io.micronaut.transaction.annotation.ReadOnly;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Singleton;
@@ -22,28 +21,27 @@ import java.util.Optional;
 public class OwnerRepository implements IOwnerRepository {
 
     private final DataSource dataSource;
-    private final ConnectionOperations<Connection> connectionOperations;
 
-    public OwnerRepository(DataSource dataSource, ConnectionOperations<Connection> connectionOperations) {
+    public OwnerRepository(DataSource dataSource) {
         this.dataSource = dataSource;
-        this.connectionOperations = connectionOperations;
     }
 
     @PostConstruct
-    public void init() {
-        connectionOperations.executeWrite(status -> {
-            try (PreparedStatement stmt = status.getConnection().prepareStatement("""
-                CREATE TABLE IF NOT EXISTS owners (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    name VARCHAR(200) NOT NULL,
-                    age INTEGER NOT NULL
-                )""")) {
-                stmt.executeUpdate();
-                return null;
-            } catch (SQLException e) {
-                throw new RuntimeException("Failed to initialize owners table", e);
-            }
-        });
+    public void init() throws SQLException {
+        runInit();
+    }
+
+    @Transactional
+    public void runInit() throws SQLException {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("""
+                 CREATE TABLE IF NOT EXISTS owners (
+                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     name VARCHAR(200) NOT NULL,
+                     age INTEGER NOT NULL
+                 )""")) {
+            stmt.executeUpdate();
+        }
     }
 
     @Override
