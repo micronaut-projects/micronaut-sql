@@ -54,7 +54,7 @@ public class PetRepository implements IPetRepository {
         return new Pet();
     }
 
-    @Transactional
+    @Transactional(Transactional.TxType.MANDATORY)
     @Override
     public void save(IPet pet) {
         try (Connection conn = dataSource.getConnection();
