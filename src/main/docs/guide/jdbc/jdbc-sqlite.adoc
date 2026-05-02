@@ -8,9 +8,11 @@ If you do not provide an explicit JDBC URL, Micronaut SQL configures automatical
 
 For production, you will probably want to configure SQLite explicitly with a file-backed JDBC URL and something like this:
 
-[source]
+[configuration]
 ----
-jdbc:sqlite:mydb.db?foreign_keys=on&busy_timeout=5000&journal_mode=WAL&synchronous=NORMAL
+datasources:
+    default:
+        url: jdbc:sqlite:mydb.db?foreign_keys=on&busy_timeout=5000&journal_mode=WAL&synchronous
 ----
 
 Useful SQLite documentation links:
