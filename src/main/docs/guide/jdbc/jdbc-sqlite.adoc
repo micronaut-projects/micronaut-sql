@@ -1,6 +1,6 @@
 To use https://www.sqlite.org[SQLite], add the following dependency:
 
-dependency:micronaut-sqlite[groupId="io.micronaut.sql", scope="runtime"]
+dependency:micronaut-jdbc-sqlite[groupId="io.micronaut.sql", scope="runtime"]
 
 The module provides connection capabilities configuration for SQLite and adds the https://github.com/xerial/sqlite-jdbc[SQLite JDBC driver] as a transitive dependency.
 

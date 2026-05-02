@@ -5,7 +5,7 @@ plugins {
 dependencies {
     implementation(projects.micronautJdbcHikari)
     implementation(projects.micronautTests.micronautCommonSync)
-    implementation(projects.micronautSqlite)
+    implementation(projects.micronautJdbcSqlite)
     testImplementation(projects.micronautTests.micronautCommonTests)
     testImplementation(mnData.micronaut.data.tx.jdbc)
 }
