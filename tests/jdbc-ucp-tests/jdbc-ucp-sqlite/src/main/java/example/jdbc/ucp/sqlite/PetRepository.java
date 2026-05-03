@@ -1,8 +1,7 @@
-package example.jdbc.hikari.sqlite;
+package example.jdbc.ucp.sqlite;
 
 import example.domain.IPet;
 import example.sync.IPetRepository;
-import io.micronaut.transaction.annotation.ReadOnly;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
@@ -23,8 +22,7 @@ public class PetRepository implements IPetRepository {
     private final DataSource dataSource;
     private final OwnerRepository ownerRepository;
 
-    public PetRepository(DataSource dataSource,
-                         OwnerRepository ownerRepository) {
+    public PetRepository(DataSource dataSource, OwnerRepository ownerRepository) {
         this.dataSource = dataSource;
         this.ownerRepository = ownerRepository;
     }
@@ -36,8 +34,8 @@ public class PetRepository implements IPetRepository {
 
     @Transactional
     public void runInit() throws SQLException {
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("""
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement("""
                  CREATE TABLE IF NOT EXISTS pets (
                      id INTEGER PRIMARY KEY AUTOINCREMENT,
                      name VARCHAR(200) NOT NULL,
@@ -54,7 +52,7 @@ public class PetRepository implements IPetRepository {
         return new Pet();
     }
 
-    @Transactional
+    @Transactional(Transactional.TxType.MANDATORY)
     @Override
     public void save(IPet pet) {
         try (Connection conn = dataSource.getConnection();
@@ -74,7 +72,7 @@ public class PetRepository implements IPetRepository {
         }
     }
 
-    @Transactional
+    @Transactional(Transactional.TxType.MANDATORY)
     @Override
     public void delete(IPet pet) {
         try (Connection conn = dataSource.getConnection();
@@ -86,7 +84,6 @@ public class PetRepository implements IPetRepository {
         }
     }
 
-    @ReadOnly
     @Override
     public Collection<IPet> findAll() {
         try (Connection conn = dataSource.getConnection();
@@ -102,7 +99,6 @@ public class PetRepository implements IPetRepository {
         }
     }
 
-    @ReadOnly
     @Override
     public Optional<IPet> findByName(String name) {
         try (Connection conn = dataSource.getConnection();

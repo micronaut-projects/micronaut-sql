@@ -9,6 +9,7 @@ jdbc:
   jdbc-transactions: Transaction Management
   jdbc-healthchecks: JDBC Health Checks
   jdbc-runtime-password-update: Data Source Runtime Password Change
+  jdbc-sqlite: SQLite Support
 hibernate:
   title: Configuring Hibernate
   hibernate-disable: Disable Micronaut Hibernate JPA

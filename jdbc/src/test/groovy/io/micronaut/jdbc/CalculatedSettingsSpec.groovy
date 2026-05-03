@@ -145,7 +145,7 @@ class CalculatedSettingsSpec extends Specification {
         String url = settings.getUrl()
 
         then:
-        url == "jdbc:sqlite:file:bar?mode=memory&cache=shared"
+        url == "jdbc:sqlite:file:bar?mode=memory&cache=shared&foreign_keys=on&busy_timeout=5000"
     }
 
     void "test getUrl will throw an exception if its not configured and the driver is not embedded"() {

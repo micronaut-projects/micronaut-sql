@@ -38,7 +38,7 @@ public class JdbcDatabaseManager {
         databases.add(new EmbeddedJdbcDatabase("org.h2.Driver", "h2", "jdbc:h2:mem:%s;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"));
         databases.add(new EmbeddedJdbcDatabase("org.apache.derby.jdbc.EmbeddedDriver", "SELECT 1 FROM SYSIBM.SYSDUMMY1", new String[]{"derby"}, "jdbc:derby:memory:%s;create=true"));
         databases.add(new EmbeddedJdbcDatabase("org.hsqldb.jdbc.JDBCDriver", "select 1 from INFORMATION_SCHEMA.SYSTEM_USERS", new String[]{"hsqldb"}, "jdbc:hsqldb:mem:%s"));
-        databases.add(new EmbeddedJdbcDatabase("org.sqlite.JDBC", "sqlite", "jdbc:sqlite:file:%s?mode=memory&cache=shared", null, null));
+        databases.add(new EmbeddedJdbcDatabase("org.sqlite.JDBC", "sqlite", "jdbc:sqlite:file:%s?mode=memory&cache=shared&foreign_keys=on&busy_timeout=5000", null, null));
 
         databases.add(new JdbcDatabase("com.mysql.cj.jdbc.Driver", "mysql"));
         databases.add(new JdbcDatabase("oracle.jdbc.OracleDriver", "SELECT 1 FROM DUAL", new String[]{"oracle"}));
