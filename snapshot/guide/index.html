@@ -117,6 +117,8 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-runtime-password-update"><a href="#jdbc-runtime-password-update"><strong>4.6</strong><span>Data Source Runtime Password Change</span></a></div>
         
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-sqlite"><a href="#jdbc-sqlite"><strong>4.7</strong><span>SQLite Support</span></a></div>
+        
         <div class="toc-item" style="margin-left:0px" id="toc-item-hibernate"><a href="#hibernate"><strong>5</strong><span>Configuring Hibernate</span></a></div>
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-disable"><a href="#hibernate-disable"><strong>5.1</strong><span>Disable Micronaut Hibernate JPA</span></a></div>
@@ -370,30 +372,6 @@
 </div>
 </div>
 </p>
-</div>
-<div class="paragraph">
-<p>To use SQLite, add the Xerial JDBC driver:</p>
-</div>
-<div class="paragraph">
-<p>        <div class="listingblock multi-language-sample">
-<div class="title"></div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">runtimeOnly(<span class="hljs-string">"org.xerial:sqlite-jdbc")</span></code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
-    &lt;groupId&gt;org.xerial&lt;/groupId&gt;
-    &lt;artifactId&gt;sqlite-jdbc&lt;/artifactId&gt;
-    &lt;scope&gt;runtime&lt;/scope&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div>
-</p>
-</div>
-<div class="paragraph">
-<p>When the SQLite driver is present, Micronaut can automatically configure an embedded shared in-memory datasource for <code>db-type: sqlite</code> if you do not provide an explicit JDBC URL.</p>
 </div>
 <div class="paragraph">
 <p>To configure Micronaut-managed JDBC transactions without Spring, see <a href="#jdbc-transactions">Transaction Management</a>.</p>
@@ -1414,6 +1392,125 @@ final class DbPasswordRefresher {
 </li>
 </ul>
 </div>
+</div>
+
+<h2 id="jdbc-sqlite"><a class="anchor" href="#jdbc-sqlite"></a>4.7 SQLite Support</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jdbc/jdbc-sqlite.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To use <a href="https://www.sqlite.org">SQLite</a>, add the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">runtimeOnly(<span class="hljs-string">"io.micronaut.sql:micronaut-jdbc-sqlite")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.sql&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-jdbc-sqlite&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>The module provides connection capabilities configuration for SQLite and adds the <a href="https://github.com/xerial/sqlite-jdbc">SQLite JDBC driver</a> as a transitive dependency.</p>
+</div>
+<div class="paragraph">
+<p>If you do not provide an explicit JDBC URL, Micronaut SQL configures automatically the following JDBC URL <code>jdbc:sqlite:file:%s?mode=memory&amp;cache=shared&amp;foreign_keys=on&amp;busy_timeout=5000</code>, when you set <code>datasources.*.db-type</code> to <code>sqlite</code>.</p>
+</div>
+<div class="paragraph">
+<p>For production, you will probably want to configure SQLite explicitly with a file-backed JDBC URL and something like this:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">datasources.default.url=jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mode=WAL&amp;synchronous</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">datasources:
+    default:
+        url: jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mode=WAL&amp;synchronous</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources]
+  [datasources.default]
+    url="jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mode=WAL&amp;synchronous"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">datasources {
+  'default' {
+    url = "jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mode=WAL&amp;synchronous"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  datasources {
+    default {
+      url = "jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mode=WAL&amp;synchronous"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "datasources": {
+    "default": {
+      "url": "jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mode=WAL&amp;synchronous"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Useful SQLite documentation links:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://sqlite.org/wal.html">SQLite Write-Ahead Logging</a></p>
+</li>
+<li>
+<p><a href="https://sqlite.org/walformat.html">WAL file format details</a></p>
+</li>
+<li>
+<p><a href="https://sqlite.org/foreignkeys.html">SQLite Foreign Key Support</a></p>
+</li>
+<li>
+<p><a href="https://sqlite.org/pragma.html#pragma_busy_timeout">SQLite PRAGMA busy_timeout</a></p>
+</li>
+<li>
+<p><a href="https://sqlite.org/pragma.html#pragma_synchronous">SQLite PRAGMA synchronous</a></p>
+</li>
+<li>
+<p><a href="https://sqlite.org/pragma.html">SQLite PRAGMA reference</a></p>
+</li>
+</ul>
 </div>
 
 <h1 id="hibernate"><a class="anchor" href="#hibernate"></a>5 Configuring Hibernate</h1>

@@ -963,6 +963,8 @@ more compliant with the other datasource types.</div>
 </dd>
 <dt><a href="io/micronaut/sql/info/package-summary.html">io.micronaut.sql.info</a> - package io.micronaut.sql.info</dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/sql/sqlite/package-summary.html">io.micronaut.sql.sqlite</a> - package io.micronaut.sql.sqlite</dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#isAutomaticValidationQuery()" class="member-name-link">isAutomaticValidationQuery()</a> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/hibernate/jpa/validation/JPATraversableResolver.html#isCascadable(java.lang.Object,jakarta.validation.Path.Node,java.lang.Class,jakarta.validation.Path,java.lang.annotation.ElementType)" class="member-name-link">isCascadable(Object, Path.Node, Class, Path, ElementType)</a> - Method in class io.micronaut.configuration.hibernate.jpa.validation.<a href="io/micronaut/configuration/hibernate/jpa/validation/JPATraversableResolver.html" title="class in io.micronaut.configuration.hibernate.jpa.validation">JPATraversableResolver</a></dt>
@@ -1172,6 +1174,10 @@ query the reachability of a property.</div>
 <dt><a href="io/micronaut/sql/info/MicronautJdbcModuleInfo.html" class="type-name-link" title="class in io.micronaut.sql.info">MicronautJdbcModuleInfo</a> - Class in <a href="io/micronaut/sql/info/package-summary.html">io.micronaut.sql.info</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/sql/info/MicronautJdbcModuleInfo.html#%3Cinit%3E()" class="member-name-link">MicronautJdbcModuleInfo()</a> - Constructor for class io.micronaut.sql.info.<a href="io/micronaut/sql/info/MicronautJdbcModuleInfo.html" title="class in io.micronaut.sql.info">MicronautJdbcModuleInfo</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/sql/info/MicronautJdbcSqliteModuleInfo.html" class="type-name-link" title="class in io.micronaut.sql.info">MicronautJdbcSqliteModuleInfo</a> - Class in <a href="io/micronaut/sql/info/package-summary.html">io.micronaut.sql.info</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/sql/info/MicronautJdbcSqliteModuleInfo.html#%3Cinit%3E()" class="member-name-link">MicronautJdbcSqliteModuleInfo()</a> - Constructor for class io.micronaut.sql.info.<a href="io/micronaut/sql/info/MicronautJdbcSqliteModuleInfo.html" title="class in io.micronaut.sql.info">MicronautJdbcSqliteModuleInfo</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/sql/info/MicronautJdbcTomcatModuleInfo.html" class="type-name-link" title="class in io.micronaut.sql.info">MicronautJdbcTomcatModuleInfo</a> - Class in <a href="io/micronaut/sql/info/package-summary.html">io.micronaut.sql.info</a></dt>
 <dd>&nbsp;</dd>
@@ -1574,6 +1580,14 @@ if not set manually.</div>
 <dd>
 <div class="block">Adapt a <code>PlatformTransactionManager</code> to jOOQ transaction provider interface.</div>
 </dd>
+<dt><a href="io/micronaut/sql/sqlite/SqliteConnectionCapabilities.html#SQLITE" class="member-name-link">SQLITE</a> - Static variable in class io.micronaut.sql.sqlite.<a href="io/micronaut/sql/sqlite/SqliteConnectionCapabilities.html" title="class in io.micronaut.sql.sqlite">SqliteConnectionCapabilities</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/sql/sqlite/SqliteConnectionCapabilities.html" class="type-name-link" title="class in io.micronaut.sql.sqlite">SqliteConnectionCapabilities</a> - Class in <a href="io/micronaut/sql/sqlite/package-summary.html">io.micronaut.sql.sqlite</a></dt>
+<dd>
+<div class="block"><code>ConnectionCapabilities</code> implementation for SQLite connections.</div>
+</dd>
+<dt><a href="io/micronaut/sql/sqlite/SqliteConnectionCapabilities.html#%3Cinit%3E()" class="member-name-link">SqliteConnectionCapabilities()</a> - Constructor for class io.micronaut.sql.sqlite.<a href="io/micronaut/sql/sqlite/SqliteConnectionCapabilities.html" title="class in io.micronaut.sql.sqlite">SqliteConnectionCapabilities</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/hibernate/jpa/conf/serviceregistry/builder/configures/StandardServiceRegistryBuilderConfigurer.html" class="type-name-link" title="interface in io.micronaut.configuration.hibernate.jpa.conf.serviceregistry.builder.configures">StandardServiceRegistryBuilderConfigurer</a> - Interface in <a href="io/micronaut/configuration/hibernate/jpa/conf/serviceregistry/builder/configures/package-summary.html">io.micronaut.configuration.hibernate.jpa.conf.serviceregistry.builder.configures</a></dt>
 <dd>
 <div class="block">Configure <a href="https://docs.hibernate.org/orm/current/javadocs/org/hibernate/boot/registry/StandardServiceRegistryBuilder.html" title="class or interface in org.hibernate.boot.registry" class="external-link"><code>StandardServiceRegistryBuilder</code></a> using <a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa"><code>JpaConfiguration</code></a>.</div>
@@ -1586,6 +1600,8 @@ if not set manually.</div>
 <dd>
 <div class="block">Supply additional settings for <a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa"><code>JpaConfiguration</code></a>.</div>
 </dd>
+<dt><a href="io/micronaut/sql/sqlite/SqliteConnectionCapabilities.html#supports(io.micronaut.data.connection.ConnectionCapabilities.Capability,java.sql.Connection)" class="member-name-link">supports(ConnectionCapabilities.Capability, Connection)</a> - Method in class io.micronaut.sql.sqlite.<a href="io/micronaut/sql/sqlite/SqliteConnectionCapabilities.html" title="class in io.micronaut.sql.sqlite">SqliteConnectionCapabilities</a></dt>
+<dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:T">T</h2>
 <dl class="index">
