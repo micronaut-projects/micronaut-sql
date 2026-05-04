@@ -6,8 +6,8 @@ dependencies {
     implementation projects.micronautJdbcUcp
     implementation projects.micronautTests.micronautCommonSync
 
-    runtimeOnly libs.managed.ojdbc11
-    runtimeOnly libs.managed.ucp11
+    runtimeOnly libs.managed.ojdbc17
+    runtimeOnly libs.managed.ucp17
 
     testImplementation projects.micronautTests.micronautCommonTests
     testImplementation(mnData.micronaut.data.tx.jdbc)
