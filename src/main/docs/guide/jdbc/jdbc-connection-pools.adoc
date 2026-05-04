@@ -50,7 +50,9 @@ datasources:
     maxPoolSize: 10
 ----
 
-The Oracle UCP is managed by the link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/admin/UniversalConnectionPoolManager.html[UniversalConnectionPoolManager]. The manager can be disabled byt setting `ucp-manager.enabled` to `false`. Additionally, you can enable the link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/jmx-based-management.html[JMX-Based Management] by setting the `ucp-manager.jmx.enabled` to `true` and providing the `ojdbc8dms.jar` and `dms.jar` dependencies.
+The Oracle UCP is managed by the link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/admin/UniversalConnectionPoolManager.html[UniversalConnectionPoolManager]. The manager can be disabled by setting `ucp-manager.enabled` to `false`. Additionally, you can enable the link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/jmx-based-management.html[JMX-Based Management] by setting the `ucp-manager.jmx.enabled` to `true`. When using current Oracle JDBC 23ai driver versions, the extra `ojdbc*dms.jar` driver artifacts are not required.
+
+The `micronaut-jdbc-ucp` module uses Oracle's `ojdbc17` and `ucp17` artifacts by default. Applications that need the JDK 11 driver line must exclude those default transitive dependencies and add direct dependencies on Oracle's `ojdbc11` and `ucp11` artifacts instead. The `ojdbc11` and `ucp11` artifacts remain managed, so after excluding `ojdbc17` and `ucp17`, you can rely on Micronaut's managed versions for the replacement dependencies.
 
 In case when exception `Universal Connection Pool already exists in the Universal Connection Pool Manager` is thrown, there is `oracle.ucp.destroyOnReload` configuration that can be set to `true` to avoid this error. In that case, when creating new connection pool, if there is the one with the same name the old one will be destroyed first.
 

@@ -30,7 +30,6 @@ managed-jdbi = "3.53.0"
 # JDBC Drivers
 
 managed-ojdbc = "23.26.1.0.0"
-managed-ojdbcdms = "21.21.0.0"
 managed-dms = "23.3.0.23.09"
 managed-postgres-driver = "42.7.11"
 managed-mariadb-driver = "3.5.8"
@@ -119,14 +118,12 @@ jdbi3-core = { module = "org.jdbi:jdbi3-core", version.ref = "managed-jdbi" }
 managed-hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "managed-hikari" }
 managed-commons-dbcp2 = { module = "org.apache.commons:commons-dbcp2", version.ref = "managed-commons-dbcp" }
 managed-tomcat-jdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "managed-tomcat-jdbc" }
-managed-ucp = { module = "com.oracle.database.jdbc:ucp", version.ref = "managed-ojdbc" }
 managed-ucp11 = { module = "com.oracle.database.jdbc:ucp11", version.ref = "managed-ojdbc" }
+managed-ucp17 = { module = "com.oracle.database.jdbc:ucp17", version.ref = "managed-ojdbc" }
 
 # UCP
 
 dms = { module = "com.oracle.database.observability:dms", version.ref = "managed-dms" }
-ojdbc11dms = { module = "com.oracle.database.observability:ojdbc11dms", version.ref = "managed-ojdbcdms" }
-
 # JDBC drivers
 
 managed-postgresql = { module = "org.postgresql:postgresql", version.ref = "managed-postgres-driver" }
@@ -136,8 +133,8 @@ managed-mysql-connector-java = { module = "mysql:mysql-connector-java", version.
 managed-mysql-connector-j = { module = "com.mysql:mysql-connector-j", version.ref = "managed-mysql-connector-j" }
 managed-sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "managed-sqlite-jdbc" }
 
-managed-ojdbc8 = { module = "com.oracle.database.jdbc:ojdbc8", version.ref = "managed-ojdbc" }
 managed-ojdbc11 = { module = "com.oracle.database.jdbc:ojdbc11", version.ref = "managed-ojdbc" }
+managed-ojdbc17 = { module = "com.oracle.database.jdbc:ojdbc17", version.ref = "managed-ojdbc" }
 
 managed-h2 = { module = "com.h2database:h2", version.ref = "managed-h2" }
 
