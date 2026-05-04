@@ -97,6 +97,7 @@ managed-jooq = { module = "org.jooq:jooq", version.ref = "managed-jooq" }
 
 # Hibernate
 
+boms-hibernate = { module = "org.hibernate.orm:hibernate-platform", version.ref = "managed-hibernate" }
 managed-hibernate-core = { module = "org.hibernate.orm:hibernate-core", version.ref = "managed-hibernate" }
 managed-hibernate-jpamodelgen = { module = "org.hibernate.orm:hibernate-jpamodelgen", version.ref = "managed-hibernate" }
 managed-hibernate-jcache = { module = "org.hibernate.orm:hibernate-jcache", version.ref = "managed-hibernate" }
