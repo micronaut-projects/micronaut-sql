@@ -59,7 +59,7 @@ sfm-reflect = "9.0.2"
 managed-ongres-scram = "3.2"
 
 # Testing
-sonar-gradle-plugin = "7.2.3.7755"
+sonar-gradle-plugin = "7.3.0.8198"
 
 [libraries]
 # Core
