@@ -15,14 +15,6 @@ public class Oracle {
                 if (current == null) {
                     current = new OracleContainer(DockerImageName.parse(IMAGE_NAME));
                     current.start();
-                    do {
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                            throw new RuntimeException(e);
-                        }
-                    } while (!current.isRunning());
                     container = current;
                 }
             }
