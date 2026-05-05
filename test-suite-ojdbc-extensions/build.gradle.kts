@@ -2,10 +2,11 @@ import org.gradle.kotlin.dsl.`java-library`
 
 plugins {
     `java-library`
+    `java-test-fixtures`
 }
 dependencies {
-    annotationProcessor(mn.micronaut.inject.java)
-    api(libs.managed.ojdbc11)
-    implementation(platform(mnTest.boms.testcontainers))
-    implementation(libs.testcontainers.oracle.free)
+    testFixturesAnnotationProcessor(mn.micronaut.inject.java)
+    testFixturesApi(libs.managed.ojdbc11)
+    testFixturesImplementation(platform(mnTest.boms.testcontainers))
+    testFixturesImplementation(libs.testcontainers.oracle.free)
 }
