@@ -42,6 +42,7 @@ public class HikariOjdbcExtensionsTest implements TestPropertyProvider {
 
     @Override
     public @NonNull Map<String, String> getProperties() {
+        FooBarPasswordProvider.reset();
         return Oracle.getProperties();
     }
 }
