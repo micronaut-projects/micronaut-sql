@@ -5,7 +5,7 @@ plugins {
 }
 dependencies {
     testAnnotationProcessor(mn.micronaut.inject.java)
-    implementation(projects.testSuiteOjdbcExtensions)
+    testImplementation(testFixtures(projects.testSuiteOjdbcExtensions))
     implementation(projects.micronautJdbcHikari)
     testImplementation(mnTest.micronaut.test.junit5)
     testImplementation(mnTest.junit.platform.launcher)
