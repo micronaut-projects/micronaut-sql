@@ -21,6 +21,8 @@ import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.context.env.Environment;
+import io.micronaut.core.convert.format.MapFormat;
+import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
@@ -208,7 +210,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     }
 
     @Override
-    public void setDataSourceProperties(Map<String, ?> dsProperties) {
+    public void setDataSourceProperties(@MapFormat(transformation = MapFormat.MapTransformation.FLAT, keyFormat = StringConvention.RAW) Map<String, ?> dsProperties) {
         if (dsProperties != null) {
             dsProperties.forEach((key, value) -> {
                 if (value != null) {
