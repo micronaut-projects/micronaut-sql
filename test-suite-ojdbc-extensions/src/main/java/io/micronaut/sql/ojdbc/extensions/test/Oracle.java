@@ -6,20 +6,28 @@ import org.testcontainers.utility.DockerImageName;
 
 public class Oracle {
     public static final String IMAGE_NAME = "gvenzl/oracle-free:latest-faststart";
-    private static OracleContainer container;
+    private static volatile OracleContainer container;
     public static Map<String, String> getProperties() {
-        if (container == null) {
-            container = new OracleContainer(DockerImageName.parse(IMAGE_NAME));
-            container.start();
-            do {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+        OracleContainer current = container;
+        if (current == null) {
+            synchronized (Oracle.class) {
+                current = container;
+                if (current == null) {
+                    current = new OracleContainer(DockerImageName.parse(IMAGE_NAME));
+                    current.start();
+                    do {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            throw new RuntimeException(e);
+                        }
+                    } while (!current.isRunning());
+                    container = current;
                 }
-            } while (!container.isRunning());
+            }
         }
-        return getProperties(container);
+        return getProperties(current);
     }
 
     private static Map<String, String> getProperties(OracleContainer container) {
