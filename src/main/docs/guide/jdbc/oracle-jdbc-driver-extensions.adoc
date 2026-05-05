@@ -1,3 +1,5 @@
+https://docs.oracle.com/en/database/oracle/oracle-database/26/jjdbc/JDBC-service-provider-extensions.html[JDBC Service Provider Extensions]
+
 ____
 Starting with Oracle AI Database Release 26ai, you can extend the capabilities of Oracle JDBC drivers through service providers.
 ____
