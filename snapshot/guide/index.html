@@ -117,7 +117,9 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-runtime-password-update"><a href="#jdbc-runtime-password-update"><strong>4.6</strong><span>Data Source Runtime Password Change</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-sqlite"><a href="#jdbc-sqlite"><strong>4.7</strong><span>SQLite Support</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-oracle-jdbc-driver-extensions"><a href="#oracle-jdbc-driver-extensions"><strong>4.7</strong><span>Oracle JDBC Driver Extensions</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-sqlite"><a href="#jdbc-sqlite"><strong>4.8</strong><span>SQLite Support</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-hibernate"><a href="#hibernate"><strong>5</strong><span>Configuring Hibernate</span></a></div>
         
@@ -1397,7 +1399,39 @@ final class DbPasswordRefresher {
 </div>
 </div>
 
-<h2 id="jdbc-sqlite"><a class="anchor" href="#jdbc-sqlite"></a>4.7 SQLite Support</h2>
+<h2 id="oracle-jdbc-driver-extensions"><a class="anchor" href="#oracle-jdbc-driver-extensions"></a>4.7 Oracle JDBC Driver Extensions</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jdbc/oracle-jdbc-driver-extensions.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p><a href="https://docs.oracle.com/en/database/oracle/oracle-database/26/jjdbc/JDBC-service-provider-extensions.html">JDBC Service Provider Extensions</a></p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Starting with Oracle AI Database Release 26ai, you can extend the capabilities of Oracle JDBC drivers through service providers.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/oracle/ojdbc-extensions/">Oracle JDBC Driver Extensions</a> service providers are configured via connection properties. Use the <code>datasources.*.data-source-properties</code> prefix.</p>
+</div>
+<div class="paragraph">
+<p>For example, to configure the <code>oracle.jdbc.provider.password</code> property as the name of a password provider and <code>oracle.jdbc.provider.password.vaultId</code> as a parameter recognized by the password provider, you will use a configuration such as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">datasources.default.data-source-properties.oracle.jdbc.provider.password=example-provider
+datasources.default.data-source-properties.oracle.jdbc.provider.password.vaultId=9999-8888-7777</code></pre>
+</div>
+</div>
+
+<h2 id="jdbc-sqlite"><a class="anchor" href="#jdbc-sqlite"></a>4.8 SQLite Support</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jdbc/jdbc-sqlite.adoc"'>
