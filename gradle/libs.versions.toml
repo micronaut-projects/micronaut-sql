@@ -16,7 +16,7 @@ micronaut-reactor = "4.0.0-RC1"
 micronaut-serde = "3.0.0-RC1"
 micronaut-spring = "6.0.0-M2"
 micronaut-test = "5.0.0-M8"
-micronaut-validation = "5.0.0-M2"
+micronaut-validation = "5.0.0-RC1"
 
 # Frameworks
 
@@ -151,6 +151,8 @@ managed-ongres-scram-client = { module = "com.ongres.scram:scram-client", versio
 # Testresources
 
 micronaut-testresources-client = { module = 'io.micronaut.testresources:micronaut-test-resources-client', version.ref = "micronaut-test-resources" }
+
+testcontainers-oracle-free = { module = 'org.testcontainers:testcontainers-oracle-free' }
 
 #PLUGINS
 

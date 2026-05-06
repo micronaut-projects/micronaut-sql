@@ -56,9 +56,7 @@ class DatasourceConfigurationSpec extends Specification {
                         "datasources.default.url": "jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE",
                         "datasources.default.username": "sa",
                         "datasources.default.password": "",
-                        "datasources.default.data-source-properties": [
-                                "oracle.fan.enabled": true
-                        ]
+                        "datasources.default.data-source-properties.oracle.fan.enabled": true
                 ]
         ))
         applicationContext.start()
@@ -75,6 +73,7 @@ class DatasourceConfigurationSpec extends Specification {
         then: //The default configuration is supplied because H2 is on the classpath
         dataSource.getURL() == 'jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
         dataSource.getUser() == 'sa'
+        dataSource.getConnectionProperties().getProperty('oracle.fan.enabled') == 'true'
 
         cleanup:
         applicationContext.close()
