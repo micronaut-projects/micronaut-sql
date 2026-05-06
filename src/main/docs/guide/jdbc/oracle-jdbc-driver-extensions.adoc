@@ -10,5 +10,5 @@ For example, to configure the `oracle.jdbc.provider.password` property as the na
 
 [source, properties]
 ----
-include::test-suite-ojdbc-extensions/src/main/resources/application.properties[]
+include::test-suite-ojdbc-extensions/src/testFixtures/resources/application.properties[]
 ----
