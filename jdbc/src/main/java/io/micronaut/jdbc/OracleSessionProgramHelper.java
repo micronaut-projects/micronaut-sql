@@ -45,7 +45,7 @@ public final class OracleSessionProgramHelper {
      *     <li>The property 'datasources.{dataSourceName}.oracle.session.enabled' is true (default)</li>
      *     <li>The 'micronaut.application.name' property is non-empty</li>
      *     <li>The 'v$session.program' property is not already provided</li>
-     * </ul>
+     * </ul>.
      *
      * @param dataSourceName the name of the data source
      * @param url the JDBC URL
