@@ -25,6 +25,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.jdbc.support.SQLStateSQLExceptionTranslator;
+import org.jspecify.annotations.Nullable;
 
 import java.sql.SQLException;
 
@@ -86,7 +87,7 @@ class JooqExceptionTranslator extends DefaultExecuteListener {
         }
     }
 
-    private DataAccessException translate(ExecuteContext context,
+    private @Nullable DataAccessException translate(ExecuteContext context,
             SQLExceptionTranslator translator, SQLException exception) {
         return translator.translate("jOOQ", context.sql(), exception);
     }

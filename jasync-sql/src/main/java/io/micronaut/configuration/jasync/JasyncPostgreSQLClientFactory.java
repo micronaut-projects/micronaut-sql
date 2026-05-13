@@ -22,6 +22,7 @@ import com.github.jasync.sql.db.postgresql.PostgreSQLConnectionBuilder;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
+import org.jspecify.annotations.Nullable;
 
 import jakarta.annotation.PreDestroy;
 
@@ -33,7 +34,7 @@ import jakarta.annotation.PreDestroy;
 public class JasyncPostgreSQLClientFactory implements AutoCloseable {
 
     private final JasyncPoolConfiguration jasyncPoolConfiguration;
-    private ConnectionPool<PostgreSQLConnection> connection;
+    private @Nullable ConnectionPool<PostgreSQLConnection> connection;
 
     /**
      * Create the factory with given Pool configuration.
@@ -50,17 +51,20 @@ public class JasyncPostgreSQLClientFactory implements AutoCloseable {
      */
     @Singleton
     public Connection client() {
-        if (this.connection == null || !this.connection.isConnected()) {
-            this.connection = PostgreSQLConnectionBuilder.createConnectionPool(this.jasyncPoolConfiguration.jasyncOptions);
+        ConnectionPool<PostgreSQLConnection> connection = this.connection;
+        if (connection == null || !connection.isConnected()) {
+            connection = PostgreSQLConnectionBuilder.createConnectionPool(this.jasyncPoolConfiguration.jasyncOptions);
+            this.connection = connection;
         }
-        return this.connection;
+        return connection;
     }
 
     @Override
     @PreDestroy
     public void close() {
-        if (this.connection != null && this.connection.isConnected()) {
-            this.connection.disconnect();
+        ConnectionPool<PostgreSQLConnection> connection = this.connection;
+        if (connection != null && connection.isConnected()) {
+            var ignored = connection.disconnect();
         }
     }
 }

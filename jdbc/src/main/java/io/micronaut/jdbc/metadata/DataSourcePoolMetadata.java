@@ -15,6 +15,8 @@
  */
 package io.micronaut.jdbc.metadata;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * Provides access meta-data that is commonly available from most pooled
  * {@link javax.sql.DataSource} implementations.
@@ -38,6 +40,7 @@ public interface DataSourcePoolMetadata<T extends javax.sql.DataSource> {
      *
      * @return the idle value
      */
+    @Nullable
     Integer getIdle();
 
     /**
@@ -54,6 +57,7 @@ public interface DataSourcePoolMetadata<T extends javax.sql.DataSource> {
      *
      * @return the usage value or {@code null}
      */
+    @Nullable
     Float getUsage();
 
     /**
@@ -62,6 +66,7 @@ public interface DataSourcePoolMetadata<T extends javax.sql.DataSource> {
      *
      * @return the number of active connections or {@code null}
      */
+    @Nullable
     Integer getActive();
 
     /**
@@ -71,6 +76,7 @@ public interface DataSourcePoolMetadata<T extends javax.sql.DataSource> {
      *
      * @return the maximum number of active connections or {@code null}
      */
+    @Nullable
     Integer getMax();
 
     /**
@@ -79,6 +85,7 @@ public interface DataSourcePoolMetadata<T extends javax.sql.DataSource> {
      *
      * @return the minimum number of active connections or {@code null}
      */
+    @Nullable
     Integer getMin();
 
     /**
@@ -87,6 +94,7 @@ public interface DataSourcePoolMetadata<T extends javax.sql.DataSource> {
      *
      * @return the validation query or {@code null}
      */
+    @Nullable
     String getValidationQuery();
 
     /**
@@ -96,6 +104,7 @@ public interface DataSourcePoolMetadata<T extends javax.sql.DataSource> {
      *
      * @return the default auto-commit state or {@code null}
      */
+    @Nullable
     Boolean getDefaultAutoCommit();
 
 }

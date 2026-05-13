@@ -16,6 +16,7 @@
 package io.micronaut.configuration.jdbc.unpooled;
 
 import io.micronaut.core.util.StringUtils;
+import org.jspecify.annotations.Nullable;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;
@@ -47,8 +48,8 @@ public class DriverManagerDataSource implements DataSource {
 
     private volatile String url;
     private volatile String driverClassName;
-    private volatile String username;
-    private volatile String password;
+    private volatile @Nullable String username;
+    private volatile @Nullable String password;
 
     /**
      * @param configuration The datasource configuration
@@ -105,28 +106,28 @@ public class DriverManagerDataSource implements DataSource {
     /**
      * @return The configured username
      */
-    public String getUsername() {
+    public @Nullable String getUsername() {
         return username;
     }
 
     /**
      * @param username The configured username
      */
-    public void setUsername(String username) {
+    public void setUsername(@Nullable String username) {
         this.username = username;
     }
 
     /**
      * @return The configured password
      */
-    public String getPassword() {
+    public @Nullable String getPassword() {
         return password;
     }
 
     /**
      * @param password The configured password
      */
-    public void setPassword(String password) {
+    public void setPassword(@Nullable String password) {
         this.password = password;
     }
 
@@ -144,7 +145,7 @@ public class DriverManagerDataSource implements DataSource {
      *
      * @param properties The new datasource properties
      */
-    public void setDataSourceProperties(Map<String, String> properties) {
+    public void setDataSourceProperties(@Nullable Map<String, String> properties) {
         dataSourceProperties.clear();
         if (properties != null) {
             properties.forEach((key, value) -> {
@@ -248,7 +249,7 @@ public class DriverManagerDataSource implements DataSource {
         return iface.isInstance(this);
     }
 
-    private Properties buildConnectionProperties(String connectionUsername, String connectionPassword) {
+    private Properties buildConnectionProperties(@Nullable String connectionUsername, @Nullable String connectionPassword) {
         Properties properties = new Properties();
         properties.putAll(dataSourceProperties);
         if (StringUtils.isNotEmpty(connectionUsername)) {
@@ -260,7 +261,7 @@ public class DriverManagerDataSource implements DataSource {
         return properties;
     }
 
-    private void initializeDriver(Class<? extends Driver> driverClass, String driverClassName) {
+    private void initializeDriver(@Nullable Class<? extends Driver> driverClass, String driverClassName) {
         if (driverClass != null) {
             this.driverClassName = driverClass.getName();
             return;

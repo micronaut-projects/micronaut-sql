@@ -22,6 +22,7 @@ import com.github.jasync.sql.db.pool.ConnectionPool;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
+import org.jspecify.annotations.Nullable;
 
 import jakarta.annotation.PreDestroy;
 
@@ -33,7 +34,7 @@ import jakarta.annotation.PreDestroy;
 public class JasyncMySQLClientFactory implements AutoCloseable {
 
     private final JasyncPoolConfiguration jasyncPoolConfiguration;
-    private ConnectionPool<MySQLConnection> connection;
+    private @Nullable ConnectionPool<MySQLConnection> connection;
 
     /**
      * Create the factory with given Pool configuration.
@@ -50,18 +51,20 @@ public class JasyncMySQLClientFactory implements AutoCloseable {
      */
     @Singleton
     public Connection client() {
-        if (this.connection == null || !this.connection.isConnected()) {
-
-            this.connection = MySQLConnectionBuilder.createConnectionPool(this.jasyncPoolConfiguration.jasyncOptions);
+        ConnectionPool<MySQLConnection> connection = this.connection;
+        if (connection == null || !connection.isConnected()) {
+            connection = MySQLConnectionBuilder.createConnectionPool(this.jasyncPoolConfiguration.jasyncOptions);
+            this.connection = connection;
         }
-        return this.connection;
+        return connection;
     }
 
     @Override
     @PreDestroy
     public void close() {
-        if (this.connection != null && this.connection.isConnected()) {
-            this.connection.disconnect();
+        ConnectionPool<MySQLConnection> connection = this.connection;
+        if (connection != null && connection.isConnected()) {
+            var ignored = connection.disconnect();
         }
     }
 }

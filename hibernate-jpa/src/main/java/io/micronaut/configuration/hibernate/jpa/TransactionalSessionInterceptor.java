@@ -25,6 +25,7 @@ import io.micronaut.core.annotation.Internal;
 import io.micronaut.inject.ExecutableMethod;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An interceptor that uses the current active session.
@@ -53,7 +54,7 @@ class TransactionalSessionInterceptor implements MethodInterceptor<Session, Obje
     }
 
     @Override
-    public Object intercept(MethodInvocationContext<Session, Object> context) {
+    public @Nullable Object intercept(MethodInvocationContext<Session, Object> context) {
         final ExecutableMethod<Session, Object> method = context.getExecutableMethod();
         if (method.getName().equals("close") && method.getArguments().length == 0) {
             // close handled by transaction management, ignore

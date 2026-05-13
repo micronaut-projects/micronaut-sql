@@ -85,6 +85,7 @@ final class SessionFactoryPerDataSourceFactory extends AbstractHibernateFactory 
         return super.buildHibernateStandardServiceRegistry(jpaConfiguration);
     }
 
+    @Override
     @EachBean(ServiceRegistry.class)
     MetadataSources buildMetadataSources(ServiceRegistry serviceRegistry) {
         return super.buildMetadataSources(serviceRegistry);

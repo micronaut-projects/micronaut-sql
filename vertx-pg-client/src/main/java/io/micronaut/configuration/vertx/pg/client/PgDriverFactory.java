@@ -35,12 +35,12 @@ import io.vertx.core.Future;
 @Factory
 class PgDriverFactory {
     private final PgClientConfiguration connectionConfiguration;
-    private final PgPemTrustOptionsConfiguration pemTrustOptionsConfiguration;
+    private final @Nullable PgPemTrustOptionsConfiguration pemTrustOptionsConfiguration;
 
     /**
      * The Vertx instance if you are running with Vert.x.
      */
-    private final Vertx vertx;
+    private final @Nullable Vertx vertx;
 
     /**
      * Create the factory with given Pg Client configuration.

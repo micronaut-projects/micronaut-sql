@@ -20,6 +20,7 @@ import oracle.ucp.UniversalConnectionPool;
 import oracle.ucp.UniversalConnectionPoolException;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
 import oracle.ucp.jdbc.PoolDataSource;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,35 +51,35 @@ public class OracleUcpDataSourcePoolMetadata
     }
 
     @Override
-    public Integer getIdle() {
+    public @Nullable Integer getIdle() {
         return getConnectionPool()
             .map(UniversalConnectionPool::getAvailableConnectionsCount)
             .orElse(null);
     }
 
     @Override
-    public Integer getActive() {
+    public @Nullable Integer getActive() {
         return getConnectionPool()
             .map(UniversalConnectionPool::getBorrowedConnectionsCount)
             .orElse(null);
     }
 
     @Override
-    public Integer getMax() {
+    public @Nullable Integer getMax() {
         return getConnectionPool()
             .map(UniversalConnectionPool::getMaxPoolSize)
             .orElse(null);
     }
 
     @Override
-    public Integer getMin() {
+    public @Nullable Integer getMin() {
         return getConnectionPool()
             .map(UniversalConnectionPool::getMinPoolSize)
             .orElse(null);
     }
 
     @Override
-    public String getValidationQuery() {
+    public @Nullable String getValidationQuery() {
         return getDataSource().getSQLForValidateConnection();
     }
 

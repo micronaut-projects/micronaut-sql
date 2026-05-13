@@ -21,6 +21,7 @@ import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
+import org.jspecify.annotations.Nullable;
 
 import jakarta.annotation.PostConstruct;
 import java.sql.Driver;
@@ -40,13 +41,13 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     private final String name;
     private final Map<String, String> dataSourceProperties = new LinkedHashMap<>(2);
 
-    private String url;
-    private Class<? extends Driver> driverClass;
-    private String driverClassName;
-    private String username;
-    private String password;
-    private String validationQuery;
-    private Integer loginTimeout;
+    private @Nullable String url;
+    private @Nullable Class<? extends Driver> driverClass;
+    private @Nullable String driverClassName;
+    private @Nullable String username;
+    private @Nullable String password;
+    private @Nullable String validationQuery;
+    private @Nullable Integer loginTimeout;
 
     /**
      * Constructor.
@@ -83,7 +84,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     }
 
     @Override
-    public String getConfiguredUrl() {
+    public @Nullable String getConfiguredUrl() {
         return url;
     }
 
@@ -98,7 +99,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     }
 
     @Override
-    public String getConfiguredDriverClassName() {
+    public @Nullable String getConfiguredDriverClassName() {
         if (driverClass != null) {
             return driverClass.getName();
         }
@@ -118,76 +119,76 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     /**
      * @return The configured driver class
      */
-    public Class<? extends Driver> getDriverClass() {
+    public @Nullable Class<? extends Driver> getDriverClass() {
         return driverClass;
     }
 
     /**
      * @param driverClass The configured driver class
      */
-    public void setDriverClass(Class<? extends Driver> driverClass) {
+    public void setDriverClass(@Nullable Class<? extends Driver> driverClass) {
         this.driverClass = driverClass;
         this.driverClassName = driverClass == null ? null : driverClass.getName();
     }
 
     @Override
-    public String getConfiguredUsername() {
+    public @Nullable String getConfiguredUsername() {
         return username;
     }
 
     @Override
-    public String getUsername() {
+    public @Nullable String getUsername() {
         return calculatedSettings.getUsername();
     }
 
     @Override
-    public void setUsername(String username) {
+    public void setUsername(@Nullable String username) {
         this.username = username;
     }
 
     @Override
-    public String getConfiguredPassword() {
+    public @Nullable String getConfiguredPassword() {
         return password;
     }
 
     @Override
-    public String getPassword() {
+    public @Nullable String getPassword() {
         return calculatedSettings.getPassword();
     }
 
     @Override
-    public void setPassword(String password) {
+    public void setPassword(@Nullable String password) {
         this.password = password;
     }
 
     @Override
-    public String getConfiguredValidationQuery() {
+    public @Nullable String getConfiguredValidationQuery() {
         return validationQuery;
     }
 
     @Override
-    public String getValidationQuery() {
+    public @Nullable String getValidationQuery() {
         return calculatedSettings.getValidationQuery();
     }
 
     /**
      * @param validationQuery The configured validation query
      */
-    public void setValidationQuery(String validationQuery) {
+    public void setValidationQuery(@Nullable String validationQuery) {
         this.validationQuery = validationQuery;
     }
 
     /**
      * @return The configured login timeout in seconds
      */
-    public Integer getLoginTimeout() {
+    public @Nullable Integer getLoginTimeout() {
         return loginTimeout;
     }
 
     /**
      * @param loginTimeout The login timeout in seconds
      */
-    public void setLoginTimeout(Integer loginTimeout) {
+    public void setLoginTimeout(@Nullable Integer loginTimeout) {
         this.loginTimeout = loginTimeout;
     }
 

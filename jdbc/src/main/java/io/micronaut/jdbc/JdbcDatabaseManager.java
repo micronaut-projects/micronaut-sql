@@ -17,6 +17,7 @@ package io.micronaut.jdbc;
 
 import io.micronaut.core.reflect.ClassUtils;
 import io.micronaut.core.util.StringUtils;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -195,8 +196,8 @@ public class JdbcDatabaseManager {
 
         private String defaultUrl;
         private String defaultName = "devDb";
-        private String defaultUsername = "sa";
-        private String defaultPassword = "";
+        private @Nullable String defaultUsername = "sa";
+        private @Nullable String defaultPassword = "";
 
         /**
          * @param driverClassName The jdbc driver class name
@@ -236,7 +237,7 @@ public class JdbcDatabaseManager {
          * @param defaultUsername The default username
          * @param defaultPassword The default password
          */
-        EmbeddedJdbcDatabase(String driverClassName, String urlPrefix, String defaultUrl, String defaultUsername, String defaultPassword) {
+        EmbeddedJdbcDatabase(String driverClassName, String urlPrefix, String defaultUrl, @Nullable String defaultUsername, @Nullable String defaultPassword) {
             this(driverClassName, urlPrefix, defaultUrl);
             this.defaultUsername = defaultUsername;
             this.defaultPassword = defaultPassword;
@@ -248,7 +249,7 @@ public class JdbcDatabaseManager {
          * @param databaseName The database name
          * @return The URL
          */
-        public String getUrl(String databaseName) {
+        public String getUrl(@Nullable String databaseName) {
             if (databaseName == null) {
                 databaseName = defaultName;
             }
@@ -258,14 +259,14 @@ public class JdbcDatabaseManager {
         /**
          * @return The default username, or {@code null} if the driver does not use one
          */
-        public String getDefaultUsername() {
+        public @Nullable String getDefaultUsername() {
             return defaultUsername;
         }
 
         /**
          * @return The default password, or {@code null} if the driver does not use one
          */
-        public String getDefaultPassword() {
+        public @Nullable String getDefaultPassword() {
             return defaultPassword;
         }
 
