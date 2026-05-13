@@ -63,7 +63,7 @@ public class DatasourceFactory extends BaseDatasourceFactory {
      * @return a {@link io.micronaut.jdbc.metadata.DataSourcePoolMetadata}
      */
     @EachBean(DataSource.class)
-    public DataSourcePoolMetadata<BasicDataSource> dbcpDataSourcePoolMetadata(
+    public @Nullable DataSourcePoolMetadata<BasicDataSource> dbcpDataSourcePoolMetadata(
             DataSource dataSource) {
         DbcpDataSourcePoolMetadata dbcpDataSourcePoolMetadata = null;
         DataSource resolved = dataSourceResolver.resolve(dataSource);

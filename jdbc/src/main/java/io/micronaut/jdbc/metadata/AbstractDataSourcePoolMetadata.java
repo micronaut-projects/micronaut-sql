@@ -15,6 +15,8 @@
  */
 package io.micronaut.jdbc.metadata;
 
+import org.jspecify.annotations.Nullable;
+
 import javax.sql.DataSource;
 
 /**
@@ -39,9 +41,9 @@ public abstract class AbstractDataSourcePoolMetadata<T extends DataSource> imple
     }
 
     @Override
-    public Float getUsage() {
-        Integer maxSize = getMax();
-        Integer currentSize = getActive();
+    public @Nullable Float getUsage() {
+        @Nullable Integer maxSize = getMax();
+        @Nullable Integer currentSize = getActive();
         if (maxSize == null || currentSize == null) {
             return null;
         }
@@ -57,6 +59,7 @@ public abstract class AbstractDataSourcePoolMetadata<T extends DataSource> imple
     /**
      * {@inheritDoc}
      */
+    @Override
     public T getDataSource() {
         return this.dataSource;
     }

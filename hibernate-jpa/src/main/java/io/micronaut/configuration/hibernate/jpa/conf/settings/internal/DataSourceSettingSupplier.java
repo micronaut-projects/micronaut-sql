@@ -44,7 +44,7 @@ final class DataSourceSettingSupplier implements SettingsSupplier {
 
     @Any
     private final BeanProvider<DataSource> dataSourceBeanProvider;
-    private final DataSourceResolver dataSourceResolver;
+    private final @Nullable DataSourceResolver dataSourceResolver;
 
     DataSourceSettingSupplier(BeanProvider<DataSource> dataSourceBeanProvider, @Nullable DataSourceResolver dataSourceResolver) {
         this.dataSourceBeanProvider = dataSourceBeanProvider;

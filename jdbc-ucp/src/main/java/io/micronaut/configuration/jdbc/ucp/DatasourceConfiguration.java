@@ -31,6 +31,7 @@ import jakarta.annotation.PostConstruct;
 import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
 import oracle.ucp.jdbc.PoolDataSourceImpl;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,8 +65,8 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     PoolDataSourceImpl delegate = (PoolDataSourceImpl) PoolDataSourceFactory.getPoolDataSource();
     private CalculatedSettings calculatedSettings;
     private String name;
-    private String username;
-    private String password;
+    private @Nullable String username;
+    private @Nullable String password;
     private final Properties dataSourceProperties = new Properties();
     private final Environment environment;
 
@@ -146,14 +147,15 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     }
 
     @Override
-    public String getUsername() {
+    public @Nullable String getUsername() {
         return this.username;
     }
 
     /**
      * @param username the username
      */
-    public void setUsername(String username) {
+    @Override
+    public void setUsername(@Nullable String username) {
         try {
             if (!Objects.equals(this.username, username)) {
                 this.username = username;
@@ -170,12 +172,12 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     }
 
     @Override
-    public String getPassword() {
+    public @Nullable String getPassword() {
         return calculatedSettings.getPassword();
     }
 
     @Override
-    public void setPassword(String password) {
+    public void setPassword(@Nullable String password) {
         try {
             if (!Objects.equals(this.password, password)) {
                 this.password = password;
@@ -187,12 +189,12 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     }
 
     @Override
-    public String getConfiguredPassword() {
+    public @Nullable String getConfiguredPassword() {
         return this.password;
     }
 
     @Override
-    public String getValidationQuery() {
+    public @Nullable String getValidationQuery() {
         return calculatedSettings.getValidationQuery();
     }
 

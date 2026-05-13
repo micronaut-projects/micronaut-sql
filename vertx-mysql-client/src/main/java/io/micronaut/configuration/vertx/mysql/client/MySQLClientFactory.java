@@ -38,7 +38,7 @@ public class MySQLClientFactory {
     /**
      * The Vertx instance if you are running with Vert.x.
      */
-    private final Vertx vertx;
+    private final @Nullable Vertx vertx;
 
     /**
      * Create the factory with given MySQL Client configuration.

@@ -18,6 +18,7 @@ package io.micronaut.configuration.jooq;
 import io.micronaut.core.annotation.Internal;
 import org.jooq.SQLDialect;
 import org.jooq.tools.jdbc.JDBCUtils;
+import org.jspecify.annotations.Nullable;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -32,7 +33,7 @@ import java.sql.SQLException;
 @Internal
 abstract class AbstractJooqConfigurationProperties {
 
-    private SQLDialect sqlDialect;
+    private @Nullable SQLDialect sqlDialect;
     private boolean jsonConverterEnabled = false;
 
     /**
@@ -40,7 +41,7 @@ abstract class AbstractJooqConfigurationProperties {
      *
      * @return SQL dialect
      */
-    public SQLDialect getSqlDialect() {
+    public @Nullable SQLDialect getSqlDialect() {
         return sqlDialect;
     }
 
@@ -49,7 +50,7 @@ abstract class AbstractJooqConfigurationProperties {
      *
      * @param sqlDialect SQL dialect
      */
-    public void setSqlDialect(SQLDialect sqlDialect) {
+    public void setSqlDialect(@Nullable SQLDialect sqlDialect) {
         this.sqlDialect = sqlDialect;
     }
 

@@ -22,6 +22,7 @@ import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
+import org.jspecify.annotations.Nullable;
 
 import jakarta.annotation.PostConstruct;
 import java.util.Map;
@@ -99,6 +100,7 @@ public class DatasourceConfiguration extends HikariConfig implements BasicJdbcCo
      *
      * @param url url of connection
      */
+    @Override
     public void setUrl(String url) {
         setJdbcUrl(url);
     }
@@ -119,7 +121,7 @@ public class DatasourceConfiguration extends HikariConfig implements BasicJdbcCo
     }
 
     @Override
-    public String getUsername() {
+    public @Nullable String getUsername() {
         return calculatedSettings.getUsername();
     }
 
@@ -129,7 +131,7 @@ public class DatasourceConfiguration extends HikariConfig implements BasicJdbcCo
     }
 
     @Override
-    public String getPassword() {
+    public @Nullable String getPassword() {
         return calculatedSettings.getPassword();
     }
 
@@ -139,7 +141,7 @@ public class DatasourceConfiguration extends HikariConfig implements BasicJdbcCo
     }
 
     @Override
-    public String getValidationQuery() {
+    public @Nullable String getValidationQuery() {
         return calculatedSettings.getValidationQuery();
     }
 
@@ -148,7 +150,7 @@ public class DatasourceConfiguration extends HikariConfig implements BasicJdbcCo
      *
      * @param validationQuery string of query
      */
-    public void setValidationQuery(String validationQuery) {
+    public void setValidationQuery(@Nullable String validationQuery) {
         setConnectionTestQuery(validationQuery);
     }
 

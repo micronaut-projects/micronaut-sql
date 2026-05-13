@@ -19,6 +19,7 @@ import io.micronaut.aop.MethodInterceptor;
 import io.micronaut.aop.MethodInvocationContext;
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.core.annotation.Internal;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Default delegating interceptor for all {@link GenerateProxy} proxies.
@@ -32,10 +33,10 @@ public final class IntroducedHibernateProxyAdvice implements MethodInterceptor<O
 
     private static final String INITIALIZE_PROXY_METHOD = "$registerInterceptor";
 
-    private MethodInterceptor<Object, Object> interceptor;
+    private @Nullable MethodInterceptor<Object, Object> interceptor;
 
     @Override
-    public Object intercept(MethodInvocationContext<Object, Object> context) {
+    public @Nullable Object intercept(MethodInvocationContext<Object, Object> context) {
         if (interceptor == null) {
             if (INITIALIZE_PROXY_METHOD.equals(context.getMethodName())) {
                 interceptor = (MethodInterceptor<Object, Object>) context.getParameterValues()[0];

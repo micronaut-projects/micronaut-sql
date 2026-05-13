@@ -55,21 +55,25 @@ final class SessionFactoryPerJpaConfigurationFactory extends AbstractHibernateFa
         super(environment, configures, serviceRegistryBuilderSupplier, standardServiceRegistryBuilderConfigurers);
     }
 
+    @Override
     @EachBean(JpaConfiguration.class)
     ServiceRegistry buildHibernateStandardServiceRegistry(JpaConfiguration jpaConfiguration) {
         return super.buildHibernateStandardServiceRegistry(jpaConfiguration);
     }
 
+    @Override
     @EachBean(ServiceRegistry.class)
     MetadataSources buildMetadataSources(ServiceRegistry serviceRegistry) {
         return super.buildMetadataSources(serviceRegistry);
     }
 
+    @Override
     @EachBean(MetadataSources.class)
     Metadata buildMetadata(MetadataSources metadataSources, @Parameter JpaConfiguration jpaConfiguration) {
         return super.buildMetadata(metadataSources, jpaConfiguration);
     }
 
+    @Override
     @EachBean(Metadata.class)
     SessionFactoryBuilder buildHibernateSessionFactoryBuilder(Metadata metadata, @Parameter JpaConfiguration jpaConfiguration) {
         return super.buildHibernateSessionFactoryBuilder(metadata, jpaConfiguration);

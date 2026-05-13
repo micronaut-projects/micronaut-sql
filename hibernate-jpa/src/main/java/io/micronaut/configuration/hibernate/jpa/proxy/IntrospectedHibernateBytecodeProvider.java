@@ -24,6 +24,7 @@ import org.hibernate.bytecode.spi.BytecodeProvider;
 import org.hibernate.bytecode.spi.ProxyFactoryFactory;
 import org.hibernate.bytecode.spi.ReflectionOptimizer;
 import org.hibernate.property.access.spi.PropertyAccess;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 
@@ -41,7 +42,7 @@ public final class IntrospectedHibernateBytecodeProvider implements BytecodeProv
     private static final Enhancer NO_OP = new Enhancer() {
 
         @Override
-        public byte[] enhance(String className, byte[] originalBytes) throws EnhancementException {
+        public byte @Nullable [] enhance(String className, byte[] originalBytes) throws EnhancementException {
             return null;
         }
 
@@ -57,13 +58,13 @@ public final class IntrospectedHibernateBytecodeProvider implements BytecodeProv
     }
 
     @Override
-    public ReflectionOptimizer getReflectionOptimizer(Class clazz, String[] getterNames, String[] setterNames, Class[] types) {
+    public @Nullable ReflectionOptimizer getReflectionOptimizer(Class clazz, String[] getterNames, String[] setterNames, Class[] types) {
         // This is deprecated and no longer used
         return null;
     }
 
     @Override
-    public ReflectionOptimizer getReflectionOptimizer(Class<?> clazz, Map<String, PropertyAccess> propertyAccessMap) {
+    public @Nullable ReflectionOptimizer getReflectionOptimizer(Class<?> clazz, Map<String, PropertyAccess> propertyAccessMap) {
         // Prev implementation doesn't return accurate optimizer and bean properties
         // So some tests are failing. Returning null fixes some failing tests for now
         return null;

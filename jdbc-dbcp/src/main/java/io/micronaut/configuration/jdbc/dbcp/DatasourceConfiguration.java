@@ -28,6 +28,7 @@ import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
 import io.micronaut.jdbc.OracleSessionProgramHelper;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -130,6 +131,7 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
      * Get the name of the bean.
      * @return name
      */
+    @Override
     public String getName() {
         return this.name;
     }
@@ -155,7 +157,7 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     }
 
     @Override
-    public String getUsername() {
+    public @Nullable String getUsername() {
         return calculatedSettings.getUsername();
     }
 
@@ -165,7 +167,7 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     }
 
     @Override
-    public String getPassword() {
+    public @Nullable String getPassword() {
         return calculatedSettings.getPassword();
     }
 
@@ -175,7 +177,7 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     }
 
     @Override
-    public String getValidationQuery() {
+    public @Nullable String getValidationQuery() {
         return calculatedSettings.getValidationQuery();
     }
 
