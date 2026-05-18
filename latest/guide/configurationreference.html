@@ -46,7 +46,7 @@
         <div class="docs-content">
             <div class="project">
                 <h1>Configuration Reference</h1>
-                <p><strong>Version:</strong>7.0.0</p>
+                <p><strong>Version:</strong>7.0.1</p>
                 <p></p>
             </div>
 <div class="sect2">
@@ -1474,13 +1474,103 @@
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-wait-duration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-properties</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.Properties</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.sslcontext</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">javax.net.ssl.SSLContext</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.hostname-resolver</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">oracle.ucp.jdbc.PoolDataSource$HostnameResolver</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.token-supplier</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.function.Supplier</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.pool-properties</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.Properties</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.properties</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-wait-duration-in-millis</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">long</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-wait-timeout-while-service-down</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">long</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.login-timeout</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.user</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-labeling-callback</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">oracle.ucp.ConnectionLabelingCallback</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-affinity-callback</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">oracle.ucp.ConnectionAffinityCallback</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-initialization-callback</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">oracle.ucp.jdbc.ConnectionInitializationCallback</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-creation-consumer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.function.Consumer</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.fast-connection-failover-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-factory-class-name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.database-name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
@@ -1498,32 +1588,62 @@
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.database-name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.data-source-name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.description</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.network-protocol</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.role-name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.user</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-pool-name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.inactive-connection-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.abandoned-connection-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.time-to-live-connection-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-harvest-trigger-count</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-harvest-max-count</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.max-connection-reuse-time</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">long</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.timeout-check-interval</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -1552,60 +1672,6 @@
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.inactive-connection-timeout</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-wait-duration</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-wait-duration-in-millis</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">long</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-wait-timeout-while-service-down</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">long</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.time-to-live-connection-timeout</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.abandoned-connection-timeout</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.timeout-check-interval</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.fast-connection-failover-enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-factory-class-name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.max-statements</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
 <td class="tableblock halign-left valign-top"></td>
@@ -1624,7 +1690,19 @@
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-pool-name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.data-source-name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.network-protocol</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
@@ -1642,20 +1720,8 @@
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-harvest-trigger-count</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-harvest-max-count</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.max-connection-reuse-time</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">long</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.onsconfiguration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -1666,31 +1732,19 @@
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.onsconfiguration</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-properties</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.Properties</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-labeling-high-cost</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-repurpose-threshold</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.high-cost-connection-reuse-threshold</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.high-cost-connection-reuse-threshold</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.connection-repurpose-threshold</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
@@ -1726,26 +1780,8 @@
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.sslcontext</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">javax.net.ssl.SSLContext</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.hostname-resolver</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">oracle.ucp.jdbc.PoolDataSource$HostnameResolver</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.read-only-instance-allowed</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.token-supplier</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.function.Supplier</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -1758,6 +1794,12 @@
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.commit-on-connection-return</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.ucpevent-listener-provider</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -1853,10 +1895,82 @@
 <div style="page-break-after: always;"></div>
 </div>
 <div class="sect2">
+<h3 id="_micronaut_jdbc_unpooled_config_properties">Micronaut Jdbc Unpooled Config Properties</h3>
+<a id="io.micronaut.configuration.jdbc.unpooled.DatasourceConfiguration" href="#io.micronaut.configuration.jdbc.unpooled.DatasourceConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 13. Configuration Properties for <a href="../api/io/micronaut/configuration/jdbc/unpooled/DatasourceConfiguration.html">DatasourceConfiguration</a></caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.url</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.driver-class-name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.driver-class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Class</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The configured driver class</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.username</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.password</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.validation-query</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The configured validation query</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.login-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Integer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The configured login timeout in seconds</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.data-source-properties</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.Map</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Additional datasource properties passed to the JDBC driver</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+</div>
+<div class="sect2">
 <h3 id="_micronaut_jooq_config_properties">Micronaut Jooq Config Properties</h3>
 <a id="io.micronaut.configuration.jooq.JooqConfigurationProperties" href="#io.micronaut.configuration.jooq.JooqConfigurationProperties">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 13. Configuration Properties for <a href="../api/io/micronaut/configuration/jooq/JooqConfigurationProperties.html">JooqConfigurationProperties</a></caption>
+<caption class="title">Table 14. Configuration Properties for <a href="../api/io/micronaut/configuration/jooq/JooqConfigurationProperties.html">JooqConfigurationProperties</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -1889,7 +2003,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.micronaut.configuration.jooq.R2dbcJooqConfigurationProperties" href="#io.micronaut.configuration.jooq.R2dbcJooqConfigurationProperties">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 14. Configuration Properties for <a href="../api/io/micronaut/configuration/jooq/R2dbcJooqConfigurationProperties.html">R2dbcJooqConfigurationProperties</a></caption>
+<caption class="title">Table 15. Configuration Properties for <a href="../api/io/micronaut/configuration/jooq/R2dbcJooqConfigurationProperties.html">R2dbcJooqConfigurationProperties</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -1925,7 +2039,7 @@
 <h3 id="_micronaut_vertx_mysql_client_config_properties">Micronaut Vertx Mysql Client Config Properties</h3>
 <a id="io.micronaut.configuration.vertx.mysql.client.MySQLClientConfiguration" href="#io.micronaut.configuration.vertx.mysql.client.MySQLClientConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 15. Configuration Properties for <a href="../api/io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html">MySQLClientConfiguration</a></caption>
+<caption class="title">Table 16. Configuration Properties for <a href="../api/io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html">MySQLClientConfiguration</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -1952,7 +2066,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.vertx.mysqlclient.MySQLConnectOptions" href="#io.vertx.mysqlclient.MySQLConnectOptions">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 16. Configuration Properties for <a href="../api/io/micronaut/io/vertx/mysqlclient/MySQLConnectOptions.html">MySQLConnectOptions</a></caption>
+<caption class="title">Table 17. Configuration Properties for <a href="../api/io/micronaut/io/vertx/mysqlclient/MySQLConnectOptions.html">MySQLConnectOptions</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -2117,7 +2231,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.vertx.sqlclient.PoolOptions" href="#io.vertx.sqlclient.PoolOptions">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 17. Configuration Properties for <a href="../api/io/micronaut/io/vertx/sqlclient/PoolOptions.html">PoolOptions</a></caption>
+<caption class="title">Table 18. Configuration Properties for <a href="../api/io/micronaut/io/vertx/sqlclient/PoolOptions.html">PoolOptions</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -2210,7 +2324,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.vertx.core.net.NetClientOptions" href="#io.vertx.core.net.NetClientOptions">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 18. Configuration Properties for <a href="../api/io/micronaut/io/vertx/core/net/NetClientOptions.html">NetClientOptions</a></caption>
+<caption class="title">Table 19. Configuration Properties for <a href="../api/io/micronaut/io/vertx/core/net/NetClientOptions.html">NetClientOptions</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -2423,7 +2537,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.vertx.mysqlclient.MySQLConnectOptions" href="#io.vertx.mysqlclient.MySQLConnectOptions">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 19. Configuration Properties for <a href="../api/io/micronaut/io/vertx/mysqlclient/MySQLConnectOptions.html">MySQLConnectOptions</a></caption>
+<caption class="title">Table 20. Configuration Properties for <a href="../api/io/micronaut/io/vertx/mysqlclient/MySQLConnectOptions.html">MySQLConnectOptions</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -2588,7 +2702,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.vertx.sqlclient.PoolOptions" href="#io.vertx.sqlclient.PoolOptions">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 20. Configuration Properties for <a href="../api/io/micronaut/io/vertx/sqlclient/PoolOptions.html">PoolOptions</a></caption>
+<caption class="title">Table 21. Configuration Properties for <a href="../api/io/micronaut/io/vertx/sqlclient/PoolOptions.html">PoolOptions</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -2681,7 +2795,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.vertx.core.net.NetClientOptions" href="#io.vertx.core.net.NetClientOptions">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 21. Configuration Properties for <a href="../api/io/micronaut/io/vertx/core/net/NetClientOptions.html">NetClientOptions</a></caption>
+<caption class="title">Table 22. Configuration Properties for <a href="../api/io/micronaut/io/vertx/core/net/NetClientOptions.html">NetClientOptions</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -2897,7 +3011,7 @@
 <h3 id="_micronaut_vertx_pg_client_config_properties">Micronaut Vertx Pg Client Config Properties</h3>
 <a id="io.micronaut.configuration.vertx.pg.client.PgClientConfiguration" href="#io.micronaut.configuration.vertx.pg.client.PgClientConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 22. Configuration Properties for <a href="../api/io/micronaut/configuration/vertx/pg/client/PgClientConfiguration.html">PgClientConfiguration</a></caption>
+<caption class="title">Table 23. Configuration Properties for <a href="../api/io/micronaut/configuration/vertx/pg/client/PgClientConfiguration.html">PgClientConfiguration</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -2924,7 +3038,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.vertx.pgclient.PgConnectOptions" href="#io.vertx.pgclient.PgConnectOptions">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 23. Configuration Properties for <a href="../api/io/micronaut/io/vertx/pgclient/PgConnectOptions.html">PgConnectOptions</a></caption>
+<caption class="title">Table 24. Configuration Properties for <a href="../api/io/micronaut/io/vertx/pgclient/PgConnectOptions.html">PgConnectOptions</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -3053,7 +3167,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.vertx.sqlclient.PoolOptions" href="#io.vertx.sqlclient.PoolOptions">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 24. Configuration Properties for <a href="../api/io/micronaut/io/vertx/sqlclient/PoolOptions.html">PoolOptions</a></caption>
+<caption class="title">Table 25. Configuration Properties for <a href="../api/io/micronaut/io/vertx/sqlclient/PoolOptions.html">PoolOptions</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -3146,7 +3260,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.vertx.core.net.NetClientOptions" href="#io.vertx.core.net.NetClientOptions">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 25. Configuration Properties for <a href="../api/io/micronaut/io/vertx/core/net/NetClientOptions.html">NetClientOptions</a></caption>
+<caption class="title">Table 26. Configuration Properties for <a href="../api/io/micronaut/io/vertx/core/net/NetClientOptions.html">NetClientOptions</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -3359,7 +3473,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.vertx.pgclient.PgConnectOptions" href="#io.vertx.pgclient.PgConnectOptions">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 26. Configuration Properties for <a href="../api/io/micronaut/io/vertx/pgclient/PgConnectOptions.html">PgConnectOptions</a></caption>
+<caption class="title">Table 27. Configuration Properties for <a href="../api/io/micronaut/io/vertx/pgclient/PgConnectOptions.html">PgConnectOptions</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -3488,7 +3602,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.vertx.sqlclient.PoolOptions" href="#io.vertx.sqlclient.PoolOptions">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 27. Configuration Properties for <a href="../api/io/micronaut/io/vertx/sqlclient/PoolOptions.html">PoolOptions</a></caption>
+<caption class="title">Table 28. Configuration Properties for <a href="../api/io/micronaut/io/vertx/sqlclient/PoolOptions.html">PoolOptions</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -3574,6 +3688,247 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.event-loop-size</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
 <td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<a id="io.vertx.core.net.NetClientOptions" href="#io.vertx.core.net.NetClientOptions">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 29. Configuration Properties for <a href="../api/io/micronaut/io/vertx/core/net/NetClientOptions.html">NetClientOptions</a></caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.send-buffer-size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.receive-buffer-size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.reuse-address</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.traffic-class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.log-activity</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.activity-log-data-format</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">io.netty.handler.logging.ByteBufFormat</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.reuse-port</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.tcp-no-delay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.tcp-keep-alive</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.so-linger</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.read-idle-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.write-idle-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.ssl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.key-cert-options</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">io.vertx.core.net.KeyCertOptions</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.trust-options</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">io.vertx.core.net.TrustOptions</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.use-alpn</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.ssl-engine-options</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">io.vertx.core.net.SSLEngineOptions</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.tcp-fast-open</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.tcp-cork</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.tcp-quick-ack</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.tcp-user-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.enabled-secure-transport-protocols</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.Set</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.ssl-handshake-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">long</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.ssl-handshake-timeout-unit</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.concurrent.TimeUnit</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.trust-all</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.connect-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.proxy-options</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">io.vertx.core.net.ProxyOptions</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.non-proxy-hosts</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.List</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.local-address</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.hostname-verification-algorithm</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.application-layer-protocols</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.List</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.register-write-handler</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<a id="io.micronaut.configuration.vertx.pg.client.PgPemTrustOptionsConfiguration" href="#io.micronaut.configuration.vertx.pg.client.PgPemTrustOptionsConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 30. Configuration Properties for <a href="../api/io/micronaut/configuration/vertx/pg/client/PgPemTrustOptionsConfiguration.html">PgPemTrustOptionsConfiguration</a></caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertx.pg.client.pem-trust-options.cert-paths</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.List</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the PEM certificate paths configured under
+ {@code vertx.pg.client.pem-trust-options.cert-paths}.</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>

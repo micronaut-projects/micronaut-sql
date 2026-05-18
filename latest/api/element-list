@@ -15,6 +15,8 @@ io.micronaut.configuration.jdbc.hikari
 io.micronaut.configuration.jdbc.tomcat
 io.micronaut.configuration.jdbc.tomcat.metadata
 io.micronaut.configuration.jdbc.ucp
+io.micronaut.configuration.jdbc.ucp.metadata
+io.micronaut.configuration.jdbc.unpooled
 io.micronaut.configuration.jdbi
 io.micronaut.configuration.jdbi.transaction
 io.micronaut.configuration.jdbi.transaction.micronaut
@@ -29,3 +31,5 @@ io.micronaut.configuration.vertx.pg.client.condition
 io.micronaut.configuration.vertx.pg.client.health
 io.micronaut.jdbc
 io.micronaut.jdbc.metadata
+io.micronaut.sql.info
+io.micronaut.sql.sqlite

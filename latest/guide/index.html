@@ -23,7 +23,9 @@
             document.body.className = classes.join(" ");
         }
     </script>
-
+    <style type="text/css">
+        .lang-java { display: block }; .lang-python { display: block }; .lang-kotlin { display: block }; .lang-groovy { display: block }; 
+    </style>
 </head>
 
 <body class="body" id="docs" onload="addJsClass();" onhashchange="highlightMenu()">
@@ -109,7 +111,15 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-multiple-datasources"><a href="#jdbc-multiple-datasources"><strong>4.3</strong><span>Configuring Multiple Data Sources</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-healthchecks"><a href="#jdbc-healthchecks"><strong>4.4</strong><span>JDBC Health Checks</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-transactions"><a href="#jdbc-transactions"><strong>4.4</strong><span>Transaction Management</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-healthchecks"><a href="#jdbc-healthchecks"><strong>4.5</strong><span>JDBC Health Checks</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-runtime-password-update"><a href="#jdbc-runtime-password-update"><strong>4.6</strong><span>Data Source Runtime Password Change</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-oracle-jdbc-driver-extensions"><a href="#oracle-jdbc-driver-extensions"><strong>4.7</strong><span>Oracle JDBC Driver Extensions</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jdbc-sqlite"><a href="#jdbc-sqlite"><strong>4.8</strong><span>SQLite Support</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-hibernate"><a href="#hibernate"><strong>5</strong><span>Configuring Hibernate</span></a></div>
         
@@ -121,11 +131,13 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-entity-scan"><a href="#hibernate-entity-scan"><strong>5.4</strong><span>Entity Scan Configuration</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-reactive"><a href="#hibernate-reactive"><strong>5.5</strong><span>Configuring Hibernate Reactive</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-graalvm"><a href="#hibernate-graalvm"><strong>5.5</strong><span>GraalVM native image</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-proxies"><a href="#hibernate-proxies"><strong>5.6</strong><span>Using compile-time Hibernate proxies</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-reactive"><a href="#hibernate-reactive"><strong>5.6</strong><span>Configuring Hibernate Reactive</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-lazy-initialization"><a href="#hibernate-lazy-initialization"><strong>5.7</strong><span>Understanding LazyInitializationException</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-proxies"><a href="#hibernate-proxies"><strong>5.7</strong><span>Using compile-time Hibernate proxies</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-lazy-initialization"><a href="#hibernate-lazy-initialization"><strong>5.8</strong><span>Understanding LazyInitializationException</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-jasync"><a href="#jasync"><strong>6</strong><span>Configuring JAsync SQL</span></a></div>
         
@@ -135,13 +147,15 @@
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-jooq"><a href="#jooq"><strong>7</strong><span>Configuring jOOQ</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-dialect"><a href="#jooq-dialect"><strong>7.1</strong><span>Configuring SQL dialect</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-r2dbc"><a href="#jooq-r2dbc"><strong>7.1</strong><span>Configuring R2DBC connection factories</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-provider-beans"><a href="#jooq-provider-beans"><strong>7.2</strong><span>Configuring additional provider beans</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-dialect"><a href="#jooq-dialect"><strong>7.2</strong><span>Configuring SQL dialect</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-jsonb"><a href="#jooq-jsonb"><strong>7.3</strong><span>Using JsonMapper to convert JSON(B) types</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-provider-beans"><a href="#jooq-provider-beans"><strong>7.3</strong><span>Configuring additional provider beans</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-graalvm"><a href="#jooq-graalvm"><strong>7.4</strong><span>GraalVM native image</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-jsonb"><a href="#jooq-jsonb"><strong>7.4</strong><span>Using JsonMapper to convert JSON(B) types</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jooq-graalvm"><a href="#jooq-graalvm"><strong>7.5</strong><span>GraalVM native image</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-jdbi"><a href="#jdbi"><strong>8</strong><span>Configuring Jdbi</span></a></div>
         
@@ -165,7 +179,7 @@
         <h1>Micronaut SQL Libraries</h1>
         <p></p>
         <p>Projects to support SQL Database access in Micronaut</p>
-        <p><strong>Version:</strong> 7.0.0 </p>
+        <p><strong>Version:</strong> 7.0.1 </p>
     </div>
     
 <h1 id="introduction"><a class="anchor" href="#introduction"></a>1 Introduction</h1>
@@ -225,7 +239,7 @@
 
 
 <div class="paragraph">
-<p>Java data sources can be configured for one of four currently provided implementations. Apache DBCP2, Hikari, Tomcat, and Oracle Universal Connection Pool are supported by default.</p>
+<p>Java data sources can be configured for one of five currently provided implementations. Apache DBCP2, Hikari, Tomcat, Oracle Universal Connection Pool, and an unpooled DriverManager-backed datasource are supported by default.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -323,6 +337,24 @@
 </p>
 </div>
 <div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">runtimeOnly(<span class="hljs-string">"io.micronaut.sql:micronaut-jdbc-unpooled")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.sql&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-jdbc-unpooled&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
 <p>You also need to add a JDBC driver dependency to your classpath. For example to add the <a href="http://www.h2database.com">H2 In-Memory Database</a>:</p>
 </div>
 <div class="paragraph">
@@ -342,6 +374,9 @@
 </div>
 </div>
 </p>
+</div>
+<div class="paragraph">
+<p>To configure Micronaut-managed JDBC transactions without Spring, see <a href="#jdbc-transactions">Transaction Management</a>.</p>
 </div>
 
 <h2 id="jdbc-disable"><a class="anchor" href="#jdbc-disable"></a>4.1 Disable Micronaut JDBC Data Sources</h2>
@@ -383,6 +418,9 @@ Micronaut SQL 5.7.0 allowed disabling datasources via setting <code>datasources.
 
 <div class="paragraph">
 <p>All of the implementation specific parameters can be configured. Effort was made to allow basic configuration to be consistent across the implementations.</p>
+</div>
+<div class="paragraph">
+<p>If you want Micronaut to avoid connection pooling entirely, add the <code>micronaut-jdbc-unpooled</code> module instead. It uses the same common datasource settings, creates a new physical JDBC connection for each <code>getConnection()</code> call, and closes that physical connection when the caller closes it.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -628,7 +666,10 @@ datasources.default.maxPoolSize=10</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The Oracle UCP is managed by the <a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/admin/UniversalConnectionPoolManager.html">UniversalConnectionPoolManager</a>. The manager can be disabled byt setting <code>ucp-manager.enabled</code> to <code>false</code>. Additionally, you can enable the <a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/jmx-based-management.html">JMX-Based Management</a> by setting the <code>ucp-manager.jmx.enabled</code> to <code>true</code> and providing the <code>ojdbc8dms.jar</code> and <code>dms.jar</code> dependencies.</p>
+<p>The Oracle UCP is managed by the <a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/admin/UniversalConnectionPoolManager.html">UniversalConnectionPoolManager</a>. The manager can be disabled by setting <code>ucp-manager.enabled</code> to <code>false</code>. Additionally, you can enable the <a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/jmx-based-management.html">JMX-Based Management</a> by setting the <code>ucp-manager.jmx.enabled</code> to <code>true</code>. When using current Oracle JDBC 23ai driver versions, the extra <code>ojdbc*dms.jar</code> driver artifacts are not required.</p>
+</div>
+<div class="paragraph">
+<p>The <code>micronaut-jdbc-ucp</code> module uses Oracle&#8217;s <code>ojdbc17</code> and <code>ucp17</code> artifacts by default. Applications that need the JDK 11 driver line must exclude those default transitive dependencies and add direct dependencies on Oracle&#8217;s <code>ojdbc11</code> and <code>ucp11</code> artifacts instead. The <code>ojdbc11</code> and <code>ucp11</code> artifacts remain managed, so after excluding <code>ojdbc17</code> and <code>ucp17</code>, you can rely on Micronaut&#8217;s managed versions for the replacement dependencies.</p>
 </div>
 <div class="paragraph">
 <p>In case when exception <code>Universal Connection Pool already exists in the Universal Connection Pool Manager</code> is thrown, there is <code>oracle.ucp.destroyOnReload</code> configuration that can be set to <code>true</code> to avoid this error. In that case, when creating new connection pool, if there is the one with the same name the old one will be destroyed first.</p>
@@ -683,6 +724,308 @@ More about it can be read here <a href="https://docs.oracle.com/en/database/orac
 </tr>
 </tbody>
 </table>
+<div class="sect2">
+<h3 id="_oracle_session_program_auto_configuration">Oracle Session Program Auto-Configuration</h3>
+<div class="paragraph">
+<p>Micronaut SQL can automatically set the Oracle <code>v$session.program</code> connection property so your application&#8217;s sessions are easily identifiable in Oracle tools (such as <code>v$session</code>).</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Applied only to Oracle datasources (when <code>dialect: ORACLE</code> is set or the JDBC URL starts with <code>jdbc:oracle</code>).</p>
+</li>
+<li>
+<p>The value is taken from <code>micronaut.application.name</code>.</p>
+</li>
+<li>
+<p>Does not override a user-provided <code>v$session.program</code>.</p>
+</li>
+<li>
+<p>Supported for HikariCP, Tomcat JDBC, Apache DBCP2, and Oracle UCP.</p>
+</li>
+<li>
+<p>Scope limited to <code>v$session.program</code> only (it does not set ClientId/Module/Action).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Configure per datasource:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">micronaut.application.name=my-app
+datasources.default.url=jdbc:oracle:thin:@localhost:1521/orcl
+datasources.default.username=user
+datasources.default.password=pass
+datasources.default.dialect=ORACLE
+datasources.other.url=jdbc:oracle:thin:@localhost:1521/orcl
+datasources.other.username=user
+datasources.other.password=pass
+datasources.other.dialect=ORACLE
+datasources.other.oracle.session.enabled=false</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
+  application:
+    name: my-app
+
+datasources:
+  default:
+    url: jdbc:oracle:thin:@localhost:1521/orcl
+    username: user
+    password: pass
+    dialect: ORACLE
+
+  other:
+    url: jdbc:oracle:thin:@localhost:1521/orcl
+    username: user
+    password: pass
+    dialect: ORACLE
+    oracle:
+      session:
+        enabled: false</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[micronaut]
+  [micronaut.application]
+    name="my-app"
+[datasources]
+  [datasources.default]
+    url="jdbc:oracle:thin:@localhost:1521/orcl"
+    username="user"
+    password="pass"
+    dialect="ORACLE"
+  [datasources.other]
+    url="jdbc:oracle:thin:@localhost:1521/orcl"
+    username="user"
+    password="pass"
+    dialect="ORACLE"
+    [datasources.other.oracle]
+      [datasources.other.oracle.session]
+        enabled=false</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">micronaut {
+  application {
+    name = "my-app"
+  }
+}
+datasources {
+  'default' {
+    url = "jdbc:oracle:thin:@localhost:1521/orcl"
+    username = "user"
+    password = "pass"
+    dialect = "ORACLE"
+  }
+  other {
+    url = "jdbc:oracle:thin:@localhost:1521/orcl"
+    username = "user"
+    password = "pass"
+    dialect = "ORACLE"
+    oracle {
+      session {
+        enabled = false
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  micronaut {
+    application {
+      name = "my-app"
+    }
+  }
+  datasources {
+    default {
+      url = "jdbc:oracle:thin:@localhost:1521/orcl"
+      username = "user"
+      password = "pass"
+      dialect = "ORACLE"
+    }
+    other {
+      url = "jdbc:oracle:thin:@localhost:1521/orcl"
+      username = "user"
+      password = "pass"
+      dialect = "ORACLE"
+      oracle {
+        session {
+          enabled = false
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "micronaut": {
+    "application": {
+      "name": "my-app"
+    }
+  },
+  "datasources": {
+    "default": {
+      "url": "jdbc:oracle:thin:@localhost:1521/orcl",
+      "username": "user",
+      "password": "pass",
+      "dialect": "ORACLE"
+    },
+    "other": {
+      "url": "jdbc:oracle:thin:@localhost:1521/orcl",
+      "username": "user",
+      "password": "pass",
+      "dialect": "ORACLE",
+      "oracle": {
+        "session": {
+          "enabled": false
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>default</code> data source auto-sets v$session.program = "my-app"</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>other</code> data source v$session.program not auto-set because <code>datasources.other.oracle.session.enabled</code> is set to <code>false</code></td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Alternatively, this configuration will set "My Program" as session name for the Oracle connection and Micronaut
+will not try to use application name for it:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">micronaut.application.name=my-app
+datasources.default.url=jdbc:oracle:thin:@localhost:1521/orcl
+datasources.default.username=user
+datasources.default.password=pass
+datasources.default.dialect=ORACLE
+datasources.default.data-source-properties.v$session.program=My Program</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
+  application:
+    name: my-app
+datasources:
+  default:
+    url: jdbc:oracle:thin:@localhost:1521/orcl
+    username: user
+    password: pass
+    dialect: ORACLE
+    data-source-properties:
+      v$session.program: "My Program"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[micronaut]
+  [micronaut.application]
+    name="my-app"
+[datasources]
+  [datasources.default]
+    url="jdbc:oracle:thin:@localhost:1521/orcl"
+    username="user"
+    password="pass"
+    dialect="ORACLE"
+    [datasources.default.data-source-properties]
+      "v$session.program"="My Program"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">micronaut {
+  application {
+    name = "my-app"
+  }
+}
+datasources {
+  'default' {
+    url = "jdbc:oracle:thin:@localhost:1521/orcl"
+    username = "user"
+    password = "pass"
+    dialect = "ORACLE"
+    dataSourceProperties {
+      v$session.program = "My Program"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  micronaut {
+    application {
+      name = "my-app"
+    }
+  }
+  datasources {
+    default {
+      url = "jdbc:oracle:thin:@localhost:1521/orcl"
+      username = "user"
+      password = "pass"
+      dialect = "ORACLE"
+      data-source-properties {
+        "v$session.program" = "My Program"
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "micronaut": {
+    "application": {
+      "name": "my-app"
+    }
+  },
+  "datasources": {
+    "default": {
+      "url": "jdbc:oracle:thin:@localhost:1521/orcl",
+      "username": "user",
+      "password": "pass",
+      "dialect": "ORACLE",
+      "data-source-properties": {
+        "v$session.program": "My Program"
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 
 <h2 id="jdbc-multiple-datasources"><a class="anchor" href="#jdbc-multiple-datasources"></a>4.3 Configuring Multiple Data Sources</h2>
 
@@ -760,7 +1103,86 @@ datasources.warehouse=...</code></pre>
 </div>
 </div>
 
-<h2 id="jdbc-healthchecks"><a class="anchor" href="#jdbc-healthchecks"></a>4.4 JDBC Health Checks</h2>
+<h2 id="jdbc-transactions"><a class="anchor" href="#jdbc-transactions"></a>4.4 Transaction Management</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jdbc/jdbc-transactions.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Spring is not required for transaction management with plain JDBC access or other integrations built on top of a JDBC <code>DataSource</code>. To enable Micronaut-managed transactions for those JDBC-backed integrations, add the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.data:micronaut-data-tx-jdbc")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.data&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-data-tx-jdbc&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>This module configures the JDBC transaction manager and includes the Jakarta Transactions API.</p>
+</div>
+<div class="paragraph">
+<p>If you are using Hibernate/JPA, do not add <code>micronaut-data-tx-jdbc</code> for transaction management. Use the Hibernate transaction module instead:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.data:micronaut-data-tx-hibernate")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.data&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-data-tx-hibernate&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>You can annotate transactional methods with either <code>jakarta.transaction.Transactional</code> or <code>io.micronaut.transaction.annotation.Transactional</code>. For read-only operations, you can also use <code>io.micronaut.transaction.annotation.ReadOnly</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Using <code>@Transactional</code> with JDBC</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import jakarta.transaction.Transactional;
+
+@Transactional
+void saveBook(Book book) {
+    // use the injected DataSource here
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you need Micronaut-specific options such as <code>readOnly</code>, <code>transactionManager</code>, or <code>propagation</code>, use <code>io.micronaut.transaction.annotation.Transactional</code>.</p>
+</div>
+<div class="paragraph">
+<p>This transaction support works with plain JDBC access and with integrations built on top of a JDBC <code>DataSource</code>, such as Jdbi and JDBC-backed jOOQ.</p>
+</div>
+<div class="paragraph">
+<p>When using direct JDBC access, obtain connections from the injected <code>DataSource</code> inside a transactional method, or from a method that is invoked within a transaction boundary, so Micronaut can associate the connection with the active transaction.</p>
+</div>
+<div class="paragraph">
+<p>Spring transaction management remains optional and should only be added if your application specifically needs Spring transaction APIs.</p>
+</div>
+
+<h2 id="jdbc-healthchecks"><a class="anchor" href="#jdbc-healthchecks"></a>4.5 JDBC Health Checks</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jdbc/jdbc-healthchecks.adoc"'>
@@ -774,6 +1196,358 @@ datasources.warehouse=...</code></pre>
 </div>
 <div class="paragraph">
 <p>See the section on the <a href="https://docs.micronaut.io/latest/guide/index.html#healthEndpoint">Health Endpoint</a> for more information.</p>
+</div>
+
+<h2 id="jdbc-runtime-password-update"><a class="anchor" href="#jdbc-runtime-password-update"></a>4.6 Data Source Runtime Password Change</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jdbc/jdbc-runtime-password-update.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Micronaut SQL supports updating JDBC datasource credentials at runtime without restarting the application.</p>
+</div>
+<div class="paragraph">
+<p>When a RefreshEvent occurs and a datasource&#8217;s username or password property changes, the framework detects the change and propagates the new credentials to the underlying connection pool, then evicts existing connections so new ones are created with the updated credentials.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_it_works">How it works</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>The application observes <code>datasources.&lt;name&gt;.password</code> and <code>datasources.&lt;name&gt;.username</code> configuration keys</p>
+</li>
+<li>
+<p>On a <code>RefreshEvent</code>, it checks if either password or username change have been sent in refresh event and builds a change set per datasource</p>
+</li>
+<li>
+<p>Implementations for the supported pools set the new username and/or password on the pool and trigger a soft eviction of connections so subsequent connections use the updated credentials.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>By default, runtime credential changes are handled automatically for each datasource.</p>
+</div>
+<div class="paragraph">
+<p>Example configuration:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">datasources.default.url=jdbc:postgresql://localhost:5432/app
+datasources.default.driver-class-name=org.postgresql.Driver
+datasources.default.username=app_user
+datasources.default.password=${DB_PASSWORD}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/app
+    driver-class-name: org.postgresql.Driver
+    username: app_user
+    password: ${DB_PASSWORD}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources]
+  [datasources.default]
+    url="jdbc:postgresql://localhost:5432/app"
+    driver-class-name="org.postgresql.Driver"
+    username="app_user"
+    password="${DB_PASSWORD}"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">datasources {
+  'default' {
+    url = "jdbc:postgresql://localhost:5432/app"
+    driverClassName = "org.postgresql.Driver"
+    username = "app_user"
+    password = "${DB_PASSWORD}"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  datasources {
+    default {
+      url = "jdbc:postgresql://localhost:5432/app"
+      driver-class-name = "org.postgresql.Driver"
+      username = "app_user"
+      password = "${DB_PASSWORD}"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "datasources": {
+    "default": {
+      "url": "jdbc:postgresql://localhost:5432/app",
+      "driver-class-name": "org.postgresql.Driver",
+      "username": "app_user",
+      "password": "${DB_PASSWORD}"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>When <code>DB_PASSWORD</code> is rotated and your configuration refreshes, the datasource password is updated and the pool evicts existing connections so new ones authenticate with the new password.</p>
+</div>
+<div class="paragraph">
+<p>Example of datasource password rotation implementation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Singleton
+final class DbPasswordRefresher {
+
+    private final ApplicationContext applicationContext;
+    private String currentPassword;
+
+    public DbPasswordRefresher(@Value("${datasources.default.password}") String currentPassword,
+                               ApplicationContext applicationContext) {
+        this.currentPassword = currentPassword;
+        this.applicationContext = applicationContext;
+    }
+
+    @Scheduled(cron = "0 * * * * *") // Runs every minute
+    void refresh() {
+        String password = getSecretDbPassword(); // Read from Vault, Secret Service, etc.
+        if (StringUtils.isNotEmpty(password) &amp;&amp; !password.equals(currentPassword)) {
+            // This refresh() call is required before publishing event since datasources.default.password
+            // needs to be refreshed in the application configuration
+            applicationContext.getEnvironment().refresh();
+            // publishEvent with such RefreshEvent will trigger connection pool update and old connections eviction
+            // The datasource event handler for this event will get actual password from the
+            // application configuration that has been refreshed in refresh() call above
+            // and sending such event without prior calling refresh() will not work properly
+            applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", password)));
+            this.currentPassword = password;
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternative way to implement password rotation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Singleton
+final class DbPasswordRefresher {
+
+    private final ApplicationContext applicationContext;
+
+    public DbPasswordRefresher(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
+    @Scheduled(cron = "0 * * * * *")
+    void refresh() {
+        // refreshAndDiff() will register if there were changes in config values (Vault, Secret, etc.),
+        // update application configuration and populate the changes map.
+        Map&lt;String, Object&gt; changes = applicationContext.getEnvironment().refreshAndDiff();
+        // ${DB_PASSWORD} placeholder in refreshAndDiff() call will be populated as `db-password` key in changes map
+        if (changes.containsKey("db-password")) {
+            String password = (String) changes.get("db-password");
+            // The datasource event handler for this event will get actual password from the
+            // application configuration that has been refreshed in refreshAndDiff() call above
+            applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", password)));
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_notes">Notes</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>This mechanism is event-driven. Any mechanism that results in a Micronaut RefreshEvent with changed datasources.* username/password properties will be handled.</p>
+</li>
+<li>
+<p>Username changes are supported as well; if both username and password change in the same refresh cycle, both are applied.</p>
+</li>
+<li>
+<p>Existing connections are softly evicted where supported by the pool; new connections will be established with the updated credentials.</p>
+</li>
+<li>
+<p>Supported pools: HikariCP, Tomcat JDBC, Oracle UCP.</p>
+</li>
+</ul>
+</div>
+</div>
+
+<h2 id="oracle-jdbc-driver-extensions"><a class="anchor" href="#oracle-jdbc-driver-extensions"></a>4.7 Oracle JDBC Driver Extensions</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jdbc/oracle-jdbc-driver-extensions.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p><a href="https://docs.oracle.com/en/database/oracle/oracle-database/26/jjdbc/JDBC-service-provider-extensions.html">JDBC Service Provider Extensions</a></p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Starting with Oracle AI Database Release 26ai, you can extend the capabilities of Oracle JDBC drivers through service providers.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/oracle/ojdbc-extensions/">Oracle JDBC Driver Extensions</a> service providers are configured via connection properties. Use the <code>datasources.*.data-source-properties</code> prefix.</p>
+</div>
+<div class="paragraph">
+<p>For example, to configure the <code>oracle.jdbc.provider.password</code> property as the name of a password provider and <code>oracle.jdbc.provider.password.vaultId</code> as a parameter recognized by the password provider, you will use a configuration such as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">datasources.default.data-source-properties.oracle.jdbc.provider.password=example-provider
+datasources.default.data-source-properties.oracle.jdbc.provider.password.vaultId=9999-8888-7777</code></pre>
+</div>
+</div>
+
+<h2 id="jdbc-sqlite"><a class="anchor" href="#jdbc-sqlite"></a>4.8 SQLite Support</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jdbc/jdbc-sqlite.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To use <a href="https://www.sqlite.org">SQLite</a>, add the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">runtimeOnly(<span class="hljs-string">"io.micronaut.sql:micronaut-jdbc-sqlite")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.sql&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-jdbc-sqlite&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>The module provides connection capabilities configuration for SQLite and adds the <a href="https://github.com/xerial/sqlite-jdbc">SQLite JDBC driver</a> as a transitive dependency.</p>
+</div>
+<div class="paragraph">
+<p>If you do not provide an explicit JDBC URL, Micronaut SQL configures automatically the following JDBC URL <code>jdbc:sqlite:file:%s?mode=memory&amp;cache=shared&amp;foreign_keys=on&amp;busy_timeout=5000</code>, when you set <code>datasources.*.db-type</code> to <code>sqlite</code>.</p>
+</div>
+<div class="paragraph">
+<p>For production, you will probably want to configure SQLite explicitly with a file-backed JDBC URL and something like this:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">datasources.default.url=jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mode=WAL&amp;synchronous</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">datasources:
+    default:
+        url: jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mode=WAL&amp;synchronous</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources]
+  [datasources.default]
+    url="jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mode=WAL&amp;synchronous"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">datasources {
+  'default' {
+    url = "jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mode=WAL&amp;synchronous"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  datasources {
+    default {
+      url = "jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mode=WAL&amp;synchronous"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "datasources": {
+    "default": {
+      "url": "jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mode=WAL&amp;synchronous"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Useful SQLite documentation links:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://sqlite.org/wal.html">SQLite Write-Ahead Logging</a></p>
+</li>
+<li>
+<p><a href="https://sqlite.org/walformat.html">WAL file format details</a></p>
+</li>
+<li>
+<p><a href="https://sqlite.org/foreignkeys.html">SQLite Foreign Key Support</a></p>
+</li>
+<li>
+<p><a href="https://sqlite.org/pragma.html#pragma_busy_timeout">SQLite PRAGMA busy_timeout</a></p>
+</li>
+<li>
+<p><a href="https://sqlite.org/pragma.html#pragma_synchronous">SQLite PRAGMA synchronous</a></p>
+</li>
+<li>
+<p><a href="https://sqlite.org/pragma.html">SQLite PRAGMA reference</a></p>
+</li>
+</ul>
 </div>
 
 <h1 id="hibernate"><a class="anchor" href="#hibernate"></a>5 Configuring Hibernate</h1>
@@ -913,7 +1687,10 @@ EntityManager otherManager;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Micronaut will inject a compile time scoped proxy that retrieves the <code>EntityManager</code> associated with the current transaction when using <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Transactional.html">@Transactional</a> (see "Using Spring Transaction Management" below).</p>
+<p>Micronaut will inject a compile time scoped proxy that retrieves the <code>EntityManager</code> associated with the current transaction when using <code>jakarta.transaction.Transactional</code> (or <code>io.micronaut.transaction.annotation.Transactional</code>).</p>
+</div>
+<div class="paragraph">
+<p>For Hibernate/JPA transaction management, use <code>micronaut-data-tx-hibernate</code> as described in <a href="#hibernate">Setting up a Hibernate/JPA EntityManager</a>.</p>
 </div>
 
 <h2 id="hibernate-customizing"><a class="anchor" href="#hibernate-customizing"></a>5.3 Customizing Hibernate/JPA Configuration</h2>
@@ -1250,7 +2027,207 @@ jpa.default.entity-scan.packages[0]=foo.bar</code></pre>
 </ul>
 </div>
 
-<h2 id="hibernate-reactive"><a class="anchor" href="#hibernate-reactive"></a>5.5 Configuring Hibernate Reactive</h2>
+<h2 id="hibernate-graalvm"><a class="anchor" href="#hibernate-graalvm"></a>5.5 GraalVM native image</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/hibernate/hibernate-graalvm.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To run Hibernate on GraalVM native image you need to configure more than entity scanning alone. The Hibernate runtime normally depends on reflective model inspection and runtime proxy generation, both of which need extra setup in a native image.</p>
+</div>
+<div class="paragraph">
+<p>For Hibernate applications on GraalVM, make sure all of the following are true:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Entity discovery uses Micronaut entity scanning, not full classpath scanning</p>
+</li>
+<li>
+<p>Lazy associations use compile-time Hibernate proxies instead of runtime-generated proxies</p>
+</li>
+<li>
+<p>Types that Hibernate still needs to inspect reflectively are registered for reflection</p>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_entity_scanning">Entity Scanning</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Micronaut&#8217;s default entity scanning works in native image because it relies on Micronaut metadata instead of scanning the full classpath.</p>
+</div>
+<div class="paragraph">
+<p>Avoid enabling <code>jpa.*.entity-scan.classpath=true</code> for GraalVM native image. Full classpath scanning does not work in a native executable.</p>
+</div>
+<div class="paragraph">
+<p>If your entities are not compiled by Micronaut, generate introspection metadata for them instead:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Introspected(packages = "example.domain")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See the <a href="#hibernate-entity-scan">entity scan configuration section</a> for the full set of options.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_lazy_associations">Lazy Associations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If your model uses lazy associations, Hibernate must create proxies for the associated entity types. Runtime proxy generation is not a good fit for GraalVM native image, so use Micronaut&#8217;s compile-time Hibernate proxies instead.</p>
+</div>
+<div class="openblock">
+<div class="title">Enable Compile-Time Hibernate Proxies</div>
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">jpa.default.compile-time-hibernate-proxies=true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">jpa:
+  default:
+    compile-time-hibernate-proxies: true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa]
+  [jpa.default]
+    compile-time-hibernate-proxies=true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">jpa {
+  'default' {
+    compileTimeHibernateProxies = true
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  jpa {
+    default {
+      compile-time-hibernate-proxies = true
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "jpa": {
+    "default": {
+      "compile-time-hibernate-proxies": true
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Each entity type that Hibernate may proxy must be annotated with <code>@GenerateProxy</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Entity
+@GenerateProxy
+public class Owner {
+    // ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then any lazy association pointing to that entity can be resolved without falling back to Hibernate&#8217;s runtime proxy generation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Entity
+public class Pet {
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Owner owner;
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For GraalVM native image, enable compile-time Hibernate proxies as shown above. The <code>@GenerateProxy</code> annotation is still required on each entity type that Hibernate may proxy.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_reflection_requirements">Reflection Requirements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Even with Micronaut entity scanning and compile-time proxies enabled, Hibernate may still need reflective access to some model types at runtime.</p>
+</div>
+<div class="paragraph">
+<p>In particular, embeddable identifier types used with <code>@EmbeddedId</code> should be annotated with <code>@ReflectiveAccess</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Embeddable
+@ReflectiveAccess
+public class OrderId implements Serializable {
+    // ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And then used from the entity as usual:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Entity
+public class Order {
+
+    @EmbeddedId
+    private OrderId id;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the application works on the JVM but fails only once Hibernate starts inspecting metadata or creating proxies in the native executable, check these three areas first:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Entity scanning is not using classpath scanning</p>
+</li>
+<li>
+<p>Lazy association targets are annotated with <code>@GenerateProxy</code></p>
+</li>
+<li>
+<p>Embeddable identifier types and other reflectively accessed model types are annotated with <code>@ReflectiveAccess</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<h2 id="hibernate-reactive"><a class="anchor" href="#hibernate-reactive"></a>5.6 Configuring Hibernate Reactive</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/hibernate/hibernate-reactive.adoc"'>
@@ -1621,7 +2598,7 @@ vertx.pg.client.max-size=10</code></pre>
 <p>The integration will automatically integrate Vertx driver instance of <code>io.vertx.sqlclient.Pool</code> found in the bean context.</p>
 </div>
 
-<h2 id="hibernate-proxies"><a class="anchor" href="#hibernate-proxies"></a>5.6 Using compile-time Hibernate proxies</h2>
+<h2 id="hibernate-proxies"><a class="anchor" href="#hibernate-proxies"></a>5.7 Using compile-time Hibernate proxies</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/hibernate/hibernate-proxies.adoc"'>
@@ -1649,15 +2626,62 @@ vertx.pg.client.max-size=10</code></pre>
 <div class="paragraph">
 <p>If you wish to use lazy entity associations and avoid runtime proxies you can enable compile-time proxies:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">jpa.default.compile-time-hibernate-proxies=true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">jpa:
   default:
     compile-time-hibernate-proxies: true</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa]
+  [jpa.default]
+    compile-time-hibernate-proxies=true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">jpa {
+  'default' {
+    compileTimeHibernateProxies = true
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  jpa {
+    default {
+      compile-time-hibernate-proxies = true
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "jpa": {
+    "default": {
+      "compile-time-hibernate-proxies": true
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
 <div class="paragraph">
-<p>Compile-time proxies require for an entity which needs to have a proxy to be annotated with <code>@GenerateProxy</code>:</p>
+<p>Compile-time proxies require every entity type that Hibernate may proxy to be annotated with <code>@GenerateProxy</code>:</p>
 </div>
 <div class="paragraph">
 <p>For example:</p>
@@ -1675,7 +2699,7 @@ public class Pet {
 </div>
 </div>
 <div class="paragraph">
-<p>The entity <code>Owner</code> needs to be annotated with <code>@GenerateProxy</code> to have a proxy generated and the compile-time.</p>
+<p>The entity <code>Owner</code> needs to be annotated with <code>@GenerateProxy</code> to have a proxy generated at compile time.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1693,13 +2717,16 @@ public class Owner {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Compile-time proxies are enabled by default for GraalVM environment.
+For GraalVM native image, enable compile-time proxies with the configuration shown above.
 </td>
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>For the full set of Hibernate native image requirements, including entity scanning and reflective access for embeddable identifier types, see the <a href="#hibernate-graalvm">GraalVM native image section</a> in this chapter.</p>
+</div>
 
-<h2 id="hibernate-lazy-initialization"><a class="anchor" href="#hibernate-lazy-initialization"></a>5.7 Understanding LazyInitializationException</h2>
+<h2 id="hibernate-lazy-initialization"><a class="anchor" href="#hibernate-lazy-initialization"></a>5.8 Understanding LazyInitializationException</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/hibernate/hibernate-lazy-initialization.adoc"'>
@@ -1712,7 +2739,7 @@ Compile-time proxies are enabled by default for GraalVM environment.
 <p>Micronaut is built on Netty which is based on a non-blocking, event loop model. JDBC and Hibernate are blocking APIs and hence when they are used in a Micronaut application the work is shifted to a blocking I/O thread pool.</p>
 </div>
 <div class="paragraph">
-<p>When using <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Transactional.html">@Transactional</a> the Hibernate <code>Session</code> will only be open for the duration of this method execution and then will automatically be closed. This ensures that the blocking operation is kept as short as possible.</p>
+<p>When using <code>jakarta.transaction.Transactional</code> (or <code>io.micronaut.transaction.annotation.Transactional</code>) the Hibernate <code>Session</code> will only be open for the duration of this method execution and then will automatically be closed. This ensures that the blocking operation is kept as short as possible.</p>
 </div>
 <div class="paragraph">
 <p>There is no notion of OpenSessionInView (OSIV) in Micronaut and never will be, since it is <a href="https://vladmihalcea.com/the-open-session-in-view-anti-pattern/">sub-optimal and not recommended</a>. You should optimize the queries that you write to return all the necessary data Micronaut will need to encode your objects into JSON either by using the appropriate join queries or using a <a href="https://vladmihalcea.com/the-best-way-to-map-a-projection-query-to-a-dto-with-jpa-and-hibernate/">data transfer object (DTO)</a>.</p>
@@ -1947,8 +2974,8 @@ jasync.client.maxActiveConnections=5</code></pre>
 </p>
 </div>
 <div class="paragraph">
-<p>You should then <a href="#jdbc">configure one or many DataSources</a>.
-For each registered <code>DataSource</code>, Micronaut will configure the following jOOQ beans using <a href="../api/io/micronaut/configuration/jooq/JooqConfigurationFactory.html">JooqConfigurationFactory</a>:</p>
+<p>You should then either <a href="#jdbc">configure one or many DataSources</a> or <a href="#jooq-r2dbc">configure one or many R2DBC ConnectionFactory instances</a>.
+For each registered <code>DataSource</code> or <code>ConnectionFactory</code>, Micronaut will configure the following jOOQ beans using <a href="../api/io/micronaut/configuration/jooq/JooqConfigurationFactory.html">JooqConfigurationFactory</a> or <a href="../api/io/micronaut/configuration/jooq/R2dbcJooqConfigurationFactory.html">R2dbcJooqConfigurationFactory</a>:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1959,6 +2986,9 @@ For each registered <code>DataSource</code>, Micronaut will configure the follow
 <p><a href="https://www.jooq.org/javadoc/latest/org/jooq/DSLContext.html">DSLContext</a> - jOOQ <code>DSLContext</code></p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>For JDBC-backed jOOQ applications that use Micronaut transaction management, configure <a href="#jdbc-transactions">Transaction Management</a>.</p>
 </div>
 <div class="paragraph">
 <p>If Spring transaction management is in use, it will additionally create the following beans :</p>
@@ -1974,7 +3004,168 @@ For each registered <code>DataSource</code>, Micronaut will configure the follow
 </ul>
 </div>
 
-<h2 id="jooq-dialect"><a class="anchor" href="#jooq-dialect"></a>7.1 Configuring SQL dialect</h2>
+<h2 id="jooq-r2dbc"><a class="anchor" href="#jooq-r2dbc"></a>7.1 Configuring R2DBC connection factories</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jooq/jooq-r2dbc.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Micronaut also configures jOOQ for each named <code>ConnectionFactory</code> when R2DBC is on the classpath.
+Use the same logical data source name for both <code>r2dbc.datasources.<strong></code> and <code>jooq.r2dbc-datasources.</strong></code>.</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">r2dbc.datasources.default.db-type=postgres
+r2dbc.datasources.default.options.driver=pool
+r2dbc.datasources.default.options.protocol=postgresql
+jooq.r2dbc-datasources.default.sql-dialect=postgres</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">r2dbc:
+  datasources:
+    default:
+      db-type: postgres
+      options:
+        driver: pool
+        protocol: postgresql
+jooq:
+  r2dbc-datasources:
+    default:
+      sql-dialect: postgres</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[r2dbc]
+  [r2dbc.datasources]
+    [r2dbc.datasources.default]
+      db-type="postgres"
+      [r2dbc.datasources.default.options]
+        driver="pool"
+        protocol="postgresql"
+[jooq]
+  [jooq.r2dbc-datasources]
+    [jooq.r2dbc-datasources.default]
+      sql-dialect="postgres"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">r2dbc {
+  datasources {
+    'default' {
+      dbType = "postgres"
+      options {
+        driver = "pool"
+        protocol = "postgresql"
+      }
+    }
+  }
+}
+jooq {
+  r2dbcDatasources {
+    'default' {
+      sqlDialect = "postgres"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  r2dbc {
+    datasources {
+      default {
+        db-type = "postgres"
+        options {
+          driver = "pool"
+          protocol = "postgresql"
+        }
+      }
+    }
+  }
+  jooq {
+    r2dbc-datasources {
+      default {
+        sql-dialect = "postgres"
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "r2dbc": {
+    "datasources": {
+      "default": {
+        "db-type": "postgres",
+        "options": {
+          "driver": "pool",
+          "protocol": "postgresql"
+        }
+      }
+    }
+  },
+  "jooq": {
+    "r2dbc-datasources": {
+      "default": {
+        "sql-dialect": "postgres"
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>sql-dialect</code> setting is optional. When it is not configured, jOOQ falls back to <code>DEFAULT</code>.</p>
+</div>
+<a id="io.micronaut.configuration.jooq.R2dbcJooqConfigurationProperties" href="#io.micronaut.configuration.jooq.R2dbcJooqConfigurationProperties">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/configuration/jooq/R2dbcJooqConfigurationProperties.html">R2dbcJooqConfigurationProperties</a></caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jooq.r2dbc-datasources.*.sql-dialect</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">org.jooq.SQLDialect</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SQL dialect to use. Will be detected automatically by default.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jooq.r2dbc-datasources.*.json-converter-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set if enable {@link JsonConverterProvider} bean to use Jackson for JSON and JSONB types.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="jooq-dialect"><a class="anchor" href="#jooq-dialect"></a>7.2 Configuring SQL dialect</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jooq/jooq-dialect.adoc"'>
@@ -2053,7 +3244,7 @@ For each registered <code>DataSource</code>, Micronaut will configure the follow
 </div>
 </div>
 
-<h2 id="jooq-provider-beans"><a class="anchor" href="#jooq-provider-beans"></a>7.2 Configuring additional provider beans</h2>
+<h2 id="jooq-provider-beans"><a class="anchor" href="#jooq-provider-beans"></a>7.3 Configuring additional provider beans</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jooq/jooq-provider-beans.adoc"'>
@@ -2113,7 +3304,7 @@ Only beans with the same name qualifier as the data source name will be used.</p
 </ul>
 </div>
 
-<h2 id="jooq-jsonb"><a class="anchor" href="#jooq-jsonb"></a>7.3 Using JsonMapper to convert JSON(B) types</h2>
+<h2 id="jooq-jsonb"><a class="anchor" href="#jooq-jsonb"></a>7.4 Using JsonMapper to convert JSON(B) types</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jooq/jooq-jsonb.adoc"'>
@@ -2135,7 +3326,7 @@ Only beans with the same name qualifier as the data source name will be used.</p
 </div>
 </div>
 
-<h2 id="jooq-graalvm"><a class="anchor" href="#jooq-graalvm"></a>7.4 GraalVM native image</h2>
+<h2 id="jooq-graalvm"><a class="anchor" href="#jooq-graalvm"></a>7.5 GraalVM native image</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.0.x/src/main/docs/guide/jooq/jooq-graalvm.adoc"'>
@@ -2245,6 +3436,44 @@ Find more information in the <a href="https://www.jooq.org/doc/latest/manual/cod
 </p>
 </div>
 <div class="paragraph">
+<p>If you need additional Jdbi modules such as <code>jdbi3-sqlobject</code>, Gradle consumers can declare them without an explicit version because <code>micronaut-jdbi</code> publishes the Jdbi BOM through Gradle module metadata:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("io.micronaut.sql:micronaut-jdbi")
+implementation("org.jdbi:jdbi3-sqlobject")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For Maven, import <code>micronaut-sql-bom</code> in <code>dependencyManagement</code> before declaring extra Jdbi modules, because Maven does not consume transitive BOM imports from regular dependencies:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;io.micronaut.sql&lt;/groupId&gt;
+      &lt;artifactId&gt;micronaut-sql-bom&lt;/artifactId&gt;
+      &lt;version&gt;${micronaut.sql.version}&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+
+&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.sql&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-jdbi&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.jdbi&lt;/groupId&gt;
+    &lt;artifactId&gt;jdbi3-sqlobject&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>You should then <a href="#jdbc">configure one or many DataSources</a>.
 For each registered <code>DataSource</code>, Micronaut will configure the following Jdbi beans using <a href="../api/io/micronaut/configuration/jdbi/JdbiFactory.html">JdbiFactory</a>:</p>
 </div>
@@ -2254,6 +3483,9 @@ For each registered <code>DataSource</code>, Micronaut will configure the follow
 <p><a href="https://jdbi.org/apidocs/org/jdbi/v3/core/Jdbi.html">Jdbi</a> - the <code>Jdbi</code> instance</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>For Jdbi applications that use Micronaut transaction management, configure <a href="#jdbc-transactions">Transaction Management</a>.</p>
 </div>
 <div class="paragraph">
 <p>If Spring transaction management is in use, it will additionally create the following beans :</p>
@@ -2579,7 +3811,95 @@ You can also connect to PostgreSQL using <code>uri</code> instead of the other p
 </table>
 </div>
 <div class="paragraph">
-<p>Once you have the above configuration in place then you can inject the <code>io.vertx.reactivex.pgclient.PgPool</code> bean. The following is the simplest way to connect:</p>
+<p>When you need to trust a PostgreSQL or CockroachDB CA certificate for SSL connections, configure PEM trust certificates with <code>pem-trust-options</code>:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">vertx.pg.client.ssl=true
+vertx.pg.client.ssl-mode=VERIFY_CA
+vertx.pg.client.pem-trust-options.cert-paths[0]=certs/ca.crt</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">vertx:
+  pg:
+    client:
+      ssl: true
+      ssl-mode: VERIFY_CA
+      pem-trust-options:
+        cert-paths:
+          - certs/ca.crt</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[vertx]
+  [vertx.pg]
+    [vertx.pg.client]
+      ssl=true
+      ssl-mode="VERIFY_CA"
+      [vertx.pg.client.pem-trust-options]
+        cert-paths=[
+          "certs/ca.crt"
+        ]</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">vertx {
+  pg {
+    client {
+      ssl = true
+      sslMode = "VERIFY_CA"
+      pemTrustOptions {
+        certPaths = ["certs/ca.crt"]
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  vertx {
+    pg {
+      client {
+        ssl = true
+        ssl-mode = "VERIFY_CA"
+        pem-trust-options {
+          cert-paths = ["certs/ca.crt"]
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "vertx": {
+    "pg": {
+      "client": {
+        "ssl": true,
+        "ssl-mode": "VERIFY_CA",
+        "pem-trust-options": {
+          "cert-paths": ["certs/ca.crt"]
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you have the above configuration in place then you can inject the core <code>io.vertx.sqlclient.Pool</code> bean. If <code>io.vertx:vertx-rx-java3</code> is on the classpath, Micronaut also exposes the RxJava3 <code>io.vertx.rxjava3.sqlclient.Pool</code> wrapper bean. The following is the simplest way to connect:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2597,7 +3917,7 @@ result = "Size: ${size}"</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td><code>client</code> is an instance of the <code>io.vertx.reactivex.pgclient.PgPool</code> bean.</td>
+<td><code>client</code> is an instance of the <code>io.vertx.sqlclient.Pool</code> bean.</td>
 </tr>
 </table>
 </div>
