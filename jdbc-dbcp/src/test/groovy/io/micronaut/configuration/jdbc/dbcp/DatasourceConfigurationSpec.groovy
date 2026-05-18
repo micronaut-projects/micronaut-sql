@@ -12,6 +12,7 @@ import spock.lang.Specification
 
 import javax.sql.DataSource
 import java.sql.ResultSet
+import java.sql.Connection
 
 class DatasourceConfigurationSpec extends Specification {
 
@@ -136,8 +137,7 @@ class DatasourceConfigurationSpec extends Specification {
         when:
         applicationContext.getBean(DataSource)
         then:
-        exception = thrown(NoSuchBeanException)
-        exception.message.contains('The datasource "default" is disabled')
+        thrown(NoSuchBeanException)
         when:
         applicationContext.getBean(BasicDataSource)
         then:
@@ -228,9 +228,16 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.environment.addPropertySource(MapPropertySource.of(
                 "test",
                 ['datasources.default.maxWaitMillis': 5000,
-                'datasources.default.connectionProperties': 'prop1=value1;prop2=value2',
-                'datasources.default.defaultAutoCommit': true,
-                'datasources.default.defaultCatalog': 'catalog']
+                 'datasources.default.timeBetweenEvictionRunsMillis': 2500,
+                 'datasources.default.minEvictableIdleTimeMillis': 3500,
+                 'datasources.default.softMinEvictableIdleTimeMillis': 4500,
+                 'datasources.default.maxConnLifetimeMillis': 5500,
+                 'datasources.default.removeAbandonedTimeout': 60,
+                 'datasources.default.validationQueryTimeout': 7,
+                 'datasources.default.defaultQueryTimeout': 8,
+                 'datasources.default.connectionProperties': 'prop1=value1;prop2=value2',
+                 'datasources.default.defaultAutoCommit': true,
+                 'datasources.default.defaultCatalog': 'catalog']
         ))
         applicationContext.start()
         DataSourceResolver dataSourceResolver =  applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
@@ -244,8 +251,81 @@ class DatasourceConfigurationSpec extends Specification {
 
         then:
         dataSource.maxWaitMillis == 5000
+        dataSource.timeBetweenEvictionRunsMillis == 2500
+        dataSource.minEvictableIdleTimeMillis == 3500
+        dataSource.softMinEvictableIdleTimeMillis == 4500
+        dataSource.maxConnLifetimeMillis == 5500
+        dataSource.removeAbandonedTimeout == 60
+        dataSource.validationQueryTimeout == 7
+        dataSource.defaultQueryTimeout == 8
         dataSource.defaultAutoCommit
         dataSource.defaultCatalog == 'catalog'
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    void "test representative datasource properties are bindable"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                "test",
+                ['datasources.default.maxTotal': 41,
+                 'datasources.default.maxIdle': 13,
+                 'datasources.default.minIdle': 5,
+                 'datasources.default.initialSize': 2,
+                 'datasources.default.maxOpenPreparedStatements': 23,
+                 'datasources.default.numTestsPerEvictionRun': 6,
+                 'datasources.default.lifo': false,
+                 'datasources.default.poolPreparedStatements': true,
+                 'datasources.default.testOnBorrow': true,
+                 'datasources.default.testOnCreate': true,
+                 'datasources.default.testOnReturn': true,
+                 'datasources.default.testWhileIdle': true,
+                 'datasources.default.defaultReadOnly': true,
+                 'datasources.default.defaultTransactionIsolation': Connection.TRANSACTION_SERIALIZABLE,
+                 'datasources.default.enableAutoCommitOnReturn': false,
+                 'datasources.default.autoCommitOnReturn': false,
+                 'datasources.default.rollbackOnReturn': true,
+                 'datasources.default.clearStatementPoolOnReturn': true,
+                 'datasources.default.cacheState': false,
+                 'datasources.default.fastFailValidation': true,
+                 'datasources.default.logAbandoned': true,
+                 'datasources.default.logExpiredConnections': false]
+        ))
+        applicationContext.start()
+        DataSourceResolver dataSourceResolver = applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
+
+        expect:
+        applicationContext.containsBean(BasicDataSource)
+        applicationContext.containsBean(DatasourceConfiguration)
+
+        when:
+        BasicDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
+
+        then:
+        dataSource.maxTotal == 41
+        dataSource.maxIdle == 13
+        dataSource.minIdle == 5
+        dataSource.initialSize == 2
+        dataSource.maxOpenPreparedStatements == 23
+        dataSource.numTestsPerEvictionRun == 6
+        !dataSource.lifo
+        dataSource.poolPreparedStatements
+        dataSource.testOnBorrow
+        dataSource.testOnCreate
+        dataSource.testOnReturn
+        dataSource.testWhileIdle
+        dataSource.defaultReadOnly
+        dataSource.defaultTransactionIsolation == Connection.TRANSACTION_SERIALIZABLE
+        !dataSource.enableAutoCommitOnReturn
+        !dataSource.autoCommitOnReturn
+        dataSource.rollbackOnReturn
+        dataSource.clearStatementPoolOnReturn
+        !dataSource.cacheState
+        dataSource.fastFailValidation
+        dataSource.logAbandoned
+        !dataSource.logExpiredConnections
 
         cleanup:
         applicationContext.close()

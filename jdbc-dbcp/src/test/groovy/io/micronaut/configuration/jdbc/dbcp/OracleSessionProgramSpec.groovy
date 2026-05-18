@@ -3,11 +3,7 @@ package io.micronaut.configuration.jdbc.dbcp
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource
-import io.micronaut.jdbc.DataSourceResolver
-import org.apache.commons.dbcp2.BasicDataSource
 import spock.lang.Specification
-
-import javax.sql.DataSource
 
 class OracleSessionProgramSpec extends Specification {
 
@@ -23,10 +19,9 @@ class OracleSessionProgramSpec extends Specification {
                 'datasources.default.password'         : ''
         ]))
         ctx.start()
-        DataSourceResolver resolver = ctx.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         when:
-        DatasourceConfiguration conf = resolver.resolve(ctx.getBean(DatasourceConfiguration))
+        DatasourceConfiguration conf = ctx.getBean(DatasourceConfiguration)
 
         then:
         conf.oracleProgramProvided
@@ -47,10 +42,9 @@ class OracleSessionProgramSpec extends Specification {
                 'datasources.default.data-source-properties': ['v$session.program': 'UserSet']
         ]))
         ctx.start()
-        DataSourceResolver resolver = ctx.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         when:
-        DatasourceConfiguration conf = resolver.resolve(ctx.getBean(DatasourceConfiguration))
+        DatasourceConfiguration conf = ctx.getBean(DatasourceConfiguration)
 
         then:
         conf.oracleProgramProvided
@@ -72,10 +66,9 @@ class OracleSessionProgramSpec extends Specification {
                 'datasources.default.password'         : ''
         ]))
         ctx.start()
-        DataSourceResolver resolver = ctx.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         when:
-        DatasourceConfiguration conf = resolver.resolve(ctx.getBean(DatasourceConfiguration))
+        DatasourceConfiguration conf = ctx.getBean(DatasourceConfiguration)
 
         then:
         !conf.oracleProgramProvided
@@ -95,10 +88,9 @@ class OracleSessionProgramSpec extends Specification {
                 'datasources.default.password'         : ''
         ]))
         ctx.start()
-        DataSourceResolver resolver = ctx.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
 
         when:
-        DatasourceConfiguration conf = resolver.resolve(ctx.getBean(DatasourceConfiguration))
+        DatasourceConfiguration conf = ctx.getBean(DatasourceConfiguration)
 
         then:
         !conf.oracleProgramProvided

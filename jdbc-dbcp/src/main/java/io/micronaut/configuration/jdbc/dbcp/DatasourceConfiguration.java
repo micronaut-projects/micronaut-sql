@@ -15,7 +15,7 @@
  */
 package io.micronaut.configuration.jdbc.dbcp;
 
-import io.micronaut.context.annotation.Context;
+import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Property;
@@ -27,13 +27,13 @@ import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
 import io.micronaut.jdbc.OracleSessionProgramHelper;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 import java.util.Map;
 
 /**
@@ -48,13 +48,19 @@ import java.util.Map;
  * @author James Kleeh
  * @since 1.0
  */
-@Context
 @EachProperty(value = BasicJdbcConfiguration.PREFIX, primary = "default")
-public class DatasourceConfiguration extends BasicDataSource implements BasicJdbcConfiguration {
+public class DatasourceConfiguration implements BasicJdbcConfiguration {
 
     private static final String ORACLE_VSESSION_PROGRAM = "v$session.program";
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
+
+    @ConfigurationBuilder(
+            allowZeroArgs = true,
+            excludes = {"connectionProperties", "driverClassName", "url", "username", "password", "validationQuery"}
+    )
+    private final BasicDataSource delegate = new BasicDataSource();
+
     private final CalculatedSettings calculatedSettings;
     private final String name;
     private final Environment environment;
@@ -66,10 +72,23 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
      * @param environment The environment
      */
     public DatasourceConfiguration(@Parameter String name, Environment environment) {
-        super();
         this.name = name;
         this.environment = environment;
         this.calculatedSettings = new CalculatedSettings(this);
+    }
+
+    /**
+     * Returns the configured DBCP datasource.
+     */
+    public BasicDataSource getBasicDataSource() {
+        return delegate;
+    }
+
+    /**
+     * Returns the configuration builder delegate.
+     */
+    public BasicDataSource getDelegate() {
+        return delegate;
     }
 
     /**
@@ -100,7 +119,7 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
                     getUrl(),
                     environment.getProperty("datasources." + getName() + ".dialect", String.class).orElse(null),
                     environment,
-                    this::addConnectionProperty,
+                    delegate::addConnectionProperty,
                     () -> oracleProgramProvided
             );
             if (provided) {
@@ -119,10 +138,10 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     @PreDestroy
     void preDestroy() {
         try {
-            this.close();
+            delegate.close();
         } catch (Exception e) {
             if (LOG.isWarnEnabled()) {
-                LOG.warn("Error closing data source [" + this + "]: " + e.getMessage(), e);
+                LOG.warn("Error closing data source [{}]: {}", delegate, e.getMessage(), e);
             }
         }
     }
@@ -142,8 +161,13 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     }
 
     @Override
+    public void setDriverClassName(String driverClassName) {
+        delegate.setDriverClassName(driverClassName);
+    }
+
+    @Override
     public String getConfiguredDriverClassName() {
-        return super.getDriverClassName();
+        return delegate.getDriverClassName();
     }
 
     @Override
@@ -152,8 +176,13 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     }
 
     @Override
+    public void setUrl(String url) {
+        delegate.setUrl(url);
+    }
+
+    @Override
     public String getConfiguredUrl() {
-        return super.getUrl();
+        return delegate.getUrl();
     }
 
     @Override
@@ -162,8 +191,13 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     }
 
     @Override
+    public void setUsername(@Nullable String username) {
+        delegate.setUsername(username);
+    }
+
+    @Override
     public String getConfiguredUsername() {
-        return super.getUsername();
+        return delegate.getUsername();
     }
 
     @Override
@@ -172,8 +206,13 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     }
 
     @Override
+    public void setPassword(@Nullable String password) {
+        delegate.setPassword(password);
+    }
+
+    @Override
     public String getConfiguredPassword() {
-        return super.getPassword();
+        return delegate.getPassword();
     }
 
     @Override
@@ -182,45 +221,180 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     }
 
     /**
-     * A helper method to allow setting the connectionProperties via a single String.
+     * Setter for validation query.
      *
-     * @param connectionProperties The connection properties
+     * @param validationQuery The validation query
      */
-    public void setConnectionPropertiesString(@Property(name = "datasources.*.connection-properties") String connectionProperties) {
-        setConnectionProperties(connectionProperties);
+    public void setValidationQuery(@Nullable String validationQuery) {
+        delegate.setValidationQuery(validationQuery);
+    }
+
+    /**
+     * Sets the maximum wait time in milliseconds.
+     *
+     * @param maxWaitMillis The maximum wait time in milliseconds
+     */
+    public void setMaxWaitMillis(long maxWaitMillis) {
+        delegate.setMaxWaitMillis(maxWaitMillis);
+    }
+
+    /**
+     * @return The configured maximum wait time in milliseconds
+     */
+    public long getMaxWaitMillis() {
+        return delegate.getMaxWaitMillis();
+    }
+
+    /**
+     * Sets the time between eviction runs in milliseconds.
+     *
+     * @param timeBetweenEvictionRunsMillis The time between eviction runs in milliseconds
+     */
+    public void setTimeBetweenEvictionRunsMillis(long timeBetweenEvictionRunsMillis) {
+        delegate.setTimeBetweenEvictionRunsMillis(timeBetweenEvictionRunsMillis);
+    }
+
+    /**
+     * @return The configured time between eviction runs in milliseconds
+     */
+    public long getTimeBetweenEvictionRunsMillis() {
+        return delegate.getTimeBetweenEvictionRunsMillis();
+    }
+
+    /**
+     * Sets the minimum evictable idle time in milliseconds.
+     *
+     * @param minEvictableIdleTimeMillis The minimum evictable idle time in milliseconds
+     */
+    public void setMinEvictableIdleTimeMillis(long minEvictableIdleTimeMillis) {
+        delegate.setMinEvictableIdleTimeMillis(minEvictableIdleTimeMillis);
+    }
+
+    /**
+     * @return The configured minimum evictable idle time in milliseconds
+     */
+    public long getMinEvictableIdleTimeMillis() {
+        return delegate.getMinEvictableIdleTimeMillis();
+    }
+
+    /**
+     * Sets the soft minimum evictable idle time in milliseconds.
+     *
+     * @param softMinEvictableIdleTimeMillis The soft minimum evictable idle time in milliseconds
+     */
+    public void setSoftMinEvictableIdleTimeMillis(long softMinEvictableIdleTimeMillis) {
+        delegate.setSoftMinEvictableIdleTimeMillis(softMinEvictableIdleTimeMillis);
+    }
+
+    /**
+     * @return The configured soft minimum evictable idle time in milliseconds
+     */
+    public long getSoftMinEvictableIdleTimeMillis() {
+        return delegate.getSoftMinEvictableIdleTimeMillis();
+    }
+
+    /**
+     * Sets the maximum connection lifetime in milliseconds.
+     *
+     * @param maxConnLifetimeMillis The maximum connection lifetime in milliseconds
+     */
+    public void setMaxConnLifetimeMillis(long maxConnLifetimeMillis) {
+        delegate.setMaxConnLifetimeMillis(maxConnLifetimeMillis);
+    }
+
+    /**
+     * @return The configured maximum connection lifetime in milliseconds
+     */
+    public long getMaxConnLifetimeMillis() {
+        return delegate.getMaxConnLifetimeMillis();
+    }
+
+    /**
+     * Sets the remove abandoned timeout in seconds.
+     *
+     * @param removeAbandonedTimeout The remove abandoned timeout in seconds
+     */
+    public void setRemoveAbandonedTimeout(int removeAbandonedTimeout) {
+        delegate.setRemoveAbandonedTimeout(removeAbandonedTimeout);
+    }
+
+    /**
+     * @return The configured remove abandoned timeout in seconds
+     */
+    public int getRemoveAbandonedTimeout() {
+        return delegate.getRemoveAbandonedTimeout();
+    }
+
+    /**
+     * Sets the validation query timeout in seconds.
+     *
+     * @param validationQueryTimeout The validation query timeout in seconds
+     */
+    public void setValidationQueryTimeout(int validationQueryTimeout) {
+        delegate.setValidationQueryTimeout(validationQueryTimeout);
+    }
+
+    /**
+     * @return The configured validation query timeout in seconds
+     */
+    public int getValidationQueryTimeout() {
+        return delegate.getValidationQueryTimeout();
+    }
+
+    /**
+     * Sets the default query timeout in seconds.
+     *
+     * @param defaultQueryTimeout The default query timeout in seconds
+     */
+    public void setDefaultQueryTimeout(Integer defaultQueryTimeout) {
+        delegate.setDefaultQueryTimeout(defaultQueryTimeout);
+    }
+
+    /**
+     * @return The configured default query timeout in seconds
+     */
+    public Integer getDefaultQueryTimeout() {
+        return delegate.getDefaultQueryTimeout();
     }
 
     @Override
-    public void setDataSourceProperties(@MapFormat(transformation = MapFormat.MapTransformation.FLAT, keyFormat = StringConvention.RAW)  Map<String, ?> dsProperties) {
+    public String getConfiguredValidationQuery() {
+        return delegate.getValidationQuery();
+    }
+
+    /**
+     * Sets the connection properties.
+     *
+     * @param connectionProperties The connection properties
+     */
+    public void setConnectionProperties(String connectionProperties) {
+        delegate.setConnectionProperties(connectionProperties);
+    }
+
+    @Override
+    public void setDataSourceProperties(@MapFormat(transformation = MapFormat.MapTransformation.FLAT, keyFormat = StringConvention.RAW) Map<String, ?> dsProperties) {
         if (dsProperties != null) {
             dsProperties.forEach((s, o) -> {
                 if (o != null) {
                     if (ORACLE_VSESSION_PROGRAM.equalsIgnoreCase(s)) {
                         oracleProgramProvided = true;
                     }
-                    addConnectionProperty(s, o.toString());
+                    delegate.addConnectionProperty(s, o.toString());
                 }
             });
         }
     }
 
-    @Override
-    public String getConfiguredValidationQuery() {
-        return super.getValidationQuery();
-    }
-
     /**
      * Sets an indicator telling whether data source is enabled.
      * If enabled is false, that means datasource is disabled and this method will throw
-     * {@link DisabledBeanException} thus preventing this datasource from being added to the context.
+     * {@link DisabledBeanException} thus preventing this datasource configuration from being added to the context.
      *
      * @param enabled an indicator telling whether data source is enabled
      */
     @Internal
     void setEnabled(boolean enabled) {
         if (!enabled) {
-            // This is the only way to disable this bean which is actual datasource
-            // because dbcp doesn't have datasource factory like other datasource implementations
             throw new DisabledBeanException("The datasource \"" + name + "\" is disabled");
         }
     }

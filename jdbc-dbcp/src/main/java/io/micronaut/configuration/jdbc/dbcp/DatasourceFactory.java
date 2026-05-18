@@ -17,11 +17,13 @@ package io.micronaut.configuration.jdbc.dbcp;
 
 import io.micronaut.configuration.jdbc.dbcp.metadata.DbcpDataSourcePoolMetadata;
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
-import io.micronaut.inject.qualifiers.Qualifiers;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.DataSourceResolver;
+import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import io.micronaut.jdbc.metadata.DataSourcePoolMetadata;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.jspecify.annotations.Nullable;
@@ -30,7 +32,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.Optional;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Creates a dbcp data source for each configuration bean.
@@ -43,6 +46,7 @@ public class DatasourceFactory extends BaseDatasourceFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
 
+    private final Map<String, BasicDataSource> dataSources = new LinkedHashMap<>(2);
     private final DataSourceResolver dataSourceResolver;
 
     /**
@@ -54,6 +58,21 @@ public class DatasourceFactory extends BaseDatasourceFactory {
                              ApplicationContext applicationContext) {
         super(applicationContext);
         this.dataSourceResolver = dataSourceResolver == null ? DataSourceResolver.DEFAULT : dataSourceResolver;
+    }
+
+    /**
+     * Re-exposes the DBCP configuration bean as the actual runtime datasource bean.
+     *
+     * @param datasourceConfiguration The datasource configuration
+     * @return The DBCP datasource
+     */
+    @Context
+    @EachBean(DatasourceConfiguration.class)
+    @Requires(condition = JdbcDataSourceEnabled.class)
+    public BasicDataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
+        BasicDataSource basicDataSource = datasourceConfiguration.getBasicDataSource();
+        dataSources.put(datasourceConfiguration.getName(), basicDataSource);
+        return basicDataSource;
     }
 
     /**
@@ -76,27 +95,25 @@ public class DatasourceFactory extends BaseDatasourceFactory {
 
     @Override
     protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
-        Optional<DataSource> optionalDataSource = applicationContext.findBean(DataSource.class, Qualifiers.byName(dataSourceName));
-        if (optionalDataSource.isEmpty()) {
+        BasicDataSource basicDataSource = dataSources.get(dataSourceName);
+        if (basicDataSource == null) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Datasource with name [{}] not found while trying to propagate datasource credentials changes.", dataSourceName);
             }
             return;
         }
-        DataSource dataSource = dataSourceResolver.resolve(optionalDataSource.get());
-        if (dataSource instanceof BasicDataSource basicDataSource) {
-            if (dataSourceCredentials.userName() != null) {
-                basicDataSource.setUsername(dataSourceCredentials.userName());
-            }
-            if (dataSourceCredentials.password() != null) {
-                basicDataSource.setPassword(dataSourceCredentials.password());
-            }
-            try {
-                basicDataSource.restart();
-            } catch (SQLException e) {
-                if (LOG.isWarnEnabled()) {
-                    LOG.warn("Failed to restart datasource after password change {}", dataSourceName, e);
-                }
+
+        if (dataSourceCredentials.userName() != null) {
+            basicDataSource.setUsername(dataSourceCredentials.userName());
+        }
+        if (dataSourceCredentials.password() != null) {
+            basicDataSource.setPassword(dataSourceCredentials.password());
+        }
+        try {
+            basicDataSource.restart();
+        } catch (SQLException e) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Failed to restart datasource after password change {}", dataSourceName, e);
             }
         }
     }
