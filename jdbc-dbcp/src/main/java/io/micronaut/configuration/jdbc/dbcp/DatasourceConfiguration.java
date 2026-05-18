@@ -18,7 +18,6 @@ package io.micronaut.configuration.jdbc.dbcp;
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
-import io.micronaut.context.annotation.Property;
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.exceptions.DisabledBeanException;
 import io.micronaut.core.annotation.Internal;
@@ -79,6 +78,8 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
 
     /**
      * Returns the configured DBCP datasource.
+     *
+     * @return The configured DBCP datasource
      */
     public BasicDataSource getBasicDataSource() {
         return delegate;
@@ -86,6 +87,8 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
 
     /**
      * Returns the configuration builder delegate.
+     *
+     * @return The configuration builder delegate
      */
     public BasicDataSource getDelegate() {
         return delegate;
