@@ -207,6 +207,10 @@ to successfully configure a data source.</div>
 </dl>
 <h2 class="title" id="I:D">D</h2>
 <dl class="index">
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceFactory.html#dataSource(io.micronaut.configuration.jdbc.dbcp.DatasourceConfiguration)" class="member-name-link">dataSource(DatasourceConfiguration)</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceFactory.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceFactory</a></dt>
+<dd>
+<div class="block">Re-exposes the DBCP configuration bean as the actual runtime datasource bean.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/jdbc/hikari/DatasourceFactory.html#dataSource(io.micronaut.configuration.jdbc.hikari.DatasourceConfiguration)" class="member-name-link">dataSource(DatasourceConfiguration)</a> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceFactory.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceFactory</a></dt>
 <dd>
 <div class="block">Method to wire up all the HikariCP connections based on the <a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari"><code>DatasourceConfiguration</code></a>.</div>
@@ -418,6 +422,10 @@ to successfully configure a data source.</div>
 <div class="block">Return the current number of active connections that have been allocated from the
 data source or <code>null</code> if that information is not available.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getBasicDataSource()" class="member-name-link">getBasicDataSource()</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>
+<div class="block">Returns the configured DBCP datasource.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html#getBorrowed()" class="member-name-link">getBorrowed()</a> - Method in class io.micronaut.configuration.jdbc.tomcat.metadata.<a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.tomcat.metadata">TomcatDataSourcePoolMetadata</a></dt>
 <dd>
 <div class="block">Return the number of connections that have been borrowed from the
@@ -526,8 +534,14 @@ data source or 0 if that information is not available.</div>
 </dd>
 <dt><a href="io/micronaut/jdbc/JdbcDatabaseManager.EmbeddedJdbcDatabase.html#getDefaultPassword()" class="member-name-link">getDefaultPassword()</a> - Method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/JdbcDatabaseManager.EmbeddedJdbcDatabase.html" title="class in io.micronaut.jdbc">JdbcDatabaseManager.EmbeddedJdbcDatabase</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getDefaultQueryTimeout()" class="member-name-link">getDefaultQueryTimeout()</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/jdbc/JdbcDatabaseManager.EmbeddedJdbcDatabase.html#getDefaultUsername()" class="member-name-link">getDefaultUsername()</a> - Method in class io.micronaut.jdbc.<a href="io/micronaut/jdbc/JdbcDatabaseManager.EmbeddedJdbcDatabase.html" title="class in io.micronaut.jdbc">JdbcDatabaseManager.EmbeddedJdbcDatabase</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getDelegate()" class="member-name-link">getDelegate()</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>
+<div class="block">Returns the configuration builder delegate.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/jdbc/unpooled/DatasourceConfiguration.html#getDriverClass()" class="member-name-link">getDriverClass()</a> - Method in class io.micronaut.configuration.jdbc.unpooled.<a href="io/micronaut/configuration/jdbc/unpooled/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.unpooled">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getDriverClassName()" class="member-name-link">getDriverClassName()</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
@@ -593,6 +607,10 @@ data source or 0 if that information is not available.</div>
 <div class="block">Return the maximum number of active connections that can be allocated at the same
 time or <code>-1</code> if there is no limit.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getMaxConnLifetimeMillis()" class="member-name-link">getMaxConnLifetimeMillis()</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getMaxWaitMillis()" class="member-name-link">getMaxWaitMillis()</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbc/dbcp/metadata/DbcpDataSourcePoolMetadata.html#getMin()" class="member-name-link">getMin()</a> - Method in class io.micronaut.configuration.jdbc.dbcp.metadata.<a href="io/micronaut/configuration/jdbc/dbcp/metadata/DbcpDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.dbcp.metadata">DbcpDataSourcePoolMetadata</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html#getMin()" class="member-name-link">getMin()</a> - Method in class io.micronaut.configuration.jdbc.tomcat.metadata.<a href="io/micronaut/configuration/jdbc/tomcat/metadata/TomcatDataSourcePoolMetadata.html" title="class in io.micronaut.configuration.jdbc.tomcat.metadata">TomcatDataSourcePoolMetadata</a></dt>
@@ -604,6 +622,8 @@ time or <code>-1</code> if there is no limit.</div>
 <div class="block">Return the minimum number of idle connections in the pool or <code>null</code> if that
 information is not available.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getMinEvictableIdleTimeMillis()" class="member-name-link">getMinEvictableIdleTimeMillis()</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#getName()" class="member-name-link">getName()</a> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getName()" class="member-name-link">getName()</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
@@ -673,11 +693,15 @@ information is not available.</div>
 <div class="block">Return the number of connections that have been released from the
 data source or 0 if that information is not available.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getRemoveAbandonedTimeout()" class="member-name-link">getRemoveAbandonedTimeout()</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jasync/health/JasyncHealthIndicator.html#getResult()" class="member-name-link">getResult()</a> - Method in class io.micronaut.configuration.jasync.health.<a href="io/micronaut/configuration/jasync/health/JasyncHealthIndicator.html" title="class in io.micronaut.configuration.jasync.health">JasyncHealthIndicator</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/vertx/mysql/client/health/MySQLHealthIndicator.html#getResult()" class="member-name-link">getResult()</a> - Method in class io.micronaut.configuration.vertx.mysql.client.health.<a href="io/micronaut/configuration/vertx/mysql/client/health/MySQLHealthIndicator.html" title="class in io.micronaut.configuration.vertx.mysql.client.health">MySQLHealthIndicator</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/vertx/pg/client/health/PgHealthIndicator.html#getResult()" class="member-name-link">getResult()</a> - Method in class io.micronaut.configuration.vertx.pg.client.health.<a href="io/micronaut/configuration/vertx/pg/client/health/PgHealthIndicator.html" title="class in io.micronaut.configuration.vertx.pg.client.health">PgHealthIndicator</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getSoftMinEvictableIdleTimeMillis()" class="member-name-link">getSoftMinEvictableIdleTimeMillis()</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html#getSqlDialect()" class="member-name-link">getSqlDialect()</a> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html" title="class in io.micronaut.configuration.jooq">JooqConfigurationProperties</a></dt>
 <dd>
@@ -688,6 +712,8 @@ data source or 0 if that information is not available.</div>
 <div class="block">SQL dialect to use.</div>
 </dd>
 <dt><a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html#getSslConfiguration()" class="member-name-link">getSslConfiguration()</a> - Method in class io.micronaut.configuration.jasync.<a href="io/micronaut/configuration/jasync/JasyncPoolConfiguration.JasyncSslConfiguration.html" title="class in io.micronaut.configuration.jasync">JasyncPoolConfiguration.JasyncSslConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getTimeBetweenEvictionRunsMillis()" class="member-name-link">getTimeBetweenEvictionRunsMillis()</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html#getUri()" class="member-name-link">getUri()</a> - Method in class io.micronaut.configuration.vertx.mysql.client.<a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html" title="class in io.micronaut.configuration.vertx.mysql.client">MySQLClientConfiguration</a></dt>
 <dd>&nbsp;</dd>
@@ -773,6 +799,8 @@ limited).</div>
 <div class="block">Return the query to use to validate that a connection is valid or <code>null</code> if
 that information is not available.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#getValidationQueryTimeout()" class="member-name-link">getValidationQueryTimeout()</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:H">H</h2>
 <dl class="index">
@@ -1428,9 +1456,9 @@ if not set manually.</div>
 <dd>
 <div class="block">Enable compile time Hibernate proxies.</div>
 </dd>
-<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#setConnectionPropertiesString(java.lang.String)" class="member-name-link">setConnectionPropertiesString(String)</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#setConnectionProperties(java.lang.String)" class="member-name-link">setConnectionProperties(String)</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
 <dd>
-<div class="block">A helper method to allow setting the connectionProperties via a single String.</div>
+<div class="block">Sets the connection properties.</div>
 </dd>
 <dt><a href="io/micronaut/configuration/jdbc/unpooled/DriverManagerDataSource.html#setDataSourceProperties(java.util.Map)" class="member-name-link">setDataSourceProperties(Map)</a> - Method in class io.micronaut.configuration.jdbc.unpooled.<a href="io/micronaut/configuration/jdbc/unpooled/DriverManagerDataSource.html" title="class in io.micronaut.configuration.jdbc.unpooled">DriverManagerDataSource</a></dt>
 <dd>
@@ -1454,7 +1482,13 @@ if not set manually.</div>
 </dd>
 <dt><a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html#setDbProperties(java.util.Properties)" class="member-name-link">setDbProperties(Properties)</a> - Method in class io.micronaut.configuration.jdbc.tomcat.<a href="io/micronaut/configuration/jdbc/tomcat/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.tomcat">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#setDefaultQueryTimeout(java.lang.Integer)" class="member-name-link">setDefaultQueryTimeout(Integer)</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>
+<div class="block">Sets the default query timeout in seconds.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/jdbc/unpooled/DatasourceConfiguration.html#setDriverClass(java.lang.Class)" class="member-name-link">setDriverClass(Class)</a> - Method in class io.micronaut.configuration.jdbc.unpooled.<a href="io/micronaut/configuration/jdbc/unpooled/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.unpooled">DatasourceConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#setDriverClassName(java.lang.String)" class="member-name-link">setDriverClassName(String)</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html#setDriverClassName(java.lang.String)" class="member-name-link">setDriverClassName(String)</a> - Method in class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
@@ -1496,6 +1530,18 @@ if not set manually.</div>
 <dd>
 <div class="block">Sets additional mapping resources.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#setMaxConnLifetimeMillis(long)" class="member-name-link">setMaxConnLifetimeMillis(long)</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>
+<div class="block">Sets the maximum connection lifetime in milliseconds.</div>
+</dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#setMaxWaitMillis(long)" class="member-name-link">setMaxWaitMillis(long)</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>
+<div class="block">Sets the maximum wait time in milliseconds.</div>
+</dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#setMinEvictableIdleTimeMillis(long)" class="member-name-link">setMinEvictableIdleTimeMillis(long)</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>
+<div class="block">Sets the minimum evictable idle time in milliseconds.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html#setName(java.lang.String)" class="member-name-link">setName(String)</a> - Method in class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html#setPackages(java.lang.String%5B%5D)" class="member-name-link">setPackages(String[])</a> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a></dt>
@@ -1504,6 +1550,8 @@ if not set manually.</div>
 <dd>
 <div class="block">Sets the packages to scan.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#setPassword(java.lang.String)" class="member-name-link">setPassword(String)</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html#setPassword(java.lang.String)" class="member-name-link">setPassword(String)</a> - Method in class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbc/unpooled/DatasourceConfiguration.html#setPassword(java.lang.String)" class="member-name-link">setPassword(String)</a> - Method in class io.micronaut.configuration.jdbc.unpooled.<a href="io/micronaut/configuration/jdbc/unpooled/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.unpooled">DatasourceConfiguration</a></dt>
@@ -1518,6 +1566,14 @@ if not set manually.</div>
 </dd>
 <dt><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#setReactive(boolean)" class="member-name-link">setReactive(boolean)</a> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#setRemoveAbandonedTimeout(int)" class="member-name-link">setRemoveAbandonedTimeout(int)</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>
+<div class="block">Sets the remove abandoned timeout in seconds.</div>
+</dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#setSoftMinEvictableIdleTimeMillis(long)" class="member-name-link">setSoftMinEvictableIdleTimeMillis(long)</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>
+<div class="block">Sets the soft minimum evictable idle time in milliseconds.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html#setSqlDialect(org.jooq.SQLDialect)" class="member-name-link">setSqlDialect(SQLDialect)</a> - Method in class io.micronaut.configuration.jooq.<a href="io/micronaut/configuration/jooq/JooqConfigurationProperties.html" title="class in io.micronaut.configuration.jooq">JooqConfigurationProperties</a></dt>
 <dd>
 <div class="block">SQL dialect to use.</div>
@@ -1526,10 +1582,16 @@ if not set manually.</div>
 <dd>
 <div class="block">SQL dialect to use.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#setTimeBetweenEvictionRunsMillis(long)" class="member-name-link">setTimeBetweenEvictionRunsMillis(long)</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>
+<div class="block">Sets the time between eviction runs in milliseconds.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/hibernate/jpa/conf/settings/SettingsSupplier.html" class="type-name-link" title="interface in io.micronaut.configuration.hibernate.jpa.conf.settings">SettingsSupplier</a> - Interface in <a href="io/micronaut/configuration/hibernate/jpa/conf/settings/package-summary.html">io.micronaut.configuration.hibernate.jpa.conf.settings</a></dt>
 <dd>
 <div class="block">Supply additional settings for <a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa"><code>JpaConfiguration</code></a>.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#setUrl(java.lang.String)" class="member-name-link">setUrl(String)</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#setUrl(java.lang.String)" class="member-name-link">setUrl(String)</a> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration</a></dt>
 <dd>
 <div class="block">Setter.</div>
@@ -1546,6 +1608,8 @@ if not set manually.</div>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/jdbc/BasicJdbcConfiguration.html#setUrl(java.lang.String)" class="member-name-link">setUrl(String)</a> - Method in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#setUsername(java.lang.String)" class="member-name-link">setUsername(String)</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html#setUsername(java.lang.String)" class="member-name-link">setUsername(String)</a> - Method in class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbc/unpooled/DatasourceConfiguration.html#setUsername(java.lang.String)" class="member-name-link">setUsername(String)</a> - Method in class io.micronaut.configuration.jdbc.unpooled.<a href="io/micronaut/configuration/jdbc/unpooled/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.unpooled">DatasourceConfiguration</a></dt>
@@ -1554,6 +1618,10 @@ if not set manually.</div>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/jdbc/BasicJdbcConfiguration.html#setUsername(java.lang.String)" class="member-name-link">setUsername(String)</a> - Method in interface io.micronaut.jdbc.<a href="io/micronaut/jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#setValidationQuery(java.lang.String)" class="member-name-link">setValidationQuery(String)</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>
+<div class="block">Setter for validation query.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html#setValidationQuery(java.lang.String)" class="member-name-link">setValidationQuery(String)</a> - Method in class io.micronaut.configuration.jdbc.hikari.<a href="io/micronaut/configuration/jdbc/hikari/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.hikari">DatasourceConfiguration</a></dt>
 <dd>
 <div class="block">Setter.</div>
@@ -1563,6 +1631,10 @@ if not set manually.</div>
 <dt><a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html#setValidationQuery(java.lang.String)" class="member-name-link">setValidationQuery(String)</a> - Method in class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceConfiguration</a></dt>
 <dd>
 <div class="block">Sets the validation query.</div>
+</dd>
+<dt><a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html#setValidationQueryTimeout(int)" class="member-name-link">setValidationQueryTimeout(int)</a> - Method in class io.micronaut.configuration.jdbc.dbcp.<a href="io/micronaut/configuration/jdbc/dbcp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a></dt>
+<dd>
+<div class="block">Sets the validation query timeout in seconds.</div>
 </dd>
 <dt><a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" class="type-name-link" title="class in io.micronaut.configuration.jdbi.transaction.spring">SpringTransactionHandler</a> - Class in <a href="io/micronaut/configuration/jdbi/transaction/spring/package-summary.html">io.micronaut.configuration.jdbi.transaction.spring</a></dt>
 <dd>
