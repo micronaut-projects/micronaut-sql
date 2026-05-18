@@ -63,42 +63,19 @@ loadScripts(document, 'script');</script>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
-<li><a href="#getBasicDataSource()" tabindex="0">getBasicDataSource()</a></li>
-<li><a href="#getDelegate()" tabindex="0">getDelegate()</a></li>
 <li><a href="#getName()" tabindex="0">getName()</a></li>
 <li><a href="#getDriverClassName()" tabindex="0">getDriverClassName()</a></li>
-<li><a href="#setDriverClassName(java.lang.String)" tabindex="0">setDriverClassName(String)</a></li>
 <li><a href="#getConfiguredDriverClassName()" tabindex="0">getConfiguredDriverClassName()</a></li>
 <li><a href="#getUrl()" tabindex="0">getUrl()</a></li>
-<li><a href="#setUrl(java.lang.String)" tabindex="0">setUrl(String)</a></li>
 <li><a href="#getConfiguredUrl()" tabindex="0">getConfiguredUrl()</a></li>
 <li><a href="#getUsername()" tabindex="0">getUsername()</a></li>
-<li><a href="#setUsername(java.lang.String)" tabindex="0">setUsername(String)</a></li>
 <li><a href="#getConfiguredUsername()" tabindex="0">getConfiguredUsername()</a></li>
 <li><a href="#getPassword()" tabindex="0">getPassword()</a></li>
-<li><a href="#setPassword(java.lang.String)" tabindex="0">setPassword(String)</a></li>
 <li><a href="#getConfiguredPassword()" tabindex="0">getConfiguredPassword()</a></li>
 <li><a href="#getValidationQuery()" tabindex="0">getValidationQuery()</a></li>
-<li><a href="#setValidationQuery(java.lang.String)" tabindex="0">setValidationQuery(String)</a></li>
-<li><a href="#setMaxWaitMillis(long)" tabindex="0">setMaxWaitMillis(long)</a></li>
-<li><a href="#getMaxWaitMillis()" tabindex="0">getMaxWaitMillis()</a></li>
-<li><a href="#setTimeBetweenEvictionRunsMillis(long)" tabindex="0">setTimeBetweenEvictionRunsMillis(long)</a></li>
-<li><a href="#getTimeBetweenEvictionRunsMillis()" tabindex="0">getTimeBetweenEvictionRunsMillis()</a></li>
-<li><a href="#setMinEvictableIdleTimeMillis(long)" tabindex="0">setMinEvictableIdleTimeMillis(long)</a></li>
-<li><a href="#getMinEvictableIdleTimeMillis()" tabindex="0">getMinEvictableIdleTimeMillis()</a></li>
-<li><a href="#setSoftMinEvictableIdleTimeMillis(long)" tabindex="0">setSoftMinEvictableIdleTimeMillis(long)</a></li>
-<li><a href="#getSoftMinEvictableIdleTimeMillis()" tabindex="0">getSoftMinEvictableIdleTimeMillis()</a></li>
-<li><a href="#setMaxConnLifetimeMillis(long)" tabindex="0">setMaxConnLifetimeMillis(long)</a></li>
-<li><a href="#getMaxConnLifetimeMillis()" tabindex="0">getMaxConnLifetimeMillis()</a></li>
-<li><a href="#setRemoveAbandonedTimeout(int)" tabindex="0">setRemoveAbandonedTimeout(int)</a></li>
-<li><a href="#getRemoveAbandonedTimeout()" tabindex="0">getRemoveAbandonedTimeout()</a></li>
-<li><a href="#setValidationQueryTimeout(int)" tabindex="0">setValidationQueryTimeout(int)</a></li>
-<li><a href="#getValidationQueryTimeout()" tabindex="0">getValidationQueryTimeout()</a></li>
-<li><a href="#setDefaultQueryTimeout(java.lang.Integer)" tabindex="0">setDefaultQueryTimeout(Integer)</a></li>
-<li><a href="#getDefaultQueryTimeout()" tabindex="0">getDefaultQueryTimeout()</a></li>
-<li><a href="#getConfiguredValidationQuery()" tabindex="0">getConfiguredValidationQuery()</a></li>
-<li><a href="#setConnectionProperties(java.lang.String)" tabindex="0">setConnectionProperties(String)</a></li>
+<li><a href="#setConnectionPropertiesString(java.lang.String)" tabindex="0">setConnectionPropertiesString(String)</a></li>
 <li><a href="#setDataSourceProperties(java.util.Map)" tabindex="0">setDataSourceProperties(Map)</a></li>
+<li><a href="#getConfiguredValidationQuery()" tabindex="0">getConfiguredValidationQuery()</a></li>
 <li><a href="#isOracleProgramProvided()" tabindex="0">isOracleProgramProvided()</a></li>
 </ol>
 </li>
@@ -110,19 +87,22 @@ loadScripts(document, 'script');</script>
 <h1 title="Class DatasourceConfiguration" class="title">Class DatasourceConfiguration</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance">org.apache.commons.dbcp2.BasicDataSource
 <div class="inheritance">io.micronaut.configuration.jdbc.dbcp.DatasourceConfiguration</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></code></dd>
+<dd><code><a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/AutoCloseable.html" title="class or interface in java.lang" class="external-link">AutoCloseable</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Wrapper.html" title="class or interface in java.sql" class="external-link">Wrapper</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.management/javax/management/MBeanRegistration.html" title="class or interface in javax.management" class="external-link">MBeanRegistration</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/CommonDataSource.html" title="class or interface in javax.sql" class="external-link">CommonDataSource</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link">DataSource</a>, org.apache.commons.dbcp2.BasicDataSourceMXBean, org.apache.commons.dbcp2.DataSourceMXBean</code></dd>
 </dl>
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="annotations">@EachProperty(value="datasources",
+<div class="type-signature"><span class="annotations">@Context
+@EachProperty(value="datasources",
               primary="default")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">DatasourceConfiguration</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
+<span class="extends-implements">extends org.apache.commons.dbcp2.BasicDataSource
 implements <a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></span></div>
 <div class="block">Allows the configuration of Apache DBCP JDBC data sources. All properties on
 <code>BasicDataSource</code> are available to be configured.
@@ -177,45 +157,23 @@ drivers on the classpath.</div>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.apache.commons.dbcp2.BasicDataSource</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBasicDataSource()" class="member-name-link">getBasicDataSource</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the configured DBCP datasource.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfiguredDriverClassName()" class="member-name-link">getConfiguredDriverClassName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfiguredPassword()" class="member-name-link">getConfiguredPassword</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfiguredDriverClassName()" class="member-name-link">getConfiguredDriverClassName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfiguredUrl()" class="member-name-link">getConfiguredUrl</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfiguredPassword()" class="member-name-link">getConfiguredPassword</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfiguredUsername()" class="member-name-link">getConfiguredUsername</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfiguredUrl()" class="member-name-link">getConfiguredUrl</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfiguredValidationQuery()" class="member-name-link">getConfiguredValidationQuery</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfiguredUsername()" class="member-name-link">getConfiguredUsername</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDefaultQueryTimeout()" class="member-name-link">getDefaultQueryTimeout</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.apache.commons.dbcp2.BasicDataSource</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDelegate()" class="member-name-link">getDelegate</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the configuration builder delegate.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDriverClassName()" class="member-name-link">getDriverClassName</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfiguredValidationQuery()" class="member-name-link">getConfiguredValidationQuery</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMaxConnLifetimeMillis()" class="member-name-link">getMaxConnLifetimeMillis</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMaxWaitMillis()" class="member-name-link">getMaxWaitMillis</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMinEvictableIdleTimeMillis()" class="member-name-link">getMinEvictableIdleTimeMillis</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDriverClassName()" class="member-name-link">getDriverClassName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
@@ -225,26 +183,14 @@ drivers on the classpath.</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPassword()" class="member-name-link">getPassword</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRemoveAbandonedTimeout()" class="member-name-link">getRemoveAbandonedTimeout</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSoftMinEvictableIdleTimeMillis()" class="member-name-link">getSoftMinEvictableIdleTimeMillis</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTimeBetweenEvictionRunsMillis()" class="member-name-link">getTimeBetweenEvictionRunsMillis</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUrl()" class="member-name-link">getUrl</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUsername()" class="member-name-link">getUsername</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUrl()" class="member-name-link">getUrl</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidationQuery()" class="member-name-link">getValidationQuery</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUsername()" class="member-name-link">getUsername</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidationQueryTimeout()" class="member-name-link">getValidationQueryTimeout</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidationQuery()" class="member-name-link">getValidationQuery</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isOracleProgramProvided()" class="member-name-link">isOracleProgramProvided</a>()</code></div>
@@ -252,78 +198,36 @@ drivers on the classpath.</div>
 <div class="block">Checks if the Oracle program has been provided.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectionProperties(java.lang.String)" class="member-name-link">setConnectionProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionProperties)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectionPropertiesString(java.lang.String)" class="member-name-link">setConnectionPropertiesString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sets the connection properties.</div>
+<div class="block">A helper method to allow setting the connectionProperties via a single String.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDataSourceProperties(java.util.Map)" class="member-name-link">setDataSourceProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr>?&gt;&nbsp;dsProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Sets the datasource properties.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDefaultQueryTimeout(java.lang.Integer)" class="member-name-link">setDefaultQueryTimeout</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&nbsp;defaultQueryTimeout)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sets the default query timeout in seconds.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDriverClassName(java.lang.String)" class="member-name-link">setDriverClassName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;driverClassName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMaxConnLifetimeMillis(long)" class="member-name-link">setMaxConnLifetimeMillis</a><wbr>(long&nbsp;maxConnLifetimeMillis)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sets the maximum connection lifetime in milliseconds.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMaxWaitMillis(long)" class="member-name-link">setMaxWaitMillis</a><wbr>(long&nbsp;maxWaitMillis)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sets the maximum wait time in milliseconds.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMinEvictableIdleTimeMillis(long)" class="member-name-link">setMinEvictableIdleTimeMillis</a><wbr>(long&nbsp;minEvictableIdleTimeMillis)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sets the minimum evictable idle time in milliseconds.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPassword(java.lang.String)" class="member-name-link">setPassword</a><wbr>(@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRemoveAbandonedTimeout(int)" class="member-name-link">setRemoveAbandonedTimeout</a><wbr>(int&nbsp;removeAbandonedTimeout)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sets the remove abandoned timeout in seconds.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSoftMinEvictableIdleTimeMillis(long)" class="member-name-link">setSoftMinEvictableIdleTimeMillis</a><wbr>(long&nbsp;softMinEvictableIdleTimeMillis)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sets the soft minimum evictable idle time in milliseconds.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTimeBetweenEvictionRunsMillis(long)" class="member-name-link">setTimeBetweenEvictionRunsMillis</a><wbr>(long&nbsp;timeBetweenEvictionRunsMillis)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sets the time between eviction runs in milliseconds.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUrl(java.lang.String)" class="member-name-link">setUrl</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;url)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUsername(java.lang.String)" class="member-name-link">setUsername</a><wbr>(@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;username)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setValidationQuery(java.lang.String)" class="member-name-link">setValidationQuery</a><wbr>(@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validationQuery)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Setter for validation query.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setValidationQueryTimeout(int)" class="member-name-link">setValidationQueryTimeout</a><wbr>(int&nbsp;validationQueryTimeout)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sets the validation query timeout in seconds.</div>
-</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.apache.commons.dbcp2.BasicDataSource">Methods inherited from class&nbsp;org.apache.commons.dbcp2.BasicDataSource</h3>
+<code>addConnectionProperty, close, createConnectionFactory, createConnectionPool, createDataSource, createDataSourceInstance, createObjectPool, createPoolableConnectionFactory, evict, getAbandonedLogWriter, getAbandonedUsageTracking, getAutoCommitOnReturn, getCacheState, getConnection, getConnection, getConnectionFactoryClassName, getConnectionInitSqls, getConnectionInitSqlsAsArray, getConnectionPool, getDefaultAutoCommit, getDefaultCatalog, getDefaultQueryTimeout, getDefaultQueryTimeoutDuration, getDefaultReadOnly, getDefaultSchema, getDefaultTransactionIsolation, getDisconnectionIgnoreSqlCodes, getDisconnectionIgnoreSqlCodesAsArray, getDisconnectionSqlCodes, getDisconnectionSqlCodesAsArray, getDriver, getDriverClassLoader, getDurationBetweenEvictionRuns, getEnableAutoCommitOnReturn, getEvictionPolicyClassName, getFastFailValidation, getInitialSize, getJmxName, getLifo, getLogAbandoned, getLogExpiredConnections, getLoginTimeout, getLogWriter, getMaxConnDuration, getMaxConnLifetimeMillis, getMaxIdle, getMaxOpenPreparedStatements, getMaxTotal, getMaxWaitDuration, getMaxWaitMillis, getMinEvictableIdleDuration, getMinEvictableIdleTimeMillis, getMinIdle, getNumActive, getNumIdle, getNumTestsPerEvictionRun, getParentLogger, getRegisteredJmxName, getRemoveAbandonedOnBorrow, getRemoveAbandonedOnMaintenance, getRemoveAbandonedTimeout, getRemoveAbandonedTimeoutDuration, getRollbackOnReturn, getSoftMinEvictableIdleDuration, getSoftMinEvictableIdleTimeMillis, getTestOnBorrow, getTestOnCreate, getTestOnReturn, getTestWhileIdle, getTimeBetweenEvictionRunsMillis, getValidationQueryTimeout, getValidationQueryTimeoutDuration, invalidateConnection, isAccessToUnderlyingConnectionAllowed, isClearStatementPoolOnReturn, isClosed, isPoolPreparedStatements, isWrapperFor, log, log, postDeregister, postRegister, preDeregister, preRegister, removeConnectionProperty, restart, setAbandonedLogWriter, setAbandonedUsageTracking, setAccessToUnderlyingConnectionAllowed, setAutoCommitOnReturn, setCacheState, setClearStatementPoolOnReturn, setConnectionFactoryClassName, setConnectionInitSqls, setConnectionInitSqls, setConnectionProperties, setDefaultAutoCommit, setDefaultCatalog, setDefaultQueryTimeout, setDefaultQueryTimeout, setDefaultReadOnly, setDefaultSchema, setDefaultTransactionIsolation, setDisconnectionIgnoreSqlCodes, setDisconnectionSqlCodes, setDriver, setDriverClassLoader, setDriverClassName, setDurationBetweenEvictionRuns, setEnableAutoCommitOnReturn, setEvictionPolicyClassName, setFastFailValidation, setInitialSize, setJmxName, setLifo, setLogAbandoned, setLogExpiredConnections, setLoginTimeout, setLogWriter, setMaxConn, setMaxConnLifetimeMillis, setMaxIdle, setMaxOpenPreparedStatements, setMaxTotal, setMaxWait, setMaxWaitMillis, setMinEvictableIdle, setMinEvictableIdleTimeMillis, setMinIdle, setNumTestsPerEvictionRun, setPassword, setPoolPreparedStatements, setRegisterConnectionMBean, setRemoveAbandonedOnBorrow, setRemoveAbandonedOnMaintenance, setRemoveAbandonedTimeout, setRemoveAbandonedTimeout, setRollbackOnReturn, setSoftMinEvictableIdle, setSoftMinEvictableIdleTimeMillis, setTestOnBorrow, setTestOnCreate, setTestOnReturn, setTestWhileIdle, setTimeBetweenEvictionRunsMillis, setUrl, setUsername, setValidationQuery, setValidationQueryTimeout, setValidationQueryTimeout, start, startPoolMaintenance, unwrap, validateConnectionFactory</code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#method-summary" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-io.micronaut.jdbc.BasicJdbcConfiguration">Methods inherited from interface&nbsp;<a href="../../../jdbc/BasicJdbcConfiguration.html#method-summary" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></h3>
+<code><a href="../../../jdbc/BasicJdbcConfiguration.html#setDriverClassName(java.lang.String)" title="setDriverClassName(String)">setDriverClassName</a>, <a href="../../../jdbc/BasicJdbcConfiguration.html#setPassword(java.lang.String)" title="setPassword(String)">setPassword</a>, <a href="../../../jdbc/BasicJdbcConfiguration.html#setUrl(java.lang.String)" title="setUrl(String)">setUrl</a>, <a href="../../../jdbc/BasicJdbcConfiguration.html#setUsername(java.lang.String)" title="setUsername(String)">setUsername</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-javax.sql.CommonDataSource">Methods inherited from interface&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/CommonDataSource.html#method-summary" title="class or interface in javax.sql" class="external-link">CommonDataSource</a></h3>
+<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/CommonDataSource.html#createShardingKeyBuilder()" title="class or interface in javax.sql" class="external-link">createShardingKeyBuilder</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-javax.sql.DataSource">Methods inherited from interface&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html#method-summary" title="class or interface in javax.sql" class="external-link">DataSource</a></h3>
+<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html#createConnectionBuilder()" title="class or interface in javax.sql" class="external-link">createConnectionBuilder</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.apache.commons.dbcp2.DataSourceMXBean">Methods inherited from interface&nbsp;org.apache.commons.dbcp2.DataSourceMXBean</h3>
+<code>getUserName</code></div>
 </section>
 </li>
 </ul>
@@ -360,32 +264,6 @@ drivers on the classpath.</div>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getBasicDataSource()">
-<h3>getBasicDataSource</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.apache.commons.dbcp2.BasicDataSource</span>&nbsp;<span class="element-name">getBasicDataSource</span>()</div>
-<div class="block">Returns the configured DBCP datasource.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>The configured DBCP datasource</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getDelegate()">
-<h3>getDelegate</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.apache.commons.dbcp2.BasicDataSource</span>&nbsp;<span class="element-name">getDelegate</span>()</div>
-<div class="block">Returns the configuration builder delegate.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>The configuration builder delegate</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
 <section class="detail" id="getName()">
 <h3>getName</h3>
 <div class="horizontal-scroll">
@@ -408,22 +286,12 @@ drivers on the classpath.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../jdbc/BasicJdbcConfiguration.html#getDriverClassName()">getDriverClassName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></code></dd>
+<dt>Specified by:</dt>
+<dd><code>getDriverClassName</code>&nbsp;in interface&nbsp;<code>org.apache.commons.dbcp2.DataSourceMXBean</code></dd>
+<dt>Overrides:</dt>
+<dd><code>getDriverClassName</code>&nbsp;in class&nbsp;<code>org.apache.commons.dbcp2.BasicDataSource</code></dd>
 <dt>Returns:</dt>
 <dd>The driver class name to be used by the data source</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setDriverClassName(java.lang.String)">
-<h3>setDriverClassName</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDriverClassName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;driverClassName)</span></div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../jdbc/BasicJdbcConfiguration.html#setDriverClassName(java.lang.String)">setDriverClassName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>driverClassName</code> - Sets the driver class name</dd>
 </dl>
 </div>
 </section>
@@ -450,22 +318,12 @@ drivers on the classpath.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../jdbc/BasicJdbcConfiguration.html#getUrl()">getUrl</a></code>&nbsp;in interface&nbsp;<code><a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></code></dd>
+<dt>Specified by:</dt>
+<dd><code>getUrl</code>&nbsp;in interface&nbsp;<code>org.apache.commons.dbcp2.DataSourceMXBean</code></dd>
+<dt>Overrides:</dt>
+<dd><code>getUrl</code>&nbsp;in class&nbsp;<code>org.apache.commons.dbcp2.BasicDataSource</code></dd>
 <dt>Returns:</dt>
 <dd>The URL to be used by the data source</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setUrl(java.lang.String)">
-<h3>setUrl</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUrl</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;url)</span></div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../jdbc/BasicJdbcConfiguration.html#setUrl(java.lang.String)">setUrl</a></code>&nbsp;in interface&nbsp;<code><a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>url</code> - Sets the url</dd>
 </dl>
 </div>
 </section>
@@ -492,22 +350,12 @@ drivers on the classpath.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../jdbc/BasicJdbcConfiguration.html#getUsername()">getUsername</a></code>&nbsp;in interface&nbsp;<code><a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></code></dd>
+<dt>Specified by:</dt>
+<dd><code>getUsername</code>&nbsp;in interface&nbsp;<code>org.apache.commons.dbcp2.DataSourceMXBean</code></dd>
+<dt>Overrides:</dt>
+<dd><code>getUsername</code>&nbsp;in class&nbsp;<code>org.apache.commons.dbcp2.BasicDataSource</code></dd>
 <dt>Returns:</dt>
 <dd>The username to be used by the data source</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setUsername(java.lang.String)">
-<h3>setUsername</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUsername</span><wbr><span class="parameters">(@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;username)</span></div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../jdbc/BasicJdbcConfiguration.html#setUsername(java.lang.String)">setUsername</a></code>&nbsp;in interface&nbsp;<code><a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>username</code> - Sets the username</dd>
 </dl>
 </div>
 </section>
@@ -533,23 +381,13 @@ drivers on the classpath.</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getPassword</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
+<dd><code>getPassword</code>&nbsp;in interface&nbsp;<code>org.apache.commons.dbcp2.BasicDataSourceMXBean</code></dd>
+<dt>Specified by:</dt>
 <dd><code><a href="../../../jdbc/BasicJdbcConfiguration.html#getPassword()">getPassword</a></code>&nbsp;in interface&nbsp;<code><a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></code></dd>
+<dt>Overrides:</dt>
+<dd><code>getPassword</code>&nbsp;in class&nbsp;<code>org.apache.commons.dbcp2.BasicDataSource</code></dd>
 <dt>Returns:</dt>
 <dd>The password to be used by the data source</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setPassword(java.lang.String)">
-<h3>setPassword</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setPassword</span><wbr><span class="parameters">(@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</span></div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../jdbc/BasicJdbcConfiguration.html#setPassword(java.lang.String)">setPassword</a></code>&nbsp;in interface&nbsp;<code><a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>password</code> - Sets the password</dd>
 </dl>
 </div>
 </section>
@@ -576,6 +414,10 @@ drivers on the classpath.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../jdbc/BasicJdbcConfiguration.html#getValidationQuery()">getValidationQuery</a></code>&nbsp;in interface&nbsp;<code><a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></code></dd>
+<dt>Specified by:</dt>
+<dd><code>getValidationQuery</code>&nbsp;in interface&nbsp;<code>org.apache.commons.dbcp2.DataSourceMXBean</code></dd>
+<dt>Overrides:</dt>
+<dd><code>getValidationQuery</code>&nbsp;in class&nbsp;<code>org.apache.commons.dbcp2.BasicDataSource</code></dd>
 <dt>Returns:</dt>
 <dd>The validation query to be used by the data source</dd>
 </dl>
@@ -583,238 +425,12 @@ drivers on the classpath.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="setValidationQuery(java.lang.String)">
-<h3>setValidationQuery</h3>
+<section class="detail" id="setConnectionPropertiesString(java.lang.String)">
+<h3>setConnectionPropertiesString</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setValidationQuery</span><wbr><span class="parameters">(@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validationQuery)</span></div>
-<div class="block">Setter for validation query.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>validationQuery</code> - The validation query</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setMaxWaitMillis(long)">
-<h3>setMaxWaitMillis</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMaxWaitMillis</span><wbr><span class="parameters">(long&nbsp;maxWaitMillis)</span></div>
-<div class="block">Sets the maximum wait time in milliseconds.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>maxWaitMillis</code> - The maximum wait time in milliseconds</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getMaxWaitMillis()">
-<h3>getMaxWaitMillis</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getMaxWaitMillis</span>()</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>The configured maximum wait time in milliseconds</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setTimeBetweenEvictionRunsMillis(long)">
-<h3>setTimeBetweenEvictionRunsMillis</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTimeBetweenEvictionRunsMillis</span><wbr><span class="parameters">(long&nbsp;timeBetweenEvictionRunsMillis)</span></div>
-<div class="block">Sets the time between eviction runs in milliseconds.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>timeBetweenEvictionRunsMillis</code> - The time between eviction runs in milliseconds</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getTimeBetweenEvictionRunsMillis()">
-<h3>getTimeBetweenEvictionRunsMillis</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getTimeBetweenEvictionRunsMillis</span>()</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>The configured time between eviction runs in milliseconds</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setMinEvictableIdleTimeMillis(long)">
-<h3>setMinEvictableIdleTimeMillis</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMinEvictableIdleTimeMillis</span><wbr><span class="parameters">(long&nbsp;minEvictableIdleTimeMillis)</span></div>
-<div class="block">Sets the minimum evictable idle time in milliseconds.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>minEvictableIdleTimeMillis</code> - The minimum evictable idle time in milliseconds</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getMinEvictableIdleTimeMillis()">
-<h3>getMinEvictableIdleTimeMillis</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getMinEvictableIdleTimeMillis</span>()</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>The configured minimum evictable idle time in milliseconds</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setSoftMinEvictableIdleTimeMillis(long)">
-<h3>setSoftMinEvictableIdleTimeMillis</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSoftMinEvictableIdleTimeMillis</span><wbr><span class="parameters">(long&nbsp;softMinEvictableIdleTimeMillis)</span></div>
-<div class="block">Sets the soft minimum evictable idle time in milliseconds.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>softMinEvictableIdleTimeMillis</code> - The soft minimum evictable idle time in milliseconds</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getSoftMinEvictableIdleTimeMillis()">
-<h3>getSoftMinEvictableIdleTimeMillis</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getSoftMinEvictableIdleTimeMillis</span>()</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>The configured soft minimum evictable idle time in milliseconds</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setMaxConnLifetimeMillis(long)">
-<h3>setMaxConnLifetimeMillis</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMaxConnLifetimeMillis</span><wbr><span class="parameters">(long&nbsp;maxConnLifetimeMillis)</span></div>
-<div class="block">Sets the maximum connection lifetime in milliseconds.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>maxConnLifetimeMillis</code> - The maximum connection lifetime in milliseconds</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getMaxConnLifetimeMillis()">
-<h3>getMaxConnLifetimeMillis</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getMaxConnLifetimeMillis</span>()</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>The configured maximum connection lifetime in milliseconds</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setRemoveAbandonedTimeout(int)">
-<h3>setRemoveAbandonedTimeout</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRemoveAbandonedTimeout</span><wbr><span class="parameters">(int&nbsp;removeAbandonedTimeout)</span></div>
-<div class="block">Sets the remove abandoned timeout in seconds.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>removeAbandonedTimeout</code> - The remove abandoned timeout in seconds</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getRemoveAbandonedTimeout()">
-<h3>getRemoveAbandonedTimeout</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getRemoveAbandonedTimeout</span>()</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>The configured remove abandoned timeout in seconds</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setValidationQueryTimeout(int)">
-<h3>setValidationQueryTimeout</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setValidationQueryTimeout</span><wbr><span class="parameters">(int&nbsp;validationQueryTimeout)</span></div>
-<div class="block">Sets the validation query timeout in seconds.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>validationQueryTimeout</code> - The validation query timeout in seconds</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getValidationQueryTimeout()">
-<h3>getValidationQueryTimeout</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getValidationQueryTimeout</span>()</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>The configured validation query timeout in seconds</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setDefaultQueryTimeout(java.lang.Integer)">
-<h3>setDefaultQueryTimeout</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDefaultQueryTimeout</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&nbsp;defaultQueryTimeout)</span></div>
-<div class="block">Sets the default query timeout in seconds.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>defaultQueryTimeout</code> - The default query timeout in seconds</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getDefaultQueryTimeout()">
-<h3>getDefaultQueryTimeout</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a></span>&nbsp;<span class="element-name">getDefaultQueryTimeout</span>()</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>The configured default query timeout in seconds</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getConfiguredValidationQuery()">
-<h3>getConfiguredValidationQuery</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getConfiguredValidationQuery</span>()</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../jdbc/BasicJdbcConfiguration.html#getConfiguredValidationQuery()">getConfiguredValidationQuery</a></code>&nbsp;in interface&nbsp;<code><a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></code></dd>
-<dt>Returns:</dt>
-<dd>The validation query supplied via configuration</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setConnectionProperties(java.lang.String)">
-<h3>setConnectionProperties</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setConnectionProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionProperties)</span></div>
-<div class="block">Sets the connection properties.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setConnectionPropertiesString</span><wbr><span class="parameters">(@Property(name="datasources.*.connection-properties")
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionProperties)</span></div>
+<div class="block">A helper method to allow setting the connectionProperties via a single String.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>connectionProperties</code> - The connection properties</dd>
@@ -835,6 +451,20 @@ drivers on the classpath.</div>
 <dd><code><a href="../../../jdbc/BasicJdbcConfiguration.html#setDataSourceProperties(java.util.Map)">setDataSourceProperties</a></code>&nbsp;in interface&nbsp;<code><a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>dsProperties</code> - The properties</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getConfiguredValidationQuery()">
+<h3>getConfiguredValidationQuery</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getConfiguredValidationQuery</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../jdbc/BasicJdbcConfiguration.html#getConfiguredValidationQuery()">getConfiguredValidationQuery</a></code>&nbsp;in interface&nbsp;<code><a href="../../../jdbc/BasicJdbcConfiguration.html" title="interface in io.micronaut.jdbc">BasicJdbcConfiguration</a></code></dd>
+<dt>Returns:</dt>
+<dd>The validation query supplied via configuration</dd>
 </dl>
 </div>
 </section>
