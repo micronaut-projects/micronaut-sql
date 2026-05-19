@@ -9,3 +9,15 @@ group "io.micronaut.example"
 tasks.register("testExamples") {
     dependsOn "test"
 }
+
+def isMacOsArm = System.getProperty("os.name") == "Mac OS X" && ["aarch64", "arm64"].contains(System.getProperty("os.arch"))
+if (isMacOsArm) {
+    afterEvaluate {
+        tasks.withType(org.graalvm.buildtools.gradle.tasks.BuildNativeImageTask).configureEach { task ->
+            if (task.name == 'nativeTestCompile') {
+                // Match CI's native test mode on the platform where the full build path fails locally.
+                task.options.get().getQuickBuild().set(true)
+            }
+        }
+    }
+}
