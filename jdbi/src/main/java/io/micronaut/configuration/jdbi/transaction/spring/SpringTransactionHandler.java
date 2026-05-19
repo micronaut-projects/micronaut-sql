@@ -23,6 +23,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -116,7 +117,7 @@ public class SpringTransactionHandler extends AbstractTransactionHandler {
         });
     }
 
-    private TransactionStatus getTransactionStatus(Handle handle) {
+    private @Nullable TransactionStatus getTransactionStatus(Handle handle) {
         LocalStuff localStuff = this.localStuff.get(handle);
         return localStuff != null ? localStuff.getTransactionStatus() : null;
     }

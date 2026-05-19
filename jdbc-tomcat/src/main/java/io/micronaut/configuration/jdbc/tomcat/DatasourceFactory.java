@@ -104,7 +104,7 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
      */
     @EachBean(DataSource.class)
     @Requires(beans = {DatasourceConfiguration.class})
-    public TomcatDataSourcePoolMetadata tomcatPoolDataSourceMetadataProvider(
+    public @Nullable TomcatDataSourcePoolMetadata tomcatPoolDataSourceMetadataProvider(
             DataSource dataSource) {
 
         TomcatDataSourcePoolMetadata dataSourcePoolMetadata = null;

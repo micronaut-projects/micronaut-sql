@@ -79,7 +79,7 @@ final class JooqConfigurationFactory extends AbstractJooqConfigurationFactory {
         @Parameter @Nullable ConnectionProvider connectionProvider,
         @Parameter @Nullable JooqConfigurationProperties properties,
         @Nullable DataSourceResolver dataSourceResolver,
-        @Nullable ApplicationContext ctx
+        ApplicationContext ctx
     ) {
 
         if (properties == null) {

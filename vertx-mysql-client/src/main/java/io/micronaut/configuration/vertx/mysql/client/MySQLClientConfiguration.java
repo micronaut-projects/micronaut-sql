@@ -20,6 +20,7 @@ import io.micronaut.context.annotation.ConfigurationProperties;
 import io.vertx.core.net.NetClientOptions;
 import io.vertx.mysqlclient.MySQLConnectOptions;
 import io.vertx.sqlclient.PoolOptions;
+import org.jspecify.annotations.Nullable;
 
 /**
  * The configuration class for Vertx MySQL Client PoolOptions.
@@ -37,12 +38,12 @@ public class MySQLClientConfiguration {
     @ConfigurationBuilder
     protected NetClientOptions netClientOptions = new NetClientOptions();
 
-    protected String uri;
+    protected @Nullable String uri;
 
     /**
      * @return The MySQL connection URI.
      */
-    public String getUri() {
+    public @Nullable String getUri() {
         return uri;
     }
 

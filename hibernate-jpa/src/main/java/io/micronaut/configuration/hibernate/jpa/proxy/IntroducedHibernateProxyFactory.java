@@ -25,6 +25,7 @@ import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.proxy.LazyInitializer;
 import org.hibernate.proxy.ProxyFactory;
 import org.hibernate.type.CompositeType;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,12 +51,13 @@ final class IntroducedHibernateProxyFactory implements ProxyFactory {
 
     private String entityName;
     private Class<?> persistentClass;
-    private CompositeType componentIdType;
-    private Method getIdentifierMethod;
-    private Method setIdentifierMethod;
+    private @Nullable CompositeType componentIdType;
+    private @Nullable Method getIdentifierMethod;
+    private @Nullable Method setIdentifierMethod;
 
-    private BeanDefinition<?> beanDefinition;
+    private @Nullable BeanDefinition<?> beanDefinition;
 
+    @SuppressWarnings("NullAway.Init")
     public IntroducedHibernateProxyFactory(BeanContext beanContext) {
         this.beanContext = beanContext;
     }
@@ -79,9 +81,11 @@ final class IntroducedHibernateProxyFactory implements ProxyFactory {
 
     @Override
     public HibernateProxy getProxy(Object id, SharedSessionContractImplementor session) throws HibernateException {
+        BeanDefinition<?> beanDefinition = this.beanDefinition;
         if (beanDefinition == null) {
             beanDefinition = beanContext.findBeanDefinition(persistentClass, null)
                     .orElseThrow(() -> new HibernateException("Cannot find a proxy class, please annotate " + persistentClass + " with @GenerateProxy."));
+            this.beanDefinition = beanDefinition;
         }
         LazyInitializer lazyInitializer = new IntroducedHibernateProxyLazyInitializer(entityName, persistentClass, id, session);
         Object proxyTargetBean = beanContext.getBean(beanDefinition);
@@ -102,7 +106,7 @@ final class IntroducedHibernateProxyFactory implements ProxyFactory {
             int params = parameterValues.length;
             if (params == 0 && getIdentifierMethod != null && methodName.equals(getIdentifierMethod.getName()) && lazyInitializer.isUninitialized()) {
                 return lazyInitializer.getIdentifier();
-            } else if (params == 1 && setIdentifierMethod != null & methodName.equals(setIdentifierMethod.getName())) {
+            } else if (params == 1 && setIdentifierMethod != null && methodName.equals(setIdentifierMethod.getName())) {
                 lazyInitializer.initialize();
                 lazyInitializer.setIdentifier(parameterValues[0]);
             }

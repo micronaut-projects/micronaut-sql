@@ -18,6 +18,7 @@ package io.micronaut.jdbc;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.util.StringUtils;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -57,8 +58,8 @@ public final class OracleSessionProgramHelper {
      */
     public static boolean apply(
             String dataSourceName,
-            String url,
-            String dialect,
+            @Nullable String url,
+            @Nullable String dialect,
             Environment environment,
             BiConsumer<String, String> addConnectionProperty,
             BooleanSupplier alreadyProvided

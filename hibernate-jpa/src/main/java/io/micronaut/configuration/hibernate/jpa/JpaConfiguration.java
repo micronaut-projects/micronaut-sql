@@ -55,7 +55,7 @@ public class JpaConfiguration implements Toggleable {
 
     private final String name;
     private final ApplicationContext applicationContext;
-    private final Integrator integrator;
+    private final @Nullable Integrator integrator;
     private Map<String, Object> jpaProperties = new HashMap<>(10);
     private List<String> mappingResources = new ArrayList<>();
     private EntityScanConfiguration entityScanConfiguration;

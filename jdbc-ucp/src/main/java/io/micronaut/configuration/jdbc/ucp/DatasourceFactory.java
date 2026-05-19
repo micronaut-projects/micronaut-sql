@@ -60,6 +60,7 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
      * @param dataSourceResolver The data source resolver
      * @param applicationContext The application context
      */
+    @SuppressWarnings("NullAway.Init")
     public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
                              ApplicationContext applicationContext) {
         super(applicationContext);
@@ -96,7 +97,7 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
      */
     @EachBean(DataSource.class)
     @Requires(beans = {DatasourceConfiguration.class})
-    public OracleUcpDataSourcePoolMetadata ucpDataSourcePoolMetadata(DataSource dataSource) {
+    public @Nullable OracleUcpDataSourcePoolMetadata ucpDataSourcePoolMetadata(DataSource dataSource) {
         OracleUcpDataSourcePoolMetadata ucpDataSourcePoolMetadata = null;
 
         if (dataSourceResolver.resolve(dataSource) instanceof PoolDataSource resolved) {
