@@ -12,3 +12,17 @@ dependencies {
     testImplementation(mnData.micronaut.data.tx.jdbc)
     testImplementation(mnMicrometer.micronaut.micrometer.core)
 }
+
+def isMacOsArm = System.getProperty("os.name") == "Mac OS X" && ["aarch64", "arm64"].contains(System.getProperty("os.arch"))
+
+if (isMacOsArm) {
+    graalvmNative {
+        binaries {
+            all {
+                // Full native test compilation for this H2 module fails locally on macOS ARM with GraalVM 25.0.3,
+                // while CI Linux passes. Keep the workaround scoped to the known failing module and platform.
+                quickBuild.set(true)
+            }
+        }
+    }
+}
