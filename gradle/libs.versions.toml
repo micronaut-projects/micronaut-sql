@@ -55,7 +55,7 @@ managed-h2 = "2.4.240"
 
 sfm-reflect = "9.0.2"
 # Needed for vertx pg client and micronaut-data hibernate reactive
-managed-ongres-scram = "3.2"
+managed-ongres-scram = "3.4"
 
 # Needed to compile against Hibernate APIs whose class metadata references Checker Framework annotations
 managed-checker-qual = "4.1.0"
