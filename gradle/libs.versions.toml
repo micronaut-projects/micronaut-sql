@@ -22,7 +22,7 @@ micronaut-validation = "5.0.0"
 
 managed-vertx = "5.0.12"
 managed-jooq = "3.21.5"
-managed-hibernate = "7.3.6.Final"
+managed-hibernate = "7.4.0.Final"
 managed-hibernate-reactive = "4.4.1.Final"
 managed-jasync = "2.2.4"
 managed-jdbi = "3.53.0"
@@ -56,6 +56,9 @@ managed-h2 = "2.4.240"
 sfm-reflect = "9.0.2"
 # Needed for vertx pg client and micronaut-data hibernate reactive
 managed-ongres-scram = "3.2"
+
+# Needed to compile against Hibernate APIs whose class metadata references Checker Framework annotations
+managed-checker-qual = "4.1.0"
 
 # Testing
 sonar-gradle-plugin = "7.3.1.8318"
@@ -147,6 +150,7 @@ managed-jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transa
 
 sfm-reflect = { module = "org.simpleflatmapper:sfm-reflect", version.ref = "sfm-reflect" }
 managed-ongres-scram-client = { module = "com.ongres.scram:scram-client", version.ref = "managed-ongres-scram" }
+managed-checker-qual = { module = "org.checkerframework:checker-qual", version.ref = "managed-checker-qual" }
 
 # Testresources
 
