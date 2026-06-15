@@ -40,7 +40,7 @@ managed-sqlite-jdbc = "3.53.2.0"
 
 # JDBC Pools
 
-managed-hikari = "7.0.2"
+managed-hikari = "7.1.0"
 managed-commons-dbcp = "2.14.0"
 managed-tomcat-jdbc = "11.0.22"
 
