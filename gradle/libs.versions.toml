@@ -58,7 +58,7 @@ sfm-reflect = "9.0.2"
 managed-ongres-scram = "3.4"
 
 # Needed to compile against Hibernate APIs whose class metadata references Checker Framework annotations
-managed-checker-qual = "4.1.0"
+managed-checker-qual = "4.2.0"
 
 # Testing
 sonar-gradle-plugin = "7.3.1.8318"
