@@ -476,7 +476,7 @@ Micronaut SQL 5.7.0 allowed disabling datasources via setting <code>datasources.
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">["datasources.default"]</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">"datasources.default" = {}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -531,12 +531,7 @@ datasources.default.driverClassName=org.h2.Driver</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources]
-  [datasources.default]
-    url="jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
-    username="sa"
-    password=""
-    driverClassName="org.h2.Driver"</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">datasources = {default = {url = "jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE", username = "sa", password = "", driverClassName = "org.h2.Driver"}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -610,11 +605,7 @@ datasources.default.maxPoolSize=10</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources]
-  [datasources.default]
-    connectionFactoryClassName="oracle.jdbc.pool.OracleDataSource"
-    minPoolSize=1
-    maxPoolSize=10</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">datasources = {default = {url = null, connectionFactoryClassName = "oracle.jdbc.pool.OracleDataSource", username = null, password = null, minPoolSize = 1, maxPoolSize = 10}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -792,23 +783,8 @@ datasources:
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[micronaut]
-  [micronaut.application]
-    name="my-app"
-[datasources]
-  [datasources.default]
-    url="jdbc:oracle:thin:@localhost:1521/orcl"
-    username="user"
-    password="pass"
-    dialect="ORACLE"
-  [datasources.other]
-    url="jdbc:oracle:thin:@localhost:1521/orcl"
-    username="user"
-    password="pass"
-    dialect="ORACLE"
-    [datasources.other.oracle]
-      [datasources.other.oracle.session]
-        enabled=false</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">micronaut = {application = {name = "my-app"}}
+datasources = {default = {url = "jdbc:oracle:thin:@localhost:1521/orcl", username = "user", password = "pass", dialect = "ORACLE"}, other = {url = "jdbc:oracle:thin:@localhost:1521/orcl", username = "user", password = "pass", dialect = "ORACLE", oracle = {session = {enabled = false}}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -946,17 +922,8 @@ datasources:
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[micronaut]
-  [micronaut.application]
-    name="my-app"
-[datasources]
-  [datasources.default]
-    url="jdbc:oracle:thin:@localhost:1521/orcl"
-    username="user"
-    password="pass"
-    dialect="ORACLE"
-    [datasources.default.data-source-properties]
-      "v$session.program"="My Program"</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">micronaut = {application = {name = "my-app"}}
+datasources = {default = {url = "jdbc:oracle:thin:@localhost:1521/orcl", username = "user", password = "pass", dialect = "ORACLE", data-source-properties = {"v$session.program" = "My Program"}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -1058,9 +1025,7 @@ datasources.warehouse=...</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources]
-  default="..."
-  warehouse="..."</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">datasources = {default = "...", warehouse = "..."}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -1260,12 +1225,7 @@ datasources.default.password=${DB_PASSWORD}</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources]
-  [datasources.default]
-    url="jdbc:postgresql://localhost:5432/app"
-    driver-class-name="org.postgresql.Driver"
-    username="app_user"
-    password="${DB_PASSWORD}"</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">datasources = {default = {url = "jdbc:postgresql://localhost:5432/app", driver-class-name = "org.postgresql.Driver", username = "app_user", password = "${DB_PASSWORD}"}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -1486,9 +1446,7 @@ datasources.default.data-source-properties.oracle.jdbc.provider.password.vaultId
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources]
-  [datasources.default]
-    url="jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mode=WAL&amp;synchronous"</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">datasources = {default = {url = "jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mode=WAL&amp;synchronous"}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -1737,21 +1695,8 @@ jpa:
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources]
-  [datasources.default]
-    name="mydb"
-[jpa]
-  [jpa.default]
-    [jpa.default.entity-scan]
-      packages=[
-        "foo.bar",
-        "foo.baz"
-      ]
-    [jpa.default.properties]
-      [jpa.default.properties.hibernate]
-        show_sql=true
-        [jpa.default.properties.hibernate.hbm2ddl]
-          auto="update"</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">datasources = {default = {name = "mydb"}}
+jpa = {default = {entity-scan = {packages = ["foo.bar", "foo.baz"]}, properties = {hibernate = {hbm2ddl = {auto = "update"}, show_sql = true}}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -1879,12 +1824,7 @@ jpa {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa]
-  [jpa.default]
-    [jpa.default.entity-scan]
-      packages=[
-        "foo.bar"
-      ]</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">jpa = {default = {entity-scan = {packages = ["foo.bar"]}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -1962,13 +1902,7 @@ jpa.default.entity-scan.packages[0]=foo.bar</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa]
-  [jpa.default]
-    [jpa.default.entity-scan]
-      classpath=true
-      packages=[
-        "foo.bar"
-      ]</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">jpa = {default = {entity-scan = {classpath = true, packages = ["foo.bar"]}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -2100,9 +2034,7 @@ jpa.default.entity-scan.packages[0]=foo.bar</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa]
-  [jpa.default]
-    compile-time-hibernate-proxies=true</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">jpa = {default = {compile-time-hibernate-proxies = true}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -2391,15 +2323,7 @@ jpa.default.properties.hibernate.connection.password=myPassword</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa]
-  [jpa.default]
-    reactive=true
-    [jpa.default.properties]
-      [jpa.default.properties.hibernate]
-        [jpa.default.properties.hibernate.connection]
-          url="jdbc:postgresql:database"
-          username="myUsername"
-          password="myPassword"</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">jpa = {default = {reactive = true, properties = {hibernate = {connection = {url = "jdbc:postgresql:database", username = "myUsername", password = "myPassword"}}}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -2529,15 +2453,7 @@ vertx.pg.client.max-size=10</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[vertx]
-  [vertx.pg]
-    [vertx.pg.client]
-      port=5432
-      host="the-host"
-      database="the-db"
-      user="user"
-      password="secret"
-      max-size=10</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">vertx = {pg = {client = {port = 5432, host = "the-host", database = "the-db", user = "user", password = "secret", max-size = 10}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -2642,9 +2558,7 @@ vertx.pg.client.max-size=10</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa]
-  [jpa.default]
-    compile-time-hibernate-proxies=true</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">jpa = {default = {compile-time-hibernate-proxies = true}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -2839,14 +2753,7 @@ jasync.client.maxActiveConnections=5</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jasync]
-  [jasync.client]
-    port=5432
-    host="the-host"
-    database="the-db"
-    username="test"
-    password="test"
-    maxActiveConnections=5</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">jasync = {client = {port = 5432, host = "the-host", database = "the-db", username = "test", password = "test", maxActiveConnections = 5}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -3044,17 +2951,8 @@ jooq:
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[r2dbc]
-  [r2dbc.datasources]
-    [r2dbc.datasources.default]
-      db-type="postgres"
-      [r2dbc.datasources.default.options]
-        driver="pool"
-        protocol="postgresql"
-[jooq]
-  [jooq.r2dbc-datasources]
-    [jooq.r2dbc-datasources.default]
-      sql-dialect="postgres"</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">r2dbc = {datasources = {default = {db-type = "postgres", options = {driver = "pool", protocol = "postgresql"}}}}
+jooq = {r2dbc-datasources = {default = {sql-dialect = "postgres"}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -3198,10 +3096,7 @@ jooq {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jooq]
-  [jooq.datasources]
-    [jooq.datasources.default]
-      sql-dialect="POSTGRES"</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">jooq = {datasources = {default = {sql-dialect = "POSTGRES"}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -3733,15 +3628,7 @@ vertx.pg.client.maxSize=5</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[vertx]
-  [vertx.pg]
-    [vertx.pg.client]
-      port=3306
-      host="the-host"
-      database="the-db"
-      user="test"
-      password="test"
-      maxSize=5</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">vertx = {pg = {client = {port = 3306, host = "the-host", database = "the-db", user = "test", password = "test", maxSize = 5}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -3836,15 +3723,7 @@ vertx.pg.client.pem-trust-options.cert-paths[0]=certs/ca.crt</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[vertx]
-  [vertx.pg]
-    [vertx.pg.client]
-      ssl=true
-      ssl-mode="VERIFY_CA"
-      [vertx.pg.client.pem-trust-options]
-        cert-paths=[
-          "certs/ca.crt"
-        ]</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">vertx = {pg = {client = {ssl = true, ssl-mode = "VERIFY_CA", pem-trust-options = {cert-paths = ["certs/ca.crt"]}}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
