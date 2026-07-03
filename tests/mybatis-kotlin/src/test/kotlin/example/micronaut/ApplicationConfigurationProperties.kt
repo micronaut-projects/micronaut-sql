@@ -13,23 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.mybatis;
+package example.micronaut
 
-import org.apache.ibatis.session.Configuration;
+import io.micronaut.context.annotation.ConfigurationProperties
 
-/**
- * Allows custom actions to be performed on a MyBatis {@link Configuration}.
- * Customizers may be annotated with {@link jakarta.inject.Named} to target a specific datasource.
- *
- * @author Graeme Rocher
- * @since 7.1.0
- */
-public interface MyBatisConfigurationCustomizer {
+@ConfigurationProperties("application") // <1>
+class ApplicationConfigurationProperties : ApplicationConfiguration {
 
-    /**
-     * Performs custom configuration operations on the given MyBatis configuration.
-     *
-     * @param configuration The configuration to customize
-     */
-    void customize(Configuration configuration);
+    private val DEFAULT_MAX = 10
+
+    override var max = DEFAULT_MAX
 }

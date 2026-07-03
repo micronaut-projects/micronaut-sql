@@ -1,11 +1,11 @@
 plugins {
-    `java-library`
+    id("io.micronaut.build.internal.kotlin-ksp")
 }
 dependencies {
-    testAnnotationProcessor(mn.micronaut.inject.java)
-    testAnnotationProcessor(mnSerde.micronaut.serde.processor)
+    kspTest(mn.micronaut.inject.kotlin)
+    kspTest(mnSerde.micronaut.serde.processor)
     testImplementation(mnSerde.micronaut.serde.jackson)
-    testAnnotationProcessor(mnValidation.micronaut.validation.processor)
+    kspTest(mnValidation.micronaut.validation.processor)
     testImplementation(mnValidation.micronaut.validation)
     testImplementation(projects.micronautMybatis)
     testImplementation(projects.micronautJdbcHikari)

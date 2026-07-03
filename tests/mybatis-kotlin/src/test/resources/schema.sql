@@ -1,0 +1,13 @@
+CREATE TABLE GENRE (
+  id    BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  name VARCHAR(255)              NOT NULL UNIQUE
+);
+
+CREATE TABLE BOOK (
+  id    BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  name VARCHAR(255)              NOT NULL,
+  isbn VARCHAR(255)              NOT NULL,
+  genre_id BIGINT,
+    constraint FKM1T3YVW5I7OLWDF32CWUUL7TA
+    foreign key (GENRE_ID) references GENRE
+);

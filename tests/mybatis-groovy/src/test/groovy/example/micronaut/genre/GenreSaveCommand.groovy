@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.mybatis;
+package example.micronaut.genre
 
-import org.apache.ibatis.session.Configuration;
+import groovy.transform.CompileStatic
+import io.micronaut.core.annotation.NonNull
+import io.micronaut.serde.annotation.Serdeable
 
-/**
- * Allows custom actions to be performed on a MyBatis {@link Configuration}.
- * Customizers may be annotated with {@link jakarta.inject.Named} to target a specific datasource.
- *
- * @author Graeme Rocher
- * @since 7.1.0
- */
-public interface MyBatisConfigurationCustomizer {
+import jakarta.validation.constraints.NotBlank
 
-    /**
-     * Performs custom configuration operations on the given MyBatis configuration.
-     *
-     * @param configuration The configuration to customize
-     */
-    void customize(Configuration configuration);
+@CompileStatic
+@Serdeable
+class GenreSaveCommand {
+
+    @NotBlank
+    @NonNull
+    String name
+
+    GenreSaveCommand(@NonNull @NotBlank String name) {
+        this.name = name
+    }
 }

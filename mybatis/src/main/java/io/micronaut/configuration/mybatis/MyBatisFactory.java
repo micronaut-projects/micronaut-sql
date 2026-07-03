@@ -28,6 +28,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.session.SqlSessionManager;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+import org.jspecify.annotations.Nullable;
 
 import javax.sql.DataSource;
 
@@ -35,7 +36,7 @@ import javax.sql.DataSource;
  * Configures MyBatis beans from Micronaut {@link DataSource} beans.
  *
  * @author Graeme Rocher
- * @since 7.0.0
+ * @since 7.1.0
  */
 @Factory
 public class MyBatisFactory {
@@ -46,17 +47,16 @@ public class MyBatisFactory {
      * @param name        The datasource name
      * @param dataSource  The datasource
      * @param beanLocator The bean locator
+     * @param transactionFactory Transaction Factory
      * @return The MyBatis configuration
      */
     @EachBean(DataSource.class)
     public Configuration myBatisConfiguration(
         @Parameter String name,
         @Parameter DataSource dataSource,
-        BeanLocator beanLocator
-    ) {
-        TransactionFactory resolvedTransactionFactory = beanLocator
-            .findBean(TransactionFactory.class, Qualifiers.byName(name))
-            .orElseGet(JdbcTransactionFactory::new);
+        @Parameter @Nullable TransactionFactory transactionFactory,
+        BeanLocator beanLocator) {
+        TransactionFactory resolvedTransactionFactory = transactionFactory != null ? transactionFactory : new JdbcTransactionFactory();
         Configuration configuration = new Configuration(new Environment(name, resolvedTransactionFactory, dataSource));
         for (MyBatisConfigurationCustomizer customizer : beanLocator.getBeansOfType(
             MyBatisConfigurationCustomizer.class,

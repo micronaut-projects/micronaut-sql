@@ -13,23 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.mybatis;
+package example.micronaut.genre
 
-import org.apache.ibatis.session.Configuration;
+import example.micronaut.ListingArguments
+import example.micronaut.domain.Genre
+import io.micronaut.core.annotation.NonNull
 
-/**
- * Allows custom actions to be performed on a MyBatis {@link Configuration}.
- * Customizers may be annotated with {@link jakarta.inject.Named} to target a specific datasource.
- *
- * @author Graeme Rocher
- * @since 7.1.0
- */
-public interface MyBatisConfigurationCustomizer {
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 
-    /**
-     * Performs custom configuration operations on the given MyBatis configuration.
-     *
-     * @param configuration The configuration to customize
-     */
-    void customize(Configuration configuration);
+interface GenreRepository {
+
+    @NonNull
+    Optional<Genre> findById(long id)
+
+    @NonNull
+    Genre save(@NonNull @NotBlank String name)
+
+    void deleteById(long id)
+
+    @NonNull
+    List<Genre> findAll(@NonNull @NotNull ListingArguments args)
+
+    int update(long id, @NonNull @NotBlank String name)
 }

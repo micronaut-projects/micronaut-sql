@@ -5,6 +5,6 @@ Micronaut also looks for a link:https://mybatis.org/mybatis-3/apidocs/org/apache
 
 For example, you can register mapper interfaces and tune MyBatis settings for a specific datasource:
 
-snippet::io.micronaut.configuration.mybatis.docs.InventoryMyBatisCustomizer[tags="imports,clazz", project-base="docs-examples/mybatis"]
+snippet::example.micronaut.CustomConfigurationCustomizer[tags="imports,clazz", project-base="tests/mybatis"]
 
 This hook is also the right place to configure other MyBatis features that belong on the `Configuration`, such as type aliases, type handlers, interceptors, or additional mapper registrations.

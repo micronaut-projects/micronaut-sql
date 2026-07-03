@@ -1,18 +1,19 @@
 plugins {
     `java-library`
+    groovy
 }
 dependencies {
-    testAnnotationProcessor(mn.micronaut.inject.java)
-    testAnnotationProcessor(mnSerde.micronaut.serde.processor)
+    testCompileOnly(mn.micronaut.inject.groovy)
+    testCompileOnly(mnSerde.micronaut.serde.processor)
     testImplementation(mnSerde.micronaut.serde.jackson)
-    testAnnotationProcessor(mnValidation.micronaut.validation.processor)
+    testCompileOnly(mnValidation.micronaut.validation.processor)
     testImplementation(mnValidation.micronaut.validation)
     testImplementation(projects.micronautMybatis)
     testImplementation(projects.micronautJdbcHikari)
     testRuntimeOnly(libs.managed.h2)
     testImplementation(mn.micronaut.http.client)
     testImplementation(mn.micronaut.http.server.netty)
-    testImplementation(mnTest.micronaut.test.junit5)
+    testImplementation(mnTest.micronaut.test.spock)
     testRuntimeOnly(mnTest.junit.jupiter.engine)
     testImplementation(mnTest.junit.platform.launcher)
 }

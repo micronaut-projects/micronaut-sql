@@ -13,23 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.mybatis;
+package example.micronaut.domain
 
-import org.apache.ibatis.session.Configuration;
+import com.fasterxml.jackson.annotation.JsonIgnore
+import io.micronaut.serde.annotation.Serdeable
 
-/**
- * Allows custom actions to be performed on a MyBatis {@link Configuration}.
- * Customizers may be annotated with {@link jakarta.inject.Named} to target a specific datasource.
- *
- * @author Graeme Rocher
- * @since 7.1.0
- */
-public interface MyBatisConfigurationCustomizer {
+@Serdeable
+data class Genre(var name: String) {
 
-    /**
-     * Performs custom configuration operations on the given MyBatis configuration.
-     *
-     * @param configuration The configuration to customize
-     */
-    void customize(Configuration configuration);
+    var id: Long? = null
+
+    @JsonIgnore
+    var books: Set<Book> = mutableSetOf()
+
+    override fun toString() = "Genre{id=$id, name='$name', books=$books}"
 }
