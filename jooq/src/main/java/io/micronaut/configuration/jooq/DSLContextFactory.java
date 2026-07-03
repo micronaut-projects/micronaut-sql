@@ -15,11 +15,19 @@
  */
 package io.micronaut.configuration.jooq;
 
+import io.micronaut.context.BeanProvider;
+import io.micronaut.context.annotation.Any;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Parameter;
+import io.micronaut.context.annotation.Primary;
+import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.annotation.Secondary;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.transaction.TransactionStatus;
 import io.micronaut.transaction.support.ExceptionUtil;
+import jakarta.inject.Singleton;
 import org.jooq.Configuration;
 import org.jooq.DSLContext;
 import org.jooq.TransactionProperty;
@@ -43,8 +51,47 @@ final class DSLContextFactory {
      * @param configuration The {@link Configuration}
      * @return A {@link DSLContext}
      */
-    @EachBean(Configuration.class)
-    DSLContext dslContext(Configuration configuration) {
+    @EachBean(JdbcConfiguration.class)
+    @Secondary
+    DSLContext dslContext(@Parameter JdbcConfiguration configuration) {
+        return createDslContext(configuration);
+    }
+
+    @EachBean(R2dbcConfiguration.class)
+    @Secondary
+    DSLContext r2dbcDslContext(@Parameter R2dbcConfiguration configuration) {
+        return createDslContext(configuration);
+    }
+
+    @Primary
+    @Singleton
+    @Requires(beans = R2dbcConfiguration.class)
+    DSLContext primaryR2dbcDslContext(@Any BeanProvider<R2dbcConfiguration> configurations) {
+        R2dbcConfiguration configuration = selectR2dbcConfiguration(configurations);
+        return createDslContext(configuration);
+    }
+
+    private R2dbcConfiguration selectR2dbcConfiguration(BeanProvider<R2dbcConfiguration> configurations) {
+        return configurations.find(Qualifiers.byStereotype(Primary.class))
+            .or(() -> configurations.find(Qualifiers.byName("default")))
+            .orElseGet(() -> requireSingleConfiguration(configurations));
+    }
+
+    private R2dbcConfiguration requireSingleConfiguration(BeanProvider<R2dbcConfiguration> configurations) {
+        var iterator = configurations.iterator();
+        var configuration = iterator.next();
+        if (iterator.hasNext()) {
+            int candidateCount = 2;
+            while (iterator.hasNext()) {
+                iterator.next();
+                candidateCount++;
+            }
+            throw new IllegalStateException("Multiple R2DBC configurations found (" + candidateCount + "). Mark one @Primary or name one 'default'");
+        }
+        return configuration;
+    }
+
+    private DSLContext createDslContext(Configuration configuration) {
         return new DefaultDSLContext(configuration) {
 
             @Override

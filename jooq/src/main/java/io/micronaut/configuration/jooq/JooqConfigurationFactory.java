@@ -20,7 +20,6 @@ import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.core.annotation.Internal;
-import org.jspecify.annotations.Nullable;
 import io.micronaut.jdbc.DataSourceResolver;
 import org.jooq.Configuration;
 import org.jooq.ConnectionProvider;
@@ -31,7 +30,7 @@ import org.jooq.RecordMapperProvider;
 import org.jooq.RecordUnmapperProvider;
 import org.jooq.TransactionProvider;
 import org.jooq.conf.Settings;
-import org.jooq.impl.DefaultConfiguration;
+import org.jspecify.annotations.Nullable;
 
 import javax.sql.DataSource;
 
@@ -66,7 +65,7 @@ final class JooqConfigurationFactory extends AbstractJooqConfigurationFactory {
      */
     @SuppressWarnings("checkstyle:ParameterNumber")
     @EachBean(DataSource.class)
-    Configuration jooqConfiguration(
+    JdbcConfiguration jooqConfiguration(
         @Parameter String name,
         DataSource dataSource,
         @Parameter @Nullable TransactionProvider transactionProvider,
@@ -89,7 +88,7 @@ final class JooqConfigurationFactory extends AbstractJooqConfigurationFactory {
             dataSourceResolver = DataSourceResolver.DEFAULT;
         }
 
-        DefaultConfiguration configuration = super.jooqConfiguration(name, transactionProvider, settings, executorProvider,
+        JdbcConfiguration configuration = super.configureConfiguration(new JdbcConfiguration(), name, transactionProvider, settings, executorProvider,
             recordMapperProvider, recordUnmapperProvider, metaProvider, converterProvider, properties, ctx);
 
         if (connectionProvider != null) {

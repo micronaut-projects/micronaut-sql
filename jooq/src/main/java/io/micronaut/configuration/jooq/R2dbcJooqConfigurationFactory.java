@@ -21,7 +21,6 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Internal;
-import org.jspecify.annotations.Nullable;
 import io.r2dbc.spi.ConnectionFactory;
 import org.jooq.Configuration;
 import org.jooq.ConverterProvider;
@@ -32,7 +31,7 @@ import org.jooq.RecordUnmapperProvider;
 import org.jooq.SQLDialect;
 import org.jooq.TransactionProvider;
 import org.jooq.conf.Settings;
-import org.jooq.impl.DefaultConfiguration;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Sets up R2DBC jOOQ library integration.
@@ -64,7 +63,7 @@ final class R2dbcJooqConfigurationFactory extends AbstractJooqConfigurationFacto
      */
     @SuppressWarnings("checkstyle:MethodLength")
     @EachBean(ConnectionFactory.class)
-    Configuration jooqConfiguration(
+    R2dbcConfiguration jooqConfiguration(
         @Parameter String name,
         ConnectionFactory connectionFactory,
         @Parameter @Nullable TransactionProvider transactionProvider,
@@ -81,7 +80,7 @@ final class R2dbcJooqConfigurationFactory extends AbstractJooqConfigurationFacto
             properties = new R2dbcJooqConfigurationProperties();
         }
 
-        DefaultConfiguration configuration = super.jooqConfiguration(name, transactionProvider, settings, executorProvider,
+        R2dbcConfiguration configuration = super.configureConfiguration(new R2dbcConfiguration(), name, transactionProvider, settings, executorProvider,
             recordMapperProvider, recordUnmapperProvider, metaProvider, converterProvider, properties, ctx);
 
         configuration.setSQLDialect(getSqlDialect(properties));
