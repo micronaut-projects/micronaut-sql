@@ -15,7 +15,8 @@
  */
 package io.micronaut.configuration.mybatis;
 
-import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.BeanLocator;
+import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
@@ -27,7 +28,6 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.session.SqlSessionManager;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
-import org.jspecify.annotations.Nullable;
 
 import javax.sql.DataSource;
 
@@ -43,24 +43,22 @@ public class MyBatisFactory {
     /**
      * Creates the MyBatis {@link Configuration} for a datasource.
      *
-     * @param name               The datasource name
-     * @param dataSource         The datasource
-     * @param transactionFactory The transaction factory, if one is provided for the datasource
-     * @param applicationContext The application context
+     * @param name        The datasource name
+     * @param dataSource  The datasource
+     * @param beanLocator The bean locator
      * @return The MyBatis configuration
      */
     @EachBean(DataSource.class)
     public Configuration myBatisConfiguration(
         @Parameter String name,
         @Parameter DataSource dataSource,
-        @Nullable @Parameter TransactionFactory transactionFactory,
-        ApplicationContext applicationContext
+        BeanLocator beanLocator
     ) {
-        TransactionFactory resolvedTransactionFactory = transactionFactory == null
-            ? new JdbcTransactionFactory()
-            : transactionFactory;
+        TransactionFactory resolvedTransactionFactory = beanLocator
+            .findBean(TransactionFactory.class, Qualifiers.byName(name))
+            .orElseGet(JdbcTransactionFactory::new);
         Configuration configuration = new Configuration(new Environment(name, resolvedTransactionFactory, dataSource));
-        for (MyBatisConfigurationCustomizer customizer : applicationContext.getBeansOfType(
+        for (MyBatisConfigurationCustomizer customizer : beanLocator.getBeansOfType(
             MyBatisConfigurationCustomizer.class,
             Qualifiers.byName(name)
         )) {
@@ -87,6 +85,7 @@ public class MyBatisFactory {
      * @return The session manager
      */
     @EachBean(SqlSessionFactory.class)
+    @Bean(typed = SqlSessionManager.class)
     public SqlSessionManager sqlSessionManager(SqlSessionFactory sqlSessionFactory) {
         return SqlSessionManager.newInstance(sqlSessionFactory);
     }
