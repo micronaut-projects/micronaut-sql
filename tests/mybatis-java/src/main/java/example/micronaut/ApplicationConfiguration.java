@@ -13,15 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.mybatis.support;
+package example.micronaut;
 
-import io.micronaut.context.annotation.Property;
-import jakarta.inject.Named;
-import jakarta.inject.Singleton;
-import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+public interface ApplicationConfiguration {
 
-@Property(name = "spec.name", value = "MyBatisFactoryTest")
-@Named("default")
-@Singleton
-public final class TestTransactionFactory extends JdbcTransactionFactory {
+    int getMax();
 }

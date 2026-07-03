@@ -52,7 +52,7 @@ class MyBatisFactoryTest {
     @Test
     void createsMyBatisBeansForTheDefaultDataSource() throws Exception {
         try (ApplicationContext applicationContext = ApplicationContext.builder("test")
-            .properties(Map.of("datasources.default", Map.of()))
+            .properties(Map.of("datasources.default", Map.of(), "spec.name", "MyBatisFactoryTest"))
             .start()) {
             assertTrue(applicationContext.containsBean(DataSource.class));
             assertTrue(applicationContext.containsBean(Configuration.class));

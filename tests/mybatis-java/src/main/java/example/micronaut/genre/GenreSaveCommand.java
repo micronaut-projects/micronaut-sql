@@ -13,15 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.mybatis.support;
+package example.micronaut.genre;
 
-import io.micronaut.context.annotation.Property;
-import jakarta.inject.Named;
-import jakarta.inject.Singleton;
-import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.serde.annotation.Serdeable;
 
-@Property(name = "spec.name", value = "MyBatisFactoryTest")
-@Named("default")
-@Singleton
-public final class TestTransactionFactory extends JdbcTransactionFactory {
+import jakarta.validation.constraints.NotBlank;
+
+@Serdeable
+public class GenreSaveCommand {
+
+    @NotBlank
+    @NonNull
+    private String name;
+
+    public GenreSaveCommand(@NonNull @NotBlank String name) {
+        this.name = name;
+    }
+
+    @NonNull
+    public String getName() {
+        return name;
+    }
+
+    public void setName(@NonNull String name) {
+        this.name = name;
+    }
 }
