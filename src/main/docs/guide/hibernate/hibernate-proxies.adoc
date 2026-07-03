@@ -6,14 +6,14 @@ This has a few disadvantages:
 * Environments like GraalVM don't support it
 
 If you wish to use lazy entity associations and avoid runtime proxies you can enable compile-time proxies:
-[source,yaml]
+[configuration]
 ----
 jpa:
   default:
     compile-time-hibernate-proxies: true
 ----
 
-Compile-time proxies require for an entity which needs to have a proxy to be annotated with `@GenerateProxy`:
+Compile-time proxies require every entity type that Hibernate may proxy to be annotated with `@GenerateProxy`:
 
 For example:
 
@@ -29,7 +29,7 @@ public class Pet {
 }
 ----
 
-The entity `Owner` needs to be annotated with `@GenerateProxy` to have a proxy generated and the compile-time.
+The entity `Owner` needs to be annotated with `@GenerateProxy` to have a proxy generated at compile time.
 
 [source,java]
 ----
@@ -41,4 +41,6 @@ public class Owner {
 ----
 
 [NOTE]
-Compile-time proxies are enabled by default for GraalVM environment.
+For GraalVM native image, enable compile-time proxies with the configuration shown above.
+
+For the full set of Hibernate native image requirements, including entity scanning and reflective access for embeddable identifier types, see the <<hibernate-graalvm,GraalVM native image section>> in this chapter.

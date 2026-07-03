@@ -6,7 +6,7 @@ pluginManagement {
 }
 
 plugins {
-    id 'io.micronaut.build.shared.settings' version '8.0.0-M17'
+    id 'io.micronaut.build.shared.settings' version '8.0.0'
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -29,9 +29,11 @@ rootProject.name = 'sql-parent'
 
 include 'sql-bom'
 include 'jdbc'
+include 'jdbc-sqlite'
 include 'jdbc-dbcp'
 include 'jdbc-hikari'
 include 'jdbc-tomcat'
+include 'jdbc-unpooled'
 include 'jdbc-ucp'
 include 'jasync-sql'
 include 'hibernate-jpa'
@@ -69,7 +71,11 @@ include 'tests:jooq-tests:jooq-r2dbc-postgres'
 include 'tests:vertx-pg-client-native'
 
 include 'tests:jdbc-ucp-tests:jdbc-ucp-oracle'
+include 'tests:jdbc-ucp-tests:jdbc-ucp-sqlite'
 include 'tests:jdbc-dbcp-tests:jdbc-dbcp-postgres'
 include 'tests:jdbc-hikari-tests:jdbc-hikari-h2'
 include 'tests:jdbc-hikari-tests:jdbc-hikari-sqlite'
 include 'tests:jdbc-tomcat-tests:jdbc-tomcat-mysql'
+include 'test-suite-ojdbc-extensions'
+include 'test-suite-ojdbc-extensions-hikari'
+include 'test-suite-ojdbc-extensions-ucp'

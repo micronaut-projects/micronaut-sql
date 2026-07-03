@@ -10,6 +10,8 @@ For each registered `DataSource` or `ConnectionFactory`, Micronaut will configur
 * link:{jooqapi}/org/jooq/Configuration.html[Configuration] - jOOQ `Configuration`
 * link:{jooqapi}/org/jooq/DSLContext.html[DSLContext] - jOOQ `DSLContext`
 
+For JDBC-backed jOOQ applications that use Micronaut transaction management, configure <<jdbc-transactions, Transaction Management>>.
+
 If Spring transaction management is in use, it will additionally create the following beans :
 
 * api:configuration.jooq.JooqExceptionTranslatorProvider[] for each `DataSource`

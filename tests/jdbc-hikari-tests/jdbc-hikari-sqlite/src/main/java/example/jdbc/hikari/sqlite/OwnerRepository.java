@@ -2,6 +2,7 @@ package example.jdbc.hikari.sqlite;
 
 import example.domain.IOwner;
 import example.sync.IOwnerRepository;
+import io.micronaut.transaction.annotation.ReadOnly;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
@@ -32,13 +33,15 @@ public class OwnerRepository implements IOwnerRepository {
 
     @Transactional
     public void runInit() throws SQLException {
-        PreparedStatement stmt = dataSource.getConnection().prepareStatement("""
-            CREATE TABLE IF NOT EXISTS owners (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name VARCHAR(200) NOT NULL,
-                age INTEGER NOT NULL
-            )""");
-        stmt.executeUpdate();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("""
+                 CREATE TABLE IF NOT EXISTS owners (
+                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     name VARCHAR(200) NOT NULL,
+                     age INTEGER NOT NULL
+                 )""")) {
+            stmt.executeUpdate();
+        }
     }
 
     @Override
@@ -46,7 +49,7 @@ public class OwnerRepository implements IOwnerRepository {
         return new Owner();
     }
 
-    @Transactional(Transactional.TxType.MANDATORY)
+    @Transactional
     @Override
     public void save(IOwner owner) {
         try (Connection conn = dataSource.getConnection();
@@ -65,7 +68,7 @@ public class OwnerRepository implements IOwnerRepository {
         }
     }
 
-    @Transactional(Transactional.TxType.MANDATORY)
+    @Transactional
     @Override
     public void delete(IOwner owner) {
         try (Connection conn = dataSource.getConnection();
@@ -77,6 +80,7 @@ public class OwnerRepository implements IOwnerRepository {
         }
     }
 
+    @ReadOnly
     @Override
     public IOwner findById(Long id) {
         try (Connection conn = dataSource.getConnection();
@@ -93,6 +97,7 @@ public class OwnerRepository implements IOwnerRepository {
         }
     }
 
+    @ReadOnly
     @Override
     public Collection<IOwner> findAll() {
         try (Connection conn = dataSource.getConnection();
@@ -108,6 +113,7 @@ public class OwnerRepository implements IOwnerRepository {
         }
     }
 
+    @ReadOnly
     @Override
     public Optional<IOwner> findByName(String name) {
         try (Connection conn = dataSource.getConnection();

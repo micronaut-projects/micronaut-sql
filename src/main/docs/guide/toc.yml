@@ -6,14 +6,18 @@ jdbc:
   jdbc-disable: Disable Micronaut JDBC Data Sources
   jdbc-connection-pools: Configuring JDBC Connection Pools
   jdbc-multiple-datasources: Configuring Multiple Data Sources
+  jdbc-transactions: Transaction Management
   jdbc-healthchecks: JDBC Health Checks
   jdbc-runtime-password-update: Data Source Runtime Password Change
+  oracle-jdbc-driver-extensions: Oracle JDBC Driver Extensions
+  jdbc-sqlite: SQLite Support
 hibernate:
   title: Configuring Hibernate
   hibernate-disable: Disable Micronaut Hibernate JPA
   hibernate-inject-session: Injecting an EntityManager or Hibernate Session
   hibernate-customizing: Customizing Hibernate/JPA Configuration
   hibernate-entity-scan: Entity Scan Configuration
+  hibernate-graalvm: GraalVM native image
   hibernate-reactive: Configuring Hibernate Reactive
   hibernate-proxies: Using compile-time Hibernate proxies
   hibernate-lazy-initialization: Understanding LazyInitializationException

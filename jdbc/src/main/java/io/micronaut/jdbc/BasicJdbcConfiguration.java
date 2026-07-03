@@ -15,6 +15,8 @@
  */
 package io.micronaut.jdbc;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.Map;
 
 /**
@@ -35,11 +37,13 @@ public interface BasicJdbcConfiguration {
     /**
      * @return A user provided name to identify the datasource
      */
+    @Nullable
     String getName();
 
     /**
      * @return The URL supplied via configuration
      */
+    @Nullable
     String getConfiguredUrl();
 
     /**
@@ -56,6 +60,7 @@ public interface BasicJdbcConfiguration {
     /**
      * @return The driver class name supplied via configuration
      */
+    @Nullable
     String getConfiguredDriverClassName();
 
     /**
@@ -72,42 +77,48 @@ public interface BasicJdbcConfiguration {
     /**
      * @return The username supplied via configuration
      */
+    @Nullable
     String getConfiguredUsername();
 
     /**
      * @return The username to be used by the data source
      */
+    @Nullable
     String getUsername();
 
     /**
      * @param username Sets the username
      * @since 2.1
      */
-    void setUsername(String username);
+    void setUsername(@Nullable String username);
 
     /**
      * @return The password supplied via configuration
      */
+    @Nullable
     String getConfiguredPassword();
 
     /**
      * @return The password to be used by the data source
      */
+    @Nullable
     String getPassword();
 
     /**
      * @param password Sets the password
      */
-    void setPassword(String password);
+    void setPassword(@Nullable String password);
 
     /**
      * @return The validation query supplied via configuration
      */
+    @Nullable
     String getConfiguredValidationQuery();
 
     /**
      * @return The validation query to be used by the data source
      */
+    @Nullable
     String getValidationQuery();
 
     /**

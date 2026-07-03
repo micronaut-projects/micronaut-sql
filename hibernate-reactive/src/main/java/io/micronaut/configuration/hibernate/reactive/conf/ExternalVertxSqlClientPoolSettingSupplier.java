@@ -55,6 +55,7 @@ final class ExternalVertxSqlClientPoolSettingSupplier implements SettingsSupplie
         private transient SqlExceptionHelper sqlExceptionHelper;
         private transient ServiceRegistryImplementor serviceRegistry;
 
+        @SuppressWarnings("NullAway.Init")
         private ExternalSqlClientPool(Pool pool) {
             this.pool = pool;
         }

@@ -11,7 +11,11 @@ micronautBom {
 micronautBom {
     suppressions {
         acceptedLibraryRegressions.add("micronaut-hibernate-jpa-spring")
+        acceptedLibraryRegressions.add("micronaut-jdbc-unpooled")
         acceptedVersionRegressions.add("commons-dbcp-compat")
         acceptedLibraryRegressions.add("commons-dbcp")
+        acceptedVersionRegressions.add("ojdbcdms")
+        acceptedLibraryRegressions.add("ojdbc8")
+        acceptedLibraryRegressions.add("ucp")
     }
 }

@@ -24,6 +24,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import io.micronaut.jdbc.OracleSessionProgramHelper;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,7 +119,7 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         }
     }
 
-    private MeterRegistry getMeterRegistry() {
+    private @Nullable MeterRegistry getMeterRegistry() {
         return this.applicationContext.containsBean(MeterRegistry.class) ?
                 this.applicationContext.getBean(MeterRegistry.class) : null;
     }

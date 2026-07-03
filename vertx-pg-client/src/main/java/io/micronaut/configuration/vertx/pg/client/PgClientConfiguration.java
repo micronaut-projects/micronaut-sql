@@ -20,6 +20,7 @@ import io.micronaut.context.annotation.ConfigurationProperties;
 import io.vertx.core.net.NetClientOptions;
 import io.vertx.pgclient.PgConnectOptions;
 import io.vertx.sqlclient.PoolOptions;
+import org.jspecify.annotations.Nullable;
 
 /**
  * The configuration class for Vertx Pg Client PoolOptions.
@@ -37,12 +38,12 @@ public class PgClientConfiguration {
     @ConfigurationBuilder
     protected NetClientOptions netClientOptions = new NetClientOptions();
 
-    protected String uri;
+    protected @Nullable String uri;
 
     /**
      * @return The Pg connection URI.
      */
-    public String getUri() {
+    public @Nullable String getUri() {
         return uri;
     }
 
@@ -60,6 +61,13 @@ public class PgClientConfiguration {
      */
     public PoolOptions getPoolOptions() {
         return poolOptions;
+    }
+
+    /**
+     * @return The net client options for configuring the client.
+     */
+    public NetClientOptions getNetClientOptions() {
+        return netClientOptions;
     }
 
 }

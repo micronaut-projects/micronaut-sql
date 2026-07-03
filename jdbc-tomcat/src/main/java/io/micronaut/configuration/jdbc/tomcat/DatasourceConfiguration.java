@@ -22,6 +22,7 @@ import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
+import org.jspecify.annotations.Nullable;
 
 import jakarta.annotation.PostConstruct;
 import java.util.Map;
@@ -107,7 +108,7 @@ public class DatasourceConfiguration extends PoolProperties implements BasicJdbc
      * @return The calculated username
      */
     @Override
-    public String getUsername() {
+    public @Nullable String getUsername() {
         return calculatedSettings.getUsername();
     }
 
@@ -123,7 +124,7 @@ public class DatasourceConfiguration extends PoolProperties implements BasicJdbc
      * @return The calculated password
      */
     @Override
-    public String getPassword() {
+    public @Nullable String getPassword() {
         return calculatedSettings.getPassword();
     }
 
@@ -139,7 +140,7 @@ public class DatasourceConfiguration extends PoolProperties implements BasicJdbc
      * @return The calculated validation query
      */
     @Override
-    public String getValidationQuery() {
+    public @Nullable String getValidationQuery() {
         return calculatedSettings.getValidationQuery();
     }
 

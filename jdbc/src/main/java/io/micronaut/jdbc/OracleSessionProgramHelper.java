@@ -18,6 +18,7 @@ package io.micronaut.jdbc;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.util.StringUtils;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -45,7 +46,7 @@ public final class OracleSessionProgramHelper {
      *     <li>The property 'datasources.{dataSourceName}.oracle.session.enabled' is true (default)</li>
      *     <li>The 'micronaut.application.name' property is non-empty</li>
      *     <li>The 'v$session.program' property is not already provided</li>
-     * </ul>
+     * </ul>.
      *
      * @param dataSourceName the name of the data source
      * @param url the JDBC URL
@@ -57,8 +58,8 @@ public final class OracleSessionProgramHelper {
      */
     public static boolean apply(
             String dataSourceName,
-            String url,
-            String dialect,
+            @Nullable String url,
+            @Nullable String dialect,
             Environment environment,
             BiConsumer<String, String> addConnectionProperty,
             BooleanSupplier alreadyProvided

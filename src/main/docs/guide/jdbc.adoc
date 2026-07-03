@@ -1,4 +1,4 @@
-Java data sources can be configured for one of four currently provided implementations. Apache DBCP2, Hikari, Tomcat, and Oracle Universal Connection Pool are supported by default.
+Java data sources can be configured for one of five currently provided implementations. Apache DBCP2, Hikari, Tomcat, Oracle Universal Connection Pool, and an unpooled DriverManager-backed datasource are supported by default.
 
 [TIP]
 .Using the CLI
@@ -19,12 +19,10 @@ dependency:micronaut-jdbc-dbcp[groupId="io.micronaut.sql", scope="runtime"]
 
 dependency:micronaut-jdbc-ucp[groupId="io.micronaut.sql", scope="runtime"]
 
+dependency:micronaut-jdbc-unpooled[groupId="io.micronaut.sql", scope="runtime"]
+
 You also need to add a JDBC driver dependency to your classpath. For example to add the http://www.h2database.com[H2 In-Memory Database]:
 
 dependency:h2[groupId="com.h2database", scope="runtime"]
 
-To use SQLite, add the Xerial JDBC driver:
-
-dependency:sqlite-jdbc[groupId="org.xerial", scope="runtime"]
-
-When the SQLite driver is present, Micronaut can automatically configure an embedded shared in-memory datasource for `db-type: sqlite` if you do not provide an explicit JDBC URL.
+To configure Micronaut-managed JDBC transactions without Spring, see <<jdbc-transactions, Transaction Management>>.

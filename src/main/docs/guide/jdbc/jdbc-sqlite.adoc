@@ -1,0 +1,25 @@
+To use https://www.sqlite.org[SQLite], add the following dependency:
+
+dependency:micronaut-jdbc-sqlite[groupId="io.micronaut.sql", scope="runtime"]
+
+The module provides connection capabilities configuration for SQLite and adds the https://github.com/xerial/sqlite-jdbc[SQLite JDBC driver] as a transitive dependency.
+
+If you do not provide an explicit JDBC URL, Micronaut SQL configures automatically the following JDBC URL `jdbc:sqlite:file:%s?mode=memory&cache=shared&foreign_keys=on&busy_timeout=5000`, when you set `datasources.*.db-type` to `sqlite`.
+
+For production, you will probably want to configure SQLite explicitly with a file-backed JDBC URL and something like this:
+
+[configuration]
+----
+datasources:
+    default:
+        url: jdbc:sqlite:mydb.db?foreign_keys=on&busy_timeout=5000&journal_mode=WAL&synchronous
+----
+
+Useful SQLite documentation links:
+
+* https://sqlite.org/wal.html[SQLite Write-Ahead Logging]
+* https://sqlite.org/walformat.html[WAL file format details]
+* https://sqlite.org/foreignkeys.html[SQLite Foreign Key Support]
+* https://sqlite.org/pragma.html#pragma_busy_timeout[SQLite PRAGMA busy_timeout]
+* https://sqlite.org/pragma.html#pragma_synchronous[SQLite PRAGMA synchronous]
+* https://sqlite.org/pragma.html[SQLite PRAGMA reference]

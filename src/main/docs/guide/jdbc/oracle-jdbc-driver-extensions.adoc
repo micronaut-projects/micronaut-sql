@@ -1,0 +1,14 @@
+https://docs.oracle.com/en/database/oracle/oracle-database/26/jjdbc/JDBC-service-provider-extensions.html[JDBC Service Provider Extensions]
+
+____
+Starting with Oracle AI Database Release 26ai, you can extend the capabilities of Oracle JDBC drivers through service providers.
+____
+
+https://github.com/oracle/ojdbc-extensions/[Oracle JDBC Driver Extensions] service providers are configured via connection properties. Use the `datasources.*.data-source-properties` prefix.
+
+For example, to configure the `oracle.jdbc.provider.password` property as the name of a password provider and `oracle.jdbc.provider.password.vaultId` as a parameter recognized by the password provider, you will use a configuration such as:
+
+[source, properties]
+----
+include::test-suite-ojdbc-extensions/src/testFixtures/resources/application.properties[]
+----

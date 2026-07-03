@@ -18,6 +18,7 @@ package io.micronaut.configuration.jdbc.dbcp.metadata;
 import io.micronaut.jdbc.metadata.AbstractDataSourcePoolMetadata;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.pool2.impl.GenericObjectPool;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +73,7 @@ public class DbcpDataSourcePoolMetadata
     }
 
     @Override
-    public String getValidationQuery() {
+    public @Nullable String getValidationQuery() {
         return getDataSource().getValidationQuery();
     }
 
@@ -90,7 +91,7 @@ public class DbcpDataSourcePoolMetadata
      *
      * @return The {@link GenericObjectPool}
      */
-    private GenericObjectPool extractPool() {
+    private @Nullable GenericObjectPool extractPool() {
         GenericObjectPool pool = null;
         Field poolField;
         try {
