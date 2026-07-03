@@ -8,6 +8,7 @@ dependencies {
     api(libs.managed.hibernate.core)
     api(libs.managed.jakarta.transaction.api)
     api(mnValidation.micronaut.validation)
+    compileOnlyApi(libs.managed.checker.qual)
     compileOnly(mnData.micronaut.data.tx.hibernate) {
         exclude(group: "org.hibernate.orm")
     }
