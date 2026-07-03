@@ -17,6 +17,7 @@ package example.micronaut.genre
 
 import example.micronaut.ListingArguments
 import example.micronaut.domain.Genre
+import example.micronaut.mappers.GenreMapper
 import io.micronaut.core.annotation.NonNull
 import jakarta.inject.Singleton
 import java.util.Optional

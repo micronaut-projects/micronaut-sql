@@ -12,7 +12,7 @@ import org.apache.ibatis.session.Configuration
 @Singleton
 class CustomConfigurationCustomizer : MyBatisConfigurationCustomizer {
     override fun customize(configuration: Configuration) {
-        configuration.addMappers("example.micronaut")
+        configuration.addMappers("example.micronaut.mappers")
     }
 }
 // end::clazz[]

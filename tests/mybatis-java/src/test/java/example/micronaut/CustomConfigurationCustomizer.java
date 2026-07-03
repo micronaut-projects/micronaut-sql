@@ -13,7 +13,7 @@ import org.apache.ibatis.session.Configuration;
 public class CustomConfigurationCustomizer implements MyBatisConfigurationCustomizer {
     @Override
     public void customize(Configuration configuration) {
-        configuration.addMappers("example.micronaut");
+        configuration.addMappers("example.micronaut.mappers");
     }
 }
 // end::clazz[]

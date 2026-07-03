@@ -16,6 +16,7 @@
 package example.micronaut.genre
 
 import example.micronaut.domain.Genre
+import example.micronaut.mappers.GenreMapper
 import groovy.transform.CompileStatic
 import jakarta.inject.Singleton
 import org.apache.ibatis.session.SqlSession

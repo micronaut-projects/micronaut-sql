@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package example.micronaut.genre;
+package example.micronaut.mappers;
 
 import example.micronaut.domain.Genre;
 import org.apache.ibatis.annotations.Delete;

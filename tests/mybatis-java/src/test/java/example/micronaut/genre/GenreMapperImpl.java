@@ -16,6 +16,7 @@
 package example.micronaut.genre;
 
 import example.micronaut.domain.Genre;
+import example.micronaut.mappers.GenreMapper;
 import jakarta.inject.Singleton;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
