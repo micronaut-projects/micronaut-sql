@@ -1,11 +1,7 @@
 Once a datasource is configured, you can inject the MyBatis runtime beans that Micronaut creates for it.
 
-For a single datasource application, injecting api:configuration.mybatis.MyBatisFactory[] output beans requires no qualifier:
+For a single datasource application, injecting api:configuration.mybatis.MyBatisFactory[] output beans requires no qualifier.
 
-snippet::io.micronaut.configuration.mybatis.docs.InventoryRepository[tags="imports,clazz", project-base="docs-examples/mybatis"]
-
-If you configure multiple datasources, inject the matching bean with `@Named`:
-
-snippet::io.micronaut.configuration.mybatis.docs.ReportingRepository[tags="imports,clazz", project-base="docs-examples/mybatis"]
+If you configure multiple datasources, inject the matching bean with `@Named` annotation.
 
 The `SqlSessionManager` is the typical entry point for mapper usage. Retrieve mapper implementations with `getMapper(..)` after registering the mapper interface through <<mybatis-customizers, a customizer>>.
