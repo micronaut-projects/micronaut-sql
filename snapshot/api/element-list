@@ -23,6 +23,7 @@ io.micronaut.configuration.jdbi.transaction.micronaut
 io.micronaut.configuration.jdbi.transaction.spring
 io.micronaut.configuration.jooq
 io.micronaut.configuration.jooq.spring
+io.micronaut.configuration.mybatis
 io.micronaut.configuration.vertx.mysql.client
 io.micronaut.configuration.vertx.mysql.client.condition
 io.micronaut.configuration.vertx.mysql.client.health
