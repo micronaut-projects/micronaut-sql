@@ -25,6 +25,7 @@ managed-jooq = "3.21.6"
 managed-hibernate = "7.4.4.Final"
 managed-hibernate-reactive = "4.5.1.Final"
 managed-jasync = "2.2.4"
+managed-mybatis = "3.5.19"
 managed-jdbi = "3.54.0"
 
 # JDBC Drivers
@@ -127,6 +128,10 @@ managed-ucp17 = { module = "com.oracle.database.jdbc:ucp17", version.ref = "mana
 # UCP
 
 dms = { module = "com.oracle.database.observability:dms", version.ref = "managed-dms" }
+
+# MyBatis
+managed-mybatis = { module = "org.mybatis:mybatis", version.ref = "managed-mybatis" }
+
 # JDBC drivers
 
 managed-postgresql = { module = "org.postgresql:postgresql", version.ref = "managed-postgres-driver" }

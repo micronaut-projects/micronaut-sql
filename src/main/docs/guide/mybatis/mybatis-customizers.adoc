@@ -1,0 +1,12 @@
+You can define additional beans which will be used when the MyBatis `Configuration` is created.
+Only beans of type api:configuration.mybatis.MyBatisConfigurationCustomizer[] with an `@Named` qualifier matching the datasource name will be applied.
+
+For example, you can register mapper interfaces and tune MyBatis settings for a specific datasource:
+
+snippet::example.micronaut.CustomConfigurationCustomizer[tags="imports,clazz", project-base="tests/mybatis"]
+
+This hook is also the right place to configure other MyBatis features that belong on the `Configuration`, such as type aliases, type handlers, interceptors, or additional mapper registrations.
+
+==== TransactionFactory Customization
+
+Micronaut also looks for a link:https://mybatis.org/mybatis-3/apidocs/org/apache/ibatis/transaction/TransactionFactory.html[TransactionFactory] bean qualified with the datasource name. If none is present, Micronaut falls back to link:https://mybatis.org/mybatis-3/apidocs/org/apache/ibatis/transaction/jdbc/JdbcTransactionFactory.html[JdbcTransactionFactory].
