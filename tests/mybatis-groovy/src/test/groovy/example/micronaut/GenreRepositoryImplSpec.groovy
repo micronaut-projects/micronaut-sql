@@ -18,7 +18,6 @@ package example.micronaut
 import example.micronaut.genre.GenreRepository
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
-import spock.lang.PendingFeature
 import spock.lang.Specification
 
 import jakarta.validation.ConstraintViolationException
@@ -32,7 +31,6 @@ class GenreRepositoryImplSpec extends Specification {
     @Inject
     GenreRepository genreRepository
 
-    @PendingFeature
     void constraintsAreValidatedForFindAll() {
         when:
         genreRepository.findAll(null)
