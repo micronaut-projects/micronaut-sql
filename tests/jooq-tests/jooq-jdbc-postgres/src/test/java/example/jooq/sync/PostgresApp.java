@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Property(name = "datasources.default.db-type", value = "postgres")
 @Property(name = "jooq.datasources.default.sql-dialect", value = "postgres")
 @Property(name = "jooq.datasources.default.json-converter-enabled", value = "true")
-public class PostgresApp extends AbstractApp {
+class PostgresApp extends AbstractApp {
 
     @Inject
     private JsonConverterProvider jsonConverterProvider;
