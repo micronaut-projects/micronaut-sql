@@ -62,7 +62,7 @@ managed-ongres-scram = "3.4"
 managed-checker-qual = "4.2.1"
 
 # Testing
-sonar-gradle-plugin = "7.3.1.8318"
+sonar-gradle-plugin = "7.4.0.8496"
 
 [libraries]
 # Core
