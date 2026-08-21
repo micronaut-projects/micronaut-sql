@@ -3,12 +3,12 @@ plugins {
 }
 
 dependencies {
-    implementation(mn.micronaut.core.processor)
     api(projects.micronautMybatis)
+    implementation(mn.micronaut.core.processor)
     testImplementation(mn.micronaut.inject.java)
     testImplementation(mnTest.junit.jupiter.api)
-    testRuntimeOnly(mnTest.junit.jupiter.engine)
     testImplementation(mnTest.junit.platform.launcher)
+    testRuntimeOnly(mnTest.junit.jupiter.engine)
 }
 
 tasks.withType<Test> {

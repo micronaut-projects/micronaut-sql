@@ -23,6 +23,7 @@ import io.micronaut.inject.visitor.TypeElementVisitor;
 import io.micronaut.inject.visitor.VisitorContext;
 import jakarta.inject.Named;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -71,10 +72,7 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
             if (element == null) {
                 continue;
             }
-            Set<String> packages = new TreeSet<>();
-            for (String packageName : scan.packages()) {
-                packages.add(packageName);
-            }
+            Set<String> packages = new TreeSet<>(Arrays.asList(scan.packages()));
 
             Set<String> selectedMapperTypes = new TreeSet<>();
             for (String mapperType : mapperTypes) {
@@ -103,5 +101,33 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
     }
 
     private record Scan(String elementName, String[] packages, String datasource) {
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof Scan scan)) {
+                return false;
+            }
+            return elementName.equals(scan.elementName)
+                && Arrays.equals(packages, scan.packages)
+                && datasource.equals(scan.datasource);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = elementName.hashCode();
+            result = 31 * result + Arrays.hashCode(packages);
+            result = 31 * result + datasource.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Scan[elementName=" + elementName
+                + ", packages=" + Arrays.toString(packages)
+                + ", datasource=" + datasource + "]";
+        }
     }
 }
