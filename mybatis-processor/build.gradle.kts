@@ -14,3 +14,9 @@ dependencies {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+micronautBuild {
+    binaryCompatibility {
+        enabledAfter("7.2.0")
+    }
+}
