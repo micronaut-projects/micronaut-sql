@@ -4,6 +4,7 @@ plugins {
 }
 dependencies {
     testCompileOnly(mn.micronaut.inject.groovy)
+    testCompileOnly(projects.micronautMybatisProcessor)
     testCompileOnly(mnSerde.micronaut.serde.processor)
     testImplementation(mnSerde.micronaut.serde.jackson)
     testCompileOnly(mnValidation.micronaut.validation.processor)

@@ -18,6 +18,7 @@ package example.micronaut.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.core.annotation.ReflectiveAccess;
 import io.micronaut.serde.annotation.Serdeable;
 
 import jakarta.validation.constraints.NotBlank;
@@ -25,6 +26,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Serdeable
+@ReflectiveAccess
 public class Genre {
 
     @Nullable

@@ -3,9 +3,11 @@ plugins {
 }
 dependencies {
     api(projects.micronautJdbc)
+    api(mn.micronaut.aop)
     api(mn.micronaut.context)
     api(mn.micronaut.inject)
     api(libs.managed.mybatis)
+    runtimeOnly(libs.managed.javassist)
     testAnnotationProcessor(mn.micronaut.inject.java)
     testImplementation(mnTest.micronaut.test.junit5)
     testRuntimeOnly(projects.micronautJdbcHikari)
