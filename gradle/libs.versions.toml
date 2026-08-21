@@ -6,8 +6,8 @@ micronaut-gradle-plugin = "5.0.2"
 micronaut-test-resources = "4.1.0"
 
 # Platform dependencies
-micronaut-cache = "6.1.0"
-micronaut-data = "5.1.1"
+micronaut-cache = "6.1.1"
+micronaut-data = "5.1.2"
 micronaut-hibernate-validator = "5.1.0"
 micronaut-logging = "2.0.0"
 micronaut-micrometer = "6.0.1"
@@ -15,7 +15,7 @@ micronaut-r2dbc = "7.1.0"
 micronaut-reactor = "4.1.0"
 micronaut-serde = "3.1.1"
 micronaut-spring = "6.1.0"
-micronaut-test = "5.1.0"
+micronaut-test = "5.1.1"
 micronaut-validation = "5.1.0"
 
 # Frameworks
