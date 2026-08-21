@@ -15,9 +15,11 @@
  */
 package io.micronaut.configuration.mybatis;
 
+import io.micronaut.configuration.mybatis.explicit.TestExplicitMapper;
+import io.micronaut.configuration.mybatis.support.TestPackageMapper;
+import io.micronaut.configuration.mybatis.support.TestTransactionFactory;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.inject.qualifiers.Qualifiers;
-import io.micronaut.configuration.mybatis.support.TestTransactionFactory;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionManager;
@@ -61,6 +63,8 @@ class MyBatisFactoryTest {
 
             Configuration configuration = applicationContext.getBean(Configuration.class);
             assertTrue(configuration.hasMapper(TestMapper.class));
+            assertTrue(configuration.hasMapper(TestPackageMapper.class));
+            assertTrue(configuration.hasMapper(TestExplicitMapper.class));
             assertTrue(configuration.isMapUnderscoreToCamelCase());
             assertInstanceOf(TestTransactionFactory.class, configuration.getEnvironment().getTransactionFactory());
             assertSame(
