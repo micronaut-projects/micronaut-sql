@@ -117,8 +117,8 @@ class MyBatisMapperScanVisitorTest {
             scan.toString()
         );
         assertNotEquals(scan, differentScan);
-        assertNotEquals(scan, null);
-        assertNotEquals(scan, "not a scan");
+        assertNotEquals(null, scan);
+        assertNotEquals("not a scan", scan);
     }
 
     private static final class TestTypeElementVisitorProcessor extends TypeElementVisitorProcessor {

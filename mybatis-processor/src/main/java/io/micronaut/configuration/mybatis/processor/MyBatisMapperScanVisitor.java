@@ -107,12 +107,12 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
             if (this == o) {
                 return true;
             }
-            if (!(o instanceof Scan scan)) {
+            if (!(o instanceof Scan(String otherElementName, String[] otherPackages, String otherDatasource))) {
                 return false;
             }
-            return elementName.equals(scan.elementName)
-                && Arrays.equals(packages, scan.packages)
-                && datasource.equals(scan.datasource);
+            return elementName.equals(otherElementName)
+                && Arrays.equals(packages, otherPackages)
+                && datasource.equals(otherDatasource);
         }
 
         @Override
