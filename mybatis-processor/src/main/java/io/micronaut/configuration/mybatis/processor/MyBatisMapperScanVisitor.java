@@ -100,7 +100,7 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
             packageName.equals(scanPackage) || packageName.startsWith(scanPackage + "."));
     }
 
-    private record Scan(String elementName, String[] packages, String datasource) {
+    record Scan(String elementName, String[] packages, String datasource) {
 
         @Override
         public boolean equals(Object o) {

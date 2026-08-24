@@ -39,6 +39,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MyBatisMapperScanVisitorTest {
@@ -88,6 +89,36 @@ class MyBatisMapperScanVisitorTest {
             assertTrue(task.call(), diagnosticsToString(diagnostics));
             assertEquals(List.of("example.mappers.GenreMapper"), processor.mapperNames);
         }
+    }
+
+    @Test
+    void scanUsesArrayContentsForEqualityAndStringValues() {
+        MyBatisMapperScanVisitor.Scan scan = new MyBatisMapperScanVisitor.Scan(
+            "example.config.MapperConfiguration",
+            new String[]{"example.mappers"},
+            "default"
+        );
+        MyBatisMapperScanVisitor.Scan equalScan = new MyBatisMapperScanVisitor.Scan(
+            "example.config.MapperConfiguration",
+            new String[]{"example.mappers"},
+            "default"
+        );
+        MyBatisMapperScanVisitor.Scan differentScan = new MyBatisMapperScanVisitor.Scan(
+            "example.config.MapperConfiguration",
+            new String[]{"example.other"},
+            "default"
+        );
+
+        assertEquals(scan, scan);
+        assertEquals(scan, equalScan);
+        assertEquals(scan.hashCode(), equalScan.hashCode());
+        assertEquals(
+            "Scan[elementName=example.config.MapperConfiguration, packages=[example.mappers], datasource=default]",
+            scan.toString()
+        );
+        assertNotEquals(scan, differentScan);
+        assertNotEquals(scan, null);
+        assertNotEquals(scan, "not a scan");
     }
 
     private static final class TestTypeElementVisitorProcessor extends TypeElementVisitorProcessor {
