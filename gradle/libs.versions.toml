@@ -26,7 +26,6 @@ managed-hibernate = "7.4.5.Final"
 managed-hibernate-reactive = "4.5.4.Final"
 managed-jasync = "2.2.4"
 managed-mybatis = "3.5.19"
-managed-javassist = "3.30.2-GA"
 managed-jdbi = "3.54.0"
 
 # JDBC Drivers
@@ -132,7 +131,6 @@ dms = { module = "com.oracle.database.observability:dms", version.ref = "managed
 
 # MyBatis
 managed-mybatis = { module = "org.mybatis:mybatis", version.ref = "managed-mybatis" }
-managed-javassist = { module = "org.javassist:javassist", version.ref = "managed-javassist" }
 
 # JDBC drivers
 
