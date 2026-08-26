@@ -37,7 +37,7 @@ managed-mariadb-driver = "3.5.10"
 managed-mssql-driver = "13.4.0.jre11"
 managed-mysql-driver = "8.0.33"
 managed-mysql-connector-j = "26.7.0"
-managed-sqlite-jdbc = "3.53.2.1"
+managed-sqlite-jdbc = "3.53.4.0"
 
 # JDBC Pools
 
