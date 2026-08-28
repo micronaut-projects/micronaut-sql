@@ -12,10 +12,10 @@ micronaut-hibernate-validator = "5.1.0"
 micronaut-logging = "2.1.0"
 micronaut-micrometer = "6.0.1"
 micronaut-r2dbc = "7.1.0"
-micronaut-test = "5.0.1"
 micronaut-reactor = "4.2.0"
 micronaut-serde = "3.1.1"
 micronaut-spring = "6.1.0"
+micronaut-test = "5.1.1"
 micronaut-validation = "5.1.0"
 
 # Frameworks
