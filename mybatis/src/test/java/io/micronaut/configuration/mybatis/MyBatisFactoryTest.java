@@ -16,6 +16,7 @@
 package io.micronaut.configuration.mybatis;
 
 import io.micronaut.configuration.mybatis.explicit.TestExplicitMapper;
+import io.micronaut.configuration.mybatis.generated.TestGeneratedMapper;
 import io.micronaut.configuration.mybatis.support.TestPackageMapper;
 import io.micronaut.configuration.mybatis.support.TestTransactionFactory;
 import io.micronaut.context.ApplicationContext;
@@ -65,6 +66,7 @@ class MyBatisFactoryTest {
             assertTrue(configuration.hasMapper(TestMapper.class));
             assertTrue(configuration.hasMapper(TestPackageMapper.class));
             assertTrue(configuration.hasMapper(TestExplicitMapper.class));
+            assertTrue(configuration.hasMapper(TestGeneratedMapper.class));
             assertTrue(configuration.isMapUnderscoreToCamelCase());
             assertInstanceOf(TestTransactionFactory.class, configuration.getEnvironment().getTransactionFactory());
             assertSame(

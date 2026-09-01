@@ -16,24 +16,36 @@
 package io.micronaut.configuration.mybatis.processor;
 
 import io.micronaut.configuration.mybatis.MyBatisMapperScan;
-import io.micronaut.core.annotation.AnnotationClassValue;
+import io.micronaut.configuration.mybatis.MyBatisMapperScanRegistration;
 import io.micronaut.core.annotation.AnnotationValue;
 import io.micronaut.inject.ast.ClassElement;
 import io.micronaut.inject.visitor.TypeElementVisitor;
 import io.micronaut.inject.visitor.VisitorContext;
+import io.micronaut.sourcegen.generator.bytecode.ByteCodeGenerator;
+import io.micronaut.sourcegen.model.ClassDef;
+import io.micronaut.sourcegen.model.ClassTypeDef;
+import io.micronaut.sourcegen.model.ExpressionDef;
+import io.micronaut.sourcegen.model.MethodDef;
+import io.micronaut.sourcegen.model.StatementDef;
+import io.micronaut.sourcegen.model.TypeDef;
 import jakarta.inject.Named;
+import org.apache.ibatis.session.Configuration;
 
+import javax.lang.model.element.Modifier;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * Adds compile-time discovered mapper types to {@link MyBatisMapperScan} metadata.
+ * Generates registrations for mapper types discovered at compile time.
  */
 public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object, Object> {
+
+    private static final ByteCodeGenerator BYTE_CODE_GENERATOR = new ByteCodeGenerator();
 
     private final Set<String> mapperTypes = new LinkedHashSet<>();
     private final Map<String, Scan> scans = new LinkedHashMap<>();
@@ -42,6 +54,11 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
     @Override
     public VisitorKind getVisitorKind() {
         return VisitorKind.AGGREGATING;
+    }
+
+    @Override
+    public Set<String> getSupportedAnnotationNames() {
+        return Set.of(MyBatisMapperScan.class.getName());
     }
 
     @Override
@@ -81,16 +98,62 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
                 }
             }
 
-            AnnotationClassValue<?>[] mapperClassValues = selectedMapperTypes.stream()
-                .map(AnnotationClassValue::new)
-                .toArray(AnnotationClassValue[]::new);
-            element.annotate(AnnotationValue.builder(MyBatisMapperScan.class)
-                .member("value", scan.packages())
-                .member("datasource", scan.datasource())
-                .member("mappers", mapperClassValues)
-                .build());
             element.annotate(Named.class, builder -> builder.value(scan.datasource()));
+            writeRegistrations(context, element, scan, selectedMapperTypes);
         }
+    }
+
+    private void writeRegistrations(VisitorContext context,
+                                    ClassElement element,
+                                    Scan scan,
+                                    Set<String> selectedMapperTypes) {
+        Map<String, Set<String>> mapperTypesByPackage = new TreeMap<>();
+        for (String mapperType : selectedMapperTypes) {
+            int lastDot = mapperType.lastIndexOf('.');
+            String packageName = lastDot > 0 ? mapperType.substring(0, lastDot) : "";
+            mapperTypesByPackage.computeIfAbsent(packageName, ignored -> new TreeSet<>()).add(mapperType);
+        }
+
+        for (Map.Entry<String, Set<String>> entry : mapperTypesByPackage.entrySet()) {
+            String packageName = entry.getKey();
+            String className = "MyBatisMapperScanRegistration_"
+                + scan.elementName().replace('.', '_').replace('$', '_');
+            String registrationName = packageName.isEmpty() ? className : packageName + "." + className;
+            BYTE_CODE_GENERATOR.write(registrationDefinition(
+                packageName,
+                className,
+                scan.elementName(),
+                entry.getValue()
+            ), context);
+            context.visitServiceDescriptor(MyBatisMapperScanRegistration.class, registrationName, element);
+        }
+    }
+
+    private ClassDef registrationDefinition(String packageName,
+                                            String className,
+                                            String customizerType,
+                                            Set<String> mapperTypes) {
+        String registrationName = packageName.isEmpty() ? className : packageName + "." + className;
+        return ClassDef.builder(registrationName)
+            .addModifiers(Modifier.FINAL)
+            .addSuperinterface(ClassTypeDef.of(MyBatisMapperScanRegistration.class))
+            .addMethod(MethodDef.builder("getCustomizerType")
+                .overrides()
+                .addModifiers(Modifier.PUBLIC)
+                .returns(String.class)
+                .build((aThis, parameters) -> ExpressionDef.constant(customizerType).returning()))
+            .addMethod(MethodDef.builder("register")
+                .overrides()
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter("configuration", Configuration.class)
+                .build((aThis, parameters) -> StatementDef.multi(mapperTypes.stream()
+                    .map(mapperType -> (StatementDef) parameters.get(0).invoke(
+                        "addMapper",
+                        TypeDef.VOID,
+                        ExpressionDef.constant(ClassTypeDef.of(mapperType))
+                    ))
+                    .toList())))
+            .build();
     }
 
     private boolean isInScannedPackage(String mapperType, Set<String> packages) {

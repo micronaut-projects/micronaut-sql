@@ -11,7 +11,7 @@ This hook is also the right place to configure other MyBatis features that belon
 
 To register mapper interfaces by package, annotate the customizer with api:configuration.mybatis.MyBatisMapperScan[]. This replaces a customizer call such as `configuration.addMappers("com.example.mappers")`. The language-specific examples above show the annotation and customizer declaration.
 
-On the JVM, MyBatis package scanning is available as a fallback. For native Java applications, the `micronaut-mybatis-processor` discovers mapper interfaces at compile time and registers them without runtime package scanning. Groovy and Kotlin use the declared packages as a JVM fallback.
+The `micronaut-mybatis-processor` discovers mapper interfaces at compile time and generates direct registrations for Java, Groovy, and Kotlin. This avoids runtime package scanning and works with native images. On the JVM, MyBatis package scanning remains available as a fallback when no compile-time registration is generated.
 
 Add the processor for the language you use:
 

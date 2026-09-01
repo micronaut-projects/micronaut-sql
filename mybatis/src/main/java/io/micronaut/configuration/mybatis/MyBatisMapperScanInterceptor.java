@@ -19,9 +19,12 @@ import io.micronaut.aop.InterceptorBean;
 import io.micronaut.aop.MethodInterceptor;
 import io.micronaut.aop.MethodInvocationContext;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.core.io.service.SoftServiceLoader;
 import org.apache.ibatis.session.Configuration;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -30,6 +33,16 @@ import java.util.Set;
 @InterceptorBean(MyBatisMapperScan.class)
 @Internal
 final class MyBatisMapperScanInterceptor implements MethodInterceptor<Object, Object> {
+
+    private final List<MyBatisMapperScanRegistration> registrations;
+
+    MyBatisMapperScanInterceptor(List<MyBatisMapperScanRegistration> registrations) {
+        this.registrations = new ArrayList<>(registrations);
+        SoftServiceLoader.load(
+            MyBatisMapperScanRegistration.class,
+            MyBatisMapperScanInterceptor.class.getClassLoader()
+        ).collectAll(this.registrations);
+    }
 
     @Override
     public Object intercept(MethodInvocationContext<Object, Object> context) {
@@ -41,32 +54,47 @@ final class MyBatisMapperScanInterceptor implements MethodInterceptor<Object, Ob
                     configuration.addMapper(mapper);
                 }
             } else {
-                MyBatisMapperScan mapperScan = findMapperScan(context.getTarget().getClass(), new HashSet<>());
+                MapperScan mapperScan = findMapperScan(context.getTarget().getClass(), new HashSet<>());
+                String customizerType = mapperScan == null
+                    ? context.getDeclaringType().getName()
+                    : mapperScan.type().getName();
+                boolean registered = false;
+                for (MyBatisMapperScanRegistration registration : registrations) {
+                    if (registration.getCustomizerType().equals(customizerType)) {
+                        registration.register(configuration);
+                        registered = true;
+                    }
+                }
                 String[] packages = mapperScan == null
                     ? context.stringValues(MyBatisMapperScan.class, "value")
-                    : mapperScan.value();
-                for (String packageName : packages) {
-                    configuration.addMappers(packageName);
+                    : mapperScan.annotation().value();
+                if (!registered) {
+                    for (String packageName : packages) {
+                        configuration.addMappers(packageName);
+                    }
                 }
             }
         }
         return null;
     }
 
-    private static MyBatisMapperScan findMapperScan(Class<?> type, Set<Class<?>> visited) {
+    private static MapperScan findMapperScan(Class<?> type, Set<Class<?>> visited) {
         if (type == null || !visited.add(type)) {
             return null;
         }
         MyBatisMapperScan mapperScan = type.getAnnotation(MyBatisMapperScan.class);
         if (mapperScan != null) {
-            return mapperScan;
+            return new MapperScan(type, mapperScan);
         }
         for (Class<?> interfaceType : type.getInterfaces()) {
-            mapperScan = findMapperScan(interfaceType, visited);
-            if (mapperScan != null) {
-                return mapperScan;
+            MapperScan interfaceMapperScan = findMapperScan(interfaceType, visited);
+            if (interfaceMapperScan != null) {
+                return interfaceMapperScan;
             }
         }
         return findMapperScan(type.getSuperclass(), visited);
+    }
+
+    private record MapperScan(Class<?> type, MyBatisMapperScan annotation) {
     }
 }

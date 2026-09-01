@@ -47,7 +47,7 @@ public @interface MyBatisMapperScan {
     String datasource() default "default";
 
     /**
-     * @return Mapper interfaces discovered by the compile-time processor
+     * @return Mapper interfaces to register directly
      */
     Class<?>[] mappers() default {};
 }

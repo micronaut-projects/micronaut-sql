@@ -17,11 +17,10 @@ package io.micronaut.configuration.mybatis.processor;
 
 import io.micronaut.annotation.processing.TypeElementVisitorProcessor;
 import io.micronaut.configuration.mybatis.MyBatisMapperScan;
-import io.micronaut.core.annotation.AnnotationClassValue;
-import io.micronaut.core.annotation.AnnotationValue;
-import io.micronaut.inject.ast.ClassElement;
+import io.micronaut.configuration.mybatis.MyBatisMapperScanRegistration;
+import io.micronaut.core.io.service.SoftServiceLoader;
 import io.micronaut.inject.visitor.TypeElementVisitor;
-import io.micronaut.inject.visitor.VisitorContext;
+import org.apache.ibatis.session.Configuration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -33,10 +32,13 @@ import javax.tools.SimpleJavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
+import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -45,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class MyBatisMapperScanVisitorTest {
 
     @Test
-    void addsDiscoveredMappersToAnnotationMetadata(@TempDir Path temporaryDirectory) throws Exception {
+    void generatesRegistrationForDiscoveredMappers(@TempDir Path temporaryDirectory) throws Exception {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
         Path classes = temporaryDirectory.resolve("classes");
@@ -83,12 +85,39 @@ class MyBatisMapperScanVisitorTest {
                     }
                     """))
             );
-            TestTypeElementVisitorProcessor processor = new TestTypeElementVisitorProcessor();
-            task.setProcessors(List.of(processor));
+            task.setProcessors(List.of(new TestTypeElementVisitorProcessor()));
 
             assertTrue(task.call(), diagnosticsToString(diagnostics));
-            assertEquals(List.of("example.mappers.GenreMapper"), processor.mapperNames);
+            Path generatedRegistration = classes.resolve(
+                "example/mappers/MyBatisMapperScanRegistration_example_config_MapperConfiguration.class"
+            );
+            assertTrue(Files.exists(generatedRegistration));
+            try (URLClassLoader classLoader = new URLClassLoader(
+                new java.net.URL[]{classes.toUri().toURL()},
+                getClass().getClassLoader()
+            )) {
+                List<MyBatisMapperScanRegistration> registrations = new ArrayList<>();
+                SoftServiceLoader.load(MyBatisMapperScanRegistration.class, classLoader).collectAll(registrations);
+
+                assertEquals(1, registrations.size());
+                MyBatisMapperScanRegistration registration = registrations.get(0);
+                assertEquals("example.config.MapperConfiguration", registration.getCustomizerType());
+                Configuration configuration = new Configuration();
+                registration.register(configuration);
+                assertTrue(configuration.hasMapper(classLoader.loadClass("example.mappers.GenreMapper")));
+            }
         }
+    }
+
+    @Test
+    void declaresSupportedAnnotationAndAggregatingKind() {
+        MyBatisMapperScanVisitor visitor = new MyBatisMapperScanVisitor();
+
+        assertEquals(
+            Set.of(MyBatisMapperScan.class.getName()),
+            visitor.getSupportedAnnotationNames()
+        );
+        assertEquals(TypeElementVisitor.VisitorKind.AGGREGATING, visitor.getVisitorKind());
     }
 
     @Test
@@ -122,56 +151,14 @@ class MyBatisMapperScanVisitorTest {
     }
 
     private static final class TestTypeElementVisitorProcessor extends TypeElementVisitorProcessor {
-        private final MapperMetadataVisitor mapperMetadataVisitor = new MapperMetadataVisitor();
-
         @Override
         protected Collection<? extends TypeElementVisitor<?, ?>> findTypeElementVisitors() {
-            return List.of(new MyBatisMapperScanVisitor(), mapperMetadataVisitor);
+            return List.of(new MyBatisMapperScanVisitor());
         }
 
         @Override
         protected TypeElementVisitor.VisitorKind getIncrementalProcessorKind() {
             return TypeElementVisitor.VisitorKind.AGGREGATING;
-        }
-
-        private final List<String> mapperNames = mapperMetadataVisitor.mapperNames;
-    }
-
-    private static final class MapperMetadataVisitor implements TypeElementVisitor<Object, Object> {
-        private final List<String> mapperNames = new java.util.ArrayList<>();
-        private String configurationElementName;
-        private boolean processed;
-
-        @Override
-        public void visitClass(ClassElement element, VisitorContext context) {
-            if (element.getName().equals("example.config.MapperConfiguration")) {
-                configurationElementName = element.getName();
-            }
-        }
-
-        @Override
-        public void finish(VisitorContext context) {
-            if (processed) {
-                return;
-            }
-            processed = true;
-            ClassElement configurationElement = context.getClassElement(configurationElementName).orElseThrow();
-            AnnotationValue<MyBatisMapperScan> scan = configurationElement.getAnnotation(MyBatisMapperScan.class);
-            if (scan != null) {
-                for (AnnotationClassValue<?> mapper : scan.annotationClassValues("mappers")) {
-                    mapperNames.add(mapper.getName());
-                }
-            }
-        }
-
-        @Override
-        public VisitorKind getVisitorKind() {
-            return VisitorKind.AGGREGATING;
-        }
-
-        @Override
-        public int getOrder() {
-            return -100;
         }
     }
 
