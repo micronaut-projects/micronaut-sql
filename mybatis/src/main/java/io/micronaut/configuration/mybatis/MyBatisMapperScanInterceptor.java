@@ -48,7 +48,7 @@ final class MyBatisMapperScanInterceptor implements MethodInterceptor<Object, Ob
     public Object intercept(MethodInvocationContext<Object, Object> context) {
         Object[] parameterValues = context.getParameterValues();
         if (parameterValues.length != 1 || !(parameterValues[0] instanceof Configuration configuration)) {
-            return null;
+            return context.proceed();
         }
         registerMappers(context, configuration);
         return null;
