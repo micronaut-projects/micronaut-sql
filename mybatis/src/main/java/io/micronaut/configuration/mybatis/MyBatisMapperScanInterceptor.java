@@ -47,35 +47,54 @@ final class MyBatisMapperScanInterceptor implements MethodInterceptor<Object, Ob
     @Override
     public Object intercept(MethodInvocationContext<Object, Object> context) {
         Object[] parameterValues = context.getParameterValues();
-        if (parameterValues.length == 1 && parameterValues[0] instanceof Configuration configuration) {
-            Class<?>[] mappers = context.classValues(MyBatisMapperScan.class, "mappers");
-            if (mappers.length > 0) {
-                for (Class<?> mapper : mappers) {
-                    configuration.addMapper(mapper);
-                }
-            } else {
-                MapperScan mapperScan = findMapperScan(context.getTarget().getClass(), new HashSet<>());
-                String customizerType = mapperScan == null
-                    ? context.getDeclaringType().getName()
-                    : mapperScan.type().getName();
-                boolean registered = false;
-                for (MyBatisMapperScanRegistration registration : registrations) {
-                    if (registration.getCustomizerType().equals(customizerType)) {
-                        registration.register(configuration);
-                        registered = true;
-                    }
-                }
-                String[] packages = mapperScan == null
-                    ? context.stringValues(MyBatisMapperScan.class, "value")
-                    : mapperScan.annotation().value();
-                if (!registered) {
-                    for (String packageName : packages) {
-                        configuration.addMappers(packageName);
-                    }
-                }
+        if (parameterValues.length != 1 || !(parameterValues[0] instanceof Configuration configuration)) {
+            return null;
+        }
+        registerMappers(context, configuration);
+        return null;
+    }
+
+    private void registerMappers(MethodInvocationContext<Object, Object> context, Configuration configuration) {
+        Class<?>[] mappers = context.classValues(MyBatisMapperScan.class, "mappers");
+        if (mappers.length > 0) {
+            registerMappers(configuration, mappers);
+            return;
+        }
+
+        MapperScan mapperScan = findMapperScan(context.getTarget().getClass(), new HashSet<>());
+        String customizerType = mapperScan == null
+            ? context.getDeclaringType().getName()
+            : mapperScan.type().getName();
+        if (registerMappers(configuration, customizerType)) {
+            return;
+        }
+        String[] packages = mapperScan == null
+            ? context.stringValues(MyBatisMapperScan.class, "value")
+            : mapperScan.annotation().value();
+        registerMappers(configuration, packages);
+    }
+
+    private static void registerMappers(Configuration configuration, Class<?>[] mappers) {
+        for (Class<?> mapper : mappers) {
+            configuration.addMapper(mapper);
+        }
+    }
+
+    private boolean registerMappers(Configuration configuration, String customizerType) {
+        boolean registered = false;
+        for (MyBatisMapperScanRegistration registration : registrations) {
+            if (registration.getCustomizerType().equals(customizerType)) {
+                registration.register(configuration);
+                registered = true;
             }
         }
-        return null;
+        return registered;
+    }
+
+    private static void registerMappers(Configuration configuration, String[] packages) {
+        for (String packageName : packages) {
+            configuration.addMappers(packageName);
+        }
     }
 
     private static MapperScan findMapperScan(Class<?> type, Set<Class<?>> visited) {
