@@ -1,0 +1,11 @@
+{
+  "reflection": [
+    {
+      "type": {
+        "proxy": [
+          "example.micronaut.mappers.GenreMapper"
+        ]
+      }
+    }
+  ]
+}

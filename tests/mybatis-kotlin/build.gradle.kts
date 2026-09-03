@@ -3,6 +3,7 @@ plugins {
 }
 dependencies {
     kspTest(mn.micronaut.inject.kotlin)
+    kspTest(projects.micronautMybatisProcessor)
     kspTest(mnSerde.micronaut.serde.processor)
     testImplementation(mnSerde.micronaut.serde.jackson)
     kspTest(mnValidation.micronaut.validation.processor)
