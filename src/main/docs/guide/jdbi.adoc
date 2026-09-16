@@ -6,11 +6,7 @@ dependency:micronaut-jdbi[groupId="io.micronaut.sql"]
 
 If you need additional Jdbi modules such as `jdbi3-sqlobject`, Gradle consumers can declare them without an explicit version because `micronaut-jdbi` publishes the Jdbi BOM through Gradle module metadata:
 
-[source,groovy]
-----
-implementation("io.micronaut.sql:micronaut-jdbi")
-implementation("org.jdbi:jdbi3-sqlobject")
-----
+dependency:jdbi3-sqlobject[groupId="org.jdbi"]
 
 For Maven, import `micronaut-sql-bom` in `dependencyManagement` before declaring extra Jdbi modules, because Maven does not consume transitive BOM imports from regular dependencies:
 
