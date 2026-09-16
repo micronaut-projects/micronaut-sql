@@ -10,16 +10,15 @@ dependency:micronaut-data-tx-hibernate[groupId="io.micronaut.data"]
 
 You can annotate transactional methods with either `jakarta.transaction.Transactional` or `io.micronaut.transaction.annotation.Transactional`. For read-only operations, you can also use `io.micronaut.transaction.annotation.ReadOnly`.
 
-[source,java]
-.Using `@Transactional` with JDBC
-----
-import jakarta.transaction.Transactional;
+To use `jakarta.transaction.Transactional`, the Micronaut Data annotation processor, which maps it to Micronaut's transactional advice, must be on the annotation processor path:
 
-@Transactional
-void saveBook(Book book) {
-    // use the injected DataSource here
-}
-----
+dependency:micronaut-data-processor[groupId="io.micronaut.data", scope="annotationProcessor"]
+
+snippet::io.micronaut.docs.jdbc.transactions.BookRepository[tags="imports,clazz", title="Using @Transactional with JDBC"]
+
+<1> The `DataSource` is injected; it is transaction aware
+<2> The public method is annotated with `@Transactional`
+<3> The connection obtained from the injected `DataSource` inside the transactional method participates in the transaction
 
 If you need Micronaut-specific options such as `readOnly`, `transactionManager`, or `propagation`, use `io.micronaut.transaction.annotation.Transactional`.
 

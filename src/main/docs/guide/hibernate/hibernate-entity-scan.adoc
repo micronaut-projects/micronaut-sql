@@ -16,13 +16,9 @@ jpa:
 
 The above configuration limits the search to only classes in the `foo.bar` package. Note that if classes are not compiled by Micronaut they will not be found. There are two ways to resolve this, one is to generate introspection metadata for the external classes. For example you can place in this on your `Application` class:
 
-.Generating Introspection Metadata for External Classes
-[source,java]
-----
-@Introspected(packages="foo.bar")
-----
+snippet::io.micronaut.docs.hibernate.entityscan.Application[tags="imports,clazz", title="Generating Introspection Metadata for External Classes"]
 
-This will generate introspection metadata for all classes in the `foo.bar` package.
+<1> This will generate introspection metadata for all the `@Entity` classes in the given package. The `includedAnnotations` member is required when `packages` is specified.
 
 If this option doesn't work for you, you can instead enable full classpath scanning using the `classpath` property:
 

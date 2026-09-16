@@ -1,21 +1,10 @@
-You can use the `jakarta.persistence.PersistenceContext` annotation to inject an `EntityManager` (or Hibernate `Session`). To do so you need to make sure the JPA annotations are on the `annotationProcessor` path in your build:
+You can use the `jakarta.persistence.PersistenceContext` annotation to inject an `EntityManager` (or Hibernate `Session`):
 
-[source,groovy]
-.Adding the JPA dependency to `annotationProcessor` in Gradle
-----
-annotationProcessor "jakarta.persistence:jakarta.persistence-api:2.2"
-----
+snippet::io.micronaut.docs.hibernate.session.BookRepository[tags="imports,clazz", title="Using @PersistenceContext"]
 
-[source,java]
-.Using `@PersistenceContext`
-----
-@PersistenceContext
-EntityManager entityManager;
-
-@PersistenceContext(name = "other")
-EntityManager otherManager;
-----
-
-Micronaut will inject a compile time scoped proxy that retrieves the `EntityManager` associated with the current transaction when using `jakarta.transaction.Transactional` (or `io.micronaut.transaction.annotation.Transactional`).
+<1> The `EntityManager` of the `default` data source is injected
+<2> The `name` member selects the `EntityManager` of another configured data source (`other` here)
+<3> Micronaut will inject a compile time scoped proxy that retrieves the `EntityManager` associated with the current transaction when using `jakarta.transaction.Transactional` (or `io.micronaut.transaction.annotation.Transactional`)
+<4> When using several data sources, the value of `io.micronaut.transaction.annotation.Transactional` selects the transaction manager of the data source the `EntityManager` belongs to
 
 For Hibernate/JPA transaction management, use `micronaut-data-tx-hibernate` as described in <<hibernate, Setting up a Hibernate/JPA EntityManager>>.

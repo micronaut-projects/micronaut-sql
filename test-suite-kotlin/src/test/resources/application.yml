@@ -1,0 +1,39 @@
+db-password: initial
+datasources:
+  default:
+    url: jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ${db-password}
+  other:
+    url: jdbc:h2:mem:other;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ''
+  warehouse:
+    url: jdbc:h2:mem:warehouse;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ''
+jpa:
+  default:
+    compile-time-hibernate-proxies: true
+    entity-scan:
+      packages:
+        - 'io.micronaut.docs.hibernate'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: create-drop
+  other:
+    entity-scan:
+      packages:
+        - 'io.micronaut.docs.hibernate.session'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: create-drop
+  warehouse:
+    entity-scan:
+      packages:
+        - 'io.micronaut.docs.hibernate.entityscan.external'
