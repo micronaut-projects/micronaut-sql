@@ -14,6 +14,7 @@ class CustomConfigurationCustomizer implements MyBatisConfigurationCustomizer {
     @Override
     void customize(Configuration configuration) {
         configuration.addMappers("example.micronaut.mappers")
+        configuration.mapUnderscoreToCamelCase = true
     }
 }
 // end::clazz[]
