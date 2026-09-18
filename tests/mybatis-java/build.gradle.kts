@@ -1,8 +1,10 @@
 plugins {
-    `java-library`
+    id("io.micronaut.build.internal.test-application")
 }
 dependencies {
+    implementation(projects.micronautTests.micronautCommon)
     testAnnotationProcessor(mn.micronaut.inject.java)
+    testAnnotationProcessor(projects.micronautMybatisProcessor)
     testAnnotationProcessor(mnSerde.micronaut.serde.processor)
     testImplementation(mnSerde.micronaut.serde.jackson)
     testAnnotationProcessor(mnValidation.micronaut.validation.processor)
@@ -18,4 +20,17 @@ dependencies {
 }
 tasks.named<Test>("test") {
     useJUnitPlatform()
+}
+
+val isMacOsArm = System.getProperty("os.name") == "Mac OS X" &&
+    System.getProperty("os.arch") in setOf("aarch64", "arm64")
+
+if (isMacOsArm) {
+    graalvmNative {
+        binaries {
+            all {
+                quickBuild.set(true)
+            }
+        }
+    }
 }

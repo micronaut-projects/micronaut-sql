@@ -1,11 +1,37 @@
 You can define additional beans which will be used when the MyBatis `Configuration` is created.
-Only beans of type api:configuration.mybatis.MyBatisConfigurationCustomizer[] with an `@Named` qualifier matching the datasource name will be applied.
+Only beans of type api:configuration.mybatis.MyBatisConfigurationCustomizer[] with an `@Named` qualifier matching the datasource name will be applied. When the mapper-scan processor is used with Java, it adds this qualifier to the generated bean metadata.
+
+For the default datasource, Groovy and Kotlin customizers must explicitly declare `@Named("default")`. For a named datasource, set the `datasource` member of `@MyBatisMapperScan` and qualify the customizer with the same name, for example `@Named("orders")` with `datasources.orders.url`. Java users may omit `@Named` when using the processor because it adds the qualifier to the generated bean metadata; Groovy and Kotlin must declare it explicitly.
 
 For example, you can register mapper interfaces and tune MyBatis settings for a specific datasource:
 
 snippet::example.micronaut.CustomConfigurationCustomizer[tags="imports,clazz", project-base="tests/mybatis"]
 
 This hook is also the right place to configure other MyBatis features that belong on the `Configuration`, such as type aliases, type handlers, interceptors, or additional mapper registrations.
+
+To register mapper interfaces by package, annotate the customizer with api:configuration.mybatis.MyBatisMapperScan[]. This replaces a customizer call such as `configuration.addMappers("com.example.mappers")`. The language-specific examples above show the annotation and customizer declaration.
+
+The `micronaut-mybatis-processor` discovers mapper interfaces at compile time and generates direct registrations for Java, Groovy, and Kotlin. This avoids runtime package scanning and works with native images. On the JVM, MyBatis package scanning remains available as a fallback when no compile-time registration is generated.
+
+Add the processor for the language you use:
+
+[source,groovy]
+.Java
+----
+annotationProcessor("io.micronaut.sql:micronaut-mybatis-processor")
+----
+
+[source,groovy]
+.Groovy
+----
+compileOnly("io.micronaut.sql:micronaut-mybatis-processor")
+----
+
+[source,kotlin]
+.Kotlin
+----
+ksp("io.micronaut.sql:micronaut-mybatis-processor")
+----
 
 ==== TransactionFactory Customization
 
