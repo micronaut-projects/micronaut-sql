@@ -1,5 +1,6 @@
 package io.micronaut.configuration.jdbi.example.jdbitransaction;
 
+import io.micronaut.core.propagation.PropagatedContext;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.transaction.TransactionOperations;
 import io.micronaut.transaction.support.TransactionSynchronization;
@@ -43,7 +44,10 @@ public class ExecutorTransactionIsolationService {
                 @Override
                 public void afterCommit() {
                     try {
-                        executorService.submit(() -> {
+                        PropagatedContext contextWithoutTransaction = PropagatedContext.getOrEmpty()
+                            .minus(status)
+                            .minus(status.getConnectionStatus());
+                        executorService.submit(contextWithoutTransaction.wrap(() -> {
                             try {
                                 transactionOperations.executeWrite(inner -> {
                                     innerNewTransaction.set(inner.isNewTransaction());
@@ -56,7 +60,7 @@ public class ExecutorTransactionIsolationService {
                             } finally {
                                 completed.countDown();
                             }
-                        });
+                        }));
                     } catch (Throwable e) {
                         failure.set(e);
                         completed.countDown();
