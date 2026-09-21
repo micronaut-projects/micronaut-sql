@@ -3,10 +3,16 @@ plugins {
     id 'io.micronaut.build.internal.sql-base'
 }
 
+def h2Version = libs.versions.managed.h2.get()
+
 ossIndexAudit {
     excludeCoordinates = [
-            "com.h2database:h2:2.5.250" // no version patched https://ossindex.sonatype.org/component/pkg:maven/com.h2database/h2
+            "com.h2database:h2:${h2Version}" // no version patched https://ossindex.sonatype.org/component/pkg:maven/com.h2database/h2
     ]
+}
+
+tasks.withType(org.gradle.api.tasks.testing.Test).configureEach {
+    systemProperty('h2.version', h2Version)
 }
 
 micronautBuild {
