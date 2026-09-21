@@ -18,15 +18,17 @@ with the Python compiler shipped with Micronaut core. Use it as the bug-fixing t
 - The injected `DataSource` is transaction aware: connections are obtained inside `@Transactional` methods.
   Tests that need a raw connection (`ALTER USER ...`) unwrap it with `DataSourceResolver`.
 - Prefer `@MicronautTest` with injected beans over `ApplicationContext.run()`.
+- The JPA entities are plain `@Entity` classes; `test-suite-python/build.gradle` passes
+  `-Amicronaut.introspection.allowReflection=micronaut.docs.hibernate.*` to the Python compiler
+  (`micronautBuild.python.compilerArgs`) so that the generated classes carry the annotations Hibernate reads reflectively.
+- A `java.lang.Class` returned by Java (`entity(Product).getJavaType()`) is compared with the Python class by name.
 
 ## Active `@Disabled` Tests
 
 | Test | Reason |
 | --- | --- |
-| `micronaut.docs.hibernate.session.BookRepositoryTest` | The Python compiler only copies JUnit annotations onto the generated Java class of a Python class (`PythonStubGenerator.ANNOTATION_PACKAGES_TO_COPY`); the `jakarta.persistence` annotations (`@Entity`, `@Id`, `@GeneratedValue`, `@ManyToOne`, `@EmbeddedId`, ...) only exist in the Micronaut introspection metadata. Micronaut's entity scan finds the class, but Hibernate rejects it (`UnknownEntityTypeException: 'Book' is not annotated '@Entity'`). The generated class also lacks a no-arg constructor. The `@PersistenceContext` injection and `@Transactional("other")` parts of the example work. |
-| `micronaut.docs.hibernate.entityscan.EntityScanTest` | Same cause: `Product` is introspected (`@Introspected(packages=..., includedAnnotations=[Entity])` works) but the `SessionFactory` metamodel does not contain it (`Not an entity`). |
-| `micronaut.docs.hibernate.proxies.CompileTimeProxiesTest` | Same cause for `Pet`/`Owner`. Additionally the `@GenerateProxy` introduction methods (`getHibernateLazyInitializer`) of the generated `$Owner$Intercepted` proxy are bridged to the Python object instead of being implemented by the introduction advice (`No Python member [getHibernateLazyInitializer] found`). |
-| `micronaut.docs.hibernate.graalvm.EmbeddedIdTest` | Same cause for `Order`/`OrderId` (`Unknown entity type 'micronaut.docs.hibernate.graalvm.Order'`). |
+| `micronaut.docs.hibernate.session.BookRepositoryTest` | The id Hibernate assigns to a Python entity on `entity_manager.persist(book)` is set on the Java wrapper of the Python object (the generated class copies the attributes into its fields) and is not written back to the Python object: `book.id` stays `None` after `save`, and the wrapper returned by the `@Transactional` bean is a new copy without the id. `entity_manager.merge(book)`, which returns the managed wrapper, does carry the id. The `@PersistenceContext` injection, `@Transactional("other")` and the entity mapping itself work. |
+| `micronaut.docs.hibernate.proxies.CompileTimeProxiesTest` | Same cause: `pet.id` is `None` after `persist`, so the lazy-loading assertions cannot look the pet up (`IllegalArgumentException: Identifier may not be null`). The `@GenerateProxy` proxy of the Python `Owner` entity itself is generated (the same annotation works in the Micronaut Data Hibernate example). |
 
 ## Commented Unsupported Snippet Ports
 

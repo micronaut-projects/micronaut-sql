@@ -7,10 +7,7 @@ from org.junit.jupiter.api import Disabled, Test
 from micronaut.docs.hibernate.proxies.PetRepository import PetRepository
 
 
-# TODO(python): the Python compiler does not emit the JPA annotations (@Entity, @Id, @GeneratedValue, ...) of a
-# Python class on the generated Java class, so Hibernate does not recognise Python classes as entities
-# ("Unknown entity type"). See micronaut/docs/DISABLED_TESTS.md.
-@Disabled("TODO(python): JPA annotations of Python classes are not emitted on the generated Java class")
+@Disabled("TODO(python): the id Hibernate assigns on persist is set on the Java wrapper of the Python entity and not written back to the Python object (pet.id stays None), see DISABLED_TESTS.md")
 @MicronautTest(transactional=False)
 class CompileTimeProxiesTest:
     pet_repository: Annotated[PetRepository, Inject]
