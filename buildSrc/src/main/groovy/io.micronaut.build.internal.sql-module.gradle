@@ -5,7 +5,7 @@ plugins {
 
 ossIndexAudit {
     excludeCoordinates = [
-            "com.h2database:h2:2.4.240" // no version patched https://ossindex.sonatype.org/component/pkg:maven/com.h2database/h2
+            "com.h2database:h2:2.5.250" // no version patched https://ossindex.sonatype.org/component/pkg:maven/com.h2database/h2
     ]
 }
 
