@@ -3,10 +3,10 @@ plugins {
 }
 
 dependencies {
-    // The annotation and the registration interface referenced by the generated classes
     implementation(projects.micronautMybatis)
     implementation(mn.micronaut.core.processor)
-    implementation(mn.micronaut.sourcegen.generator.bytecode)
+    implementation(mn.micronaut.sourcegen.model)
+    implementation(mn.micronaut.sourcegen.bytecode.writer)
 
     testImplementation(mn.micronaut.inject.java)
     testImplementation(mnTest.junit.jupiter.api)

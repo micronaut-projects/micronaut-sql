@@ -25,9 +25,10 @@ import io.micronaut.inject.ast.ElementQuery;
 import io.micronaut.inject.ast.MethodElement;
 import io.micronaut.inject.ast.ParameterElement;
 import io.micronaut.inject.visitor.TypeElementVisitor;
+import io.micronaut.inject.processing.ProcessingException;
 import io.micronaut.inject.visitor.VisitorContext;
 import io.micronaut.inject.writer.GeneratedFile;
-import io.micronaut.sourcegen.generator.bytecode.ByteCodeGenerator;
+import io.micronaut.sourcegen.bytecode.ByteCodeWriter;
 import io.micronaut.sourcegen.model.ClassDef;
 import io.micronaut.sourcegen.model.ClassTypeDef;
 import io.micronaut.sourcegen.model.ExpressionDef;
@@ -38,6 +39,7 @@ import org.apache.ibatis.session.Configuration;
 
 import javax.lang.model.element.Modifier;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -64,7 +66,15 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
 
     private static final String REGISTRATION_SUFFIX = "$MyBatisMapperScanRegistration";
 
-    private final ByteCodeGenerator byteCodeGenerator = new ByteCodeGenerator();
+    /**
+     * The bytecode writer is used directly instead of {@code ByteCodeGenerator} from
+     * {@code micronaut-sourcegen-generator-bytecode}: that module registers a {@code SourceGenerator} service for
+     * Java, which other processors (e.g. Serde) on the same classpath may pick up with a mismatching version. The
+     * writer is already a dependency of {@code micronaut-core-processor}, so no additional sourcegen artifact is
+     * put on the annotation processor classpath.
+     */
+    private static final ByteCodeWriter BYTE_CODE_WRITER = new ByteCodeWriter(false, true);
+
     private final Set<String> interfaceTypes = new LinkedHashSet<>();
     private final Map<String, Scan> scans = new LinkedHashMap<>();
     private final Set<String> written = new HashSet<>();
@@ -125,7 +135,7 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
                 continue;
             }
             ClassDef registration = registrationDefinition(element, scan.datasource(), mapperTypes, unresolvedPackages);
-            byteCodeGenerator.write(registration, context, element);
+            writeClass(context, element, registration);
             context.visitServiceDescriptor(MyBatisMapperScanRegistration.class, registration.getName(), element);
 
             if (scan.nativeImageMetadata()) {
@@ -138,6 +148,14 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
         }
         if (originatingElement != null) {
             writeNativeImageMetadata(context, originatingElement, proxyTypes, reflectiveTypes);
+        }
+    }
+
+    private static void writeClass(VisitorContext context, ClassElement originatingElement, ClassDef classDef) {
+        try (OutputStream outputStream = context.visitClass(classDef.getName(), originatingElement)) {
+            outputStream.write(BYTE_CODE_WRITER.write(classDef, null));
+        } catch (IOException e) {
+            throw new ProcessingException(originatingElement, "Failed to generate '" + classDef.getName() + "': " + e.getMessage(), e);
         }
     }
 
