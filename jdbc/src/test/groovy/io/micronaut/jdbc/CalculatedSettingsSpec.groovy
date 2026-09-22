@@ -37,6 +37,23 @@ class CalculatedSettingsSpec extends Specification {
         ex.message == "Error configuring data source 'bar'. The driver class 'foo' was not found on the classpath"
     }
 
+    void "test getDriverClassName uses the thread context classloader"() {
+        given:
+        BasicJdbcConfiguration basicConfiguration = Mock(BasicJdbcConfiguration) {
+            1 * getConfiguredDriverClassName() >> "com.mysql.jdbc.Driver"
+        }
+        URL mysqlJar = this.class.classLoader.getResource("mysql.jar")
+        ClassLoader originalClassLoader = Thread.currentThread().contextClassLoader
+        Thread.currentThread().contextClassLoader = new URLClassLoader([mysqlJar] as URL[], ClassLoader.getPlatformClassLoader())
+        CalculatedSettings settings = new CalculatedSettings(basicConfiguration)
+
+        expect:
+        settings.getDriverClassName() == "com.mysql.jdbc.Driver"
+
+        cleanup:
+        Thread.currentThread().contextClassLoader = originalClassLoader
+    }
+
     void "test getDriverClassName is calculated from the URL"() {
         given:
         BasicJdbcConfiguration basicConfiguration = Mock(BasicJdbcConfiguration) {
