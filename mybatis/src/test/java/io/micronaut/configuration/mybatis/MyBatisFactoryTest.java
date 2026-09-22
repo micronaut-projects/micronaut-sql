@@ -15,9 +15,8 @@
  */
 package io.micronaut.configuration.mybatis;
 
-import io.micronaut.configuration.mybatis.explicit.TestExplicitMapper;
 import io.micronaut.configuration.mybatis.generated.TestGeneratedMapper;
-import io.micronaut.configuration.mybatis.support.TestPackageMapper;
+import io.micronaut.configuration.mybatis.generated.TestOtherDataSourceMapper;
 import io.micronaut.configuration.mybatis.support.TestTransactionFactory;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.inject.qualifiers.Qualifiers;
@@ -64,9 +63,8 @@ class MyBatisFactoryTest {
 
             Configuration configuration = applicationContext.getBean(Configuration.class);
             assertTrue(configuration.hasMapper(TestMapper.class));
-            assertTrue(configuration.hasMapper(TestPackageMapper.class));
-            assertTrue(configuration.hasMapper(TestExplicitMapper.class));
             assertTrue(configuration.hasMapper(TestGeneratedMapper.class));
+            assertFalse(configuration.hasMapper(TestOtherDataSourceMapper.class));
             assertTrue(configuration.isMapUnderscoreToCamelCase());
             assertInstanceOf(TestTransactionFactory.class, configuration.getEnvironment().getTransactionFactory());
             assertSame(
@@ -100,7 +98,24 @@ class MyBatisFactoryTest {
 
             Configuration configuration = applicationContext.getBean(Configuration.class);
             assertFalse(configuration.hasMapper(TestMapper.class));
+            assertFalse(configuration.hasMapper(TestGeneratedMapper.class));
+            assertFalse(configuration.hasMapper(TestOtherDataSourceMapper.class));
             assertInstanceOf(JdbcTransactionFactory.class, configuration.getEnvironment().getTransactionFactory());
+        }
+    }
+
+    @Test
+    void appliesMapperScanRegistrationsPerDataSource() {
+        try (ApplicationContext applicationContext = ApplicationContext.builder("test")
+            .properties(Map.of("datasources.default", Map.of(), "datasources.other", Map.of()))
+            .start()) {
+            Configuration defaultConfiguration = applicationContext.getBean(Configuration.class, Qualifiers.byName("default"));
+            assertTrue(defaultConfiguration.hasMapper(TestGeneratedMapper.class));
+            assertFalse(defaultConfiguration.hasMapper(TestOtherDataSourceMapper.class));
+
+            Configuration otherConfiguration = applicationContext.getBean(Configuration.class, Qualifiers.byName("other"));
+            assertTrue(otherConfiguration.hasMapper(TestOtherDataSourceMapper.class));
+            assertFalse(otherConfiguration.hasMapper(TestGeneratedMapper.class));
         }
     }
 

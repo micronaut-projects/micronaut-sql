@@ -1,37 +1,32 @@
 You can define additional beans which will be used when the MyBatis `Configuration` is created.
-Only beans of type api:configuration.mybatis.MyBatisConfigurationCustomizer[] with an `@Named` qualifier matching the datasource name will be applied. When the mapper-scan processor is used with Java, it adds this qualifier to the generated bean metadata.
-
-For the default datasource, Groovy and Kotlin customizers must explicitly declare `@Named("default")`. For a named datasource, set the `datasource` member of `@MyBatisMapperScan` and qualify the customizer with the same name, for example `@Named("orders")` with `datasources.orders.url`. Java users may omit `@Named` when using the processor because it adds the qualifier to the generated bean metadata; Groovy and Kotlin must declare it explicitly.
+Only beans of type api:configuration.mybatis.MyBatisConfigurationCustomizer[] with an `@Named` qualifier matching the datasource name will be applied.
 
 For example, you can register mapper interfaces and tune MyBatis settings for a specific datasource:
 
 snippet::example.micronaut.CustomConfigurationCustomizer[tags="imports,clazz", project-base="tests/mybatis"]
 
-This hook is also the right place to configure other MyBatis features that belong on the `Configuration`, such as type aliases, type handlers, interceptors, or additional mapper registrations.
+<1> Mapper interfaces in the `example.micronaut.mappers` package are registered at compile time (see below)
+<2> The customizer is applied to the `default` datasource
+<3> The customizer can configure any other MyBatis feature that belongs on the `Configuration`, such as type aliases, type handlers, interceptors, or additional mapper registrations
 
-To register mapper interfaces by package, annotate the customizer with api:configuration.mybatis.MyBatisMapperScan[]. This replaces a customizer call such as `configuration.addMappers("com.example.mappers")`. The language-specific examples above show the annotation and customizer declaration.
+==== Compile-time Mapper Registration
 
-The `micronaut-mybatis-processor` discovers mapper interfaces at compile time and generates direct registrations for Java, Groovy, and Kotlin. This avoids runtime package scanning and works with native images. On the JVM, MyBatis package scanning remains available as a fallback when no compile-time registration is generated.
+MyBatis normally discovers mapper interfaces by scanning the classpath at runtime (`configuration.addMappers("com.example.mappers")`). Classpath scanning does not work in GraalVM native images. Instead, annotate any class with api:configuration.mybatis.MyBatisMapperScan[] and add the `micronaut-mybatis-processor` to your build:
 
-Add the processor for the language you use:
+dependency:micronaut-mybatis-processor[groupId="io.micronaut.sql", scope="annotationProcessor"]
 
-[source,groovy]
-.Java
+NOTE: For Kotlin add the processor to the `ksp` (or `kapt`) configuration, for Groovy to the `compileOnly` configuration.
+
+The processor generates a api:configuration.mybatis.MyBatisMapperScanRegistration[] for every annotated class. It registers the mapper interfaces found in the given packages (including sub-packages) and any listed in the `mappers` member with the `Configuration` of the datasource named by the `datasource` member (`default` if not set). Registrations are applied after all customizers, so type aliases and type handlers set up by a customizer are available when the mapper interfaces are parsed. The processor also generates the GraalVM metadata for the mappers, see <<mybatis-graalvm, GraalVM native image>>. The annotation does not need to be placed on a bean; the customizer above is just a convenient place.
+
+Only mapper interfaces compiled together with the annotated class are discovered by package. For mapper interfaces from other modules, list them explicitly:
+
+[source,java]
 ----
-annotationProcessor("io.micronaut.sql:micronaut-mybatis-processor")
+@MyBatisMapperScan(value = "com.example.mappers", mappers = OtherModuleMapper.class, datasource = "orders")
 ----
 
-[source,groovy]
-.Groovy
-----
-compileOnly("io.micronaut.sql:micronaut-mybatis-processor")
-----
-
-[source,kotlin]
-.Kotlin
-----
-ksp("io.micronaut.sql:micronaut-mybatis-processor")
-----
+If no mapper interface is found in a package at compile time, the processor emits a warning and the generated registration falls back to MyBatis runtime scanning for that package. That fallback works on the JVM but not in a native image.
 
 ==== TransactionFactory Customization
 

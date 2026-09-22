@@ -13,7 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.mybatis.support;
+package io.micronaut.configuration.mybatis;
 
-public interface TestPackageMapper {
+import io.micronaut.configuration.mybatis.generated.TestOtherDataSourceMapper;
+import org.apache.ibatis.session.Configuration;
+
+/**
+ * A registration for a datasource that is not the default one.
+ */
+public final class TestOtherDataSourceMapperScanRegistration implements MyBatisMapperScanRegistration {
+
+    @Override
+    public String getDatasourceName() {
+        return "other";
+    }
+
+    @Override
+    public void register(Configuration configuration) {
+        addMapper(configuration, TestOtherDataSourceMapper.class);
+    }
 }

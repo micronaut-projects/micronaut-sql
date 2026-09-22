@@ -17,10 +17,16 @@ package io.micronaut.configuration.mybatis.processor;
 
 import io.micronaut.configuration.mybatis.MyBatisMapperScan;
 import io.micronaut.configuration.mybatis.MyBatisMapperScanRegistration;
+import io.micronaut.core.annotation.AnnotationClassValue;
 import io.micronaut.core.annotation.AnnotationValue;
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.inject.ast.ClassElement;
+import io.micronaut.inject.ast.ElementQuery;
+import io.micronaut.inject.ast.MethodElement;
+import io.micronaut.inject.ast.ParameterElement;
 import io.micronaut.inject.visitor.TypeElementVisitor;
 import io.micronaut.inject.visitor.VisitorContext;
+import io.micronaut.inject.writer.GeneratedFile;
 import io.micronaut.sourcegen.generator.bytecode.ByteCodeGenerator;
 import io.micronaut.sourcegen.model.ClassDef;
 import io.micronaut.sourcegen.model.ClassTypeDef;
@@ -28,28 +34,40 @@ import io.micronaut.sourcegen.model.ExpressionDef;
 import io.micronaut.sourcegen.model.MethodDef;
 import io.micronaut.sourcegen.model.StatementDef;
 import io.micronaut.sourcegen.model.TypeDef;
-import jakarta.inject.Named;
 import org.apache.ibatis.session.Configuration;
 
 import javax.lang.model.element.Modifier;
-import java.util.Arrays;
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * Generates registrations for mapper types discovered at compile time.
+ * Generates a {@link MyBatisMapperScanRegistration} for every type annotated with {@link MyBatisMapperScan}.
+ *
+ * <p>The visitor deliberately visits every class (the default {@code "*"} of
+ * {@link #getSupportedAnnotationNames()}) because it has to see the mapper interfaces, which carry no
+ * annotation, in addition to the annotated types. Only interfaces compiled in the same compilation
+ * unit can be discovered by package; for packages without any discovered interface a warning is
+ * emitted and the generated registration falls back to MyBatis runtime scanning.</p>
  */
+@Internal
 public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object, Object> {
 
-    private static final ByteCodeGenerator BYTE_CODE_GENERATOR = new ByteCodeGenerator();
+    private static final String REGISTRATION_SUFFIX = "$MyBatisMapperScanRegistration";
 
-    private final Set<String> mapperTypes = new LinkedHashSet<>();
+    private final ByteCodeGenerator byteCodeGenerator = new ByteCodeGenerator();
+    private final Set<String> interfaceTypes = new LinkedHashSet<>();
     private final Map<String, Scan> scans = new LinkedHashMap<>();
-    private boolean processed;
+    private final Set<String> written = new HashSet<>();
 
     @Override
     public VisitorKind getVisitorKind() {
@@ -57,140 +75,234 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
     }
 
     @Override
-    public Set<String> getSupportedAnnotationNames() {
-        return Set.of(MyBatisMapperScan.class.getName());
-    }
-
-    @Override
     public void visitClass(ClassElement element, VisitorContext context) {
-        if (element.isInterface()) {
-            mapperTypes.add(element.getName());
-        }
-
-        AnnotationValue<MyBatisMapperScan> scan = element.getAnnotation(MyBatisMapperScan.class);
-        if (scan != null) {
+        collectInterfaces(element);
+        AnnotationValue<MyBatisMapperScan> annotation = element.getAnnotation(MyBatisMapperScan.class);
+        if (annotation != null) {
+            List<String> mappers = new ArrayList<>();
+            for (AnnotationClassValue<?> mapper : annotation.annotationClassValues("mappers")) {
+                mappers.add(mapper.getName());
+            }
             scans.put(element.getName(), new Scan(
                 element.getName(),
-                scan.stringValues("value"),
-                scan.stringValue("datasource").orElse("default")
+                List.of(annotation.stringValues("value")),
+                mappers,
+                annotation.stringValue("datasource").orElse("default"),
+                annotation.booleanValue("nativeImageMetadata").orElse(true)
             ));
         }
     }
 
     @Override
     public void finish(VisitorContext context) {
-        if (processed || scans.isEmpty()) {
-            return;
-        }
-        processed = true;
-
+        Set<String> proxyTypes = new TreeSet<>();
+        Set<String> reflectiveTypes = new TreeSet<>();
+        ClassElement originatingElement = null;
         for (Scan scan : scans.values()) {
+            if (!written.add(scan.elementName())) {
+                continue;
+            }
             ClassElement element = context.getClassElement(scan.elementName()).orElse(null);
             if (element == null) {
                 continue;
             }
-            Set<String> packages = new TreeSet<>(Arrays.asList(scan.packages()));
-
-            Set<String> selectedMapperTypes = new TreeSet<>();
-            for (String mapperType : mapperTypes) {
-                if (isInScannedPackage(mapperType, packages)) {
-                    selectedMapperTypes.add(mapperType);
+            Set<String> mapperTypes = new TreeSet<>(scan.mappers());
+            List<String> unresolvedPackages = new ArrayList<>();
+            for (String packageName : scan.packages()) {
+                Set<String> discovered = discoverMappers(packageName);
+                if (discovered.isEmpty()) {
+                    unresolvedPackages.add(packageName);
+                    context.warn("No mapper interface found in package [" + packageName + "] during compilation. "
+                        + "Mapper interfaces from other modules must be listed in the `mappers` member of @"
+                        + MyBatisMapperScan.class.getSimpleName()
+                        + "; MyBatis runtime scanning is used as a fallback, which is not supported in GraalVM native images.", element);
+                } else {
+                    mapperTypes.addAll(discovered);
                 }
             }
+            if (mapperTypes.isEmpty() && unresolvedPackages.isEmpty()) {
+                context.warn("@" + MyBatisMapperScan.class.getSimpleName() + " declares neither packages nor mappers", element);
+                continue;
+            }
+            ClassDef registration = registrationDefinition(element, scan.datasource(), mapperTypes, unresolvedPackages);
+            byteCodeGenerator.write(registration, context, element);
+            context.visitServiceDescriptor(MyBatisMapperScanRegistration.class, registration.getName(), element);
 
-            element.annotate(Named.class, builder -> builder.value(scan.datasource()));
-            writeRegistrations(context, element, scan, selectedMapperTypes);
+            if (scan.nativeImageMetadata()) {
+                originatingElement = element;
+                proxyTypes.addAll(mapperTypes);
+                for (String mapperType : mapperTypes) {
+                    context.getClassElement(mapperType).ifPresent(mapper -> collectReflectiveTypes(mapper, reflectiveTypes));
+                }
+            }
+        }
+        if (originatingElement != null) {
+            writeNativeImageMetadata(context, originatingElement, proxyTypes, reflectiveTypes);
         }
     }
 
-    private void writeRegistrations(VisitorContext context,
-                                    ClassElement element,
-                                    Scan scan,
-                                    Set<String> selectedMapperTypes) {
-        Map<String, Set<String>> mapperTypesByPackage = new TreeMap<>();
-        for (String mapperType : selectedMapperTypes) {
-            int lastDot = mapperType.lastIndexOf('.');
-            String packageName = lastDot > 0 ? mapperType.substring(0, lastDot) : "";
-            mapperTypesByPackage.computeIfAbsent(packageName, ignored -> new TreeSet<>()).add(mapperType);
-        }
+    /**
+     * MyBatis implements mapper interfaces with {@link java.lang.reflect.Proxy} and instantiates and populates
+     * result and parameter objects reflectively. Both need GraalVM metadata, which is written next to the
+     * generated registration so that users do not have to declare it by hand.
+     */
+    private static void writeNativeImageMetadata(VisitorContext context,
+                                                 ClassElement originatingElement,
+                                                 Set<String> proxyTypes,
+                                                 Set<String> reflectiveTypes) {
+        Map<String, String> options = context.getOptions();
+        String group = options.getOrDefault(VisitorContext.MICRONAUT_PROCESSING_GROUP, originatingElement.getPackageName());
+        String module = options.getOrDefault(VisitorContext.MICRONAUT_PROCESSING_MODULE, "mybatis-mapper-scan");
+        String directory = "native-image/" + group + "/" + module + "/";
 
-        for (Map.Entry<String, Set<String>> entry : mapperTypesByPackage.entrySet()) {
-            String packageName = entry.getKey();
-            String className = "MyBatisMapperScanRegistration_"
-                + scan.elementName().replace('.', '_').replace('$', '_');
-            String registrationName = packageName.isEmpty() ? className : packageName + "." + className;
-            BYTE_CODE_GENERATOR.write(registrationDefinition(
-                packageName,
-                className,
-                scan.elementName(),
-                entry.getValue()
-            ), context);
-            context.visitServiceDescriptor(MyBatisMapperScanRegistration.class, registrationName, element);
+        StringBuilder proxyConfig = new StringBuilder("[\n");
+        for (String proxyType : proxyTypes) {
+            proxyConfig.append("  {\"interfaces\": [\"").append(proxyType).append("\"]},\n");
+        }
+        writeMetaInfFile(context, originatingElement, directory + "proxy-config.json", closeJsonArray(proxyConfig));
+
+        if (!reflectiveTypes.isEmpty()) {
+            StringBuilder reflectConfig = new StringBuilder("[\n");
+            for (String reflectiveType : reflectiveTypes) {
+                reflectConfig.append("  {\"name\": \"").append(reflectiveType).append("\", ")
+                    .append("\"allDeclaredConstructors\": true, \"allPublicConstructors\": true, ")
+                    .append("\"allDeclaredMethods\": true, \"allPublicMethods\": true, ")
+                    .append("\"allDeclaredFields\": true, \"allPublicFields\": true},\n");
+            }
+            writeMetaInfFile(context, originatingElement, directory + "reflect-config.json", closeJsonArray(reflectConfig));
         }
     }
 
-    private ClassDef registrationDefinition(String packageName,
-                                            String className,
-                                            String customizerType,
-                                            Set<String> mapperTypes) {
-        String registrationName = packageName.isEmpty() ? className : packageName + "." + className;
+    private static String closeJsonArray(StringBuilder json) {
+        int trailingComma = json.lastIndexOf(",");
+        if (trailingComma > 0) {
+            json.deleteCharAt(trailingComma);
+        }
+        return json.append("]\n").toString();
+    }
+
+    private static void writeMetaInfFile(VisitorContext context, ClassElement originatingElement, String path, String content) {
+        try {
+            GeneratedFile file = context.visitMetaInfFile(path, originatingElement).orElse(null);
+            if (file == null) {
+                return;
+            }
+            try (Writer writer = file.openWriter()) {
+                writer.write(content);
+            }
+        } catch (IOException e) {
+            context.warn("Unable to write GraalVM metadata file [META-INF/" + path + "]: " + e.getMessage(), originatingElement);
+        }
+    }
+
+    /**
+     * Collects the result and parameter types of the mapper methods, unwrapping containers.
+     */
+    private static void collectReflectiveTypes(ClassElement mapper, Set<String> reflectiveTypes) {
+        for (MethodElement method : mapper.getEnclosedElements(ElementQuery.ALL_METHODS)) {
+            addReflectiveType(method.getGenericReturnType(), reflectiveTypes);
+            for (ParameterElement parameter : method.getParameters()) {
+                addReflectiveType(parameter.getGenericType(), reflectiveTypes);
+            }
+        }
+    }
+
+    private static void addReflectiveType(ClassElement type, Set<String> reflectiveTypes) {
+        if (type == null || type.isPrimitive() || type.isEnum()) {
+            return;
+        }
+        if (type.isArray()) {
+            addReflectiveType(type.fromArray(), reflectiveTypes);
+            return;
+        }
+        if (type.isAssignable(Iterable.class)
+            || type.isAssignable(Map.class)
+            || type.isAssignable(Optional.class)
+            || type.isAssignable("java.util.stream.Stream")
+            || type.isAssignable("org.reactivestreams.Publisher")) {
+            for (ClassElement typeArgument : type.getTypeArguments().values()) {
+                addReflectiveType(typeArgument, reflectiveTypes);
+            }
+            return;
+        }
+        String name = type.getName();
+        if (name.startsWith("java.") || name.startsWith("javax.") || name.startsWith("jakarta.")
+            || name.startsWith("kotlin.") || name.startsWith("groovy.")
+            || name.startsWith("org.apache.ibatis.")) {
+            return;
+        }
+        reflectiveTypes.add(name);
+    }
+
+    /**
+     * Collects the element and its nested types when they are interfaces. Nested interfaces are included
+     * because MyBatis runtime package scanning registers them as well.
+     */
+    private void collectInterfaces(ClassElement element) {
+        if (element.isInterface() && !element.isAssignable(Annotation.class)) {
+            interfaceTypes.add(element.getName());
+        }
+        for (ClassElement inner : element.getEnclosedElements(ElementQuery.ALL_INNER_CLASSES)) {
+            collectInterfaces(inner);
+        }
+    }
+
+    private Set<String> discoverMappers(String packageName) {
+        Set<String> discovered = new TreeSet<>();
+        for (String interfaceType : interfaceTypes) {
+            String interfacePackage = packageOf(interfaceType);
+            if (interfacePackage.equals(packageName) || interfacePackage.startsWith(packageName + ".")) {
+                discovered.add(interfaceType);
+            }
+        }
+        return discovered;
+    }
+
+    private static ClassDef registrationDefinition(ClassElement element,
+                                                   String datasource,
+                                                   Set<String> mapperTypes,
+                                                   List<String> unresolvedPackages) {
+        String packageName = element.getPackageName();
+        String simpleName = element.getName().substring(packageName.isEmpty() ? 0 : packageName.length() + 1)
+            .replace('$', '_') + REGISTRATION_SUFFIX;
+        String registrationName = packageName.isEmpty() ? simpleName : packageName + "." + simpleName;
         return ClassDef.builder(registrationName)
-            .addModifiers(Modifier.FINAL)
+            .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
             .addSuperinterface(ClassTypeDef.of(MyBatisMapperScanRegistration.class))
-            .addMethod(MethodDef.builder("getCustomizerType")
+            .addMethod(MethodDef.builder("getDatasourceName")
                 .overrides()
                 .addModifiers(Modifier.PUBLIC)
                 .returns(String.class)
-                .build((aThis, parameters) -> ExpressionDef.constant(customizerType).returning()))
+                .build((aThis, parameters) -> ExpressionDef.constant(datasource).returning()))
             .addMethod(MethodDef.builder("register")
                 .overrides()
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter("configuration", Configuration.class)
-                .build((aThis, parameters) -> StatementDef.multi(mapperTypes.stream()
-                    .map(mapperType -> (StatementDef) parameters.get(0).invoke(
-                        "addMapper",
-                        TypeDef.VOID,
-                        ExpressionDef.constant(ClassTypeDef.of(mapperType))
-                    ))
-                    .toList())))
+                .build((aThis, parameters) -> {
+                    ExpressionDef configuration = parameters.get(0);
+                    List<StatementDef> statements = new ArrayList<>();
+                    for (String mapperType : mapperTypes) {
+                        statements.add(aThis.invoke("addMapper", TypeDef.VOID,
+                            configuration, ExpressionDef.constant(ClassTypeDef.of(mapperType))));
+                    }
+                    for (String unresolvedPackage : unresolvedPackages) {
+                        statements.add(aThis.invoke("addMappers", TypeDef.VOID,
+                            configuration, ExpressionDef.constant(unresolvedPackage)));
+                    }
+                    return StatementDef.multi(statements);
+                }))
             .build();
     }
 
-    private boolean isInScannedPackage(String mapperType, Set<String> packages) {
-        int lastDot = mapperType.lastIndexOf('.');
-        String packageName = lastDot > 0 ? mapperType.substring(0, lastDot) : "";
-        return packages.stream().anyMatch(scanPackage ->
-            packageName.equals(scanPackage) || packageName.startsWith(scanPackage + "."));
+    private static String packageOf(String typeName) {
+        int lastDot = typeName.lastIndexOf('.');
+        return lastDot > 0 ? typeName.substring(0, lastDot) : "";
     }
 
-    record Scan(String elementName, String[] packages, String datasource) {
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (!(o instanceof Scan(String otherElementName, String[] otherPackages, String otherDatasource))) {
-                return false;
-            }
-            return elementName.equals(otherElementName)
-                && Arrays.equals(packages, otherPackages)
-                && datasource.equals(otherDatasource);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = elementName.hashCode();
-            result = 31 * result + Arrays.hashCode(packages);
-            result = 31 * result + datasource.hashCode();
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return "Scan[elementName=" + elementName
-                + ", packages=" + Arrays.toString(packages)
-                + ", datasource=" + datasource + "]";
-        }
+    private record Scan(String elementName,
+                        List<String> packages,
+                        List<String> mappers,
+                        String datasource,
+                        boolean nativeImageMetadata) {
     }
 }

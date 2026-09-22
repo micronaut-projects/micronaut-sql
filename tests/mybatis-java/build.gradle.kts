@@ -29,6 +29,9 @@ if (isMacOsArm) {
     graalvmNative {
         binaries {
             all {
+                // Full native test compilation for this H2 module fails locally on macOS ARM with GraalVM 25.0.3,
+                // while CI Linux passes. Keep the workaround scoped to the known failing module and platform,
+                // same as tests/hibernate/hibernate-h2 and tests/jdbc-hikari-tests/jdbc-hikari-h2.
                 quickBuild.set(true)
             }
         }

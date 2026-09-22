@@ -3,7 +3,6 @@ plugins {
 }
 dependencies {
     api(projects.micronautJdbc)
-    api(mn.micronaut.aop)
     api(mn.micronaut.context)
     api(mn.micronaut.inject)
     api(libs.managed.mybatis)

@@ -15,9 +15,6 @@
  */
 package io.micronaut.configuration.mybatis;
 
-import io.micronaut.aop.Introduction;
-import jakarta.inject.Singleton;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -25,21 +22,28 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Requests compile-time discovery of MyBatis mapper interfaces in the given packages.
+ * Requests compile-time discovery of MyBatis mapper interfaces.
+ *
+ * <p>The {@code micronaut-mybatis-processor} generates a {@link MyBatisMapperScanRegistration}
+ * for every annotated type. The registration adds the mapper interfaces found in {@link #value()}
+ * and listed in {@link #mappers()} to the MyBatis {@code Configuration} of the {@link #datasource()}
+ * without runtime classpath scanning, which makes the registration work in GraalVM native images.</p>
+ *
+ * <p>The annotation can be placed on any type, it does not have to be a bean. Only mapper interfaces
+ * compiled together with the annotated type are discovered by package; mapper interfaces from other
+ * modules must be listed in {@link #mappers()}.</p>
  *
  * @since 7.2.0
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Introduction
-@Singleton
 public @interface MyBatisMapperScan {
 
     /**
-     * @return Packages containing MyBatis mapper interfaces
+     * @return Packages containing MyBatis mapper interfaces. Sub-packages and nested interfaces are included.
      */
-    String[] value();
+    String[] value() default {};
 
     /**
      * @return The datasource name to which the discovered mappers are registered
@@ -50,4 +54,13 @@ public @interface MyBatisMapperScan {
      * @return Mapper interfaces to register directly
      */
     Class<?>[] mappers() default {};
+
+    /**
+     * Whether to generate the GraalVM native image metadata (dynamic proxy entries for the mapper interfaces
+     * and reflection entries for their result and parameter types). The metadata is ignored on the JVM, so
+     * it only needs to be disabled when a project wants to manage the native image configuration itself.
+     *
+     * @return Whether to generate GraalVM native image metadata
+     */
+    boolean nativeImageMetadata() default true;
 }

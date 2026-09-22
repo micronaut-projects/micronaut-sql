@@ -39,6 +39,7 @@ mybatis:
   title: Configuring MyBatis
   mybatis-session-access: Injecting MyBatis runtime beans
   mybatis-customizers: Configuring MyBatis customizers
+  mybatis-graalvm: GraalVM native image
 vertxmysqlclient:
   title: Configuring Reactive MySQL Client
   vertxmysqlclient-healthchecks: MySQL Health Checks
