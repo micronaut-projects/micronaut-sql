@@ -57,8 +57,9 @@ public @interface MyBatisMapperScan {
 
     /**
      * Whether to generate the GraalVM native image metadata (dynamic proxy entries for the mapper interfaces
-     * and reflection entries for their result and parameter types). The metadata is ignored on the JVM, so
-     * it only needs to be disabled when a project wants to manage the native image configuration itself.
+     * and reflection entries for their result and parameter types), using the same mechanism as
+     * {@code @ReflectiveAccess}. The metadata is ignored on the JVM, so it only needs to be disabled when a
+     * project wants to manage the native image configuration itself.
      *
      * @return Whether to generate GraalVM native image metadata
      */

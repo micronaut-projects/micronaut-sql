@@ -17,7 +17,9 @@ package io.micronaut.configuration.mybatis.processor;
 
 import io.micronaut.annotation.processing.TypeElementVisitorProcessor;
 import io.micronaut.configuration.mybatis.MyBatisMapperScanRegistration;
+import io.micronaut.core.graal.GraalReflectionConfigurer;
 import io.micronaut.core.io.service.SoftServiceLoader;
+import io.micronaut.graal.reflect.GraalTypeElementVisitor;
 import io.micronaut.inject.visitor.TypeElementVisitor;
 import org.apache.ibatis.session.Configuration;
 import org.junit.jupiter.api.Test;
@@ -31,13 +33,18 @@ import javax.tools.SimpleJavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -156,19 +163,23 @@ class MyBatisMapperScanVisitorTest {
             registration.register(configuration);
         }
 
-        // no micronaut.processing.group/module options in this test: falls back to the annotated type's package
-        Path nativeImage = compilation.classes().resolve("META-INF/native-image/example.config/mybatis-mapper-scan");
-        String proxyConfig = Files.readString(nativeImage.resolve("proxy-config.json"));
-        assertTrue(proxyConfig.contains("{\"interfaces\": [\"example.mappers.GenreMapper\"]}"), proxyConfig);
-        assertTrue(proxyConfig.contains("example.mappers.Mappers$Helper$DeepMapper"), proxyConfig);
-        assertTrue(proxyConfig.contains("example.other.OtherMapper"), proxyConfig);
-        assertFalse(proxyConfig.contains("NotScannedMapper"), proxyConfig);
-
-        String reflectConfig = Files.readString(nativeImage.resolve("reflect-config.json"));
-        assertTrue(reflectConfig.contains("{\"name\": \"example.domain.Genre\", \"allDeclaredConstructors\": true"), reflectConfig);
-        assertTrue(reflectConfig.contains("\"example.domain.Book\""), reflectConfig);
-        assertFalse(reflectConfig.contains("java.lang.String"), reflectConfig);
-        assertFalse(reflectConfig.contains("java.util"), reflectConfig);
+        try (URLClassLoader classLoader = compilation.classLoader()) {
+            RecordingReflectionContext reflection = reflectionConfiguration(classLoader, "example.config.$MapperConfiguration");
+            assertEquals(Set.of(
+                "example.mappers.GenreMapper",
+                "example.mappers.Mappers$Helper$DeepMapper",
+                "example.mappers.Mappers$InnerMapper",
+                "example.mappers.nested.NestedMapper",
+                "example.other.OtherMapper"
+            ), reflection.proxies);
+            // GraalReflectionConfigurer registers every configured type, the mappers included
+            assertTrue(reflection.types.containsAll(Set.of("example.domain.Book", "example.domain.Genre")), reflection.types.toString());
+            assertFalse(reflection.types.contains("example.other.NotScannedMapper"), reflection.types.toString());
+            assertFalse(reflection.types.contains("java.lang.String"), reflection.types.toString());
+            assertTrue(reflection.members.contains("example.domain.Genre#setName"), reflection.members.toString());
+            assertTrue(reflection.members.contains("example.domain.Genre#<init>"), reflection.members.toString());
+            assertTrue(reflection.members.contains("example.domain.Genre.name"), reflection.members.toString());
+        }
     }
 
     @Test
@@ -220,8 +231,8 @@ class MyBatisMapperScanVisitorTest {
             assertFalse(configuration.hasMapper(classLoader.loadClass("example.other.NotListedMapper")));
         }
 
-        // nativeImageMetadata = false: no GraalVM metadata is generated
-        assertFalse(Files.exists(compilation.classes().resolve("META-INF/native-image")));
+        // nativeImageMetadata = false: no reflection configuration is generated
+        assertFalse(Files.exists(compilation.classes().resolve("example/config/$MapperConfiguration$ReflectConfig.class")));
     }
 
     @Test
@@ -250,6 +261,12 @@ class MyBatisMapperScanVisitorTest {
 
         assertEquals(Set.of("*"), visitor.getSupportedAnnotationNames());
         assertEquals(TypeElementVisitor.VisitorKind.AGGREGATING, visitor.getVisitorKind());
+
+        MyBatisMapperScanReflectionVisitor reflectionVisitor = new MyBatisMapperScanReflectionVisitor();
+        assertEquals(Set.of("*"), reflectionVisitor.getSupportedAnnotationNames());
+        assertEquals(TypeElementVisitor.VisitorKind.ISOLATING, reflectionVisitor.getVisitorKind());
+        assertTrue(reflectionVisitor.getOrder() > GraalTypeElementVisitor.POSITION,
+            "must run before the GraalTypeElementVisitor so that the @ReflectionConfig values are picked up");
     }
 
     private static Compilation compile(Path temporaryDirectory, List<JavaFileObject> sources) throws Exception {
@@ -272,7 +289,12 @@ class MyBatisMapperScanVisitorTest {
                 null,
                 sources
             );
-            task.setProcessors(List.of(new TestTypeElementVisitorProcessor()));
+            task.setProcessors(List.of(
+                new TestTypeElementVisitorProcessor(TypeElementVisitor.VisitorKind.ISOLATING,
+                    new MyBatisMapperScanReflectionVisitor(), new GraalTypeElementVisitor()),
+                new TestTypeElementVisitorProcessor(TypeElementVisitor.VisitorKind.AGGREGATING,
+                    new MyBatisMapperScanVisitor())
+            ));
             boolean success = task.call();
             String messages = diagnostics.getDiagnostics().stream()
                 .map(Diagnostic::toString)
@@ -288,15 +310,79 @@ class MyBatisMapperScanVisitorTest {
         }
     }
 
+    /**
+     * Loads the generated {@code $ReflectConfig} class of the given type and records what it registers.
+     */
+    private static RecordingReflectionContext reflectionConfiguration(URLClassLoader classLoader, String typeName) throws Exception {
+        Class<?> configurerClass = classLoader.loadClass(typeName + GraalReflectionConfigurer.CLASS_SUFFIX);
+        GraalReflectionConfigurer configurer = (GraalReflectionConfigurer) configurerClass.getDeclaredConstructor().newInstance();
+        RecordingReflectionContext context = new RecordingReflectionContext(classLoader);
+        configurer.configure(context);
+        return context;
+    }
+
+    private static final class RecordingReflectionContext implements GraalReflectionConfigurer.ReflectionConfigurationContext {
+        private final ClassLoader classLoader;
+        private final Set<String> proxies = new LinkedHashSet<>();
+        private final Set<String> types = new LinkedHashSet<>();
+        private final Set<String> members = new LinkedHashSet<>();
+
+        private RecordingReflectionContext(ClassLoader classLoader) {
+            this.classLoader = classLoader;
+        }
+
+        @Override
+        public Class<?> findClassByName(String name) {
+            try {
+                return classLoader.loadClass(name);
+            } catch (ClassNotFoundException e) {
+                return null;
+            }
+        }
+
+        @Override
+        public void register(Class<?>... classes) {
+            Arrays.stream(classes).map(Class::getName).forEach(types::add);
+        }
+
+        @Override
+        public void register(Method... methods) {
+            Arrays.stream(methods).map(m -> m.getDeclaringClass().getName() + "#" + m.getName()).forEach(members::add);
+        }
+
+        @Override
+        public void register(Field... fields) {
+            Arrays.stream(fields).map(f -> f.getDeclaringClass().getName() + "." + f.getName()).forEach(members::add);
+        }
+
+        @Override
+        public void register(Constructor<?>... constructors) {
+            Arrays.stream(constructors).map(c -> c.getDeclaringClass().getName() + "#<init>").forEach(members::add);
+        }
+
+        @Override
+        public void registerDynamicProxy(Class<?>... interfaces) {
+            proxies.add(Arrays.stream(interfaces).map(Class::getName).collect(Collectors.joining(",")));
+        }
+    }
+
     private static final class TestTypeElementVisitorProcessor extends TypeElementVisitorProcessor {
+        private final TypeElementVisitor.VisitorKind kind;
+        private final List<TypeElementVisitor<?, ?>> visitors;
+
+        private TestTypeElementVisitorProcessor(TypeElementVisitor.VisitorKind kind, TypeElementVisitor<?, ?>... visitors) {
+            this.kind = kind;
+            this.visitors = List.of(visitors);
+        }
+
         @Override
         protected Collection<? extends TypeElementVisitor<?, ?>> findTypeElementVisitors() {
-            return List.of(new MyBatisMapperScanVisitor());
+            return visitors;
         }
 
         @Override
         protected TypeElementVisitor.VisitorKind getIncrementalProcessorKind() {
-            return TypeElementVisitor.VisitorKind.AGGREGATING;
+            return kind;
         }
     }
 

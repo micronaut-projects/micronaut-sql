@@ -9,6 +9,8 @@ dependencies {
     implementation(mn.micronaut.sourcegen.bytecode.writer)
 
     testImplementation(mn.micronaut.inject.java)
+    // Runs the GraalTypeElementVisitor in the tests to verify the generated reflection configuration
+    testImplementation(mn.micronaut.graal)
     testImplementation(mnTest.junit.jupiter.api)
     testImplementation(mnTest.junit.platform.launcher)
 

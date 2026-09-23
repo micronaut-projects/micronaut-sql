@@ -1,1 +1,2 @@
 io.micronaut.configuration.mybatis.processor.MyBatisMapperScanVisitor
+io.micronaut.configuration.mybatis.processor.MyBatisMapperScanReflectionVisitor

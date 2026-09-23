@@ -3,7 +3,7 @@ When you use api:configuration.mybatis.MyBatisMapperScan[] (see <<mybatis-custom
 * every mapper interface is registered as a dynamic proxy, because MyBatis implements mappers with `java.lang.reflect.Proxy`
 * the result and parameter types of the mapper methods (unwrapping arrays, collections, maps, `Optional` and reactive publishers) are registered for reflection, because MyBatis instantiates and populates them reflectively
 
-The metadata is written to `META-INF/native-image/<group>/<module>/proxy-config.json` and `reflect-config.json` of the compiled module, so no manual configuration is needed for the common case. It is ignored when running on the JVM. Set `nativeImageMetadata = false` on the annotation if you prefer to manage the native image configuration yourself.
+The metadata is generated through the same mechanism as `@ReflectiveAccess` and is ignored when running on the JVM, so no manual configuration is needed for the common case. Set `nativeImageMetadata = false` on the annotation if you prefer to manage the native image configuration yourself.
 
 Types that MyBatis reaches only through mapping metadata rather than method signatures still have to be registered manually, for example the `javaType` of a `@Result`, association or collection types of nested result maps, or custom type handlers and object factories. Annotate such classes with `@ReflectiveAccess`, or declare them in your own `reflect-config.json`.
 
