@@ -63,9 +63,9 @@ public interface MyBatisMapperScanRegistration {
      * @param packageName   The package name
      */
     default void addMappers(Configuration configuration, String packageName) {
-        ResolverUtil<Class<?>> resolverUtil = new ResolverUtil<>();
+        ResolverUtil<Object> resolverUtil = new ResolverUtil<>();
         resolverUtil.find(new ResolverUtil.IsA(Object.class), packageName);
-        for (Class<? extends Class<?>> mapperType : resolverUtil.getClasses()) {
+        for (Class<?> mapperType : resolverUtil.getClasses()) {
             if (mapperType.isInterface()) {
                 addMapper(configuration, mapperType);
             }

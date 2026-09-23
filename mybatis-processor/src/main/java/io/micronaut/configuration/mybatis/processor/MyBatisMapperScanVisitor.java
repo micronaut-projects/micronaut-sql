@@ -154,9 +154,11 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
      */
     private static String registrationName(ClassElement element, String packageName) {
         String elementPackage = element.getPackageName();
-        String qualifier = packageName.equals(elementPackage)
-            ? element.getName().substring(elementPackage.isEmpty() ? 0 : elementPackage.length() + 1)
-            : element.getName();
+        String qualifier = element.getName();
+        if (packageName.equals(elementPackage)) {
+            int simpleNameStart = elementPackage.isEmpty() ? 0 : elementPackage.length() + 1;
+            qualifier = qualifier.substring(simpleNameStart);
+        }
         String simpleName = encode(qualifier) + REGISTRATION_SUFFIX;
         return packageName.isEmpty() ? simpleName : packageName + "." + simpleName;
     }
