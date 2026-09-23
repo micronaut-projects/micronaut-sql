@@ -105,49 +105,51 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
 
     @Override
     public void finish(VisitorContext context) {
-        Set<String> proxyTypes = new TreeSet<>();
-        Set<String> reflectiveTypes = new TreeSet<>();
-        ClassElement originatingElement = null;
+        NativeImageMetadata nativeImageMetadata = new NativeImageMetadata();
         for (Scan scan : scans.values()) {
-            if (!written.add(scan.elementName())) {
-                continue;
-            }
-            ClassElement element = context.getClassElement(scan.elementName()).orElse(null);
-            if (element == null) {
-                continue;
-            }
-            Set<String> mapperTypes = new TreeSet<>(scan.mappers());
-            List<String> unresolvedPackages = new ArrayList<>();
-            for (String packageName : scan.packages()) {
-                Set<String> discovered = discoverMappers(packageName);
-                if (discovered.isEmpty()) {
-                    unresolvedPackages.add(packageName);
-                    context.warn("No mapper interface found in package [" + packageName + "] during compilation. "
-                        + "Mapper interfaces from other modules must be listed in the `mappers` member of @"
-                        + MyBatisMapperScan.class.getSimpleName()
-                        + "; MyBatis runtime scanning is used as a fallback, which is not supported in GraalVM native images.", element);
-                } else {
-                    mapperTypes.addAll(discovered);
-                }
-            }
-            if (mapperTypes.isEmpty() && unresolvedPackages.isEmpty()) {
-                context.warn("@" + MyBatisMapperScan.class.getSimpleName() + " declares neither packages nor mappers", element);
-                continue;
-            }
-            ClassDef registration = registrationDefinition(element, scan.datasource(), mapperTypes, unresolvedPackages);
-            writeClass(context, element, registration);
-            context.visitServiceDescriptor(MyBatisMapperScanRegistration.class, registration.getName(), element);
-
-            if (scan.nativeImageMetadata()) {
-                originatingElement = element;
-                proxyTypes.addAll(mapperTypes);
-                for (String mapperType : mapperTypes) {
-                    context.getClassElement(mapperType).ifPresent(mapper -> collectReflectiveTypes(mapper, reflectiveTypes));
-                }
+            if (written.add(scan.elementName())) {
+                context.getClassElement(scan.elementName())
+                    .ifPresent(element -> generateRegistration(context, element, scan, nativeImageMetadata));
             }
         }
-        if (originatingElement != null) {
-            writeNativeImageMetadata(context, originatingElement, proxyTypes, reflectiveTypes);
+        if (nativeImageMetadata.originatingElement != null) {
+            writeNativeImageMetadata(context, nativeImageMetadata);
+        }
+    }
+
+    private void generateRegistration(VisitorContext context,
+                                      ClassElement element,
+                                      Scan scan,
+                                      NativeImageMetadata nativeImageMetadata) {
+        Set<String> mapperTypes = new TreeSet<>(scan.mappers());
+        List<String> unresolvedPackages = new ArrayList<>();
+        for (String packageName : scan.packages()) {
+            Set<String> discovered = discoverMappers(packageName);
+            if (discovered.isEmpty()) {
+                unresolvedPackages.add(packageName);
+                context.warn("No mapper interface found in package [" + packageName + "] during compilation. "
+                    + "Mapper interfaces from other modules must be listed in the `mappers` member of @"
+                    + MyBatisMapperScan.class.getSimpleName()
+                    + "; MyBatis runtime scanning is used as a fallback, which is not supported in GraalVM native images.", element);
+            } else {
+                mapperTypes.addAll(discovered);
+            }
+        }
+        if (mapperTypes.isEmpty() && unresolvedPackages.isEmpty()) {
+            context.warn("@" + MyBatisMapperScan.class.getSimpleName() + " declares neither packages nor mappers", element);
+            return;
+        }
+        ClassDef registration = registrationDefinition(element, scan.datasource(), mapperTypes, unresolvedPackages);
+        writeClass(context, element, registration);
+        context.visitServiceDescriptor(MyBatisMapperScanRegistration.class, registration.getName(), element);
+
+        if (scan.nativeImageMetadata()) {
+            nativeImageMetadata.originatingElement = element;
+            nativeImageMetadata.proxyTypes.addAll(mapperTypes);
+            for (String mapperType : mapperTypes) {
+                context.getClassElement(mapperType)
+                    .ifPresent(mapper -> collectReflectiveTypes(mapper, nativeImageMetadata.reflectiveTypes));
+            }
         }
     }
 
@@ -164,10 +166,10 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
      * result and parameter objects reflectively. Both need GraalVM metadata, which is written next to the
      * generated registration so that users do not have to declare it by hand.
      */
-    private static void writeNativeImageMetadata(VisitorContext context,
-                                                 ClassElement originatingElement,
-                                                 Set<String> proxyTypes,
-                                                 Set<String> reflectiveTypes) {
+    private static void writeNativeImageMetadata(VisitorContext context, NativeImageMetadata metadata) {
+        ClassElement originatingElement = metadata.originatingElement;
+        Set<String> proxyTypes = metadata.proxyTypes;
+        Set<String> reflectiveTypes = metadata.reflectiveTypes;
         Map<String, String> options = context.getOptions();
         String group = options.getOrDefault(VisitorContext.MICRONAUT_PROCESSING_GROUP, originatingElement.getPackageName());
         String module = options.getOrDefault(VisitorContext.MICRONAUT_PROCESSING_MODULE, "mybatis-mapper-scan");
@@ -315,6 +317,15 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
     private static String packageOf(String typeName) {
         int lastDot = typeName.lastIndexOf('.');
         return lastDot > 0 ? typeName.substring(0, lastDot) : "";
+    }
+
+    /**
+     * GraalVM metadata collected across all scans of a compilation round.
+     */
+    private static final class NativeImageMetadata {
+        private final Set<String> proxyTypes = new TreeSet<>();
+        private final Set<String> reflectiveTypes = new TreeSet<>();
+        private ClassElement originatingElement;
     }
 
     private record Scan(String elementName,
