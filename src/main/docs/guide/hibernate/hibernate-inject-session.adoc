@@ -1,6 +1,6 @@
 You can use the `jakarta.persistence.PersistenceContext` annotation to inject an `EntityManager` (or Hibernate `Session`):
 
-snippet::io.micronaut.docs.hibernate.session.BookRepository[tags="imports,clazz", title="Using @PersistenceContext"]
+snippet::io.micronaut.docs.hibernate.session.BookRepository[tags="imports,clazz", languages="java,kotlin,groovy", title="Using @PersistenceContext"]
 
 <1> The `EntityManager` of the `default` data source is injected
 <2> The `name` member selects the `EntityManager` of another configured data source (`other` here)

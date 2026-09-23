@@ -3,13 +3,6 @@ plugins {
     id 'io.micronaut.build.internal.python'
 }
 
-micronautBuild {
-    python {
-        // Hibernate reads the JPA annotations of the entities reflectively from the generated classes
-        compilerArgs.add("-Amicronaut.introspection.allowReflection=micronaut.docs.hibernate.*")
-    }
-}
-
 dependencies {
     // Annotation processors MUST be testImplementation (not testAnnotationProcessor): the Python compiler
     // compiler takes the compile classpath as its annotation processor path.

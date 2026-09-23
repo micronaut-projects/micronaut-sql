@@ -8,4 +8,10 @@ dependencies {
     // maps jakarta.transaction.Transactional to Micronaut's transactional advice
     testCompileOnly mnData.micronaut.data.processor
     testImplementation mnTest.micronaut.test.spock
+
+    // the hibernate examples of the guide
+    testImplementation projects.micronautHibernateJpa
+    testImplementation(mnData.micronaut.data.tx.hibernate) {
+        exclude(group: "org.hibernate.orm")
+    }
 }

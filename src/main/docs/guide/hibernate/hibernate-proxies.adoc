@@ -17,11 +17,11 @@ Compile-time proxies require every entity type that Hibernate may proxy to be an
 
 For example:
 
-snippet::io.micronaut.docs.hibernate.proxies.Pet[tags="imports,clazz"]
+snippet::io.micronaut.docs.hibernate.proxies.Pet[tags="imports,clazz", languages="java,kotlin,groovy"]
 
 The entity `Owner` needs to be annotated with `@GenerateProxy` to have a proxy generated at compile time.
 
-snippet::io.micronaut.docs.hibernate.proxies.Owner[tags="imports,clazz"]
+snippet::io.micronaut.docs.hibernate.proxies.Owner[tags="imports,clazz", languages="java,kotlin,groovy"]
 
 [NOTE]
 For GraalVM native image, enable compile-time proxies with the configuration shown above.

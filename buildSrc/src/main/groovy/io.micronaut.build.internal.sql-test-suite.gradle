@@ -1,18 +1,17 @@
 /*
  * Convention for the documentation test suites (test-suite, test-suite-groovy, test-suite-kotlin,
  * test-suite-python). The user guide `snippet::` macros resolve their sources in these projects,
- * so every example is compiled and tested in all four languages against an in-memory H2 database.
+ * so the jdbc examples are compiled and tested in all four languages against an in-memory H2 database.
+ * The Hibernate examples are Java/Kotlin/Groovy only, so the JPA dependencies are added by those
+ * three projects rather than here.
  */
 plugins {
     id 'io.micronaut.build.internal.testing-base'
 }
 
 dependencies {
-    testImplementation projects.micronautHibernateJpa
     testImplementation projects.micronautJdbcHikari
-    testImplementation(mnData.micronaut.data.tx.hibernate) {
-        exclude(group: "org.hibernate.orm")
-    }
+    testImplementation mnData.micronaut.data.tx.jdbc
     testImplementation mn.micronaut.inject
     testImplementation mn.micronaut.context
     testImplementation mnTest.micronaut.test.junit5
