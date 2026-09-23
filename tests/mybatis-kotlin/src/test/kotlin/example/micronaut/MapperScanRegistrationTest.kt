@@ -42,7 +42,7 @@ class MapperScanRegistrationTest {
         assertEquals(1, registrations.size)
         assertEquals("default", registrations[0].datasourceName)
         assertEquals(
-            "example.micronaut.CustomConfigurationCustomizer\$MyBatisMapperScanRegistration",
+            "example.micronaut.mappers.example_pmicronaut_pCustomConfigurationCustomizer\$MyBatisMapperScanRegistration",
             registrations[0].javaClass.name
         )
         assertTrue(configuration.hasMapper(GenreMapper::class.java))

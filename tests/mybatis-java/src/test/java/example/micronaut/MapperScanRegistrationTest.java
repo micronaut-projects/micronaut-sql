@@ -45,7 +45,7 @@ class MapperScanRegistrationTest {
 
         assertEquals(1, registrations.size());
         assertEquals("default", registrations.get(0).getDatasourceName());
-        assertEquals("example.micronaut.CustomConfigurationCustomizer$MyBatisMapperScanRegistration",
+        assertEquals("example.micronaut.mappers.example_pmicronaut_pCustomConfigurationCustomizer$MyBatisMapperScanRegistration",
             registrations.get(0).getClass().getName());
         assertTrue(configuration.hasMapper(GenreMapper.class));
         assertTrue(configuration.isMapUnderscoreToCamelCase());

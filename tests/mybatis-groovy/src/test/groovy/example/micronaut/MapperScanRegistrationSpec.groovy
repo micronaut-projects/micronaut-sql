@@ -40,7 +40,7 @@ class MapperScanRegistrationSpec extends Specification {
         expect:
         registrations.size() == 1
         registrations[0].datasourceName == "default"
-        registrations[0].class.name == 'example.micronaut.CustomConfigurationCustomizer$MyBatisMapperScanRegistration'
+        registrations[0].class.name == 'example.micronaut.mappers.example_pmicronaut_pCustomConfigurationCustomizer$MyBatisMapperScanRegistration'
         configuration.hasMapper(GenreMapper)
         configuration.mapUnderscoreToCamelCase
     }

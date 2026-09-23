@@ -111,11 +111,19 @@ class MyBatisMapperScanVisitorTest {
                 public interface NestedMapper {
                 }
                 """),
+            new InMemoryJavaFileObject("example.mappers.PackagePrivateMapper", """
+                package example.mappers;
+
+                interface PackagePrivateMapper {
+                }
+                """),
             new InMemoryJavaFileObject("example.mappers.Mappers", """
                 package example.mappers;
 
                 public final class Mappers {
                     public interface InnerMapper {
+                    }
+                    private interface PrivateMapper {
                     }
                     public static class Helper {
                         public interface DeepMapper {
@@ -138,29 +146,39 @@ class MyBatisMapperScanVisitorTest {
         ));
 
         assertTrue(compilation.success(), compilation.diagnostics());
+        // one registration per mapper package, so that non-public mappers can be referenced, plus the
+        // explicitly listed mappers in the package of the annotated type
         assertTrue(Files.exists(compilation.classes().resolve(
             "example/config/MapperConfiguration$MyBatisMapperScanRegistration.class")));
+        assertTrue(Files.exists(compilation.classes().resolve(
+            "example/mappers/example_pconfig_pMapperConfiguration$MyBatisMapperScanRegistration.class")));
+        assertTrue(Files.exists(compilation.classes().resolve(
+            "example/mappers/nested/example_pconfig_pMapperConfiguration$MyBatisMapperScanRegistration.class")));
 
         try (URLClassLoader classLoader = compilation.classLoader()) {
             List<MyBatisMapperScanRegistration> registrations = new ArrayList<>();
             SoftServiceLoader.load(MyBatisMapperScanRegistration.class, classLoader).collectAll(registrations);
 
-            assertEquals(1, registrations.size());
-            MyBatisMapperScanRegistration registration = registrations.get(0);
-            assertEquals("orders", registration.getDatasourceName());
-
+            assertEquals(3, registrations.size());
             Configuration configuration = new Configuration();
-            registration.register(configuration);
+            for (MyBatisMapperScanRegistration registration : registrations) {
+                assertEquals("orders", registration.getDatasourceName());
+                registration.register(configuration);
+            }
             assertTrue(configuration.hasMapper(classLoader.loadClass("example.mappers.GenreMapper")));
+            assertTrue(configuration.hasMapper(classLoader.loadClass("example.mappers.PackagePrivateMapper")));
             assertTrue(configuration.hasMapper(classLoader.loadClass("example.mappers.nested.NestedMapper")));
             assertTrue(configuration.hasMapper(classLoader.loadClass("example.mappers.Mappers$InnerMapper")));
+            assertTrue(configuration.hasMapper(classLoader.loadClass("example.mappers.Mappers$PrivateMapper")));
             assertTrue(configuration.hasMapper(classLoader.loadClass("example.mappers.Mappers$Helper$DeepMapper")));
             assertFalse(configuration.hasMapper(classLoader.loadClass("example.mappers.Mappers")));
             assertTrue(configuration.hasMapper(classLoader.loadClass("example.other.OtherMapper")));
             assertFalse(configuration.hasMapper(classLoader.loadClass("example.other.NotScannedMapper")));
 
             // registering twice must not fail with a MyBatis "already known" error
-            registration.register(configuration);
+            for (MyBatisMapperScanRegistration registration : registrations) {
+                registration.register(configuration);
+            }
         }
 
         try (URLClassLoader classLoader = compilation.classLoader()) {
@@ -169,6 +187,8 @@ class MyBatisMapperScanVisitorTest {
                 "example.mappers.GenreMapper",
                 "example.mappers.Mappers$Helper$DeepMapper",
                 "example.mappers.Mappers$InnerMapper",
+                "example.mappers.Mappers$PrivateMapper",
+                "example.mappers.PackagePrivateMapper",
                 "example.mappers.nested.NestedMapper",
                 "example.other.OtherMapper"
             ), reflection.proxies);
@@ -233,6 +253,64 @@ class MyBatisMapperScanVisitorTest {
 
         // nativeImageMetadata = false: no reflection configuration is generated
         assertFalse(Files.exists(compilation.classes().resolve("example/config/$MapperConfiguration$ReflectConfig.class")));
+    }
+
+    @Test
+    void registrationNamesOfSimilarTypesDoNotCollide(@TempDir Path temporaryDirectory) throws Exception {
+        Compilation compilation = compile(temporaryDirectory, List.of(
+            new InMemoryJavaFileObject("a.b_.c.Config", """
+                package a.b_.c;
+
+                @io.micronaut.configuration.mybatis.MyBatisMapperScan("example.mappers")
+                class Config {
+                }
+                """),
+            new InMemoryJavaFileObject("a.b._c.Config", """
+                package a.b._c;
+
+                @io.micronaut.configuration.mybatis.MyBatisMapperScan(value = "example.mappers", datasource = "second")
+                class Config {
+                }
+                """),
+            new InMemoryJavaFileObject("example.mappers.Outer$Inner", """
+                package example.mappers;
+
+                // a top-level type whose name contains a dollar, as a nested type's binary name does
+                @io.micronaut.configuration.mybatis.MyBatisMapperScan(value = "example.mappers", datasource = "third")
+                class Outer$Inner {
+                }
+                """),
+            new InMemoryJavaFileObject("example.mappers.Outer_Inner", """
+                package example.mappers;
+
+                @io.micronaut.configuration.mybatis.MyBatisMapperScan(value = "example.mappers", datasource = "fourth")
+                class Outer_Inner {
+                }
+                """),
+            new InMemoryJavaFileObject("example.mappers.GenreMapper", """
+                package example.mappers;
+
+                public interface GenreMapper {
+                }
+                """)
+        ));
+
+        assertTrue(compilation.success(), compilation.diagnostics());
+        for (String registration : List.of(
+            "a_pb_u_pc_pConfig",
+            "a_pb_p_uc_pConfig",
+            "Outer_dInner",
+            "Outer_uInner")) {
+            assertTrue(Files.exists(compilation.classes().resolve(
+                "example/mappers/" + registration + "$MyBatisMapperScanRegistration.class")), registration);
+        }
+
+        try (URLClassLoader classLoader = compilation.classLoader()) {
+            List<MyBatisMapperScanRegistration> registrations = new ArrayList<>();
+            SoftServiceLoader.load(MyBatisMapperScanRegistration.class, classLoader).collectAll(registrations);
+            assertEquals(Set.of("default", "second", "third", "fourth"),
+                registrations.stream().map(MyBatisMapperScanRegistration::getDatasourceName).collect(Collectors.toSet()));
+        }
     }
 
     @Test

@@ -42,6 +42,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
@@ -72,6 +73,7 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
     private final Set<String> interfaceTypes = new LinkedHashSet<>();
     private final Map<String, Scan> scans = new LinkedHashMap<>();
     private final Set<String> written = new HashSet<>();
+    private final Set<String> generatedRegistrations = new HashSet<>();
 
     @Override
     public VisitorKind getVisitorKind() {
@@ -102,7 +104,11 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
 
     private void generateRegistration(VisitorContext context, Scan scan) {
         ClassElement element = scan.element();
-        Set<String> mapperTypes = new TreeSet<>(scan.mappers());
+        // Mappers are grouped by package and every group is written to a registration class in that package,
+        // because a class literal of a non-public interface can only be used from the same package. Explicitly
+        // listed mappers are referenced from the annotation, so they are accessible from the annotated type.
+        Map<String, Set<String>> mapperTypesByPackage = new TreeMap<>();
+        mapperTypesByPackage.computeIfAbsent(element.getPackageName(), ignored -> new TreeSet<>()).addAll(scan.mappers());
         List<String> unresolvedPackages = new ArrayList<>();
         for (String packageName : scan.packages()) {
             Set<String> discovered = discoverMappers(packageName);
@@ -112,17 +118,62 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
                     + "Mapper interfaces from other modules must be listed in the `mappers` member of @"
                     + MyBatisMapperScan.class.getSimpleName()
                     + "; MyBatis runtime scanning is used as a fallback, which is not supported in GraalVM native images.", element);
-            } else {
-                mapperTypes.addAll(discovered);
+            }
+            for (String mapperType : discovered) {
+                mapperTypesByPackage.computeIfAbsent(packageOf(mapperType), ignored -> new TreeSet<>()).add(mapperType);
             }
         }
-        if (mapperTypes.isEmpty() && unresolvedPackages.isEmpty()) {
+        if (mapperTypesByPackage.values().stream().allMatch(Set::isEmpty) && unresolvedPackages.isEmpty()) {
             context.warn("@" + MyBatisMapperScan.class.getSimpleName() + " declares neither packages nor mappers", element);
             return;
         }
-        ClassDef registration = registrationDefinition(element, scan.datasource(), mapperTypes, unresolvedPackages);
-        writeClass(context, element, registration);
-        context.visitServiceDescriptor(MyBatisMapperScanRegistration.class, registration.getName(), element);
+        for (Map.Entry<String, Set<String>> entry : mapperTypesByPackage.entrySet()) {
+            String packageName = entry.getKey();
+            Set<String> mapperTypes = entry.getValue();
+            List<String> packages = packageName.equals(element.getPackageName()) ? unresolvedPackages : List.of();
+            if (mapperTypes.isEmpty() && packages.isEmpty()) {
+                continue;
+            }
+            ClassDef registration = registrationDefinition(element, packageName, scan.datasource(), mapperTypes, packages);
+            if (!generatedRegistrations.add(registration.getName())) {
+                context.fail("The generated registration [" + registration.getName() + "] of @"
+                    + MyBatisMapperScan.class.getSimpleName() + " on [" + element.getName()
+                    + "] clashes with the registration of another annotated type. Rename one of the annotated types.", element);
+                return;
+            }
+            writeClass(context, element, registration);
+            context.visitServiceDescriptor(MyBatisMapperScanRegistration.class, registration.getName(), element);
+        }
+    }
+
+    /**
+     * The name of the registration class of an annotated type written to the given package. Registrations written
+     * to the package of the annotated type are named after its simple name, those written to a mapper package after
+     * its fully qualified name, both {@link #encode(String) encoded} so that distinct types always yield distinct
+     * registration names.
+     */
+    private static String registrationName(ClassElement element, String packageName) {
+        String elementPackage = element.getPackageName();
+        String qualifier = packageName.equals(elementPackage)
+            ? element.getName().substring(elementPackage.isEmpty() ? 0 : elementPackage.length() + 1)
+            : element.getName();
+        String simpleName = encode(qualifier) + REGISTRATION_SUFFIX;
+        return packageName.isEmpty() ? simpleName : packageName + "." + simpleName;
+    }
+
+    /**
+     * Turns a type name into an identifier fragment with a prefix-free, and therefore injective, encoding:
+     * {@code _} becomes {@code _u}, {@code .} becomes {@code _p} and {@code $} becomes {@code _d}. Every
+     * underscore of the result starts an escape sequence, so e.g. {@code a.b_.c} and {@code a.b._c}, or
+     * {@code Outer$Inner} and {@code Outer_Inner}, are encoded differently.
+     */
+    private static String encode(String typeName) {
+        return typeName.replace("_", "_u").replace(".", "_p").replace("$", "_d");
+    }
+
+    private static String packageOf(String typeName) {
+        int lastDot = typeName.lastIndexOf('.');
+        return lastDot > 0 ? typeName.substring(0, lastDot) : "";
     }
 
     private static void writeClass(VisitorContext context, ClassElement originatingElement, ClassDef classDef) {
@@ -144,13 +195,11 @@ public final class MyBatisMapperScanVisitor implements TypeElementVisitor<Object
     }
 
     private static ClassDef registrationDefinition(ClassElement element,
+                                                   String packageName,
                                                    String datasource,
                                                    Set<String> mapperTypes,
                                                    List<String> unresolvedPackages) {
-        String packageName = element.getPackageName();
-        String simpleName = element.getName().substring(packageName.isEmpty() ? 0 : packageName.length() + 1)
-            .replace('$', '_') + REGISTRATION_SUFFIX;
-        String registrationName = packageName.isEmpty() ? simpleName : packageName + "." + simpleName;
+        String registrationName = registrationName(element, packageName);
         return ClassDef.builder(registrationName)
             .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
             .addSuperinterface(ClassTypeDef.of(MyBatisMapperScanRegistration.class))

@@ -15,6 +15,7 @@
  */
 package io.micronaut.configuration.mybatis;
 
+import org.apache.ibatis.io.ResolverUtil;
 import org.apache.ibatis.session.Configuration;
 
 /**
@@ -54,12 +55,20 @@ public interface MyBatisMapperScanRegistration {
 
     /**
      * Adds all mapper interfaces of a package using MyBatis runtime scanning. This is the JVM fallback
-     * for packages in which the annotation processor could not discover any mapper interface.
+     * for packages in which the annotation processor could not discover any mapper interface. Unlike
+     * {@link Configuration#addMappers(String)}, interfaces already known to the configuration (for example
+     * because they are also listed explicitly) are skipped.
      *
      * @param configuration The MyBatis configuration
      * @param packageName   The package name
      */
     default void addMappers(Configuration configuration, String packageName) {
-        configuration.addMappers(packageName);
+        ResolverUtil<Class<?>> resolverUtil = new ResolverUtil<>();
+        resolverUtil.find(new ResolverUtil.IsA(Object.class), packageName);
+        for (Class<? extends Class<?>> mapperType : resolverUtil.getClasses()) {
+            if (mapperType.isInterface()) {
+                addMapper(configuration, mapperType);
+            }
+        }
     }
 }
