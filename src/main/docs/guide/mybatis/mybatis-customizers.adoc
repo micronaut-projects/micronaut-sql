@@ -5,9 +5,7 @@ For example, you can register mapper interfaces and tune MyBatis settings for a 
 
 snippet::example.micronaut.CustomConfigurationCustomizer[tags="imports,clazz", project-base="tests/mybatis"]
 
-<1> Mapper interfaces in the `example.micronaut.mappers` package are registered at compile time (see below)
-<2> The customizer is applied to the `default` datasource
-<3> The customizer can configure any other MyBatis feature that belongs on the `Configuration`, such as type aliases, type handlers, interceptors, or additional mapper registrations
+The `@Named("default")` qualifier applies the customizer to the `default` datasource. The `customize` method is the place for any MyBatis feature that belongs on the `Configuration`, such as type aliases, type handlers, interceptors, or additional mapper registrations. The `@MyBatisMapperScan` annotation registers the mapper interfaces of the `example.micronaut.mappers` package at compile time, see below. Python has no annotation processor, so the Python example uses MyBatis runtime scanning with `configuration.addMappers(...)` instead.
 
 ==== Compile-time Mapper Registration
 

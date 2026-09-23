@@ -9,11 +9,11 @@ import org.apache.ibatis.session.Configuration
 // end::imports[]
 
 // tag::clazz[]
-@MyBatisMapperScan("example.micronaut.mappers") // <1>
-@Named("default") // <2>
+@MyBatisMapperScan("example.micronaut.mappers")
+@Named("default")
 @Singleton
 class CustomConfigurationCustomizer : MyBatisConfigurationCustomizer {
-    override fun customize(configuration: Configuration) { // <3>
+    override fun customize(configuration: Configuration) {
         configuration.isMapUnderscoreToCamelCase = true
     }
 }
