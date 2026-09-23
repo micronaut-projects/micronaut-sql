@@ -1,0 +1,15 @@
+plugins {
+    id 'io.micronaut.build.internal.sql-test-suite'
+}
+
+dependencies {
+    testAnnotationProcessor mn.micronaut.inject.java
+    // maps jakarta.transaction.Transactional to Micronaut's transactional advice
+    testAnnotationProcessor mnData.micronaut.data.processor
+
+    // the hibernate examples of the guide
+    testImplementation projects.micronautHibernateJpa
+    testImplementation(mnData.micronaut.data.tx.hibernate) {
+        exclude(group: "org.hibernate.orm")
+    }
+}

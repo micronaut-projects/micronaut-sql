@@ -14,10 +14,9 @@ Avoid enabling `jpa.*.entity-scan.classpath=true` for GraalVM native image. Full
 
 If your entities are not compiled by Micronaut, generate introspection metadata for them instead:
 
-[source,java]
-----
-@Introspected(packages = "example.domain")
-----
+snippet::io.micronaut.docs.hibernate.entityscan.Application[tags="imports,clazz", languages="java,kotlin,groovy"]
+
+<1> Generates introspection metadata for the `@Entity` classes of the given package
 
 See the <<hibernate-entity-scan,entity scan configuration section>> for the full set of options.
 
@@ -35,26 +34,11 @@ jpa:
 
 Each entity type that Hibernate may proxy must be annotated with `@GenerateProxy`:
 
-[source,java]
-----
-@Entity
-@GenerateProxy
-public class Owner {
-    // ...
-}
-----
+snippet::io.micronaut.docs.hibernate.proxies.Owner[tags="imports,clazz", languages="java,kotlin,groovy"]
 
 Then any lazy association pointing to that entity can be resolved without falling back to Hibernate's runtime proxy generation:
 
-[source,java]
-----
-@Entity
-public class Pet {
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Owner owner;
-}
-----
+snippet::io.micronaut.docs.hibernate.proxies.Pet[tags="imports,clazz", languages="java,kotlin,groovy"]
 
 [NOTE]
 For GraalVM native image, enable compile-time Hibernate proxies as shown above. The `@GenerateProxy` annotation is still required on each entity type that Hibernate may proxy.
@@ -65,26 +49,11 @@ Even with Micronaut entity scanning and compile-time proxies enabled, Hibernate 
 
 In particular, embeddable identifier types used with `@EmbeddedId` should be annotated with `@ReflectiveAccess`:
 
-[source,java]
-----
-@Embeddable
-@ReflectiveAccess
-public class OrderId implements Serializable {
-    // ...
-}
-----
+snippet::io.micronaut.docs.hibernate.graalvm.OrderId[tags="imports,clazz", languages="java,kotlin,groovy"]
 
 And then used from the entity as usual:
 
-[source,java]
-----
-@Entity
-public class Order {
-
-    @EmbeddedId
-    private OrderId id;
-}
-----
+snippet::io.micronaut.docs.hibernate.graalvm.Order[tags="imports,clazz", languages="java,kotlin,groovy"]
 
 If the application works on the JVM but fails only once Hibernate starts inspecting metadata or creating proxies in the native executable, check these three areas first:
 
