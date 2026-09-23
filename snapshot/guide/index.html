@@ -1142,11 +1142,161 @@ datasources.warehouse=...</code></pre>
 <div class="paragraph">
 <p>When injecting <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html">DataSource</a> beans, the one with the name "default" will be injected unless the injection is qualified with the configured name. If no configuration is named "default", none of the beans will be primary and thus all injections must be qualified. For example:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Inject DataSource dataSource // "default" will be injected
-@Inject @Named("warehouse") DataSource dataSource // "warehouse" will be injected</code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.transaction.annotation.Transactional;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+@Singleton
+public class InventoryService {
+
+    @Inject
+    DataSource dataSource; // <b class="conum">(1)</b>
+
+    @Inject
+    @Named("warehouse")
+    DataSource warehouseDataSource; // <b class="conum">(2)</b>
+
+    @Transactional // <b class="conum">(3)</b>
+    public String defaultUrl() throws SQLException {
+        return url(dataSource);
+    }
+
+    @Transactional("warehouse") // <b class="conum">(4)</b>
+    public String warehouseUrl() throws SQLException {
+        return url(warehouseDataSource);
+    }
+
+    private static String url(DataSource dataSource) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            return connection.getMetaData().getURL();
+        }
+    }
+}</code></pre>
 </div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from typing import Annotated
+
+from jakarta.inject import Inject, Named, Singleton
+from javax.sql import DataSource
+from micronaut.transaction.annotation import Transactional
+
+@Singleton
+class InventoryService:
+    data_source: Annotated[DataSource, Inject]  # <b class="conum">(1)</b>
+    warehouse_data_source: Annotated[DataSource, Inject, Named("warehouse")]  # <b class="conum">(2)</b>
+
+    @Transactional  # <b class="conum">(3)</b>
+    def default_url(self) -&gt; str:
+        return self._url(self.data_source)
+
+    @Transactional("warehouse")  # <b class="conum">(4)</b>
+    def warehouse_url(self) -&gt; str:
+        return self._url(self.warehouse_data_source)
+
+    @staticmethod
+    def _url(data_source: DataSource) -&gt; str:
+        connection = data_source.getConnection()
+        try:
+            return connection.getMetaData().getURL()
+        finally:
+            connection.close()</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.transaction.annotation.Transactional
+import jakarta.inject.Inject
+import jakarta.inject.Named
+import jakarta.inject.Singleton
+import javax.sql.DataSource
+
+@Singleton
+open class InventoryService {
+
+    @Inject
+    lateinit var dataSource: DataSource // <b class="conum">(1)</b>
+
+    @Inject
+    @Named("warehouse")
+    lateinit var warehouseDataSource: DataSource // <b class="conum">(2)</b>
+
+    @Transactional // <b class="conum">(3)</b>
+    open fun defaultUrl(): String = url(dataSource)
+
+    @Transactional("warehouse") // <b class="conum">(4)</b>
+    open fun warehouseUrl(): String = url(warehouseDataSource)
+
+    private fun url(dataSource: DataSource): String =
+        dataSource.connection.use { connection -&gt; connection.metaData.url }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import io.micronaut.transaction.annotation.Transactional
+import jakarta.inject.Inject
+import jakarta.inject.Named
+import jakarta.inject.Singleton
+
+import javax.sql.DataSource
+import java.sql.Connection
+
+@Singleton
+class InventoryService {
+
+    @Inject
+    DataSource dataSource // <b class="conum">(1)</b>
+
+    @Inject
+    @Named("warehouse")
+    DataSource warehouseDataSource // <b class="conum">(2)</b>
+
+    @Transactional // <b class="conum">(3)</b>
+    String defaultUrl() {
+        url(dataSource)
+    }
+
+    @Transactional("warehouse") // <b class="conum">(4)</b>
+    String warehouseUrl() {
+        url(warehouseDataSource)
+    }
+
+    private static String url(DataSource dataSource) {
+        try (Connection connection = dataSource.connection) {
+            return connection.metaData.URL
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The "default" data source will be injected</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The "warehouse" data source will be injected</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>With <a href="#jdbc-transactions">Micronaut-managed transactions</a>, connections are obtained inside a transactional method; the "default" transaction manager is used</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The value of <code>io.micronaut.transaction.annotation.Transactional</code> selects the transaction manager of the "warehouse" data source</td>
+</tr>
+</table>
 </div>
 
 <h2 id="jdbc-transactions"><a class="anchor" href="#jdbc-transactions"></a>4.4 Transaction Management</h2>
@@ -1222,16 +1372,170 @@ runtime = [
 <div class="paragraph">
 <p>You can annotate transactional methods with either <code>jakarta.transaction.Transactional</code> or <code>io.micronaut.transaction.annotation.Transactional</code>. For read-only operations, you can also use <code>io.micronaut.transaction.annotation.ReadOnly</code>.</p>
 </div>
-<div class="listingblock">
-<div class="title">Using <code>@Transactional</code> with JDBC</div>
+<div class="paragraph">
+<p>To use <code>jakarta.transaction.Transactional</code>, the Micronaut Data annotation processor, which maps it to Micronaut&#8217;s transactional advice, must be on the annotation processor path:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import jakarta.transaction.Transactional;
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">annotationProcessor(<span class="hljs-string">"io.micronaut.data:micronaut-data-processor")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;annotationProcessorPaths&gt;
+    &lt;path&gt;
+        &lt;groupId&gt;io.micronaut.data&lt;/groupId&gt;
+        &lt;artifactId&gt;micronaut-data-processor&lt;/artifactId&gt;
+    &lt;/path&gt;
+&lt;/annotationProcessorPaths&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+build = [
+    <span class="hljs-string">"io.micronaut.data:micronaut-data-processor"</span>,
+]</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title">Using @Transactional with JDBC</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import jakarta.inject.Singleton;
+import jakarta.transaction.Transactional;
 
-@Transactional
-void saveBook(Book book) {
-    // use the injected DataSource here
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+@Singleton
+public class BookRepository {
+
+    private final DataSource dataSource;
+
+    public BookRepository(DataSource dataSource) { // <b class="conum">(1)</b>
+        this.dataSource = dataSource;
+    }
+
+    @Transactional // <b class="conum">(2)</b>
+    public void saveBook(Book book) throws SQLException {
+        try (Connection connection = dataSource.getConnection(); // <b class="conum">(3)</b>
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO books (title, pages) VALUES (?, ?)")) {
+            statement.setString(1, book.title());
+            statement.setInt(2, book.pages());
+            statement.executeUpdate();
+        }
+    }
 }</code></pre>
 </div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title">Using @Transactional with JDBC</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from jakarta.inject import Singleton
+from jakarta.transaction import Transactional
+from javax.sql import DataSource
+
+from micronaut.docs.jdbc.transactions.Book import Book
+
+@Singleton
+class BookRepository:
+    def __init__(self, data_source: DataSource):  # <b class="conum">(1)</b>
+        self.data_source = data_source
+
+    @Transactional  # <b class="conum">(2)</b>
+    def save_book(self, book: Book) -&gt; None:
+        connection = self.data_source.getConnection()  # <b class="conum">(3)</b>
+        try:
+            statement = connection.prepareStatement("INSERT INTO books (title, pages) VALUES (?, ?)")
+            statement.setString(1, book.title)
+            statement.setInt(2, book.pages)
+            statement.executeUpdate()
+            statement.close()
+        finally:
+            connection.close()</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title">Using @Transactional with JDBC</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import jakarta.inject.Singleton
+import jakarta.transaction.Transactional
+import javax.sql.DataSource
+
+@Singleton
+open class BookRepository(private val dataSource: DataSource) { // <b class="conum">(1)</b>
+
+    @Transactional // <b class="conum">(2)</b>
+    open fun saveBook(book: Book) {
+        dataSource.connection.use { connection -&gt; // <b class="conum">(3)</b>
+            connection.prepareStatement("INSERT INTO books (title, pages) VALUES (?, ?)").use { statement -&gt;
+                statement.setString(1, book.title)
+                statement.setInt(2, book.pages)
+                statement.executeUpdate()
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title">Using @Transactional with JDBC</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import jakarta.inject.Singleton
+import jakarta.transaction.Transactional
+
+import javax.sql.DataSource
+import java.sql.Connection
+import java.sql.PreparedStatement
+import java.sql.ResultSet
+import java.sql.Statement
+
+@Singleton
+class BookRepository {
+
+    private final DataSource dataSource
+
+    BookRepository(DataSource dataSource) { // <b class="conum">(1)</b>
+        this.dataSource = dataSource
+    }
+
+    @Transactional // <b class="conum">(2)</b>
+    void saveBook(Book book) {
+        try (Connection connection = dataSource.connection // <b class="conum">(3)</b>
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO books (title, pages) VALUES (?, ?)")) {
+            statement.setString(1, book.title)
+            statement.setInt(2, book.pages)
+            statement.executeUpdate()
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>DataSource</code> is injected; it is transaction aware</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The public method is annotated with <code>@Transactional</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The connection obtained from the injected <code>DataSource</code> inside the transactional method participates in the transaction</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>If you need Micronaut-specific options such as <code>readOnly</code>, <code>transactionManager</code>, or <code>propagation</code>, use <code>io.micronaut.transaction.annotation.Transactional</code>.</p>
@@ -1375,18 +1679,30 @@ datasources.default.password=${DB_PASSWORD}</code></pre>
 <div class="paragraph">
 <p>Example of datasource password rotation implementation:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Singleton
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.annotation.Value;
+import io.micronaut.core.util.StringUtils;
+import io.micronaut.runtime.context.scope.refresh.RefreshEvent;
+import io.micronaut.scheduling.annotation.Scheduled;
+import jakarta.inject.Singleton;
+
+import java.util.Map;
+
+@Singleton
 final class DbPasswordRefresher {
 
     private final ApplicationContext applicationContext;
+    private final DbSecretStore secretStore;
     private String currentPassword;
 
     public DbPasswordRefresher(@Value("${datasources.default.password}") String currentPassword,
-                               ApplicationContext applicationContext) {
+                               ApplicationContext applicationContext,
+                               DbSecretStore secretStore) {
         this.currentPassword = currentPassword;
         this.applicationContext = applicationContext;
+        this.secretStore = secretStore;
     }
 
     @Scheduled(cron = "0 * * * * *") // Runs every minute
@@ -1404,15 +1720,146 @@ final class DbPasswordRefresher {
             this.currentPassword = password;
         }
     }
+
+    private String getSecretDbPassword() {
+        return secretStore.currentPassword();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from typing import Annotated
+
+from jakarta.inject import Singleton
+from micronaut.context import ApplicationContext
+from micronaut.context.annotation import Value
+from micronaut.runtime.context.scope.refresh import RefreshEvent
+from micronaut.scheduling.annotation import Scheduled
+
+from micronaut.docs.jdbc.refresh.DbSecretStore import DbSecretStore
+
+@Singleton
+class DbPasswordRefresher:
+    def __init__(self,
+                 current_password: Annotated[str, Value("${datasources.default.password}")],
+                 application_context: ApplicationContext,
+                 secret_store: DbSecretStore):
+        self.current_password = current_password
+        self.application_context = application_context
+        self.secret_store = secret_store
+
+    @Scheduled(cron="0 * * * * *")  # Runs every minute
+    def refresh(self) -&gt; None:
+        password = self.get_secret_db_password()  # Read from Vault, Secret Service, etc.
+        if password and password != self.current_password:
+            # This refresh() call is required before publishing event since datasources.default.password
+            # needs to be refreshed in the application configuration
+            self.application_context.getEnvironment().refresh()
+            # publishEvent with such RefreshEvent will trigger connection pool update and old connections eviction
+            # The datasource event handler for this event will get actual password from the
+            # application configuration that has been refreshed in refresh() call above
+            # and sending such event without prior calling refresh() will not work properly
+            self.application_context.publishEvent(RefreshEvent({"datasources.default.password": password}))
+            self.current_password = password
+
+    def get_secret_db_password(self) -&gt; str | None:
+        return self.secret_store.current_password()</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.context.ApplicationContext
+import io.micronaut.context.annotation.Value
+import io.micronaut.runtime.context.scope.refresh.RefreshEvent
+import io.micronaut.scheduling.annotation.Scheduled
+import jakarta.inject.Singleton
+
+@Singleton
+open class DbPasswordRefresher(
+    @Value("\${datasources.default.password}") private var currentPassword: String,
+    private val applicationContext: ApplicationContext,
+    private val secretStore: DbSecretStore
+) {
+
+    @Scheduled(cron = "0 * * * * *") // Runs every minute
+    open fun refresh() {
+        val password = getSecretDbPassword() // Read from Vault, Secret Service, etc.
+        if (!password.isNullOrEmpty() &amp;&amp; password != currentPassword) {
+            // This refresh() call is required before publishing event since datasources.default.password
+            // needs to be refreshed in the application configuration
+            applicationContext.environment.refresh()
+            // publishEvent with such RefreshEvent will trigger connection pool update and old connections eviction
+            // The datasource event handler for this event will get actual password from the
+            // application configuration that has been refreshed in refresh() call above
+            // and sending such event without prior calling refresh() will not work properly
+            applicationContext.publishEvent(RefreshEvent(mapOf&lt;String, Any&gt;("datasources.default.password" to password)))
+            currentPassword = password
+        }
+    }
+
+    private fun getSecretDbPassword(): String? = secretStore.currentPassword()
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import io.micronaut.context.ApplicationContext
+import io.micronaut.context.annotation.Value
+import io.micronaut.runtime.context.scope.refresh.RefreshEvent
+import io.micronaut.scheduling.annotation.Scheduled
+import jakarta.inject.Singleton
+
+@Singleton
+class DbPasswordRefresher {
+
+    private final ApplicationContext applicationContext
+    private final DbSecretStore secretStore
+    private String currentPassword
+
+    DbPasswordRefresher(@Value('${datasources.default.password}') String currentPassword,
+                        ApplicationContext applicationContext,
+                        DbSecretStore secretStore) {
+        this.currentPassword = currentPassword
+        this.applicationContext = applicationContext
+        this.secretStore = secretStore
+    }
+
+    @Scheduled(cron = "0 * * * * *") // Runs every minute
+    void refresh() {
+        String password = getSecretDbPassword() // Read from Vault, Secret Service, etc.
+        if (password &amp;&amp; password != currentPassword) {
+            // This refresh() call is required before publishing event since datasources.default.password
+            // needs to be refreshed in the application configuration
+            applicationContext.environment.refresh()
+            // publishEvent with such RefreshEvent will trigger connection pool update and old connections eviction
+            // The datasource event handler for this event will get actual password from the
+            // application configuration that has been refreshed in refresh() call above
+            // and sending such event without prior calling refresh() will not work properly
+            applicationContext.publishEvent(new RefreshEvent(["datasources.default.password": password]))
+            this.currentPassword = password
+        }
+    }
+
+    private String getSecretDbPassword() {
+        secretStore.currentPassword()
+    }
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>Alternative way to implement password rotation:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Singleton
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.context.ApplicationContext;
+import io.micronaut.runtime.context.scope.refresh.RefreshEvent;
+import io.micronaut.scheduling.annotation.Scheduled;
+import jakarta.inject.Singleton;
+
+import java.util.Map;
+
+@Singleton
 final class DbPasswordRefresher {
 
     private final ApplicationContext applicationContext;
@@ -1432,6 +1879,89 @@ final class DbPasswordRefresher {
             // The datasource event handler for this event will get actual password from the
             // application configuration that has been refreshed in refreshAndDiff() call above
             applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", password)));
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from jakarta.inject import Singleton
+from micronaut.context import ApplicationContext
+from micronaut.runtime.context.scope.refresh import RefreshEvent
+from micronaut.scheduling.annotation import Scheduled
+
+@Singleton
+class DbPasswordRefresher:
+    def __init__(self, application_context: ApplicationContext):
+        self.application_context = application_context
+
+    @Scheduled(cron="0 * * * * *")
+    def refresh(self) -&gt; None:
+        # refreshAndDiff() will register if there were changes in config values (Vault, Secret, etc.),
+        # update application configuration and populate the changes map.
+        changes = self.application_context.getEnvironment().refreshAndDiff()
+        # ${DB_PASSWORD} placeholder in refreshAndDiff() call will be populated as `db-password` key in changes map
+        if changes.containsKey("db-password"):
+            password = changes.get("db-password")
+            # The datasource event handler for this event will get actual password from the
+            # application configuration that has been refreshed in refreshAndDiff() call above
+            self.application_context.publishEvent(RefreshEvent({"datasources.default.password": password}))</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.context.ApplicationContext
+import io.micronaut.runtime.context.scope.refresh.RefreshEvent
+import io.micronaut.scheduling.annotation.Scheduled
+import jakarta.inject.Singleton
+
+@Singleton
+open class DbPasswordRefresher(private val applicationContext: ApplicationContext) {
+
+    @Scheduled(cron = "0 * * * * *")
+    open fun refresh() {
+        // refreshAndDiff() will register if there were changes in config values (Vault, Secret, etc.),
+        // update application configuration and populate the changes map.
+        val changes = applicationContext.environment.refreshAndDiff()
+        // ${DB_PASSWORD} placeholder in refreshAndDiff() call will be populated as `db-password` key in changes map
+        if (changes.containsKey("db-password")) {
+            val password = changes["db-password"] as String
+            // The datasource event handler for this event will get actual password from the
+            // application configuration that has been refreshed in refreshAndDiff() call above
+            applicationContext.publishEvent(RefreshEvent(mapOf&lt;String, Any&gt;("datasources.default.password" to password)))
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import io.micronaut.context.ApplicationContext
+import io.micronaut.runtime.context.scope.refresh.RefreshEvent
+import io.micronaut.scheduling.annotation.Scheduled
+import jakarta.inject.Singleton
+
+@Singleton
+class DbPasswordRefresher {
+
+    private final ApplicationContext applicationContext
+
+    DbPasswordRefresher(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext
+    }
+
+    @Scheduled(cron = "0 * * * * *")
+    void refresh() {
+        // refreshAndDiff() will register if there were changes in config values (Vault, Secret, etc.),
+        // update application configuration and populate the changes map.
+        Map&lt;String, Object&gt; changes = applicationContext.environment.refreshAndDiff()
+        // ${DB_PASSWORD} placeholder in refreshAndDiff() call will be populated as `db-password` key in changes map
+        if (changes.containsKey("db-password")) {
+            String password = (String) changes.get("db-password")
+            // The datasource event handler for this event will get actual password from the
+            // application configuration that has been refreshed in refreshAndDiff() call above
+            applicationContext.publishEvent(new RefreshEvent(["datasources.default.password": password]))
         }
     }
 }</code></pre>
@@ -1752,26 +2282,152 @@ runtime = [
 
 
 <div class="paragraph">
-<p>You can use the <code>jakarta.persistence.PersistenceContext</code> annotation to inject an <code>EntityManager</code> (or Hibernate <code>Session</code>). To do so you need to make sure the JPA annotations are on the <code>annotationProcessor</code> path in your build:</p>
+<p>You can use the <code>jakarta.persistence.PersistenceContext</code> annotation to inject an <code>EntityManager</code> (or Hibernate <code>Session</code>):</p>
 </div>
-<div class="listingblock">
-<div class="title">Adding the JPA dependency to <code>annotationProcessor</code> in Gradle</div>
+<div class="listingblock multi-language-sample">
+<div class="title">Using @PersistenceContext</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">annotationProcessor "jakarta.persistence:jakarta.persistence-api:2.2"</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Using <code>@PersistenceContext</code></div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@PersistenceContext
-EntityManager entityManager;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.transaction.annotation.Transactional;
+import jakarta.inject.Singleton;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
-@PersistenceContext(name = "other")
-EntityManager otherManager;</code></pre>
+@Singleton
+public class BookRepository {
+
+    @PersistenceContext
+    EntityManager entityManager; // <b class="conum">(1)</b>
+
+    @PersistenceContext(name = "other")
+    EntityManager otherManager; // <b class="conum">(2)</b>
+
+    @Transactional // <b class="conum">(3)</b>
+    public Book save(String title) {
+        Book book = new Book(title);
+        entityManager.persist(book);
+        return book;
+    }
+
+    @Transactional("other") // <b class="conum">(4)</b>
+    public Book saveToOther(String title) {
+        Book book = new Book(title);
+        otherManager.persist(book);
+        return book;
+    }
+
+    @Transactional(readOnly = true)
+    public Book findById(Long id) {
+        return entityManager.find(Book.class, id);
+    }
+
+    @Transactional(value = "other", readOnly = true)
+    public Book findInOtherById(Long id) {
+        return otherManager.find(Book.class, id);
+    }
+}</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Micronaut will inject a compile time scoped proxy that retrieves the <code>EntityManager</code> associated with the current transaction when using <code>jakarta.transaction.Transactional</code> (or <code>io.micronaut.transaction.annotation.Transactional</code>).</p>
+<div class="listingblock multi-language-sample">
+<div class="title">Using @PersistenceContext</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.transaction.annotation.Transactional
+import jakarta.inject.Singleton
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
+
+@Singleton
+open class BookRepository {
+
+    @PersistenceContext
+    lateinit var entityManager: EntityManager // <b class="conum">(1)</b>
+
+    @PersistenceContext(name = "other")
+    lateinit var otherManager: EntityManager // <b class="conum">(2)</b>
+
+    @Transactional // <b class="conum">(3)</b>
+    open fun save(title: String): Book {
+        val book = Book(title)
+        entityManager.persist(book)
+        return book
+    }
+
+    @Transactional("other") // <b class="conum">(4)</b>
+    open fun saveToOther(title: String): Book {
+        val book = Book(title)
+        otherManager.persist(book)
+        return book
+    }
+
+    @Transactional(readOnly = true)
+    open fun findById(id: Long): Book? = entityManager.find(Book::class.java, id)
+
+    @Transactional(value = "other", readOnly = true)
+    open fun findInOtherById(id: Long): Book? = otherManager.find(Book::class.java, id)
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title">Using @PersistenceContext</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import io.micronaut.transaction.annotation.Transactional
+import jakarta.inject.Singleton
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
+
+@Singleton
+class BookRepository {
+
+    @PersistenceContext
+    EntityManager entityManager // <b class="conum">(1)</b>
+
+    @PersistenceContext(name = "other")
+    EntityManager otherManager // <b class="conum">(2)</b>
+
+    @Transactional // <b class="conum">(3)</b>
+    Book save(String title) {
+        Book book = new Book(title)
+        entityManager.persist(book)
+        return book
+    }
+
+    @Transactional("other") // <b class="conum">(4)</b>
+    Book saveToOther(String title) {
+        Book book = new Book(title)
+        otherManager.persist(book)
+        return book
+    }
+
+    @Transactional(readOnly = true)
+    Book findById(Long id) {
+        entityManager.find(Book, id)
+    }
+
+    @Transactional(value = "other", readOnly = true)
+    Book findInOtherById(Long id) {
+        otherManager.find(Book, id)
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>EntityManager</code> of the <code>default</code> data source is injected</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>name</code> member selects the <code>EntityManager</code> of another configured data source (<code>other</code> here)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Micronaut will inject a compile time scoped proxy that retrieves the <code>EntityManager</code> associated with the current transaction when using <code>jakarta.transaction.Transactional</code> (or <code>io.micronaut.transaction.annotation.Transactional</code>)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>When using several data sources, the value of <code>io.micronaut.transaction.annotation.Transactional</code> selects the transaction manager of the data source the <code>EntityManager</code> belongs to</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>For Hibernate/JPA transaction management, use <code>micronaut-data-tx-hibernate</code> as described in <a href="#hibernate">Setting up a Hibernate/JPA EntityManager</a>.</p>
@@ -1995,14 +2651,45 @@ jpa {
 <div class="paragraph">
 <p>The above configuration limits the search to only classes in the <code>foo.bar</code> package. Note that if classes are not compiled by Micronaut they will not be found. There are two ways to resolve this, one is to generate introspection metadata for the external classes. For example you can place in this on your <code>Application</code> class:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock multi-language-sample">
 <div class="title">Generating Introspection Metadata for External Classes</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Introspected(packages="foo.bar")</code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.core.annotation.Introspected;
+import jakarta.persistence.Entity;
+
+@Introspected(packages = "io.micronaut.docs.hibernate.entityscan.external", includedAnnotations = Entity.class) // <b class="conum">(1)</b>
+public class Application {
+}</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>This will generate introspection metadata for all classes in the <code>foo.bar</code> package.</p>
+<div class="listingblock multi-language-sample">
+<div class="title">Generating Introspection Metadata for External Classes</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.core.annotation.Introspected
+import jakarta.persistence.Entity
+
+@Introspected(packages = ["io.micronaut.docs.hibernate.entityscan.external"], includedAnnotations = [Entity::class]) // <b class="conum">(1)</b>
+class Application</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title">Generating Introspection Metadata for External Classes</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import io.micronaut.core.annotation.Introspected
+import jakarta.persistence.Entity
+
+@Introspected(packages = "io.micronaut.docs.hibernate.entityscan.external", includedAnnotations = Entity) // <b class="conum">(1)</b>
+class Application {
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>This will generate introspection metadata for all the <code>@Entity</code> classes in the given package. The <code>includedAnnotations</code> member is required when <code>packages</code> is specified.</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>If this option doesn&#8217;t work for you, you can instead enable full classpath scanning using the <code>classpath</code> property:</p>
@@ -2127,10 +2814,42 @@ jpa.default.entity-scan.packages[0]=foo.bar</code></pre>
 <div class="paragraph">
 <p>If your entities are not compiled by Micronaut, generate introspection metadata for them instead:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Introspected(packages = "example.domain")</code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.core.annotation.Introspected;
+import jakarta.persistence.Entity;
+
+@Introspected(packages = "io.micronaut.docs.hibernate.entityscan.external", includedAnnotations = Entity.class) // <b class="conum">(1)</b>
+public class Application {
+}</code></pre>
 </div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.core.annotation.Introspected
+import jakarta.persistence.Entity
+
+@Introspected(packages = ["io.micronaut.docs.hibernate.entityscan.external"], includedAnnotations = [Entity::class]) // <b class="conum">(1)</b>
+class Application</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import io.micronaut.core.annotation.Introspected
+import jakarta.persistence.Entity
+
+@Introspected(packages = "io.micronaut.docs.hibernate.entityscan.external", includedAnnotations = Entity) // <b class="conum">(1)</b>
+class Application {
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Generates introspection metadata for the <code>@Entity</code> classes of the given package</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>See the <a href="#hibernate-entity-scan">entity scan configuration section</a> for the full set of options.</p>
@@ -2199,25 +2918,169 @@ jpa.default.entity-scan.packages[0]=foo.bar</code></pre>
 <div class="paragraph">
 <p>Each entity type that Hibernate may proxy must be annotated with <code>@GenerateProxy</code>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Entity
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.configuration.hibernate.jpa.proxy.GenerateProxy;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
+@Entity
 @GenerateProxy
 public class Owner {
-    // ...
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String name;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.configuration.hibernate.jpa.proxy.GenerateProxy
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+
+@Entity
+@GenerateProxy
+open class Owner {
+
+    @Id
+    @GeneratedValue
+    open var id: Long? = null
+
+    open var name: String? = null
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import io.micronaut.configuration.hibernate.jpa.proxy.GenerateProxy
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+
+@Entity
+@GenerateProxy
+class Owner {
+
+    @Id
+    @GeneratedValue
+    Long id
+
+    String name
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>Then any lazy association pointing to that entity can be resolved without falling back to Hibernate&#8217;s runtime proxy generation:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Entity
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Pet {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Owner owner;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
+
+@Entity
+open class Pet {
+
+    @Id
+    @GeneratedValue
+    open var id: Long? = null
+
+    open var name: String? = null
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    open var owner: Owner? = null
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
+
+@Entity
+class Pet {
+
+    @Id
+    @GeneratedValue
+    Long id
+
+    String name
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    Owner owner
 }</code></pre>
 </div>
 </div>
@@ -2244,25 +3107,159 @@ For GraalVM native image, enable compile-time Hibernate proxies as shown above. 
 <div class="paragraph">
 <p>In particular, embeddable identifier types used with <code>@EmbeddedId</code> should be annotated with <code>@ReflectiveAccess</code>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Embeddable
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.core.annotation.ReflectiveAccess;
+import jakarta.persistence.Embeddable;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+@Embeddable
 @ReflectiveAccess
 public class OrderId implements Serializable {
-    // ...
+
+    private String region;
+    private Long number;
+
+    public OrderId() {
+    }
+
+    public OrderId(String region, Long number) {
+        this.region = region;
+        this.number = number;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public Long getNumber() {
+        return number;
+    }
+
+    public void setNumber(Long number) {
+        this.number = number;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof OrderId other &amp;&amp; Objects.equals(region, other.region) &amp;&amp; Objects.equals(number, other.number);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(region, number);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.core.annotation.ReflectiveAccess
+import jakarta.persistence.Embeddable
+import java.io.Serializable
+
+@Embeddable
+@ReflectiveAccess
+data class OrderId(var region: String? = null, var number: Long? = null) : Serializable</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import groovy.transform.EqualsAndHashCode
+import io.micronaut.core.annotation.ReflectiveAccess
+import jakarta.persistence.Embeddable
+
+@Embeddable
+@ReflectiveAccess
+@EqualsAndHashCode
+class OrderId implements Serializable {
+
+    String region
+    Long number
+
+    OrderId() {
+    }
+
+    OrderId(String region, Long number) {
+        this.region = region
+        this.number = number
+    }
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>And then used from the entity as usual:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Entity
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "orders")
 public class Order {
 
     @EmbeddedId
     private OrderId id;
+
+    private String customer;
+
+    public OrderId getId() {
+        return id;
+    }
+
+    public void setId(OrderId id) {
+        this.id = id;
+    }
+
+    public String getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(String customer) {
+        this.customer = customer;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import jakarta.persistence.EmbeddedId
+import jakarta.persistence.Entity
+import jakarta.persistence.Table
+
+@Entity
+@Table(name = "orders")
+open class Order {
+
+    @EmbeddedId
+    open var id: OrderId? = null
+
+    open var customer: String? = null
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import jakarta.persistence.EmbeddedId
+import jakarta.persistence.Entity
+import jakarta.persistence.Table
+
+@Entity
+@Table(name = "orders")
+class Order {
+
+    @EmbeddedId
+    OrderId id
+
+    String customer
 }</code></pre>
 </div>
 </div>
@@ -2798,27 +3795,169 @@ vertx.pg.client.max-size=10</code></pre>
 <div class="paragraph">
 <p>For example:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Entity
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Pet {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Owner owner;
 
-    //...
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
+
+@Entity
+open class Pet {
+
+    @Id
+    @GeneratedValue
+    open var id: Long? = null
+
+    open var name: String? = null
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    open var owner: Owner? = null
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
+
+@Entity
+class Pet {
+
+    @Id
+    @GeneratedValue
+    Long id
+
+    String name
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    Owner owner
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>The entity <code>Owner</code> needs to be annotated with <code>@GenerateProxy</code> to have a proxy generated at compile time.</p>
 </div>
-<div class="listingblock">
+<div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Entity
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.configuration.hibernate.jpa.proxy.GenerateProxy;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
+@Entity
 @GenerateProxy
 public class Owner {
-    //...
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String name;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.configuration.hibernate.jpa.proxy.GenerateProxy
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+
+@Entity
+@GenerateProxy
+open class Owner {
+
+    @Id
+    @GeneratedValue
+    open var id: Long? = null
+
+    open var name: String? = null
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import io.micronaut.configuration.hibernate.jpa.proxy.GenerateProxy
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+
+@Entity
+@GenerateProxy
+class Owner {
+
+    @Id
+    @GeneratedValue
+    Long id
+
+    String name
 }</code></pre>
 </div>
 </div>
@@ -3427,13 +4566,64 @@ Only beans with the same name qualifier as the data source name will be used.</p
 <div class="paragraph">
 <p>If you don&#8217;t register bean of type <a href="https://www.jooq.org/javadoc/latest/org/jooq/ConverterProvider.html">ConverterProvider</a> and provide following configuration, <code>JsonConverterProvider</code> will be used, which uses Micronaut configured <code>JsonMapper</code> for converting from and to types JSON and JSONB.</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
 <div class="title">Configuring Micronaut Json converter</div>
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">jooq.datasources.default.json-converter-enabled=true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">jooq:
     datasources:
         default:
             json-converter-enabled: true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">jooq = {datasources = {default = {json-converter-enabled = true}}}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">jooq {
+  datasources {
+    'default' {
+      jsonConverterEnabled = true
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  jooq {
+    datasources {
+      default {
+        json-converter-enabled = true
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "jooq": {
+    "datasources": {
+      "default": {
+        "json-converter-enabled": true
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 
@@ -3567,11 +4757,31 @@ runtime = [
 <div class="paragraph">
 <p>If you need additional Jdbi modules such as <code>jdbi3-sqlobject</code>, Gradle consumers can declare them without an explicit version because <code>micronaut-jdbi</code> publishes the Jdbi BOM through Gradle module metadata:</p>
 </div>
-<div class="listingblock">
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("io.micronaut.sql:micronaut-jdbi")
-implementation("org.jdbi:jdbi3-sqlobject")</code></pre>
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"org.jdbi:jdbi3-sqlobject")</span></code></pre>
 </div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;org.jdbi&lt;/groupId&gt;
+    &lt;artifactId&gt;jdbi3-sqlobject&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"org.jdbi:jdbi3-sqlobject"</span>,
+]</code></pre>
+</div>
+</div>
+</p>
 </div>
 <div class="paragraph">
 <p>For Maven, import <code>micronaut-sql-bom</code> in <code>dependencyManagement</code> before declaring extra Jdbi modules, because Maven does not consume transitive BOM imports from regular dependencies:</p>
@@ -3851,8 +5061,23 @@ public class CustomConfigurationCustomizer implements MyBatisConfigurationCustom
     @Override
     public void customize(Configuration configuration) {
         configuration.addMappers("example.micronaut.mappers");
+        configuration.setMapUnderscoreToCamelCase(true);
     }
 }</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from jakarta.inject import Named, Singleton
+from micronaut.configuration.mybatis import MyBatisConfigurationCustomizer
+from org.apache.ibatis.session import Configuration
+
+@Named("default")
+@Singleton
+class CustomConfigurationCustomizer(MyBatisConfigurationCustomizer):
+    def customize(self, configuration: Configuration) -&gt; None:
+        configuration.addMappers("example.micronaut.mappers")
+        configuration.setMapUnderscoreToCamelCase(True)</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -3867,6 +5092,7 @@ import org.apache.ibatis.session.Configuration
 class CustomConfigurationCustomizer : MyBatisConfigurationCustomizer {
     override fun customize(configuration: Configuration) {
         configuration.addMappers("example.micronaut.mappers")
+        configuration.isMapUnderscoreToCamelCase = true
     }
 }</code></pre>
 </div>
@@ -3884,6 +5110,7 @@ class CustomConfigurationCustomizer implements MyBatisConfigurationCustomizer {
     @Override
     void customize(Configuration configuration) {
         configuration.addMappers("example.micronaut.mappers")
+        configuration.mapUnderscoreToCamelCase = true
     }
 }</code></pre>
 </div>
@@ -3962,18 +5189,88 @@ runtime = [
 <div class="paragraph">
 <p>You should then configure the URI or <a href="https://vertx.io/docs/vertx-mysql-client/java/"><code>MySQLConnectOptions</code>,<code>PoolOptions</code></a> of the MySQL server you wish to communicate with in <code>application.yml</code>:</p>
 </div>
-<div class="listingblock">
-<div class="title">application.yml</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">vertx.mysql.client.port=3306
+vertx.mysql.client.host=the-host
+vertx.mysql.client.database=the-db
+vertx.mysql.client.user=test
+vertx.mysql.client.password=test
+vertx.mysql.client.maxSize=5</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">vertx:
-	mysql:
-	    client:
-            port: 3306
-            host: the-host
-            database: the-db
-            user: test
-            password: test
-            maxSize: 5</code></pre>
+  mysql:
+    client:
+      port: 3306
+      host: the-host
+      database: the-db
+      user: test
+      password: test
+      maxSize: 5</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">vertx = {mysql = {client = {port = 3306, host = "the-host", database = "the-db", user = "test", password = "test", maxSize = 5}}}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">vertx {
+  mysql {
+    client {
+      port = 3306
+      host = "the-host"
+      database = "the-db"
+      user = "test"
+      password = "test"
+      maxSize = 5
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  vertx {
+    mysql {
+      client {
+        port = 3306
+        host = "the-host"
+        database = "the-db"
+        user = "test"
+        password = "test"
+        maxSize = 5
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "vertx": {
+    "mysql": {
+      "client": {
+        "port": 3306,
+        "host": "the-host",
+        "database": "the-db",
+        "user": "test",
+        "password": "test",
+        "maxSize": 5
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="admonitionblock tip">
