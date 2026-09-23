@@ -13,6 +13,7 @@ import org.apache.ibatis.session.Configuration
 class CustomConfigurationCustomizer : MyBatisConfigurationCustomizer {
     override fun customize(configuration: Configuration) {
         configuration.addMappers("example.micronaut.mappers")
+        configuration.isMapUnderscoreToCamelCase = true
     }
 }
 // end::clazz[]
