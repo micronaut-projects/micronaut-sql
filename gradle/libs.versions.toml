@@ -1,7 +1,7 @@
 [versions]
 
 # Micronaut
-micronaut = "5.2.3"
+micronaut = "5.2.4"
 micronaut-gradle-plugin = "5.0.2"
 micronaut-test-resources = "4.2.0"
 
