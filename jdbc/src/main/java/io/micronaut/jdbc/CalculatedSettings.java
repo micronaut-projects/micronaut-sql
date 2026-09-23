@@ -38,21 +38,23 @@ public class CalculatedSettings {
     private @Nullable String calculatedValidationQuery;
     private final Optional<JdbcDatabaseManager.EmbeddedJdbcDatabase> embeddedDatabaseConnection;
     private final BasicJdbcConfiguration basicJdbcConfiguration;
+    private final @Nullable ClassLoader classLoader;
 
     /**
      * @param basicJdbcConfiguration The basic jdbc configuration
      */
     public CalculatedSettings(BasicJdbcConfiguration basicJdbcConfiguration) {
-        this.basicJdbcConfiguration = basicJdbcConfiguration;
-        embeddedDatabaseConnection = JdbcDatabaseManager.get(this.getClass().getClassLoader());
+        this(basicJdbcConfiguration, null);
     }
 
     /**
      * @param basicJdbcConfiguration The basic jdbc configuration
-     * @param classLoader            The classloader to get the embedded database connection from
+     * @param classLoader            The classloader to find JDBC drivers with. If {@code null}, the thread context
+     *                               classloader is used
      */
-    public CalculatedSettings(BasicJdbcConfiguration basicJdbcConfiguration, ClassLoader classLoader) {
+    public CalculatedSettings(BasicJdbcConfiguration basicJdbcConfiguration, @Nullable ClassLoader classLoader) {
         this.basicJdbcConfiguration = basicJdbcConfiguration;
+        this.classLoader = classLoader;
         embeddedDatabaseConnection = JdbcDatabaseManager.get(classLoader);
     }
 
@@ -188,6 +190,6 @@ public class CalculatedSettings {
     }
 
     private boolean driverClassIsPresent(String className) {
-        return ClassUtils.isPresent(className, this.getClass().getClassLoader());
+        return ClassUtils.isPresent(className, classLoader);
     }
 }
