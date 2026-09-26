@@ -85,7 +85,7 @@ public class JdbiFactory {
     }
 
     private boolean h2IsPresent() {
-        return ClassUtils.isPresent("org.h2.Driver", this.getClass().getClassLoader());
+        return ClassUtils.isPresent("org.h2.Driver", null);
     }
 
 }

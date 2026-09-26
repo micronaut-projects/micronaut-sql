@@ -1,0 +1,17 @@
+plugins {
+    id 'io.micronaut.build.internal.sql-test-suite'
+    id 'io.micronaut.build.internal.python'
+}
+
+dependencies {
+    // Annotation processors MUST be testImplementation (not testAnnotationProcessor): the Python compiler
+    // compiler takes the compile classpath as its annotation processor path.
+    testImplementation mn.micronaut.inject.python.test
+    testImplementation mn.micronaut.context.python
+    // maps jakarta.transaction.Transactional to Micronaut's transactional advice
+    testImplementation mnData.micronaut.data.processor
+}
+
+tasks.withType(Test).configureEach {
+    systemProperty "micronaut.python.pool.enabled", "false"
+}

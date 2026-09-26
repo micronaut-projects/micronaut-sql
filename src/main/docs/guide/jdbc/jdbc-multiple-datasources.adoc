@@ -11,8 +11,9 @@ datasources:
 
 When injecting link:{jdkapi}/java.sql/javax/sql/DataSource.html[DataSource] beans, the one with the name "default" will be injected unless the injection is qualified with the configured name. If no configuration is named "default", none of the beans will be primary and thus all injections must be qualified. For example:
 
-[source,java]
-----
-@Inject DataSource dataSource // "default" will be injected
-@Inject @Named("warehouse") DataSource dataSource // "warehouse" will be injected
-----
+snippet::io.micronaut.docs.jdbc.multiple.InventoryService[tags="imports,clazz"]
+
+<1> The "default" data source will be injected
+<2> The "warehouse" data source will be injected
+<3> With <<jdbc-transactions, Micronaut-managed transactions>>, connections are obtained inside a transactional method; the "default" transaction manager is used
+<4> The value of `io.micronaut.transaction.annotation.Transactional` selects the transaction manager of the "warehouse" data source

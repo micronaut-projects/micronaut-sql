@@ -15,18 +15,17 @@ dependency:micronaut-vertx-mysql-client[groupId="io.micronaut.sql"]
 
 You should then configure the URI or https://vertx.io/docs/vertx-mysql-client/java/[`MySQLConnectOptions`,`PoolOptions`] of the MySQL server you wish to communicate with in `application.yml`:
 
-[source,yaml]
-.application.yml
+[configuration]
 ----
 vertx:
-	mysql:
-	    client:
-            port: 3306
-            host: the-host
-            database: the-db
-            user: test
-            password: test
-            maxSize: 5
+  mysql:
+    client:
+      port: 3306
+      host: the-host
+      database: the-db
+      user: test
+      password: test
+      maxSize: 5
 ----
 
 TIP: You can also connect to MySQL using `uri` instead of the other properties.

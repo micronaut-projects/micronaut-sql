@@ -1,7 +1,7 @@
 If you don't register bean of type link:{jooqapi}/org/jooq/ConverterProvider.html[ConverterProvider] and provide following configuration, `JsonConverterProvider` will be used, which uses Micronaut configured `JsonMapper` for converting from and to types JSON and JSONB.
 
+[configuration]
 .Configuring Micronaut Json converter
-[source,yaml]
 ----
 jooq:
     datasources:

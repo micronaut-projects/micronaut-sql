@@ -11,6 +11,7 @@ dependencies {
 
     testImplementation projects.micronautTests.micronautCommonTests
     testImplementation(mnData.micronaut.data.tx.jdbc)
+    testImplementation(mn.jackson.databind)
 }
 
 micronaut {
