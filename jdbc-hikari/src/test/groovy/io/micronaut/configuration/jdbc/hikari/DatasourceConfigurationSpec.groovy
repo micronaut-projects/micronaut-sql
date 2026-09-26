@@ -136,6 +136,35 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.close()
     }
 
+    void "test password change with full refresh event"() {
+        given:
+        System.setProperty("ds-full-refresh-password", "")
+        ApplicationContext applicationContext = ApplicationContext.run([
+                'datasources.default.password': '${ds-full-refresh-password}',
+                'datasources.default.url': 'jdbc:h2:mem:hikariFullRefresh;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+                'datasources.default.username': 'sa',
+                'datasources.default.driver-class-name': 'org.h2.Driver'
+        ], "test")
+        DataSourceResolver dataSourceResolver = applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
+        HikariUrlDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
+
+        when:
+        def newPassword = 'full_refresh_pwd'
+        dataSource.connection.withCloseable { it.prepareStatement("ALTER USER sa SET PASSWORD '" + newPassword + "'").executeUpdate() }
+        System.setProperty("ds-full-refresh-password", newPassword)
+        applicationContext.environment.refresh()
+        applicationContext.publishEvent(new RefreshEvent())
+
+        then:
+        dataSource.password == newPassword
+        dataSource.hikariConfigMXBean.password == newPassword
+
+        cleanup:
+        dataSource?.connection?.withCloseable { it.prepareStatement("ALTER USER sa SET PASSWORD ''").executeUpdate() }
+        System.clearProperty("ds-full-refresh-password")
+        applicationContext?.close()
+    }
+
     void "test datasource can be disabled"() {
         given:
         ApplicationContext applicationContext = new DefaultApplicationContext("test")

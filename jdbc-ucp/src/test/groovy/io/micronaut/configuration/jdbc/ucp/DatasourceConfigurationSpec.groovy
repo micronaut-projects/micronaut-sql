@@ -520,4 +520,29 @@ class DatasourceConfigurationSpec extends Specification {
         System.setProperty("oracle.ucp.createConnectionInBorrowThread", "false")
         !Util.createConnectionInBorrowThread()
     }
+
+    void "test username changed to empty on refresh keeps the previous username"() {
+        given:
+        System.setProperty("ds-empty-username", "sa")
+        ApplicationContext applicationContext = ApplicationContext.run([
+                'datasources.default.url': 'jdbc:h2:mem:ucpEmptyUsername;DB_CLOSE_DELAY=-1',
+                'datasources.default.driver-class-name': 'org.h2.Driver',
+                'datasources.default.username': '${ds-empty-username}',
+                'datasources.default.password': ''
+        ], "test")
+        DataSourceResolver dataSourceResolver = applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
+        PoolDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
+
+        when:
+        System.setProperty("ds-empty-username", "")
+        applicationContext.publishEvent(new RefreshEvent(applicationContext.environment.refreshAndDiff()))
+
+        then:
+        dataSource.user == 'sa'
+        dataSource.connection.withCloseable { it.prepareStatement("SELECT 1").executeQuery().next() }
+
+        cleanup:
+        System.clearProperty("ds-empty-username")
+        applicationContext?.close()
+    }
 }

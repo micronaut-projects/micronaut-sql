@@ -16,6 +16,7 @@
 package io.micronaut.jdbc;
 
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.Internal;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -26,9 +27,13 @@ import io.micronaut.runtime.context.scope.refresh.RefreshEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,6 +42,9 @@ import java.util.regex.Pattern;
  * <p>
  * This class provides a basic implementation for handling refresh events and updating datasource credentials.
  * Subclasses are expected to implement the {@link #dataSourceCredentialsChanged(String, DataSourceCredentials)} method to handle the updated credentials.
+ * <p>
+ * A refresh event without specific keys (for example {@code new RefreshEvent()}) is handled by comparing the configured
+ * credentials of each datasource with the last known ones, so only credentials that actually changed are propagated.
  *
  * @since 6.2.0
  */
@@ -55,10 +63,20 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseDatasourceFactory.class);
 
+    private static final DataSourceCredentials NO_CREDENTIALS = new DataSourceCredentials(null, null);
+
     protected final ApplicationContext applicationContext;
+
+    /**
+     * The last known configured credentials per datasource, used to detect changes on a full refresh.
+     */
+    private final Map<String, DataSourceCredentials> configuredCredentials = new ConcurrentHashMap<>(2);
 
     protected BaseDatasourceFactory(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
+        for (String dataSourceName : getConfiguredDataSourceNames()) {
+            configuredCredentials.put(dataSourceName, readConfiguredCredentials(dataSourceName));
+        }
     }
 
     @Override
@@ -70,6 +88,10 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
     public void onApplicationEvent(RefreshEvent event) {
         Map<String, Object> changes = event.getSource();
         if (CollectionUtils.isEmpty(changes)) {
+            return;
+        }
+        if (isFullRefresh(changes)) {
+            onFullRefresh();
             return;
         }
         Map<String, DataSourceCredentials> dataSourceCredentialsMap = new HashMap<>(2);
@@ -89,14 +111,85 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
         if (CollectionUtils.isNotEmpty(dataSourceCredentialsMap)) {
             for (Map.Entry<String, DataSourceCredentials> dataSourceCredentialsEntry : dataSourceCredentialsMap.entrySet()) {
                 String datasourceName = dataSourceCredentialsEntry.getKey();
-                DataSourceCredentials dataSourceCredentials = dataSourceCredentialsEntry.getValue();
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Datasource [{}] credentials changed [{}]. Trying to refresh connection pool.", datasourceName,
-                        dataSourceCredentials.getChangeType());
-                }
-                dataSourceCredentialsChanged(datasourceName, dataSourceCredentials);
+                notifyCredentialsChanged(datasourceName, dataSourceCredentialsEntry.getValue());
+                configuredCredentials.put(datasourceName, readConfiguredCredentials(datasourceName));
             }
         }
+    }
+
+    /**
+     * Handles a refresh event without specific keys, such as {@code new RefreshEvent()}, by comparing
+     * the configured credentials of each datasource with the last known ones.
+     */
+    private void onFullRefresh() {
+        for (String dataSourceName : getConfiguredDataSourceNames()) {
+            DataSourceCredentials previous = configuredCredentials.getOrDefault(dataSourceName, NO_CREDENTIALS);
+            DataSourceCredentials current = readConfiguredCredentials(dataSourceName);
+            configuredCredentials.put(dataSourceName, current);
+            String userName = changedValue(previous.userName(), current.userName());
+            if (userName != null && userName.isEmpty()) {
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn("Datasource [{}] username is changed to empty or could not be read. Ignoring the username change.", dataSourceName);
+                }
+                userName = null;
+            }
+            String password = changedValue(previous.password(), current.password());
+            if (userName != null || password != null) {
+                notifyCredentialsChanged(dataSourceName, new DataSourceCredentials(userName, password));
+            }
+        }
+    }
+
+    private void notifyCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Datasource [{}] credentials changed [{}]. Trying to refresh connection pool.", dataSourceName,
+                dataSourceCredentials.getChangeType());
+        }
+        try {
+            dataSourceCredentialsChanged(dataSourceName, dataSourceCredentials);
+        } catch (Exception e) {
+            // do not fail the refresh event publisher or prevent other datasources from being updated
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Failed to update credentials for datasource [{}]", dataSourceName, e);
+            }
+        }
+    }
+
+    private Collection<String> getConfiguredDataSourceNames() {
+        Environment environment = applicationContext.getEnvironment();
+        if (environment == null) {
+            return Collections.emptyList();
+        }
+        return environment.getPropertyEntries(BasicJdbcConfiguration.PREFIX);
+    }
+
+    private DataSourceCredentials readConfiguredCredentials(String dataSourceName) {
+        String prefix = BasicJdbcConfiguration.PREFIX + "." + dataSourceName + ".";
+        return new DataSourceCredentials(readProperty(prefix + "username"), readProperty(prefix + "password"));
+    }
+
+    private @Nullable String readProperty(String property) {
+        try {
+            return applicationContext.getProperty(property, String.class).orElse(null);
+        } catch (Exception e) {
+            // for example an unresolvable placeholder, which the datasource configuration itself will report
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Unable to read property [{}]: {}", property, e.getMessage());
+            }
+            return null;
+        }
+    }
+
+    /**
+     * @return the current value if it differs from the previous one, otherwise {@code null}. A removed value is not a change.
+     */
+    private static @Nullable String changedValue(@Nullable String previous, @Nullable String current) {
+        return Objects.equals(previous, current) ? null : current;
+    }
+
+    private static boolean isFullRefresh(Map<String, Object> changes) {
+        // RefreshEvent() uses a singleton map of "all" -> "*" as its source
+        return changes.size() == 1 && "*".equals(changes.get("all"));
     }
 
     /**
@@ -112,10 +205,13 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
     private void checkAndUpdateUsernameChange(String property, Matcher userNameMatcher, Map<String, DataSourceCredentials> dataSourceCredentialsMap) {
         String dataSourceName = userNameMatcher.group(1);
         if (StringUtils.isNotEmpty(dataSourceName)) {
-            String userName = applicationContext.getRequiredProperty(property, String.class);
+            String userName = readProperty(property);
             if (StringUtils.isEmpty(userName)) {
                 // username may not be empty while password can
-                throw new IllegalStateException("Datasource [" + dataSourceName + "] username is changed to empty.");
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn("Datasource [{}] username is changed to empty or could not be read. Ignoring the username change.", dataSourceName);
+                }
+                return;
             }
             DataSourceCredentials dataSourceCredentials = dataSourceCredentialsMap.get(dataSourceName);
             dataSourceCredentialsMap.put(dataSourceName, dataSourceCredentials == null ? new DataSourceCredentials(userName, null) : dataSourceCredentials.withUserName(userName));
@@ -125,7 +221,13 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
     private void checkAndUpdatePasswordChange(String property, Matcher passwordMatcher, Map<String, DataSourceCredentials> dataSourceCredentialsMap) {
         String dataSourceName = passwordMatcher.group(1);
         if (StringUtils.isNotEmpty(dataSourceName)) {
-            String password = applicationContext.getRequiredProperty(property, String.class);
+            String password = readProperty(property);
+            if (password == null) {
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn("Datasource [{}] password is removed or could not be read. Ignoring the password change.", dataSourceName);
+                }
+                return;
+            }
             DataSourceCredentials dataSourceCredentials = dataSourceCredentialsMap.get(dataSourceName);
             dataSourceCredentialsMap.put(dataSourceName, dataSourceCredentials == null ? new DataSourceCredentials(null, password) : dataSourceCredentials.withPassword(password));
         }
