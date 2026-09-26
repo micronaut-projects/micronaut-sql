@@ -248,6 +248,33 @@
 
 
 <div class="sect1">
+<h2 id="_micronaut_sql_7_3_0">Micronaut SQL 7.3.0</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To support <a href="#jdbc-runtime-password-update">runtime credential changes</a> for Apache DBCP2, <code>io.micronaut.configuration.jdbc.dbcp.DatasourceConfiguration</code> no longer extends <code>org.apache.commons.dbcp2.BasicDataSource</code>. The configuration now holds the pool, and <code>DatasourceFactory</code> exposes it as the <code>BasicDataSource</code> / <code>DataSource</code> bean.</p>
+</div>
+<div class="paragraph">
+<p>This also fixes a <code>ClassCastException</code> in earlier versions: when a <code>BeanCreatedEventListener&lt;DataSource&gt;</code> wrapped the datasource (as Micronaut Data JDBC does), the wrapper also replaced the <code>DatasourceConfiguration</code> bean, so injecting <code>DatasourceConfiguration</code> or refreshing the datasource configuration failed.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Code that injects <code>DatasourceConfiguration</code> and uses it as a <code>DataSource</code> or <code>BasicDataSource</code> must inject <code>DataSource</code> or <code>BasicDataSource</code> instead, or call <code>DatasourceConfiguration.getBasicDataSource()</code>.</p>
+</li>
+<li>
+<p>A <code>BeanCreatedEventListener&lt;DatasourceConfiguration&gt;</code> that customizes the pool should listen for <code>BasicDataSource</code> instead.</p>
+</li>
+<li>
+<p>The <code>setConnectionPropertiesString(String)</code> method was removed. Use <code>setConnectionProperties(String)</code>. The <code>datasources.*.connection-properties</code> configuration property is unchanged.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Existing <code>datasources.*</code> pool configuration properties continue to be bound as before.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_micronaut_sql_5_8_0">Micronaut SQL 5.8.0</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -1596,7 +1623,10 @@ class BookRepository {
 <p>On a <code>RefreshEvent</code>, it checks if either password or username change have been sent in refresh event and builds a change set per datasource</p>
 </li>
 <li>
-<p>Implementations for the supported pools set the new username and/or password on the pool and trigger a soft eviction of connections so subsequent connections use the updated credentials.</p>
+<p>On a <code>RefreshEvent</code> without specific keys (<code>new RefreshEvent()</code>), it compares the configured username and password of each datasource with the last known values and applies only the ones that changed. Call <code>Environment.refresh()</code> before publishing such an event so the new values are loaded.</p>
+</li>
+<li>
+<p>Implementations for the supported pools set the new username and/or password on the pool and trigger a soft eviction of connections (or a pool restart for Apache DBCP2) so subsequent connections use the updated credentials.</p>
 </li>
 </ul>
 </div>
@@ -1982,7 +2012,10 @@ class DbPasswordRefresher {
 <p>Existing connections are softly evicted where supported by the pool; new connections will be established with the updated credentials.</p>
 </li>
 <li>
-<p>Supported pools: HikariCP, Tomcat JDBC, Oracle UCP.</p>
+<p>Apache DBCP2 does not apply credential changes to a running pool, so the pool is restarted instead: idle connections are closed immediately, connections in use are closed when they are returned to the pool, and new connections use the updated credentials.</p>
+</li>
+<li>
+<p>Supported pools: HikariCP, Tomcat JDBC, Oracle UCP, Apache DBCP2.</p>
 </li>
 </ul>
 </div>

@@ -102,7 +102,10 @@ implements io.micronaut.runtime.context.scope.refresh.RefreshEventListener</span
 <div class="block">An abstract base class for datasource factories that listens for refresh events and updates datasource credentials accordingly.
 <p>
 This class provides a basic implementation for handling refresh events and updating datasource credentials.
-Subclasses are expected to implement the <a href="#dataSourceCredentialsChanged(java.lang.String,io.micronaut.jdbc.BaseDatasourceFactory.DataSourceCredentials)"><code>dataSourceCredentialsChanged(String, DataSourceCredentials)</code></a> method to handle the updated credentials.</div>
+Subclasses are expected to implement the <a href="#dataSourceCredentialsChanged(java.lang.String,io.micronaut.jdbc.BaseDatasourceFactory.DataSourceCredentials)"><code>dataSourceCredentialsChanged(String, DataSourceCredentials)</code></a> method to handle the updated credentials.
+<p>
+A refresh event without specific keys (for example <code>new RefreshEvent()</code>) is handled by comparing the configured
+credentials of each datasource with the last known ones, so only credentials that actually changed are propagated.</div>
 <dl class="notes">
 <dt>Since:</dt>
 <dd>6.2.0</dd>
