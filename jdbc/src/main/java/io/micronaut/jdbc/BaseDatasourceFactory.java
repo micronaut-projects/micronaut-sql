@@ -129,7 +129,7 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
             String userName = changedValue(previous.userName(), current.userName());
             if (userName != null && userName.isEmpty()) {
                 if (LOG.isWarnEnabled()) {
-                    LOG.warn("Datasource [{}] username is changed to empty. Ignoring the username change.", dataSourceName);
+                    LOG.warn("Datasource [{}] username is changed to empty or could not be read. Ignoring the username change.", dataSourceName);
                 }
                 userName = null;
             }
@@ -145,7 +145,14 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
             LOG.debug("Datasource [{}] credentials changed [{}]. Trying to refresh connection pool.", dataSourceName,
                 dataSourceCredentials.getChangeType());
         }
-        dataSourceCredentialsChanged(dataSourceName, dataSourceCredentials);
+        try {
+            dataSourceCredentialsChanged(dataSourceName, dataSourceCredentials);
+        } catch (Exception e) {
+            // do not fail the refresh event publisher or prevent other datasources from being updated
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Failed to update credentials for datasource [{}]", dataSourceName, e);
+            }
+        }
     }
 
     private Collection<String> getConfiguredDataSourceNames() {
@@ -198,10 +205,13 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
     private void checkAndUpdateUsernameChange(String property, Matcher userNameMatcher, Map<String, DataSourceCredentials> dataSourceCredentialsMap) {
         String dataSourceName = userNameMatcher.group(1);
         if (StringUtils.isNotEmpty(dataSourceName)) {
-            String userName = applicationContext.getRequiredProperty(property, String.class);
+            String userName = readProperty(property);
             if (StringUtils.isEmpty(userName)) {
                 // username may not be empty while password can
-                throw new IllegalStateException("Datasource [" + dataSourceName + "] username is changed to empty.");
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn("Datasource [{}] username is changed to empty or could not be read. Ignoring the username change.", dataSourceName);
+                }
+                return;
             }
             DataSourceCredentials dataSourceCredentials = dataSourceCredentialsMap.get(dataSourceName);
             dataSourceCredentialsMap.put(dataSourceName, dataSourceCredentials == null ? new DataSourceCredentials(userName, null) : dataSourceCredentials.withUserName(userName));
@@ -211,7 +221,13 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
     private void checkAndUpdatePasswordChange(String property, Matcher passwordMatcher, Map<String, DataSourceCredentials> dataSourceCredentialsMap) {
         String dataSourceName = passwordMatcher.group(1);
         if (StringUtils.isNotEmpty(dataSourceName)) {
-            String password = applicationContext.getRequiredProperty(property, String.class);
+            String password = readProperty(property);
+            if (password == null) {
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn("Datasource [{}] password is removed or could not be read. Ignoring the password change.", dataSourceName);
+                }
+                return;
+            }
             DataSourceCredentials dataSourceCredentials = dataSourceCredentialsMap.get(dataSourceName);
             dataSourceCredentialsMap.put(dataSourceName, dataSourceCredentials == null ? new DataSourceCredentials(null, password) : dataSourceCredentials.withPassword(password));
         }

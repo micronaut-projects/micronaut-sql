@@ -136,6 +136,50 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.close()
     }
 
+    void "test password change evicts existing connections"() {
+        given:
+        System.setProperty("ds-evict-password", "")
+        ApplicationContext applicationContext = ApplicationContext.run([
+                'datasources.default.password': '${ds-evict-password}',
+                'datasources.default.url': 'jdbc:h2:mem:tomcatEvict;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+                'datasources.default.username': 'sa',
+                'datasources.default.driver-class-name': 'org.h2.Driver',
+                'datasources.default.validation-query': 'SELECT 1'
+        ], "test")
+        DataSourceResolver dataSourceResolver = applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
+        org.apache.tomcat.jdbc.pool.DataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
+
+        when:
+        def newPassword = 'evict_pwd'
+        dataSource.connection.withCloseable { it.prepareStatement("ALTER USER sa SET PASSWORD '" + newPassword + "'").executeUpdate() }
+        def oldConnection = dataSource.connection
+
+        then: "there are idle connections authenticated with the old password"
+        dataSource.idle > 0
+
+        when:
+        System.setProperty("ds-evict-password", newPassword)
+        applicationContext.publishEvent(new RefreshEvent(applicationContext.environment.refreshAndDiff()))
+
+        then: "idle connections are closed and the connection in use is closed when returned"
+        dataSource.poolProperties.password == newPassword
+        dataSource.idle == 0
+        dataSource.active == 1
+
+        when:
+        oldConnection.close()
+
+        then:
+        dataSource.active == 0
+        dataSource.idle == 0
+        dataSource.connection.withCloseable { it.prepareStatement("SELECT 1").executeQuery().next() }
+
+        cleanup:
+        dataSource?.connection?.withCloseable { it.prepareStatement("ALTER USER sa SET PASSWORD ''").executeUpdate() }
+        System.clearProperty("ds-evict-password")
+        applicationContext?.close()
+    }
+
     void "test datasource can be disabled"() {
         given:
         ApplicationContext applicationContext = new DefaultApplicationContext("test")

@@ -116,6 +116,50 @@ class BaseDatasourceFactorySpec extends Specification {
         factory.changes.isEmpty()
     }
 
+    void "targeted refresh ignores a username changed to empty and still applies the password"() {
+        when:
+        System.setProperty(USERNAME, "")
+        System.setProperty(PASSWORD, "new-pwd")
+        factory.onApplicationEvent(new RefreshEvent(applicationContext.environment.refreshAndDiff()))
+
+        then:
+        noExceptionThrown()
+        factory.changes == [new Change("default", null, "new-pwd")]
+    }
+
+    void "targeted refresh ignores a password that can no longer be read"() {
+        when:
+        System.clearProperty(PASSWORD)
+        applicationContext.environment.refresh()
+        factory.onApplicationEvent(new RefreshEvent(['datasources.default.password': 'old-value']))
+
+        then:
+        noExceptionThrown()
+        factory.changes.isEmpty()
+    }
+
+    void "failure to update one datasource does not fail the event or the other datasources"() {
+        given:
+        def context = ApplicationContext.run([
+                'datasources.first.password' : 'pwd',
+                'datasources.second.password': 'pwd'
+        ])
+        def recordingFactory = new RecordingFactory(context, "first")
+
+        when:
+        recordingFactory.onApplicationEvent(new RefreshEvent([
+                'datasources.first.password' : 'old',
+                'datasources.second.password': 'old'
+        ]))
+
+        then:
+        noExceptionThrown()
+        recordingFactory.changes == [new Change("second", null, "pwd")]
+
+        cleanup:
+        context.close()
+    }
+
     void "unresolvable placeholder in credentials does not fail the factory"() {
         given:
         def context = ApplicationContext.run([
@@ -139,13 +183,18 @@ class BaseDatasourceFactorySpec extends Specification {
     static class RecordingFactory extends BaseDatasourceFactory {
 
         final List<Change> changes = []
+        final String failingDataSource
 
-        RecordingFactory(ApplicationContext applicationContext) {
+        RecordingFactory(ApplicationContext applicationContext, String failingDataSource = null) {
             super(applicationContext)
+            this.failingDataSource = failingDataSource
         }
 
         @Override
         protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
+            if (dataSourceName == failingDataSource) {
+                throw new IllegalStateException("Simulated failure for " + dataSourceName)
+            }
             changes << new Change(dataSourceName, dataSourceCredentials.userName(), dataSourceCredentials.password())
         }
     }

@@ -23,6 +23,7 @@ import io.micronaut.context.exceptions.DisabledBeanException;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
 import io.micronaut.jdbc.OracleSessionProgramHelper;
@@ -196,6 +197,14 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
 
     @Override
     public void setUsername(@Nullable String username) {
+        if (!StringUtils.hasText(username) && StringUtils.hasText(delegate.getUsername())) {
+            // the configuration is re-bound on refresh and the delegate is the running pool,
+            // keep the previous username the same way CalculatedSettings does
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Datasource [{}] username is changed to empty. Keeping the previous username.", name);
+            }
+            return;
+        }
         delegate.setUsername(username);
     }
 
