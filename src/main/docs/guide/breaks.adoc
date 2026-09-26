@@ -1,3 +1,15 @@
+== Micronaut SQL 7.3.0
+
+To support <<jdbc-runtime-password-update, runtime credential changes>> for Apache DBCP2, `io.micronaut.configuration.jdbc.dbcp.DatasourceConfiguration` no longer extends `org.apache.commons.dbcp2.BasicDataSource`. The configuration now holds the pool, and `DatasourceFactory` exposes it as the `BasicDataSource` / `DataSource` bean.
+
+This also fixes a `ClassCastException` in earlier versions: when a `BeanCreatedEventListener<DataSource>` wrapped the datasource (as Micronaut Data JDBC does), the wrapper also replaced the `DatasourceConfiguration` bean, so injecting `DatasourceConfiguration` or refreshing the datasource configuration failed.
+
+- Code that injects `DatasourceConfiguration` and uses it as a `DataSource` or `BasicDataSource` must inject `DataSource` or `BasicDataSource` instead, or call `DatasourceConfiguration.getBasicDataSource()`.
+- A `BeanCreatedEventListener<DatasourceConfiguration>` that customizes the pool should listen for `BasicDataSource` instead.
+- The `setConnectionPropertiesString(String)` method was removed. Use `setConnectionProperties(String)`. The `datasources.*.connection-properties` configuration property is unchanged.
+
+Existing `datasources.*` pool configuration properties continue to be bound as before.
+
 == Micronaut SQL 5.8.0
 
 In Micronaut SQL 5.7.0, you could <<jdbc-disable, disable data sources>> if you set `datasources.enabled` to `false`. Since Micronaut SQL 5.8.0, it is no longer supported. If you have multiple data sources, you have to disable them all individually. For example if you had two data sources named `a` and `b`, you have to set `datasources.a.enabled=false` and    `datasources.b.enabled=false`.

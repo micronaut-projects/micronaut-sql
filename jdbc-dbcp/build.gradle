@@ -17,3 +17,10 @@ dependencies {
     testImplementation(mnMicrometer.micronaut.micrometer.core)
     testImplementation(mnCache.micronaut.cache.core)
 }
+
+micronautBuild {
+    binaryCompatibility {
+        // DatasourceConfiguration no longer extends BasicDataSource, see breaks.adoc
+        enabledAfter("7.3.0")
+    }
+}

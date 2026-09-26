@@ -331,6 +331,26 @@ class DatasourceConfigurationSpec extends Specification {
         applicationContext.close()
     }
 
+    void "test deprecated enableAutoCommitOnReturn property is bindable"() {
+        given:
+        ApplicationContext applicationContext = new DefaultApplicationContext("test")
+        applicationContext.environment.addPropertySource(MapPropertySource.of(
+                "test",
+                ['datasources.default.enableAutoCommitOnReturn': false]
+        ))
+        applicationContext.start()
+        DataSourceResolver dataSourceResolver = applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
+
+        when:
+        BasicDataSource dataSource = dataSourceResolver.resolve(applicationContext.getBean(DataSource))
+
+        then:
+        !dataSource.autoCommitOnReturn
+
+        cleanup:
+        applicationContext.close()
+    }
+
     void "test multiple data sources are configured"() {
         given:
         ApplicationContext applicationContext = new DefaultApplicationContext("test")

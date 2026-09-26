@@ -86,10 +86,11 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     }
 
     /**
-     * Returns the configuration builder delegate.
+     * Returns the configuration builder delegate. Use {@link #getBasicDataSource()} instead.
      *
      * @return The configuration builder delegate
      */
+    @Internal
     public BasicDataSource getDelegate() {
         return delegate;
     }
@@ -358,6 +359,22 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
      */
     public Integer getDefaultQueryTimeout() {
         return delegate.getDefaultQueryTimeout();
+    }
+
+    /**
+     * Sets whether auto commit is enabled when connection is returned to the pool.
+     *
+     * @param enableAutoCommitOnReturn Whether to enable auto commit on return
+     */
+    public void setEnableAutoCommitOnReturn(boolean enableAutoCommitOnReturn) {
+        delegate.setAutoCommitOnReturn(enableAutoCommitOnReturn);
+    }
+
+    /**
+     * @return Whether auto commit is enabled when connection is returned to the pool
+     */
+    public boolean getEnableAutoCommitOnReturn() {
+        return delegate.getAutoCommitOnReturn();
     }
 
     @Override
