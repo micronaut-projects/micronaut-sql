@@ -64,6 +64,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
+<li><a href="#dataSource(io.micronaut.configuration.jdbc.dbcp.DatasourceConfiguration)" tabindex="0">dataSource(DatasourceConfiguration)</a></li>
 <li><a href="#dbcpDataSourcePoolMetadata(javax.sql.DataSource)" tabindex="0">dbcpDataSourcePoolMetadata(DataSource)</a></li>
 <li><a href="#dataSourceCredentialsChanged(java.lang.String,io.micronaut.jdbc.BaseDatasourceFactory.DataSourceCredentials)" tabindex="0">dataSourceCredentialsChanged(String, BaseDatasourceFactory.DataSourceCredentials)</a></li>
 </ol>
@@ -152,15 +153,20 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dataSourceCredentialsChanged(java.lang.String,io.micronaut.jdbc.BaseDatasourceFactory.DataSourceCredentials)" class="member-name-link">dataSourceCredentialsChanged</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSourceName,
- <a href="../../../jdbc/BaseDatasourceFactory.DataSourceCredentials.html" title="class in io.micronaut.jdbc">BaseDatasourceFactory.DataSourceCredentials</a>&nbsp;dataSourceCredentials)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.apache.commons.dbcp2.BasicDataSource</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dataSource(io.micronaut.configuration.jdbc.dbcp.DatasourceConfiguration)" class="member-name-link">dataSource</a><wbr>(<a href="DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a>&nbsp;datasourceConfiguration)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Re-exposes the DBCP configuration bean as the actual runtime datasource bean.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dataSourceCredentialsChanged(java.lang.String,io.micronaut.jdbc.BaseDatasourceFactory.DataSourceCredentials)" class="member-name-link">dataSourceCredentialsChanged</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSourceName,
+ <a href="../../../jdbc/BaseDatasourceFactory.DataSourceCredentials.html" title="class in io.micronaut.jdbc">BaseDatasourceFactory.DataSourceCredentials</a>&nbsp;dataSourceCredentials)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Called when the datasource credentials have changed.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@Nullable <a href="../../../jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata">DataSourcePoolMetadata</a><wbr>&lt;org.apache.commons.dbcp2.BasicDataSource&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dbcpDataSourcePoolMetadata(javax.sql.DataSource)" class="member-name-link">dbcpDataSourcePoolMetadata</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link">DataSource</a>&nbsp;dataSource)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@Nullable <a href="../../../jdbc/metadata/DataSourcePoolMetadata.html" title="interface in io.micronaut.jdbc.metadata">DataSourcePoolMetadata</a><wbr>&lt;org.apache.commons.dbcp2.BasicDataSource&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dbcpDataSourcePoolMetadata(javax.sql.DataSource)" class="member-name-link">dbcpDataSourcePoolMetadata</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link">DataSource</a>&nbsp;dataSource)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Method to create a metadata object that allows pool value lookup for each datasource object.</div>
 </div>
 </div>
@@ -209,6 +215,24 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="dataSource(io.micronaut.configuration.jdbc.dbcp.DatasourceConfiguration)">
+<h3>dataSource</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="annotations">@Context
+@EachBean(<a href="DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a>.class)
+@Requires(condition=<a href="../../../jdbc/JdbcDataSourceEnabled.html" title="class in io.micronaut.jdbc">JdbcDataSourceEnabled</a>.class)
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">org.apache.commons.dbcp2.BasicDataSource</span>&nbsp;<span class="element-name">dataSource</span><wbr><span class="parameters">(<a href="DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.dbcp">DatasourceConfiguration</a>&nbsp;datasourceConfiguration)</span></div>
+<div class="block">Re-exposes the DBCP configuration bean as the actual runtime datasource bean.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>datasourceConfiguration</code> - The datasource configuration</dd>
+<dt>Returns:</dt>
+<dd>The DBCP datasource</dd>
+</dl>
+</div>
+</section>
+</li>
 <li>
 <section class="detail" id="dbcpDataSourcePoolMetadata(javax.sql.DataSource)">
 <h3>dbcpDataSourcePoolMetadata</h3>
