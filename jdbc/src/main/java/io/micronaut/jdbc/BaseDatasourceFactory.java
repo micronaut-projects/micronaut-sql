@@ -71,6 +71,11 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
 
     private static final CredentialsFingerprint NO_CREDENTIALS = new CredentialsFingerprint(null, null);
 
+    /**
+     * The source of {@code new RefreshEvent()}, which Micronaut compares by identity to detect a full refresh.
+     */
+    private static final Map<String, Object> ALL_KEYS = new RefreshEvent().getSource();
+
     protected final ApplicationContext applicationContext;
 
     /**
@@ -251,8 +256,8 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
     }
 
     private static boolean isFullRefresh(Map<String, Object> changes) {
-        // RefreshEvent() uses a singleton map of "all" -> "*" as its source
-        return changes.size() == 1 && "*".equals(changes.get("all"));
+        // same check as the refresh scope does
+        return changes == ALL_KEYS;
     }
 
     /**
