@@ -5,6 +5,9 @@ import io.micronaut.runtime.context.scope.refresh.RefreshEvent
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+
 class BaseDatasourceFactorySpec extends Specification {
 
     private static final String USERNAME = "base-ds-factory-spec-username"
@@ -29,6 +32,52 @@ class BaseDatasourceFactorySpec extends Specification {
     void cleanup() {
         System.clearProperty(USERNAME)
         System.clearProperty(PASSWORD)
+    }
+
+    void "known credentials do not keep the plaintext password"() {
+        when:
+        def field = BaseDatasourceFactory.getDeclaredField("knownCredentials")
+        field.accessible = true
+        Map<String, Object> knownCredentials = field.get(factory)
+        def defaultCredentials = knownCredentials.get("default")
+
+        then:
+        defaultCredentials.userName() == "sa"
+        defaultCredentials.passwordDigest() != null
+        defaultCredentials.passwordDigest() != "pwd"
+    }
+
+    void "refresh events are handled one at a time"() {
+        given:
+        def updateStarted = new CountDownLatch(1)
+        def releaseUpdate = new CountDownLatch(1)
+        def blockingFactory = new RecordingFactory(applicationContext) {
+            @Override
+            protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
+                updateStarted.countDown()
+                releaseUpdate.await(5, TimeUnit.SECONDS)
+                super.dataSourceCredentialsChanged(dataSourceName, dataSourceCredentials)
+            }
+        }
+        System.setProperty(PASSWORD, "new-pwd")
+        applicationContext.environment.refresh()
+
+        when: "a second event is published while the first one is updating the pool"
+        def first = Thread.start { blockingFactory.onApplicationEvent(new RefreshEvent()) }
+        updateStarted.await(5, TimeUnit.SECONDS)
+        def second = Thread.start { blockingFactory.onApplicationEvent(new RefreshEvent()) }
+        second.join(300)
+
+        then: "the second event waits for the first one"
+        second.alive
+
+        when:
+        releaseUpdate.countDown()
+        first.join(5000)
+        second.join(5000)
+
+        then: "and does not apply the same change again"
+        blockingFactory.changes == [new Change("default", null, "new-pwd")]
     }
 
     void "full refresh without credential changes does not notify"() {

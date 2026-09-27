@@ -27,6 +27,11 @@ import io.micronaut.runtime.context.scope.refresh.RefreshEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -63,19 +68,28 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseDatasourceFactory.class);
 
-    private static final DataSourceCredentials NO_CREDENTIALS = new DataSourceCredentials(null, null);
+    private static final CredentialsFingerprint NO_CREDENTIALS = new CredentialsFingerprint(null, null);
 
     protected final ApplicationContext applicationContext;
 
     /**
      * The last known configured credentials per datasource, used to detect changes on a full refresh.
+     * Passwords are kept only as salted digests.
      */
-    private final Map<String, DataSourceCredentials> configuredCredentials = new ConcurrentHashMap<>(2);
+    private final Map<String, CredentialsFingerprint> knownCredentials = new ConcurrentHashMap<>(2);
+
+    private final byte[] passwordDigestSalt = new byte[16];
+
+    /**
+     * Refresh events are handled one at a time, so the same change is not applied twice by concurrent events.
+     */
+    private final Object refreshLock = new Object();
 
     protected BaseDatasourceFactory(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
+        new SecureRandom().nextBytes(passwordDigestSalt);
         for (String dataSourceName : getConfiguredDataSourceNames()) {
-            configuredCredentials.put(dataSourceName, readConfiguredCredentials(dataSourceName));
+            knownCredentials.put(dataSourceName, fingerprint(readConfiguredCredentials(dataSourceName)));
         }
     }
 
@@ -90,10 +104,21 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
         if (CollectionUtils.isEmpty(changes)) {
             return;
         }
-        if (isFullRefresh(changes)) {
-            onFullRefresh();
-            return;
+        synchronized (refreshLock) {
+            if (isFullRefresh(changes)) {
+                onFullRefresh();
+            } else {
+                onRefresh(changes);
+            }
         }
+    }
+
+    /**
+     * Handles a refresh event with the changed keys.
+     *
+     * @param changes The changed keys
+     */
+    private void onRefresh(Map<String, Object> changes) {
         Map<String, DataSourceCredentials> dataSourceCredentialsMap = new HashMap<>(2);
         for (Map.Entry<String, Object> change : changes.entrySet()) {
             String property = change.getKey();
@@ -112,7 +137,7 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
             for (Map.Entry<String, DataSourceCredentials> dataSourceCredentialsEntry : dataSourceCredentialsMap.entrySet()) {
                 String datasourceName = dataSourceCredentialsEntry.getKey();
                 notifyCredentialsChanged(datasourceName, dataSourceCredentialsEntry.getValue());
-                configuredCredentials.put(datasourceName, readConfiguredCredentials(datasourceName));
+                knownCredentials.put(datasourceName, fingerprint(readConfiguredCredentials(datasourceName)));
             }
         }
     }
@@ -123,17 +148,18 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
      */
     private void onFullRefresh() {
         for (String dataSourceName : getConfiguredDataSourceNames()) {
-            DataSourceCredentials previous = configuredCredentials.getOrDefault(dataSourceName, NO_CREDENTIALS);
+            CredentialsFingerprint previous = knownCredentials.getOrDefault(dataSourceName, NO_CREDENTIALS);
             DataSourceCredentials current = readConfiguredCredentials(dataSourceName);
-            configuredCredentials.put(dataSourceName, current);
-            String userName = changedValue(previous.userName(), current.userName());
+            CredentialsFingerprint currentFingerprint = fingerprint(current);
+            knownCredentials.put(dataSourceName, currentFingerprint);
+            String userName = changedValue(previous.userName(), currentFingerprint.userName(), current.userName());
             if (userName != null && userName.isEmpty()) {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn("Datasource [{}] username is changed to empty or could not be read. Ignoring the username change.", dataSourceName);
                 }
                 userName = null;
             }
-            String password = changedValue(previous.password(), current.password());
+            String password = changedValue(previous.passwordDigest(), currentFingerprint.passwordDigest(), current.password());
             if (userName != null || password != null) {
                 notifyCredentialsChanged(dataSourceName, new DataSourceCredentials(userName, password));
             }
@@ -181,10 +207,31 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
     }
 
     /**
+     * @param previous The previous value or its digest
+     * @param current The current value or its digest
+     * @param currentValue The current value
      * @return the current value if it differs from the previous one, otherwise {@code null}. A removed value is not a change.
      */
-    private static @Nullable String changedValue(@Nullable String previous, @Nullable String current) {
-        return Objects.equals(previous, current) ? null : current;
+    private static @Nullable String changedValue(@Nullable String previous, @Nullable String current, @Nullable String currentValue) {
+        return Objects.equals(previous, current) ? null : currentValue;
+    }
+
+    private CredentialsFingerprint fingerprint(DataSourceCredentials credentials) {
+        return new CredentialsFingerprint(credentials.userName(), digest(credentials.password()));
+    }
+
+    private @Nullable String digest(@Nullable String password) {
+        if (password == null) {
+            return null;
+        }
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.update(passwordDigestSalt);
+            return Base64.getEncoder().encodeToString(messageDigest.digest(password.getBytes(StandardCharsets.UTF_8)));
+        } catch (NoSuchAlgorithmException e) {
+            // SHA-256 is required to be supported by every Java platform
+            throw new IllegalStateException("SHA-256 is not available", e);
+        }
     }
 
     private static boolean isFullRefresh(Map<String, Object> changes) {
@@ -284,5 +331,14 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
             USERNAME_AND_PASSWORD,
             NONE
         }
+    }
+
+    /**
+     * The last known credentials of a datasource.
+     *
+     * @param userName The username
+     * @param passwordDigest The salted digest of the password
+     */
+    private record CredentialsFingerprint(@Nullable String userName, @Nullable String passwordDigest) {
     }
 }
