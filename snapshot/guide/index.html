@@ -2004,7 +2004,7 @@ class DbPasswordRefresher {
 <p>The new credentials are applied as they are, without being verified first. Update the credentials in the database, or make sure it accepts both the old and the new ones, before publishing the event. Otherwise evicted connections can not be re-established.</p>
 </li>
 <li>
-<p>A username changed to empty, or a username or password that can not be read from the configuration, is ignored and logged as a warning. A failure to update one datasource is logged and does not prevent other datasources from being updated.</p>
+<p>If a username is changed to empty, or a username or password can not be read from the configuration, the whole credentials change of that datasource is ignored and logged as a warning, so a new username is never combined with an old password or the other way round. The change is applied by a later refresh event once the configuration is fixed. A failure to update one datasource is logged and does not prevent other datasources from being updated.</p>
 </li>
 <li>
 <p>Supported pools: HikariCP, Tomcat JDBC, Oracle UCP and unpooled datasources.</p>
