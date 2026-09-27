@@ -80,6 +80,24 @@ class BaseDatasourceFactorySpec extends Specification {
         blockingFactory.changes == [new Change("default", null, "new-pwd")]
     }
 
+    void "only new RefreshEvent() is a full refresh, like in the refresh scope"() {
+        given:
+        System.setProperty(PASSWORD, "new-pwd")
+        applicationContext.environment.refresh()
+
+        when: "an event with an equal but different source map is published"
+        factory.onApplicationEvent(new RefreshEvent(["all": "*"]))
+
+        then: "it is handled as a refresh of the 'all' key"
+        factory.changes.isEmpty()
+
+        when:
+        factory.onApplicationEvent(new RefreshEvent())
+
+        then:
+        factory.changes == [new Change("default", null, "new-pwd")]
+    }
+
     void "full refresh without credential changes does not notify"() {
         when:
         applicationContext.environment.refresh()
