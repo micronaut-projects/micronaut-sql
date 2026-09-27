@@ -5,6 +5,9 @@ import io.micronaut.runtime.context.scope.refresh.RefreshEvent
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+
 class BaseDatasourceFactorySpec extends Specification {
 
     private static final String USERNAME = "base-ds-factory-spec-username"
@@ -29,6 +32,52 @@ class BaseDatasourceFactorySpec extends Specification {
     void cleanup() {
         System.clearProperty(USERNAME)
         System.clearProperty(PASSWORD)
+    }
+
+    void "known credentials do not keep the plaintext password"() {
+        when:
+        def field = BaseDatasourceFactory.getDeclaredField("knownCredentials")
+        field.accessible = true
+        Map<String, Object> knownCredentials = field.get(factory)
+        def defaultCredentials = knownCredentials.get("default")
+
+        then:
+        defaultCredentials.userName() == "sa"
+        defaultCredentials.passwordDigest() != null
+        defaultCredentials.passwordDigest() != "pwd"
+    }
+
+    void "refresh events are handled one at a time"() {
+        given:
+        def updateStarted = new CountDownLatch(1)
+        def releaseUpdate = new CountDownLatch(1)
+        def blockingFactory = new RecordingFactory(applicationContext) {
+            @Override
+            protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
+                updateStarted.countDown()
+                releaseUpdate.await(5, TimeUnit.SECONDS)
+                super.dataSourceCredentialsChanged(dataSourceName, dataSourceCredentials)
+            }
+        }
+        System.setProperty(PASSWORD, "new-pwd")
+        applicationContext.environment.refresh()
+
+        when: "a second event is published while the first one is updating the pool"
+        def first = Thread.start { blockingFactory.onApplicationEvent(new RefreshEvent()) }
+        updateStarted.await(5, TimeUnit.SECONDS)
+        def second = Thread.start { blockingFactory.onApplicationEvent(new RefreshEvent()) }
+        second.join(300)
+
+        then: "the second event waits for the first one"
+        second.alive
+
+        when:
+        releaseUpdate.countDown()
+        first.join(5000)
+        second.join(5000)
+
+        then: "and does not apply the same change again"
+        blockingFactory.changes == [new Change("default", null, "new-pwd")]
     }
 
     void "full refresh without credential changes does not notify"() {
@@ -86,15 +135,56 @@ class BaseDatasourceFactorySpec extends Specification {
         factory.changes == [new Change("default", "admin", "new-pwd")]
     }
 
-    void "full refresh ignores a username changed to empty"() {
+    void "full refresh ignores the whole change when the username is changed to empty and applies it once fixed"() {
         when:
         System.setProperty(USERNAME, "")
         System.setProperty(PASSWORD, "new-pwd")
         applicationContext.environment.refresh()
         factory.onApplicationEvent(new RefreshEvent())
 
+        then: "the new password is not combined with the old username"
+        noExceptionThrown()
+        factory.changes.isEmpty()
+
+        when: "the username is fixed"
+        System.setProperty(USERNAME, "sa")
+        applicationContext.environment.refresh()
+        factory.onApplicationEvent(new RefreshEvent())
+
+        then: "the pending password change is applied"
+        factory.changes == [new Change("default", null, "new-pwd")]
+    }
+
+    void "full refresh ignores the whole change when the password can no longer be read"() {
+        when:
+        System.setProperty(USERNAME, "admin")
+        System.clearProperty(PASSWORD)
+        applicationContext.environment.refresh()
+        factory.onApplicationEvent(new RefreshEvent())
+
+        then: "the new username is not combined with the old password"
+        noExceptionThrown()
+        factory.changes.isEmpty()
+    }
+
+    void "failed update is retried on the next full refresh"() {
+        given:
+        factory.failingDataSource = "default"
+        System.setProperty(PASSWORD, "new-pwd")
+        applicationContext.environment.refresh()
+
+        when:
+        factory.onApplicationEvent(new RefreshEvent())
+
         then:
         noExceptionThrown()
+        factory.changes.isEmpty()
+
+        when:
+        factory.failingDataSource = null
+        factory.onApplicationEvent(new RefreshEvent())
+
+        then:
         factory.changes == [new Change("default", null, "new-pwd")]
     }
 
@@ -116,15 +206,15 @@ class BaseDatasourceFactorySpec extends Specification {
         factory.changes.isEmpty()
     }
 
-    void "targeted refresh ignores a username changed to empty and still applies the password"() {
+    void "targeted refresh ignores the whole change when the username is changed to empty"() {
         when:
         System.setProperty(USERNAME, "")
         System.setProperty(PASSWORD, "new-pwd")
         factory.onApplicationEvent(new RefreshEvent(applicationContext.environment.refreshAndDiff()))
 
-        then:
+        then: "the new password is not combined with the old username"
         noExceptionThrown()
-        factory.changes == [new Change("default", null, "new-pwd")]
+        factory.changes.isEmpty()
     }
 
     void "targeted refresh ignores a password that can no longer be read"() {
@@ -136,6 +226,45 @@ class BaseDatasourceFactorySpec extends Specification {
         then:
         noExceptionThrown()
         factory.changes.isEmpty()
+    }
+
+    void "targeted refresh ignores the whole change when the password can no longer be read"() {
+        when:
+        System.setProperty(USERNAME, "admin")
+        System.clearProperty(PASSWORD)
+        applicationContext.environment.refresh()
+        factory.onApplicationEvent(new RefreshEvent([
+                'datasources.default.username': 'old-value',
+                'datasources.default.password': 'old-value'
+        ]))
+
+        then: "the new username is not combined with the old password"
+        noExceptionThrown()
+        factory.changes.isEmpty()
+    }
+
+    void "invalid change of one datasource does not prevent other datasources from being updated"() {
+        given:
+        def context = ApplicationContext.run([
+                'datasources.first.username' : '',
+                'datasources.first.password' : 'pwd',
+                'datasources.second.password': 'pwd'
+        ])
+        def recordingFactory = new RecordingFactory(context)
+
+        when:
+        recordingFactory.onApplicationEvent(new RefreshEvent([
+                'datasources.first.username' : 'old',
+                'datasources.first.password' : 'old',
+                'datasources.second.password': 'old'
+        ]))
+
+        then:
+        noExceptionThrown()
+        recordingFactory.changes == [new Change("second", null, "pwd")]
+
+        cleanup:
+        context.close()
     }
 
     void "failure to update one datasource does not fail the event or the other datasources"() {
@@ -183,7 +312,7 @@ class BaseDatasourceFactorySpec extends Specification {
     static class RecordingFactory extends BaseDatasourceFactory {
 
         final List<Change> changes = []
-        final String failingDataSource
+        String failingDataSource
 
         RecordingFactory(ApplicationContext applicationContext, String failingDataSource = null) {
             super(applicationContext)
