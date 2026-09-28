@@ -388,6 +388,31 @@ class BaseDatasourceFactorySpec extends Specification {
         System.clearProperty("base-ds-factory-spec-second-password")
     }
 
+    void "credentials of a disabled datasource are not refreshed"() {
+        given:
+        System.setProperty("base-ds-factory-spec-disabled-password", "pwd")
+        def context = ApplicationContext.run([
+                'datasources.disabled.enabled' : false,
+                'datasources.disabled.username': 'sa',
+                'datasources.disabled.password': '${base-ds-factory-spec-disabled-password}'
+        ])
+        def recordingFactory = new RecordingFactory(context)
+
+        when:
+        System.setProperty("base-ds-factory-spec-disabled-password", "new-pwd")
+        def changes = context.environment.refreshAndDiff()
+        recordingFactory.onApplicationEvent(new RefreshEvent(changes))
+        recordingFactory.onApplicationEvent(new RefreshEvent())
+
+        then:
+        changes.containsKey('datasources.disabled.password')
+        recordingFactory.changes.isEmpty()
+
+        cleanup:
+        System.clearProperty("base-ds-factory-spec-disabled-password")
+        context.close()
+    }
+
     void "unresolvable placeholder in credentials does not fail the factory"() {
         given:
         def context = ApplicationContext.run([

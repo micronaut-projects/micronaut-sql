@@ -32,10 +32,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -138,7 +140,7 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
             if (configuredDataSourceNames.contains(dataSourceName)) {
                 refreshCredentials(dataSourceName);
             } else if (LOG.isDebugEnabled()) {
-                LOG.debug("Datasource [{}] is no longer configured, its credentials are not refreshed.", dataSourceName);
+                LOG.debug("Datasource [{}] is not configured or is disabled, its credentials are not refreshed.", dataSourceName);
             }
         }
     }
@@ -212,12 +214,34 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
         }
     }
 
+    /**
+     * @return the names of the configured datasources, without the disabled ones, which have no pool
+     */
     private Collection<String> getConfiguredDataSourceNames() {
         Environment environment = applicationContext.getEnvironment();
         if (environment == null) {
             return Collections.emptyList();
         }
-        return environment.getPropertyEntries(BasicJdbcConfiguration.PREFIX);
+        List<String> dataSourceNames = new ArrayList<>(2);
+        for (String dataSourceName : environment.getPropertyEntries(BasicJdbcConfiguration.PREFIX)) {
+            if (isEnabled(environment, dataSourceName)) {
+                dataSourceNames.add(dataSourceName);
+            }
+        }
+        return dataSourceNames;
+    }
+
+    /**
+     * Same check as {@link JdbcDataSourceEnabled}.
+     */
+    private static boolean isEnabled(Environment environment, String dataSourceName) {
+        String property = BasicJdbcConfiguration.PREFIX + "." + dataSourceName + ".enabled";
+        try {
+            return environment.getProperty(property, Boolean.class, true);
+        } catch (Exception e) {
+            // the datasource configuration itself reports an invalid value
+            return true;
+        }
     }
 
     private DataSourceCredentials readConfiguredCredentials(String dataSourceName) {
