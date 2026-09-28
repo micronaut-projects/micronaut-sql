@@ -191,9 +191,10 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
             dataSourceCredentialsChanged(dataSourceName, dataSourceCredentials);
             return true;
         } catch (Exception e) {
-            // do not fail the refresh event publisher or prevent other datasources from being updated
-            if (LOG.isWarnEnabled()) {
-                LOG.warn("Failed to update credentials for datasource [{}]", dataSourceName, e);
+            // do not fail the refresh event publisher or prevent other datasources from being updated,
+            // the pool may now use credentials the database rejects until a later refresh event retries the change
+            if (LOG.isErrorEnabled()) {
+                LOG.error("Failed to update credentials for datasource [{}]. The change is retried by a later refresh event.", dataSourceName, e);
             }
             return false;
         }
