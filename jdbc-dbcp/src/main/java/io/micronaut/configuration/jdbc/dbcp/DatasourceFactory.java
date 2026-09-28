@@ -41,6 +41,8 @@ import java.util.Map;
  * @author Christian Oestreich
  * @since 1.0
  */
+// created at startup, together with the datasources, so the initial credentials match the pools
+@Context
 @Factory
 public class DatasourceFactory extends BaseDatasourceFactory {
 
@@ -94,7 +96,7 @@ public class DatasourceFactory extends BaseDatasourceFactory {
     }
 
     @Override
-    protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
+    protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) throws SQLException {
         BasicDataSource basicDataSource = dataSources.get(dataSourceName);
         if (basicDataSource == null) {
             if (LOG.isDebugEnabled()) {
@@ -109,12 +111,7 @@ public class DatasourceFactory extends BaseDatasourceFactory {
         if (dataSourceCredentials.password() != null) {
             basicDataSource.setPassword(dataSourceCredentials.password());
         }
-        try {
-            basicDataSource.restart();
-        } catch (SQLException e) {
-            if (LOG.isWarnEnabled()) {
-                LOG.warn("Failed to restart datasource after password change {}", dataSourceName, e);
-            }
-        }
+        // a failure is logged by the caller, and the change is retried by a later refresh event
+        basicDataSource.restart();
     }
 }

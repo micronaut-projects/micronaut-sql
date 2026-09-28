@@ -31,11 +31,11 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.sql.SQLException;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -49,8 +49,12 @@ import java.util.regex.Pattern;
  * This class provides a basic implementation for handling refresh events and updating datasource credentials.
  * Subclasses are expected to implement the {@link #dataSourceCredentialsChanged(String, DataSourceCredentials)} method to handle the updated credentials.
  * <p>
- * A refresh event without specific keys (for example {@code new RefreshEvent()}) is handled by comparing the configured
- * credentials of each datasource with the last known ones, so only credentials that actually changed are propagated.
+ * On a refresh event, the configured credentials of each affected datasource (the datasources named by the changed keys,
+ * or all of them for {@code new RefreshEvent()}) are compared with the last applied ones, so only credentials that
+ * actually changed are propagated.
+ * <p>
+ * The credentials the pools are created with are recorded when the factory is created, so the factory must be created
+ * at startup together with its datasources, for example through a {@code @Context} datasource factory method.
  *
  * @since 6.2.0
  */
@@ -58,14 +62,9 @@ import java.util.regex.Pattern;
 public abstract class BaseDatasourceFactory implements RefreshEventListener {
 
     /**
-     * A regular expression pattern used to match datasource password properties.
+     * A regular expression pattern used to match datasource username and password properties.
      */
-    private static final Pattern DATASOURCE_PASSWORD_MATCHER = Pattern.compile(BasicJdbcConfiguration.PREFIX + "\\.(.*)\\.password");
-
-    /**
-     * A regular expression pattern used to match datasource username properties.
-     */
-    private static final Pattern DATASOURCE_USERNAME_MATCHER = Pattern.compile(BasicJdbcConfiguration.PREFIX + "\\.(.*)\\.username");
+    private static final Pattern DATASOURCE_CREDENTIALS_MATCHER = Pattern.compile(BasicJdbcConfiguration.PREFIX + "\\.(.*)\\.(username|password)");
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseDatasourceFactory.class);
 
@@ -125,64 +124,58 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
      * @param changes The changed keys
      */
     private void onRefresh(Map<String, Object> changes) {
-        Map<String, DataSourceCredentials> dataSourceCredentialsMap = new HashMap<>(2);
-        Set<String> invalidDataSources = new HashSet<>(2);
-        for (Map.Entry<String, Object> change : changes.entrySet()) {
-            String property = change.getKey();
-            // value in change set is an old value, and we want to get new from the application context
-            Matcher userNameMatcher = DATASOURCE_USERNAME_MATCHER.matcher(property);
-            if (userNameMatcher.matches()) {
-                checkAndUpdateUsernameChange(property, userNameMatcher, dataSourceCredentialsMap, invalidDataSources);
-            } else {
-                Matcher passwordMatcher = DATASOURCE_PASSWORD_MATCHER.matcher(property);
-                if (passwordMatcher.matches()) {
-                    checkAndUpdatePasswordChange(property, passwordMatcher, dataSourceCredentialsMap, invalidDataSources);
-                }
+        // the changed keys select the datasources to check, the values in the event are not used
+        Set<String> dataSourceNames = new LinkedHashSet<>(2);
+        for (String property : changes.keySet()) {
+            Matcher matcher = DATASOURCE_CREDENTIALS_MATCHER.matcher(property);
+            if (matcher.matches() && StringUtils.isNotEmpty(matcher.group(1))) {
+                dataSourceNames.add(matcher.group(1));
             }
         }
-        for (Map.Entry<String, DataSourceCredentials> dataSourceCredentialsEntry : dataSourceCredentialsMap.entrySet()) {
-            String datasourceName = dataSourceCredentialsEntry.getKey();
-            if (invalidDataSources.contains(datasourceName)) {
-                // never combine a new username with an old password or the other way round
-                continue;
-            }
-            if (notifyCredentialsChanged(datasourceName, dataSourceCredentialsEntry.getValue())) {
-                knownCredentials.put(datasourceName, fingerprint(readConfiguredCredentials(datasourceName)));
-            }
+        for (String dataSourceName : dataSourceNames) {
+            refreshCredentials(dataSourceName);
         }
     }
 
     /**
-     * Handles a refresh event without specific keys, such as {@code new RefreshEvent()}, by comparing
-     * the configured credentials of each datasource with the last known ones.
+     * Handles a refresh event without specific keys, such as {@code new RefreshEvent()}, by checking every configured datasource.
      */
     private void onFullRefresh() {
         for (String dataSourceName : getConfiguredDataSourceNames()) {
-            CredentialsFingerprint previous = knownCredentials.getOrDefault(dataSourceName, NO_CREDENTIALS);
-            DataSourceCredentials current = readConfiguredCredentials(dataSourceName);
-            CredentialsFingerprint currentFingerprint = fingerprint(current);
-            boolean userNameChanged = !Objects.equals(previous.userName(), currentFingerprint.userName());
-            boolean passwordChanged = !Objects.equals(previous.passwordDigest(), currentFingerprint.passwordDigest());
-            if (!userNameChanged && !passwordChanged) {
-                continue;
-            }
-            // never combine a new username with an old password or the other way round, the last known
-            // credentials are kept so the change is applied once the configuration is fixed
-            if (userNameChanged && StringUtils.isEmpty(current.userName())) {
-                warnIgnoredChange(dataSourceName, "username is changed to empty or could not be read");
-                continue;
-            }
-            if (passwordChanged && current.password() == null) {
-                warnIgnoredChange(dataSourceName, "password is removed or could not be read");
-                continue;
-            }
-            DataSourceCredentials changedCredentials = new DataSourceCredentials(
-                userNameChanged ? current.userName() : null,
-                passwordChanged ? current.password() : null
-            );
-            if (notifyCredentialsChanged(dataSourceName, changedCredentials)) {
-                knownCredentials.put(dataSourceName, currentFingerprint);
-            }
+            refreshCredentials(dataSourceName);
+        }
+    }
+
+    /**
+     * Compares the configured credentials of the datasource with the last applied ones and applies the ones that changed.
+     *
+     * @param dataSourceName The datasource name
+     */
+    private void refreshCredentials(String dataSourceName) {
+        CredentialsFingerprint previous = knownCredentials.getOrDefault(dataSourceName, NO_CREDENTIALS);
+        DataSourceCredentials current = readConfiguredCredentials(dataSourceName);
+        CredentialsFingerprint currentFingerprint = fingerprint(current);
+        boolean userNameChanged = !Objects.equals(previous.userName(), currentFingerprint.userName());
+        boolean passwordChanged = !Objects.equals(previous.passwordDigest(), currentFingerprint.passwordDigest());
+        if (!userNameChanged && !passwordChanged) {
+            return;
+        }
+        // never combine a new username with an old password or the other way round, the last applied
+        // credentials are kept so the whole change is applied once the configuration is fixed
+        if (userNameChanged && StringUtils.isEmpty(current.userName())) {
+            warnIgnoredChange(dataSourceName, "username is changed to empty or could not be read");
+            return;
+        }
+        if (passwordChanged && current.password() == null) {
+            warnIgnoredChange(dataSourceName, "password is removed or could not be read");
+            return;
+        }
+        DataSourceCredentials changedCredentials = new DataSourceCredentials(
+            userNameChanged ? current.userName() : null,
+            passwordChanged ? current.password() : null
+        );
+        if (notifyCredentialsChanged(dataSourceName, changedCredentials)) {
+            knownCredentials.put(dataSourceName, currentFingerprint);
         }
     }
 
@@ -263,43 +256,14 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
     /**
      * Called when the datasource credentials have changed.
      * <p>
-     * Subclasses must implement this method to handle the updated credentials.
+     * Subclasses must implement this method to handle the updated credentials. If the pool can not be updated,
+     * the method must throw, so the change is not recorded as applied and a later refresh event retries it.
      *
      * @param dataSourceName      the name of the datasource
      * @param dataSourceCredentials the updated datasource credentials
+     * @throws SQLException if the pool could not be updated
      */
-    protected abstract void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials);
-
-    private void checkAndUpdateUsernameChange(String property, Matcher userNameMatcher, Map<String, DataSourceCredentials> dataSourceCredentialsMap,
-                                              Set<String> invalidDataSources) {
-        String dataSourceName = userNameMatcher.group(1);
-        if (StringUtils.isNotEmpty(dataSourceName)) {
-            String userName = readProperty(property);
-            if (StringUtils.isEmpty(userName)) {
-                // username may not be empty while password can
-                warnIgnoredChange(dataSourceName, "username is changed to empty or could not be read");
-                invalidDataSources.add(dataSourceName);
-                return;
-            }
-            DataSourceCredentials dataSourceCredentials = dataSourceCredentialsMap.get(dataSourceName);
-            dataSourceCredentialsMap.put(dataSourceName, dataSourceCredentials == null ? new DataSourceCredentials(userName, null) : dataSourceCredentials.withUserName(userName));
-        }
-    }
-
-    private void checkAndUpdatePasswordChange(String property, Matcher passwordMatcher, Map<String, DataSourceCredentials> dataSourceCredentialsMap,
-                                              Set<String> invalidDataSources) {
-        String dataSourceName = passwordMatcher.group(1);
-        if (StringUtils.isNotEmpty(dataSourceName)) {
-            String password = readProperty(property);
-            if (password == null) {
-                warnIgnoredChange(dataSourceName, "password is removed or could not be read");
-                invalidDataSources.add(dataSourceName);
-                return;
-            }
-            DataSourceCredentials dataSourceCredentials = dataSourceCredentialsMap.get(dataSourceName);
-            dataSourceCredentialsMap.put(dataSourceName, dataSourceCredentials == null ? new DataSourceCredentials(null, password) : dataSourceCredentials.withPassword(password));
-        }
-    }
+    protected abstract void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) throws SQLException;
 
     /**
      * A record representing datasource credentials.

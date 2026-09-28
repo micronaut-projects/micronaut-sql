@@ -26,9 +26,12 @@ class DbPasswordRefresher {
         // such as datasources.default.password, are reported as changed too.
         Map<String, Object> changes = applicationContext.environment.refreshAndDiff()
         if (changes) {
+            // The values in the changes are the previous values, which may be secrets, and refresh event
+            // listeners only need the changed keys, so publish the keys with redacted values.
             // The datasource event handler for this event will get actual password from the
             // application configuration that has been refreshed in refreshAndDiff() call above
-            applicationContext.publishEvent(new RefreshEvent(changes))
+            Map<String, Object> changedKeys = changes.collectEntries { key, value -> [(key): "<redacted>"] }
+            applicationContext.publishEvent(new RefreshEvent(changedKeys))
         }
     }
 }

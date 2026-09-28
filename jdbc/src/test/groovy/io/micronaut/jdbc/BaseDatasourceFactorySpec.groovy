@@ -261,50 +261,102 @@ class BaseDatasourceFactorySpec extends Specification {
         factory.changes.isEmpty()
     }
 
+    void "targeted refresh applies a change skipped earlier together with the fixed username"() {
+        when: "the username is changed to empty together with a new password"
+        System.setProperty(USERNAME, "")
+        System.setProperty(PASSWORD, "new-pwd")
+        factory.onApplicationEvent(new RefreshEvent(applicationContext.environment.refreshAndDiff()))
+
+        then:
+        factory.changes.isEmpty()
+
+        when: "a later event reports only the fixed username"
+        System.setProperty(USERNAME, "admin")
+        factory.onApplicationEvent(new RefreshEvent(applicationContext.environment.refreshAndDiff()))
+
+        then: "the pending password is applied together with the username"
+        factory.changes == [new Change("default", "admin", "new-pwd")]
+
+        when:
+        factory.changes.clear()
+        applicationContext.environment.refresh()
+        factory.onApplicationEvent(new RefreshEvent())
+
+        then: "nothing is pending anymore"
+        factory.changes.isEmpty()
+    }
+
+    void "targeted refresh without a configuration change does not notify"() {
+        when:
+        factory.onApplicationEvent(new RefreshEvent(['datasources.default.password': '<redacted>']))
+
+        then:
+        factory.changes.isEmpty()
+    }
+
     void "invalid change of one datasource does not prevent other datasources from being updated"() {
         given:
-        def context = ApplicationContext.run([
-                'datasources.first.username' : '',
-                'datasources.first.password' : 'pwd',
-                'datasources.second.password': 'pwd'
-        ])
+        def context = multipleDataSourcesContext()
         def recordingFactory = new RecordingFactory(context)
 
         when:
-        recordingFactory.onApplicationEvent(new RefreshEvent([
-                'datasources.first.username' : 'old',
-                'datasources.first.password' : 'old',
-                'datasources.second.password': 'old'
-        ]))
+        System.setProperty("base-ds-factory-spec-first-username", "")
+        System.setProperty("base-ds-factory-spec-first-password", "new-pwd")
+        System.setProperty("base-ds-factory-spec-second-password", "new-pwd")
+        recordingFactory.onApplicationEvent(new RefreshEvent(context.environment.refreshAndDiff()))
 
         then:
         noExceptionThrown()
-        recordingFactory.changes == [new Change("second", null, "pwd")]
+        recordingFactory.changes == [new Change("second", null, "new-pwd")]
 
         cleanup:
+        clearMultipleDataSourcesProperties()
         context.close()
     }
 
-    void "failure to update one datasource does not fail the event or the other datasources"() {
+    void "failure to update one datasource does not fail the event or the other datasources, and is retried"() {
         given:
-        def context = ApplicationContext.run([
-                'datasources.first.password' : 'pwd',
-                'datasources.second.password': 'pwd'
-        ])
+        def context = multipleDataSourcesContext()
         def recordingFactory = new RecordingFactory(context, "first")
 
         when:
-        recordingFactory.onApplicationEvent(new RefreshEvent([
-                'datasources.first.password' : 'old',
-                'datasources.second.password': 'old'
-        ]))
+        System.setProperty("base-ds-factory-spec-first-password", "new-pwd")
+        System.setProperty("base-ds-factory-spec-second-password", "new-pwd")
+        def changes = context.environment.refreshAndDiff()
+        recordingFactory.onApplicationEvent(new RefreshEvent(changes))
 
         then:
         noExceptionThrown()
-        recordingFactory.changes == [new Change("second", null, "pwd")]
+        recordingFactory.changes == [new Change("second", null, "new-pwd")]
+
+        when: "the same keys are published again after the failure is gone"
+        recordingFactory.failingDataSource = null
+        recordingFactory.changes.clear()
+        recordingFactory.onApplicationEvent(new RefreshEvent(changes))
+
+        then: "only the failed update is retried"
+        recordingFactory.changes == [new Change("first", null, "new-pwd")]
 
         cleanup:
+        clearMultipleDataSourcesProperties()
         context.close()
+    }
+
+    private static ApplicationContext multipleDataSourcesContext() {
+        System.setProperty("base-ds-factory-spec-first-username", "sa")
+        System.setProperty("base-ds-factory-spec-first-password", "pwd")
+        System.setProperty("base-ds-factory-spec-second-password", "pwd")
+        ApplicationContext.run([
+                'datasources.first.username' : '${base-ds-factory-spec-first-username}',
+                'datasources.first.password' : '${base-ds-factory-spec-first-password}',
+                'datasources.second.password': '${base-ds-factory-spec-second-password}'
+        ])
+    }
+
+    private static void clearMultipleDataSourcesProperties() {
+        System.clearProperty("base-ds-factory-spec-first-username")
+        System.clearProperty("base-ds-factory-spec-first-password")
+        System.clearProperty("base-ds-factory-spec-second-password")
     }
 
     void "unresolvable placeholder in credentials does not fail the factory"() {
