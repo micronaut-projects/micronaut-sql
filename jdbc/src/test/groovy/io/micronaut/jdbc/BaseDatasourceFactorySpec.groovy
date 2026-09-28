@@ -286,6 +286,35 @@ class BaseDatasourceFactorySpec extends Specification {
         factory.changes.isEmpty()
     }
 
+    void "nested username and password properties are not datasource credentials"() {
+        given:
+        System.setProperty("base-ds-factory-spec-nested-password", "pwd")
+        def context = ApplicationContext.run([
+                'datasources.nested.url'                                 : 'jdbc:h2:mem:nested',
+                'datasources.nested.data-source-properties.password'     : '${base-ds-factory-spec-nested-password}'
+        ])
+        def recordingFactory = new RecordingFactory(context)
+
+        when:
+        System.setProperty("base-ds-factory-spec-nested-password", "new-pwd")
+        def changes = context.environment.refreshAndDiff()
+        recordingFactory.onApplicationEvent(new RefreshEvent(changes))
+
+        then:
+        changes.containsKey('datasources.nested.data-source-properties.password')
+        recordingFactory.changes.isEmpty()
+
+        cleanup:
+        System.clearProperty("base-ds-factory-spec-nested-password")
+        context.close()
+    }
+
+    void "credentials toString does not expose the password"() {
+        expect:
+        new BaseDatasourceFactory.DataSourceCredentials("sa", "secret-pwd").toString() == "DataSourceCredentials[userName=sa, password=*****]"
+        new BaseDatasourceFactory.DataSourceCredentials("sa", null).toString() == "DataSourceCredentials[userName=sa, password=null]"
+    }
+
     void "targeted refresh without a configuration change does not notify"() {
         when:
         factory.onApplicationEvent(new RefreshEvent(['datasources.default.password': '<redacted>']))

@@ -62,9 +62,10 @@ import java.util.regex.Pattern;
 public abstract class BaseDatasourceFactory implements RefreshEventListener {
 
     /**
-     * A regular expression pattern used to match datasource username and password properties.
+     * A regular expression pattern used to match datasource username and password properties. Datasource names
+     * can not contain dots, so nested properties such as {@code datasources.default.data-source-properties.password} do not match.
      */
-    private static final Pattern DATASOURCE_CREDENTIALS_MATCHER = Pattern.compile(BasicJdbcConfiguration.PREFIX + "\\.(.*)\\.(username|password)");
+    private static final Pattern DATASOURCE_CREDENTIALS_MATCHER = Pattern.compile(BasicJdbcConfiguration.PREFIX + "\\.([^.]+)\\.(username|password)");
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseDatasourceFactory.class);
 
@@ -128,12 +129,17 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
         Set<String> dataSourceNames = new LinkedHashSet<>(2);
         for (String property : changes.keySet()) {
             Matcher matcher = DATASOURCE_CREDENTIALS_MATCHER.matcher(property);
-            if (matcher.matches() && StringUtils.isNotEmpty(matcher.group(1))) {
+            if (matcher.matches()) {
                 dataSourceNames.add(matcher.group(1));
             }
         }
+        Collection<String> configuredDataSourceNames = getConfiguredDataSourceNames();
         for (String dataSourceName : dataSourceNames) {
-            refreshCredentials(dataSourceName);
+            if (configuredDataSourceNames.contains(dataSourceName)) {
+                refreshCredentials(dataSourceName);
+            } else if (LOG.isDebugEnabled()) {
+                LOG.debug("Datasource [{}] is no longer configured, its credentials are not refreshed.", dataSourceName);
+            }
         }
     }
 
@@ -294,6 +300,14 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
          */
         public DataSourceCredentials withPassword(String newPassword) {
             return new DataSourceCredentials(userName, newPassword);
+        }
+
+        /**
+         * @return the credentials with the password masked, so logging them does not expose it
+         */
+        @Override
+        public String toString() {
+            return "DataSourceCredentials[userName=" + userName + ", password=" + (password == null ? null : "*****") + "]";
         }
 
         /**

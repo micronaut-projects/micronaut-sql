@@ -159,6 +159,9 @@ class DatasourceConfigurationSpec extends Specification {
         dataSource.password == newPassword
         dataSource.hikariConfigMXBean.password == newPassword
 
+        and: "existing connections are evicted, so a new connection authenticates with the new password"
+        dataSource.connection.withCloseable { it.prepareStatement("SELECT 1").executeQuery().next() }
+
         cleanup:
         dataSource?.connection?.withCloseable { it.prepareStatement("ALTER USER sa SET PASSWORD ''").executeUpdate() }
         System.clearProperty("ds-full-refresh-password")
