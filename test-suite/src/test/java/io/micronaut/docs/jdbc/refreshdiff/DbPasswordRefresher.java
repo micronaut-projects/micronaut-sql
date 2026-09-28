@@ -6,6 +6,7 @@ import io.micronaut.runtime.context.scope.refresh.RefreshEvent;
 import io.micronaut.scheduling.annotation.Scheduled;
 import jakarta.inject.Singleton;
 
+import java.util.HashMap;
 import java.util.Map;
 // end::imports[]
 import io.micronaut.context.annotation.Requires;
@@ -28,9 +29,13 @@ final class DbPasswordRefresher {
         // such as datasources.default.password, are reported as changed too.
         Map<String, Object> changes = applicationContext.getEnvironment().refreshAndDiff();
         if (!changes.isEmpty()) {
+            // The values in the changes are the previous values, which may be secrets, and refresh event
+            // listeners only need the changed keys, so publish the keys with redacted values.
             // The datasource event handler for this event will get actual password from the
             // application configuration that has been refreshed in refreshAndDiff() call above
-            applicationContext.publishEvent(new RefreshEvent(changes));
+            Map<String, Object> changedKeys = new HashMap<>(changes.size());
+            changes.keySet().forEach(key -> changedKeys.put(key, "<redacted>"));
+            applicationContext.publishEvent(new RefreshEvent(changedKeys));
         }
     }
 }
