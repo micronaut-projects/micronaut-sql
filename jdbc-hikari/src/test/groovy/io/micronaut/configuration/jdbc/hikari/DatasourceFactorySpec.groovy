@@ -22,6 +22,6 @@ class DatasourceFactorySpec extends Specification {
 
     def "wire class with constructor"() {
         expect:
-        new DatasourceFactory(Mock(ApplicationContext))
+        new DatasourceFactory(Stub(ApplicationContext))
     }
 }

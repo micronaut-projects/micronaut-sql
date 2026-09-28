@@ -35,7 +35,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -128,7 +127,7 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
      */
     private void onRefresh(Map<String, Object> changes) {
         // the changed keys select the datasources to check, the values in the event are not used
-        Set<String> dataSourceNames = new LinkedHashSet<>(2);
+        Set<String> dataSourceNames = LinkedHashSet.newLinkedHashSet(2);
         for (String property : changes.keySet()) {
             Matcher matcher = DATASOURCE_CREDENTIALS_MATCHER.matcher(property);
             if (matcher.matches()) {
@@ -219,9 +218,6 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
      */
     private Collection<String> getConfiguredDataSourceNames() {
         Environment environment = applicationContext.getEnvironment();
-        if (environment == null) {
-            return Collections.emptyList();
-        }
         List<String> dataSourceNames = new ArrayList<>(2);
         for (String dataSourceName : environment.getPropertyEntries(BasicJdbcConfiguration.PREFIX)) {
             if (isEnabled(environment, dataSourceName)) {
