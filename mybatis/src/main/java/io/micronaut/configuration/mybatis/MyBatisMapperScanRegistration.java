@@ -25,7 +25,7 @@ import org.apache.ibatis.session.Configuration;
  * {@link MyBatisMapperScan} and discovered through {@code META-INF/services}. They are applied
  * by {@link MyBatisFactory} after all {@link MyBatisConfigurationCustomizer} beans.</p>
  *
- * @since 7.2.0
+ * @since 7.3.0
  */
 public interface MyBatisMapperScanRegistration {
 

@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
  * compiled together with the annotated type are discovered by package; mapper interfaces from other
  * modules must be listed in {@link #mappers()}.</p>
  *
- * @since 7.2.0
+ * @since 7.3.0
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

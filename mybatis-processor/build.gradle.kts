@@ -23,6 +23,6 @@ tasks.withType<Test> {
 
 micronautBuild {
     binaryCompatibility {
-        enabledAfter("7.2.0")
+        enabledAfter("7.3.0")
     }
 }
