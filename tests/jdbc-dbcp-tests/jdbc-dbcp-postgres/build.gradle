@@ -7,6 +7,8 @@ dependencies {
     implementation projects.micronautTests.micronautCommonSync
 
     runtimeOnly libs.managed.postgresql
+    // credentials refresh test runs against an in-memory database, without test resources
+    testRuntimeOnly libs.managed.h2
 
     testImplementation projects.micronautTests.micronautCommonTests
     testImplementation(mnData.micronaut.data.tx.jdbc)

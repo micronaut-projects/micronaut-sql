@@ -25,6 +25,13 @@ micronautBuild {
     importMicronautCatalog("micronaut-validation")
 }
 
+// verification only: resolve the locally published micronaut-core with the RefreshScope fix
+dependencyResolutionManagement {
+    repositories {
+        mavenLocal()
+    }
+}
+
 rootProject.name = 'sql-parent'
 
 include 'sql-bom'
