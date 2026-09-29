@@ -26,10 +26,17 @@ import org.apache.ibatis.session.SqlSessionManager;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import javax.sql.DataSource;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.Statement;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -116,6 +123,32 @@ class MyBatisFactoryTest {
             Configuration otherConfiguration = applicationContext.getBean(Configuration.class, Qualifiers.byName("other"));
             assertTrue(otherConfiguration.hasMapper(TestOtherDataSourceMapper.class));
             assertFalse(otherConfiguration.hasMapper(TestGeneratedMapper.class));
+        }
+    }
+
+    @Test
+    void loadsMapperScanRegistrationsFromTheContextClassLoader(@TempDir Path tempDir) throws Exception {
+        Path serviceFile = tempDir.resolve("META-INF/services/" + MyBatisMapperScanRegistration.class.getName());
+        Files.createDirectories(serviceFile.getParent());
+        Files.writeString(serviceFile, TestChildClassLoaderMapperScanRegistration.class.getName());
+        URL serviceUrl = serviceFile.toUri().toURL();
+        // Only the child sees the service descriptor, like application classes loaded by a child of the framework loader
+        ClassLoader childClassLoader = new ClassLoader(MyBatisFactory.class.getClassLoader()) {
+            @Override
+            protected Enumeration<URL> findResources(String name) {
+                return name.equals("META-INF/services/" + MyBatisMapperScanRegistration.class.getName())
+                    ? Collections.enumeration(List.of(serviceUrl))
+                    : Collections.emptyEnumeration();
+            }
+        };
+
+        try (ApplicationContext applicationContext = ApplicationContext.builder("test")
+            .classLoader(childClassLoader)
+            .properties(Map.of("datasources.default", Map.of()))
+            .start()) {
+            Configuration configuration = applicationContext.getBean(Configuration.class);
+            assertTrue(configuration.hasMapper(TestGeneratedMapper.class));
+            assertTrue(configuration.hasMapper(TestOtherDataSourceMapper.class));
         }
     }
 
