@@ -87,8 +87,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="annotations">@Context
-@Factory
+<div class="type-signature"><span class="annotations">@Factory
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">DatasourceFactory</span>
 <span class="extends-implements">extends <a href="../../../jdbc/BaseDatasourceFactory.html" title="class in io.micronaut.jdbc">BaseDatasourceFactory</a></span></div>
 <div class="block">Creates a dbcp data source for each configuration bean.</div>
@@ -231,21 +230,17 @@ loadScripts(document, 'script');</script>
 <h3>dataSourceCredentialsChanged</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">dataSourceCredentialsChanged</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSourceName,
- <a href="../../../jdbc/BaseDatasourceFactory.DataSourceCredentials.html" title="class in io.micronaut.jdbc">BaseDatasourceFactory.DataSourceCredentials</a>&nbsp;dataSourceCredentials)</span>
-                                     throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
+ <a href="../../../jdbc/BaseDatasourceFactory.DataSourceCredentials.html" title="class in io.micronaut.jdbc">BaseDatasourceFactory.DataSourceCredentials</a>&nbsp;dataSourceCredentials)</span></div>
 <div class="block"><span class="description-from-type-label">Description copied from class:&nbsp;<code><a href="../../../jdbc/BaseDatasourceFactory.html#dataSourceCredentialsChanged(java.lang.String,io.micronaut.jdbc.BaseDatasourceFactory.DataSourceCredentials)">BaseDatasourceFactory</a></code></span></div>
 <div class="block">Called when the datasource credentials have changed.
 <p>
-Subclasses must implement this method to handle the updated credentials. If the pool can not be updated,
-the method must throw, so the change is not recorded as applied and a later refresh event retries it.</div>
+Subclasses must implement this method to handle the updated credentials.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../jdbc/BaseDatasourceFactory.html#dataSourceCredentialsChanged(java.lang.String,io.micronaut.jdbc.BaseDatasourceFactory.DataSourceCredentials)">dataSourceCredentialsChanged</a></code>&nbsp;in class&nbsp;<code><a href="../../../jdbc/BaseDatasourceFactory.html" title="class in io.micronaut.jdbc">BaseDatasourceFactory</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>dataSourceName</code> - the name of the datasource</dd>
 <dd><code>dataSourceCredentials</code> - the updated datasource credentials</dd>
-<dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - if the pool could not be updated</dd>
 </dl>
 </div>
 </section>
