@@ -21,12 +21,12 @@ micronaut-validation = "5.1.0"
 # Frameworks
 
 managed-vertx = "5.2.0"
-managed-jooq = "3.21.8"
-managed-hibernate = "7.4.10.Final"
-managed-hibernate-reactive = "4.5.7.Final"
+managed-jooq = "3.21.9"
+managed-hibernate = "7.4.11.Final"
+managed-hibernate-reactive = "4.5.8.Final"
 managed-jasync = "2.2.4"
 managed-mybatis = "3.5.19"
-managed-jdbi = "3.54.0"
+managed-jdbi = "3.55.0"
 
 # JDBC Drivers
 
@@ -50,7 +50,7 @@ managed-tomcat-jdbc = "11.0.26"
 managed-jakarta-persistence-api = "3.2.0"
 managed-jakarta-transaction-api = "2.0.1"
 
-managed-h2 = "2.5.250"
+managed-h2 = "2.5.252"
 
 # Other
 
