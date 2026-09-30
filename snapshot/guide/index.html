@@ -1593,10 +1593,13 @@ class BookRepository {
 <p>The application observes <code>datasources.&lt;name&gt;.password</code> and <code>datasources.&lt;name&gt;.username</code> configuration keys</p>
 </li>
 <li>
-<p>On a <code>RefreshEvent</code>, it checks if either password or username change have been sent in refresh event and builds a change set per datasource</p>
+<p>On a <code>RefreshEvent</code>, every datasource whose <code>username</code> or <code>password</code> key is in the event is checked: its configured username and password are compared with the last applied ones, and the ones that changed are applied together. The new values are always read from the application configuration, the values in the event are not used, so the event should not contain secrets.</p>
 </li>
 <li>
-<p>Implementations for the supported pools set the new username and/or password on the pool and trigger a soft eviction of connections so subsequent connections use the updated credentials.</p>
+<p>On a <code>RefreshEvent</code> without specific keys (<code>new RefreshEvent()</code>), every configured datasource is checked the same way. Call <code>Environment.refresh()</code> before publishing such an event so the new values are loaded.</p>
+</li>
+<li>
+<p>Implementations for the supported pools set the new username and/or password on the pool and evict existing connections so subsequent connections use the updated credentials (see the notes below for details per pool).</p>
 </li>
 </ul>
 </div>
@@ -1715,8 +1718,9 @@ final class DbPasswordRefresher {
             // publishEvent with such RefreshEvent will trigger connection pool update and old connections eviction
             // The datasource event handler for this event will get actual password from the
             // application configuration that has been refreshed in refresh() call above
-            // and sending such event without prior calling refresh() will not work properly
-            applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", password)));
+            // and sending such event without prior calling refresh() will not work properly.
+            // Only the changed key matters, the event value is not used: do not put the secret into the event.
+            applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", "&lt;redacted&gt;")));
             this.currentPassword = password;
         }
     }
@@ -1759,8 +1763,9 @@ class DbPasswordRefresher:
             # publishEvent with such RefreshEvent will trigger connection pool update and old connections eviction
             # The datasource event handler for this event will get actual password from the
             # application configuration that has been refreshed in refresh() call above
-            # and sending such event without prior calling refresh() will not work properly
-            self.application_context.publishEvent(RefreshEvent({"datasources.default.password": password}))
+            # and sending such event without prior calling refresh() will not work properly.
+            # Only the changed key matters, the event value is not used: do not put the secret into the event.
+            self.application_context.publishEvent(RefreshEvent({"datasources.default.password": "&lt;redacted&gt;"}))
             self.current_password = password
 
     def get_secret_db_password(self) -&gt; str | None:
@@ -1792,8 +1797,9 @@ open class DbPasswordRefresher(
             // publishEvent with such RefreshEvent will trigger connection pool update and old connections eviction
             // The datasource event handler for this event will get actual password from the
             // application configuration that has been refreshed in refresh() call above
-            // and sending such event without prior calling refresh() will not work properly
-            applicationContext.publishEvent(RefreshEvent(mapOf&lt;String, Any&gt;("datasources.default.password" to password)))
+            // and sending such event without prior calling refresh() will not work properly.
+            // Only the changed key matters, the event value is not used: do not put the secret into the event.
+            applicationContext.publishEvent(RefreshEvent(mapOf&lt;String, Any&gt;("datasources.default.password" to "&lt;redacted&gt;")))
             currentPassword = password
         }
     }
@@ -1835,8 +1841,9 @@ class DbPasswordRefresher {
             // publishEvent with such RefreshEvent will trigger connection pool update and old connections eviction
             // The datasource event handler for this event will get actual password from the
             // application configuration that has been refreshed in refresh() call above
-            // and sending such event without prior calling refresh() will not work properly
-            applicationContext.publishEvent(new RefreshEvent(["datasources.default.password": password]))
+            // and sending such event without prior calling refresh() will not work properly.
+            // Only the changed key matters, the event value is not used: do not put the secret into the event.
+            applicationContext.publishEvent(new RefreshEvent(["datasources.default.password": "&lt;redacted&gt;"]))
             this.currentPassword = password
         }
     }
@@ -1848,7 +1855,7 @@ class DbPasswordRefresher {
 </div>
 </div>
 <div class="paragraph">
-<p>Alternative way to implement password rotation:</p>
+<p>Alternatively, publish the keys reported by <code>Environment.refreshAndDiff()</code>. They include the <code>datasources.&lt;name&gt;.password</code> key when the placeholder it references changes. The reported values are the previous values, which may be secrets, so replace them before publishing the event:</p>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
@@ -1857,6 +1864,7 @@ import io.micronaut.runtime.context.scope.refresh.RefreshEvent;
 import io.micronaut.scheduling.annotation.Scheduled;
 import jakarta.inject.Singleton;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Singleton
@@ -1870,15 +1878,18 @@ final class DbPasswordRefresher {
 
     @Scheduled(cron = "0 * * * * *")
     void refresh() {
-        // refreshAndDiff() will register if there were changes in config values (Vault, Secret, etc.),
-        // update application configuration and populate the changes map.
+        // refreshAndDiff() reloads config values (Vault, Secret, etc.), updates the application configuration
+        // and returns the changed keys. When ${DB_PASSWORD} changes, the properties that reference it,
+        // such as datasources.default.password, are reported as changed too.
         Map&lt;String, Object&gt; changes = applicationContext.getEnvironment().refreshAndDiff();
-        // ${DB_PASSWORD} placeholder in refreshAndDiff() call will be populated as `db-password` key in changes map
-        if (changes.containsKey("db-password")) {
-            String password = (String) changes.get("db-password");
+        if (!changes.isEmpty()) {
+            // The values in the changes are the previous values, which may be secrets, and refresh event
+            // listeners only need the changed keys, so publish the keys with redacted values.
             // The datasource event handler for this event will get actual password from the
             // application configuration that has been refreshed in refreshAndDiff() call above
-            applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", password)));
+            Map&lt;String, Object&gt; changedKeys = new HashMap&lt;&gt;(changes.size());
+            changes.keySet().forEach(key -&gt; changedKeys.put(key, "&lt;redacted&gt;"));
+            applicationContext.publishEvent(new RefreshEvent(changedKeys));
         }
     }
 }</code></pre>
@@ -1898,15 +1909,17 @@ class DbPasswordRefresher:
 
     @Scheduled(cron="0 * * * * *")
     def refresh(self) -&gt; None:
-        # refreshAndDiff() will register if there were changes in config values (Vault, Secret, etc.),
-        # update application configuration and populate the changes map.
+        # refreshAndDiff() reloads config values (Vault, Secret, etc.), updates the application configuration
+        # and returns the changed keys. When ${DB_PASSWORD} changes, the properties that reference it,
+        # such as datasources.default.password, are reported as changed too.
         changes = self.application_context.getEnvironment().refreshAndDiff()
-        # ${DB_PASSWORD} placeholder in refreshAndDiff() call will be populated as `db-password` key in changes map
-        if changes.containsKey("db-password"):
-            password = changes.get("db-password")
+        if not changes.isEmpty():
+            # The values in the changes are the previous values, which may be secrets, and refresh event
+            # listeners only need the changed keys, so publish the keys with redacted values.
             # The datasource event handler for this event will get actual password from the
             # application configuration that has been refreshed in refreshAndDiff() call above
-            self.application_context.publishEvent(RefreshEvent({"datasources.default.password": password}))</code></pre>
+            changed_keys = {key: "&lt;redacted&gt;" for key in changes.keySet()}
+            self.application_context.publishEvent(RefreshEvent(changed_keys))</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -1921,15 +1934,17 @@ open class DbPasswordRefresher(private val applicationContext: ApplicationContex
 
     @Scheduled(cron = "0 * * * * *")
     open fun refresh() {
-        // refreshAndDiff() will register if there were changes in config values (Vault, Secret, etc.),
-        // update application configuration and populate the changes map.
+        // refreshAndDiff() reloads config values (Vault, Secret, etc.), updates the application configuration
+        // and returns the changed keys. When ${DB_PASSWORD} changes, the properties that reference it,
+        // such as datasources.default.password, are reported as changed too.
         val changes = applicationContext.environment.refreshAndDiff()
-        // ${DB_PASSWORD} placeholder in refreshAndDiff() call will be populated as `db-password` key in changes map
-        if (changes.containsKey("db-password")) {
-            val password = changes["db-password"] as String
+        if (changes.isNotEmpty()) {
+            // The values in the changes are the previous values, which may be secrets, and refresh event
+            // listeners only need the changed keys, so publish the keys with redacted values.
             // The datasource event handler for this event will get actual password from the
             // application configuration that has been refreshed in refreshAndDiff() call above
-            applicationContext.publishEvent(RefreshEvent(mapOf&lt;String, Any&gt;("datasources.default.password" to password)))
+            val changedKeys = changes.keys.associateWith&lt;String, Any&gt; { "&lt;redacted&gt;" }
+            applicationContext.publishEvent(RefreshEvent(changedKeys))
         }
     }
 }</code></pre>
@@ -1953,15 +1968,17 @@ class DbPasswordRefresher {
 
     @Scheduled(cron = "0 * * * * *")
     void refresh() {
-        // refreshAndDiff() will register if there were changes in config values (Vault, Secret, etc.),
-        // update application configuration and populate the changes map.
+        // refreshAndDiff() reloads config values (Vault, Secret, etc.), updates the application configuration
+        // and returns the changed keys. When ${DB_PASSWORD} changes, the properties that reference it,
+        // such as datasources.default.password, are reported as changed too.
         Map&lt;String, Object&gt; changes = applicationContext.environment.refreshAndDiff()
-        // ${DB_PASSWORD} placeholder in refreshAndDiff() call will be populated as `db-password` key in changes map
-        if (changes.containsKey("db-password")) {
-            String password = (String) changes.get("db-password")
+        if (changes) {
+            // The values in the changes are the previous values, which may be secrets, and refresh event
+            // listeners only need the changed keys, so publish the keys with redacted values.
             // The datasource event handler for this event will get actual password from the
             // application configuration that has been refreshed in refreshAndDiff() call above
-            applicationContext.publishEvent(new RefreshEvent(["datasources.default.password": password]))
+            Map&lt;String, Object&gt; changedKeys = changes.collectEntries { key, value -&gt; [(key): "&lt;redacted&gt;"] }
+            applicationContext.publishEvent(new RefreshEvent(changedKeys))
         }
     }
 }</code></pre>
@@ -1979,10 +1996,41 @@ class DbPasswordRefresher {
 <p>Username changes are supported as well; if both username and password change in the same refresh cycle, both are applied.</p>
 </li>
 <li>
-<p>Existing connections are softly evicted where supported by the pool; new connections will be established with the updated credentials.</p>
+<p>How each pool applies the new credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>HikariCP and Tomcat JDBC: existing connections are softly evicted, idle connections are closed immediately and connections in use are closed when they are returned to the pool.</p>
 </li>
 <li>
-<p>Supported pools: HikariCP, Tomcat JDBC, Oracle UCP.</p>
+<p>Oracle UCP: the pool is reconfigured with <code>PoolDataSource.reconfigureDataSource</code>.</p>
+</li>
+<li>
+<p>Unpooled: the next connection uses the new credentials.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Only the <code>datasources.&lt;name&gt;.username</code> and <code>datasources.&lt;name&gt;.password</code> properties are observed. Credentials set through other properties, such as <code>data-source-properties</code> or <code>connection-properties</code>, are not updated at runtime.</p>
+</li>
+<li>
+<p>Credentials of disabled datasources (<code>datasources.&lt;name&gt;.enabled: false</code>) are not refreshed. Datasources are created at startup, so enabling or disabling a datasource requires an application restart.</p>
+</li>
+<li>
+<p>The new credentials are applied as they are, without being verified first. Update the credentials in the database, or make sure it accepts both the old and the new ones, before publishing the event. Otherwise evicted connections can not be re-established.</p>
+</li>
+<li>
+<p>If a username is changed to empty, or a username or password can not be read from the configuration, the credentials refresh ignores the whole change of that datasource and logs a warning, so it never applies a new username with an old password or the other way round. Note that Tomcat JDBC and Oracle UCP use the datasource configuration that Micronaut re-binds on a refresh event as the pool configuration, so for these pools a changed value can still reach the pool configuration directly.</p>
+</li>
+<li>
+<p>A failure to update the pool of one datasource is logged as an error and does not prevent other datasources from being updated.</p>
+</li>
+<li>
+<p>A skipped or failed change is not lost: it is applied by the next refresh event that contains a <code>username</code> or <code>password</code> key of that datasource, or by <code>new RefreshEvent()</code>. <code>new RefreshEvent()</code> does not change anything when no credentials change is pending, so it can be published periodically to retry.</p>
+</li>
+<li>
+<p>Supported pools: HikariCP, Tomcat JDBC, Oracle UCP and unpooled datasources.</p>
 </li>
 </ul>
 </div>
