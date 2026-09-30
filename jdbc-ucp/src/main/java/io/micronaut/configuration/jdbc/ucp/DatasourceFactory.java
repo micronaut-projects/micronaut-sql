@@ -126,24 +126,19 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     }
 
     @Override
-    protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
+    protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) throws SQLException {
         PoolDataSource dataSource = dataSources.get(dataSourceName);
         if (dataSource != null) {
-            try {
-                Properties props = new Properties();
-                if (dataSourceCredentials.password() != null) {
-                    props.put("password", dataSourceCredentials.password());
-                }
-                if (dataSourceCredentials.userName() != null) {
-                    props.put("user", dataSourceCredentials.userName());
-                }
-                if (!props.isEmpty()) {
-                    dataSource.reconfigureDataSource(props);
-                }
-            } catch (SQLException e) {
-                if (LOG.isWarnEnabled()) {
-                    LOG.warn("Failed to update username and/or password for datasource {}", dataSourceName, e);
-                }
+            Properties props = new Properties();
+            if (dataSourceCredentials.password() != null) {
+                props.put("password", dataSourceCredentials.password());
+            }
+            if (dataSourceCredentials.userName() != null) {
+                props.put("user", dataSourceCredentials.userName());
+            }
+            if (!props.isEmpty()) {
+                // a failure is logged by the caller, and the change is retried by a later refresh event
+                dataSource.reconfigureDataSource(props);
             }
         } else if (LOG.isDebugEnabled()) {
             LOG.debug("Datasource with name [{}] not found while trying to propagate datasource credentials changes.", dataSourceName);
