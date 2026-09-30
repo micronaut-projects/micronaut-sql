@@ -1,6 +1,4 @@
 repositories {
-    // verification only: resolve the locally published micronaut-core with the RefreshScope fix
-    mavenLocal()
     mavenCentral()
 }
 
