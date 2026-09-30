@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package example.jdbc.dbcp.sync;
+package example.jdbc.dbcp.h2;
 
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.type.Argument;

@@ -72,6 +72,7 @@ include 'tests:vertx-pg-client-native'
 
 include 'tests:jdbc-ucp-tests:jdbc-ucp-oracle'
 include 'tests:jdbc-ucp-tests:jdbc-ucp-sqlite'
+include 'tests:jdbc-dbcp-tests:jdbc-dbcp-h2'
 include 'tests:jdbc-dbcp-tests:jdbc-dbcp-postgres'
 include 'tests:jdbc-hikari-tests:jdbc-hikari-h2'
 include 'tests:jdbc-hikari-tests:jdbc-hikari-sqlite'
