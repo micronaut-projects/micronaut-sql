@@ -45,6 +45,7 @@ include 'vertx-mysql-client'
 include 'vertx-pg-client'
 include 'jdbi'
 include 'mybatis'
+include 'mybatis-processor'
 
 include 'tests:common'
 include 'tests:common-reactive'
