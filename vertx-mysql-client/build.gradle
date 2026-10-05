@@ -14,4 +14,10 @@ dependencies {
     testImplementation(mn.micronaut.management)
     testImplementation(mnTestResources.testcontainers.mysql)
     testImplementation(libs.managed.mysql.connector.j)
+
+    constraints {
+        implementation(libs.jackson.core) {
+            because("Vert.x brings in a vulnerable jackson-core (GHSA-7hhh-6rmp-j9qf, GHSA-p6pp-m3f8-5c89)")
+        }
+    }
 }
