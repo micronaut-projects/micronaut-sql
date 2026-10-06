@@ -87,7 +87,8 @@ class UcpRestartRetentionTest {
             assertTrue(tableExists(pool, "RETAINED"), "the database of the retained pool was kept");
             // ReloadTck.assertRetiredGenerationsCollected is not asserted, here nor when the pool is released: UCP runs
             // JVM-wide threads (UCP Clock, UCP-ScheduledThreadPoolExecutor-Thread-*, UCP-worker-thread-*) that keep the
-            // context class loader of the generation that started them, and outlive the pools
+            // context class loader of the generation that started them. They belong to no pool and outlive the pools,
+            // so the development runtime does not re-point them as it does the threads of a retained bean
         }
         assertEquals(List.of(), List.of(manager().getConnectionPoolNames()), "the pool is destroyed when the last generation stops");
     }

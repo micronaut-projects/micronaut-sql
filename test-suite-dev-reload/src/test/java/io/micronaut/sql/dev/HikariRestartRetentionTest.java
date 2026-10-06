@@ -78,10 +78,7 @@ class HikariRestartRetentionTest {
             assertSame(pool, pool(harness.context()));
             assertFalse(pool.isClosed());
             assertTrue(tableExists(pool, "RETAINED"), "the database of the retained pool was kept");
-            // ReloadTck.assertRetiredGenerationsCollected is not asserted here: the threads Hikari started in the first
-            // generation (its housekeeper, its connection adder) keep that generation's loader as their context class
-            // loader. Re-pointing the threads of a retained bean is for the development runtime to do, as it does for
-            // the Reactor threads; until it does, a retained pool keeps the first generation reachable.
+            ReloadTck.assertRetiredGenerationsCollected(harness);
         }
         assertTrue(pool.isClosed(), "the pool is closed when the last generation stops");
     }
