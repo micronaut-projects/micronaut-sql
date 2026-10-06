@@ -1,0 +1,16 @@
+plugins {
+    id 'io.micronaut.build.internal.test-library'
+}
+
+micronaut {
+    testRuntime "junit5"
+}
+
+dependencies {
+    testImplementation projects.micronautJdbcDbcp
+    testImplementation(mnData.micronaut.data.tx.jdbc)
+    testImplementation mnTest.micronaut.test.junit5
+
+    testRuntimeOnly libs.managed.h2
+    testRuntimeOnly mnLogging.logback.classic
+}
