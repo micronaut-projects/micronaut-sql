@@ -41,13 +41,15 @@ public class DatasourceFactory extends BaseDatasourceFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
 
+    private final ApplicationContext applicationContext;
+
     private final Map<String, DriverManagerDataSource> dataSources = new ConcurrentHashMap<>(2);
 
     /**
      * @param applicationContext The application context
      */
     public DatasourceFactory(ApplicationContext applicationContext) {
-        super(applicationContext);
+        this.applicationContext = applicationContext;
     }
 
     /**

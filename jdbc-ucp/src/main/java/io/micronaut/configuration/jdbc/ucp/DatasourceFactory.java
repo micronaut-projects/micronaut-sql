@@ -63,7 +63,6 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     @SuppressWarnings("NullAway.Init")
     public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
                              ApplicationContext applicationContext) {
-        super(applicationContext);
         this.configuration = applicationContext.getBean(UniversalConnectionPoolManagerConfiguration.class);
         try {
             this.connectionPoolManager = applicationContext.getBean(UniversalConnectionPoolManager.class);

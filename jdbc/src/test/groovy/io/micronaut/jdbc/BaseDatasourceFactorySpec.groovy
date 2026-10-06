@@ -36,9 +36,9 @@ class BaseDatasourceFactorySpec extends Specification {
 
     void "known credentials do not keep the plaintext password"() {
         when:
-        def field = BaseDatasourceFactory.getDeclaredField("knownCredentials")
+        def field = DataSourceCredentialsRefresher.getDeclaredField("knownCredentials")
         field.accessible = true
-        Map<String, Object> knownCredentials = field.get(factory)
+        Map<String, Object> knownCredentials = field.get(factory.refresher)
         def defaultCredentials = knownCredentials.get("default")
 
         then:
@@ -433,14 +433,22 @@ class BaseDatasourceFactorySpec extends Specification {
         context.close()
     }
 
+    /**
+     * A datasource factory with the refresher of its context, which notifies it alone.
+     */
     static class RecordingFactory extends BaseDatasourceFactory {
 
         final List<Change> changes = []
         String failingDataSource
+        final DataSourceCredentialsRefresher refresher
 
         RecordingFactory(ApplicationContext applicationContext, String failingDataSource = null) {
-            super(applicationContext)
             this.failingDataSource = failingDataSource
+            this.refresher = new DataSourceCredentialsRefresher(applicationContext, () -> [this] as Collection<BaseDatasourceFactory>)
+        }
+
+        void onApplicationEvent(RefreshEvent event) {
+            refresher.onApplicationEvent(event)
         }
 
         @Override
