@@ -26,8 +26,8 @@ import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
-import io.micronaut.jdbc.OracleSessionProgramHelper;
 import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
 import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
 import oracle.ucp.jdbc.PoolDataSourceImpl;
@@ -48,6 +48,10 @@ import java.util.Properties;
  * will be provided when possible. If no configuration beyond the datasource name
  * is provided, an in memory datasource will be configured based on the available
  * drivers on the classpath.
+ * <p>
+ * The configuration holds neither the application context nor anything bound to it, so that development mode can
+ * retain it with the pool it configures across a restart. The Oracle session program, which needs the environment,
+ * is applied by a bean created event listener, {@code OracleSessionProgramConfigurer}.
  *
  * @author toddsharp
  * @since 2.0.1
@@ -57,7 +61,6 @@ import java.util.Properties;
 public class DatasourceConfiguration implements BasicJdbcConfiguration {
 
     private static final String ORACLE_VSESSION_PROGRAM = "v$session.program";
-    private static final String DATASOURCES_PREFIX = "datasources.";
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
 
@@ -68,20 +71,34 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     private @Nullable String username;
     private @Nullable String password;
     private final Properties dataSourceProperties = new Properties();
-    private final Environment environment;
 
     /**
      * Constructor.
      *
      * @param name name that comes from properties
-     * @param environment The Micronaut {@link Environment}
+     * @throws SQLException if the pool name cannot be set
+     * @since 7.3.0
      */
-    public DatasourceConfiguration(@Parameter String name, Environment environment) throws SQLException {
+    @Inject
+    public DatasourceConfiguration(@Parameter String name) throws SQLException {
         super();
         this.name = name;
-        this.environment = environment;
         this.delegate.setConnectionPoolName(name);
         this.calculatedSettings = new CalculatedSettings(this);
+    }
+
+    /**
+     * Constructor taking the environment, which the configuration no longer uses.
+     *
+     * @param name name that comes from properties
+     * @param environment The Micronaut {@link Environment}
+     * @throws SQLException if the pool name cannot be set
+     * @deprecated The configuration holds no environment, so that the pool it configures can outlive it. The Oracle
+     * session program is applied by a bean created event listener. Use {@link #DatasourceConfiguration(String)}.
+     */
+    @Deprecated(since = "7.3.0", forRemoval = true)
+    public DatasourceConfiguration(String name, Environment environment) throws SQLException {
+        this(name);
     }
 
     /**
@@ -317,21 +334,10 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         }
     }
 
-    private void initializeDataSourceProperties() {
-        try {
-            OracleSessionProgramHelper.apply(
-                getName(),
-                getConfiguredUrl(),
-                environment.getProperty(DATASOURCES_PREFIX + getName() + ".dialect", String.class).orElse(null),
-                environment,
-                dataSourceProperties::put,
-                () -> dataSourceProperties.containsKey(ORACLE_VSESSION_PROGRAM)
-            );
-        } catch (Exception e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
-            }
-        }
+    /**
+     * Sets the connection properties of the pool, when there are any.
+     */
+    void initializeDataSourceProperties() {
         if (!dataSourceProperties.isEmpty()) {
             try {
                 this.delegate.setConnectionProperties(dataSourceProperties);
@@ -339,5 +345,23 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
                 throw new ConfigurationException("Unable to set datasource properties: " + e.getMessage(), e);
             }
         }
+    }
+
+    /**
+     * @return Whether the Oracle session program is among the connection properties
+     */
+    boolean isOracleProgramProvided() {
+        return dataSourceProperties.containsKey(ORACLE_VSESSION_PROGRAM);
+    }
+
+    /**
+     * Adds the Oracle session program to the connection properties, which {@link #initializeDataSourceProperties()}
+     * then sets on the pool.
+     *
+     * @param key The connection property
+     * @param program The program
+     */
+    void addOracleProgram(String key, String program) {
+        dataSourceProperties.put(key, program);
     }
 }

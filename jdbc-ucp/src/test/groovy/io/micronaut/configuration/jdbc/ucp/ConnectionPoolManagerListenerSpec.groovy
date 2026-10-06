@@ -3,7 +3,10 @@ package io.micronaut.configuration.jdbc.ucp
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.MapPropertySource
+import io.micronaut.context.event.BeanCreatedEvent
+import io.micronaut.inject.BeanIdentifier
 import io.micronaut.jdbc.DataSourceResolver
+import oracle.ucp.UniversalConnectionPoolLifeCycleState
 import oracle.ucp.admin.UniversalConnectionPoolManager
 import oracle.ucp.jdbc.PoolDataSource
 import spock.lang.Specification
@@ -92,6 +95,31 @@ class ConnectionPoolManagerListenerSpec extends Specification {
         expect:
         !applicationContext.containsBean(ConnectionPoolManagerListener)
         !applicationContext.containsBean(UniversalConnectionPoolManager)
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    void "starting a pool that is already managed, as development mode does to a retained pool, keeps it running"() {
+        given:
+        var applicationContext = ApplicationContext.run(
+                [
+                        "datasources.default.url": "jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE",
+                        "datasources.default.username": "sa",
+                        "datasources.default.password": ""],
+                "test")
+        var poolManager = applicationContext.getBean(UniversalConnectionPoolManager)
+        var dataSource = applicationContext.getBean(DataSource)
+        var pool = applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT).resolve(dataSource) as PoolDataSource
+        var listener = new ConnectionPoolManagerListener(poolManager, null)
+
+        when:
+        listener.onCreated(new BeanCreatedEvent<DataSource>(applicationContext, applicationContext.getBeanDefinition(DataSource), BeanIdentifier.of("default"), dataSource))
+
+        then:
+        poolManager.getConnectionPoolNames() == new String[]{"default"}
+        poolManager.getConnectionPool("default").lifeCycleState == UniversalConnectionPoolLifeCycleState.LIFE_CYCLE_RUNNING
+        pool.connection.withCloseable { it.valid }
 
         cleanup:
         applicationContext.close()

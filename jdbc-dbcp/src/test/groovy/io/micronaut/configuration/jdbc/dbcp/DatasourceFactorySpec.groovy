@@ -16,6 +16,11 @@
 package io.micronaut.configuration.jdbc.dbcp
 
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.BeanLocator
+import io.micronaut.context.annotation.Retain
+import io.micronaut.context.event.ApplicationEventPublisher
+import io.micronaut.core.value.PropertyResolver
+import io.micronaut.inject.BeanDefinition
 import io.micronaut.jdbc.DataSourceResolver
 import org.apache.commons.dbcp2.BasicDataSource
 import spock.lang.Specification
@@ -72,5 +77,28 @@ class DatasourceFactorySpec extends Specification {
         metadata.active >= 0
         metadata.validationQuery == "SELECT 1"
         metadata.usage >= 0
+    }
+
+    def "the pools, which are their configurations, receive nothing bound to the context, so that development mode can retain them"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run(['datasources.default': [:]])
+
+        when:
+        Collection<BeanDefinition<?>> pools = applicationContext.getBeanDefinitions(DataSource)
+
+        then:
+        !pools.isEmpty()
+        pools.every { it.beanType == DatasourceConfiguration }
+        pools.every { it.stringValues(Retain, "invalidatedBy") == ["datasources"] as String[] }
+        pools.every { BeanDefinition<?> definition ->
+            !definition.proxy && definition.requiredComponents.every { Class<?> type ->
+                !BeanLocator.isAssignableFrom(type)
+                        && !PropertyResolver.isAssignableFrom(type)
+                        && !ApplicationEventPublisher.isAssignableFrom(type)
+            }
+        }
+
+        cleanup:
+        applicationContext.close()
     }
 }

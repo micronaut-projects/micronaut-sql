@@ -19,6 +19,7 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Property;
+import io.micronaut.context.annotation.Retain;
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.exceptions.DisabledBeanException;
 import io.micronaut.core.annotation.Internal;
@@ -26,7 +27,7 @@ import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
-import io.micronaut.jdbc.OracleSessionProgramHelper;
+import jakarta.inject.Inject;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -44,12 +45,18 @@ import java.util.Map;
  * will be provided when possible. If no configuration beyond the datasource name
  * is provided, an in memory datastore will be configured based on the available
  * drivers on the classpath.
+ * <p>
+ * The configuration is the pool. It holds neither the application context nor anything bound to it, so that
+ * development mode can retain the pool across a restart, which {@link Retain} declares: a change of the configuration
+ * under {@code datasources} releases it. The Oracle session program, which needs the environment, is applied by a bean
+ * created event listener, {@code OracleSessionProgramConfigurer}.
  *
  * @author James Kleeh
  * @since 1.0
  */
 @Context
 @EachProperty(value = BasicJdbcConfiguration.PREFIX, primary = "default")
+@Retain(invalidatedBy = BasicJdbcConfiguration.PREFIX)
 public class DatasourceConfiguration extends BasicDataSource implements BasicJdbcConfiguration {
 
     private static final String ORACLE_VSESSION_PROGRAM = "v$session.program";
@@ -57,19 +64,30 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
     private final CalculatedSettings calculatedSettings;
     private final String name;
-    private final Environment environment;
     private boolean oracleProgramProvided;
 
     /**
      * Constructor.
      * @param name name configured from properties
-     * @param environment The environment
+     * @since 7.3.0
      */
-    public DatasourceConfiguration(@Parameter String name, Environment environment) {
+    @Inject
+    public DatasourceConfiguration(@Parameter String name) {
         super();
         this.name = name;
-        this.environment = environment;
         this.calculatedSettings = new CalculatedSettings(this);
+    }
+
+    /**
+     * Constructor taking the environment, which the configuration no longer uses.
+     * @param name name configured from properties
+     * @param environment The environment
+     * @deprecated The configuration, which is the pool, holds no environment, so that the pool can outlive it. The
+     * Oracle session program is applied by a bean created event listener. Use {@link #DatasourceConfiguration(String)}.
+     */
+    @Deprecated(since = "7.3.0", forRemoval = true)
+    public DatasourceConfiguration(String name, Environment environment) {
+        this(name);
     }
 
     /**
@@ -93,23 +111,6 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
         }
         if (getConfiguredValidationQuery() == null) {
             setValidationQuery(getValidationQuery());
-        }
-        try {
-            boolean provided = OracleSessionProgramHelper.apply(
-                    getName(),
-                    getUrl(),
-                    environment.getProperty("datasources." + getName() + ".dialect", String.class).orElse(null),
-                    environment,
-                    this::addConnectionProperty,
-                    () -> oracleProgramProvided
-            );
-            if (provided) {
-                oracleProgramProvided = true;
-            }
-        } catch (Exception e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
-            }
         }
     }
 
@@ -237,5 +238,16 @@ public class DatasourceConfiguration extends BasicDataSource implements BasicJdb
      */
     public boolean isOracleProgramProvided() {
         return oracleProgramProvided;
+    }
+
+    /**
+     * Adds the Oracle session program to the connection properties.
+     *
+     * @param key The connection property
+     * @param program The program
+     */
+    void addOracleProgram(String key, String program) {
+        addConnectionProperty(key, program);
+        oracleProgramProvided = true;
     }
 }
