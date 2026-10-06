@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -46,8 +47,6 @@ public class DatasourceFactory extends BaseDatasourceFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
 
-    private final ApplicationContext applicationContext;
-
     private final DataSourceResolver dataSourceResolver;
 
     /**
@@ -55,9 +54,10 @@ public class DatasourceFactory extends BaseDatasourceFactory {
      * @param dataSourceResolver The data source resolver
      * @param applicationContext The application context
      */
+    @SuppressWarnings("deprecation")
     public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
                              ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+        super(applicationContext);
         this.dataSourceResolver = dataSourceResolver == null ? DataSourceResolver.DEFAULT : dataSourceResolver;
     }
 
@@ -80,8 +80,9 @@ public class DatasourceFactory extends BaseDatasourceFactory {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) throws SQLException {
-        Optional<DataSource> optionalDataSource = applicationContext.findBean(DataSource.class, Qualifiers.byName(dataSourceName));
+        Optional<DataSource> optionalDataSource = Objects.requireNonNull(applicationContext).findBean(DataSource.class, Qualifiers.byName(dataSourceName));
         if (optionalDataSource.isEmpty()) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Datasource with name [{}] not found while trying to propagate datasource credentials changes.", dataSourceName);

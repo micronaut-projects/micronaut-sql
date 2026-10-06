@@ -15,6 +15,7 @@
  */
 package io.micronaut.jdbc;
 
+import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.runtime.context.scope.refresh.RefreshEvent;
 import io.micronaut.runtime.context.scope.refresh.RefreshEventListener;
@@ -41,6 +42,38 @@ import java.util.Set;
  */
 @Internal
 public abstract class BaseDatasourceFactory implements RefreshEventListener {
+
+    /**
+     * The application context, only when a deprecated constructor received it, for subclasses compiled against an
+     * earlier release. The factories of this project do not use it.
+     *
+     * @deprecated The factory holds no application context, so that its pools can outlive it. The unpooled and DBCP
+     * factories, whose pools are not retained by the factory, still use it.
+     */
+    @Deprecated(since = "7.3.0")
+    protected final @Nullable ApplicationContext applicationContext;
+
+    /**
+     * Constructor of a factory holding no application context.
+     *
+     * @since 7.3.0
+     */
+    protected BaseDatasourceFactory() {
+        this.applicationContext = null;
+    }
+
+    /**
+     * Constructor of a factory holding the application context, for subclasses compiled against an earlier release.
+     * A factory holding the context cannot be retained by development mode across a restart.
+     *
+     * @param applicationContext The application context
+     * @deprecated The factory holds no application context, so that its pools can outlive it. Use
+     * {@link #BaseDatasourceFactory()}.
+     */
+    @Deprecated(since = "7.3.0")
+    protected BaseDatasourceFactory(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
     /**
      * @return no prefix, the {@code DataSourceCredentialsRefresher} observes the datasource configuration

@@ -62,14 +62,15 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     }
 
     /**
-     * Constructor taking the application context, which the factory no longer uses.
+     * Constructor taking the application context, which the factory no longer uses. It is kept in the deprecated
+     * {@link BaseDatasourceFactory#applicationContext} field for subclasses compiled against an earlier release.
      *
      * @param applicationContext The application context
      * @deprecated The factory holds no application context, so that its pools can outlive it. Use {@link #DatasourceFactory()}.
      */
     @Deprecated(since = "7.3.0", forRemoval = true)
     public DatasourceFactory(ApplicationContext applicationContext) {
-        this();
+        super(applicationContext);
     }
 
     /**

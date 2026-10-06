@@ -80,13 +80,15 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
                              @Property(name = UniversalConnectionPoolManagerConfiguration.PREFIX + ".enabled", defaultValue = StringUtils.TRUE)
                              boolean connectionPoolManagerEnabled) {
+        super();
         this.connectionPoolManagerEnabled = connectionPoolManagerEnabled;
         this.dataSourceResolver = dataSourceResolver == null ? DataSourceResolver.DEFAULT : dataSourceResolver;
     }
 
     /**
-     * Constructor reading the configuration of the connection pool manager from the application context, which the
-     * factory does not keep.
+     * Constructor reading the configuration of the connection pool manager from the application context. The context
+     * is kept only in the deprecated {@link BaseDatasourceFactory#applicationContext} field, for subclasses compiled
+     * against an earlier release.
      *
      * @param dataSourceResolver The data source resolver
      * @param applicationContext The application context
@@ -96,9 +98,10 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     @Deprecated(since = "7.3.0", forRemoval = true)
     public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
                              ApplicationContext applicationContext) {
-        this(dataSourceResolver,
-                applicationContext.getBean(UniversalConnectionPoolManagerConfiguration.class).isEnabled()
-                        && applicationContext.containsBean(UniversalConnectionPoolManager.class));
+        super(applicationContext);
+        this.connectionPoolManagerEnabled = applicationContext.getBean(UniversalConnectionPoolManagerConfiguration.class).isEnabled()
+                && applicationContext.containsBean(UniversalConnectionPoolManager.class);
+        this.dataSourceResolver = dataSourceResolver == null ? DataSourceResolver.DEFAULT : dataSourceResolver;
     }
 
     /**
