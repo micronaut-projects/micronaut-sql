@@ -16,24 +16,58 @@
 package io.micronaut.jdbc;
 
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.runtime.context.scope.refresh.RefreshEvent;
+import io.micronaut.runtime.context.scope.refresh.RefreshEventListener;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.sql.SQLException;
+import java.util.Set;
 
 /**
  * An abstract base class for datasource factories whose pools follow changes of the datasource credentials.
  * <p>
- * The {@link DataSourceCredentialsRefresher} listens for refresh events, compares the configured credentials of
+ * The {@code DataSourceCredentialsRefresher} listens for refresh events, compares the configured credentials of
  * each affected datasource with the last applied ones, and calls {@link #dataSourceCredentialsChanged(String, DataSourceCredentials)}
  * of each datasource factory with the credentials that actually changed.
  * <p>
  * The factory holds neither the application context nor its environment, so a factory and the pools it created can
  * outlive the context that created them, as development mode does when it retains the pools across a restart.
+ * <p>
+ * The factory still implements {@link RefreshEventListener}, for binary compatibility of its subclasses, but observes
+ * no refresh event: the {@code DataSourceCredentialsRefresher} handles them.
  *
  * @since 6.2.0
  */
 @Internal
-public abstract class BaseDatasourceFactory {
+public abstract class BaseDatasourceFactory implements RefreshEventListener {
+
+    /**
+     * @return no prefix, the {@code DataSourceCredentialsRefresher} observes the datasource configuration
+     */
+    @Override
+    public @NonNull Set<String> getObservedConfigurationPrefixes() {
+        return Set.of();
+    }
+
+    /**
+     * @param event The refresh event
+     * @return false, the {@code DataSourceCredentialsRefresher} handles the refresh events
+     */
+    @Override
+    public boolean supports(RefreshEvent event) {
+        return false;
+    }
+
+    /**
+     * Does nothing, the {@code DataSourceCredentialsRefresher} handles the refresh events.
+     *
+     * @param event The refresh event
+     */
+    @Override
+    public void onApplicationEvent(RefreshEvent event) {
+        // handled by the DataSourceCredentialsRefresher, which holds the context
+    }
 
     /**
      * Called when the datasource credentials have changed.
