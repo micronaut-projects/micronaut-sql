@@ -1,0 +1,2 @@
+io.micronaut.configuration.mybatis.TestGeneratedMapperScanRegistration
+io.micronaut.configuration.mybatis.TestOtherDataSourceMapperScanRegistration
