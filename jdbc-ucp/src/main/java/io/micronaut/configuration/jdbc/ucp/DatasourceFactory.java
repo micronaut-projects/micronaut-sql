@@ -20,10 +20,8 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
-import io.micronaut.context.annotation.Property;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.annotation.Retain;
-import io.micronaut.core.util.StringUtils;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.DataSourceResolver;
@@ -67,21 +65,21 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     /**
      * Default constructor.
      * <p>
-     * The factory receives whether the connection pool manager is enabled, rather than the manager bean or its
-     * configuration, whose implementations resolve through the application context. The manager is the one of the
-     * JVM, {@link UniversalConnectionPoolManagerImpl#getUniversalConnectionPoolManager()}, which the manager bean
-     * also is.
+     * The factory copies whether the connection pool manager is enabled from its configuration, rather than holding the
+     * configuration or the manager bean, whose implementations resolve through the application context: development
+     * mode binds the configuration again for each restart, and a change under {@value UniversalConnectionPoolManagerConfiguration#PREFIX}
+     * releases the factory. The manager is the one of the JVM,
+     * {@link UniversalConnectionPoolManagerImpl#getUniversalConnectionPoolManager()}, which the manager bean also is.
      *
      * @param dataSourceResolver The data source resolver
-     * @param connectionPoolManagerEnabled Whether the connection pool manager is enabled, {@code ucp-manager.enabled}
+     * @param configuration The configuration of the connection pool manager
      * @since 7.3.0
      */
     @Inject
     public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
-                             @Property(name = UniversalConnectionPoolManagerConfiguration.PREFIX + ".enabled", defaultValue = StringUtils.TRUE)
-                             boolean connectionPoolManagerEnabled) {
+                             UniversalConnectionPoolManagerConfiguration configuration) {
         super();
-        this.connectionPoolManagerEnabled = connectionPoolManagerEnabled;
+        this.connectionPoolManagerEnabled = configuration.isEnabled();
         this.dataSourceResolver = dataSourceResolver == null ? DataSourceResolver.DEFAULT : dataSourceResolver;
     }
 
@@ -93,7 +91,7 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
      * @param dataSourceResolver The data source resolver
      * @param applicationContext The application context
      * @deprecated The factory receives what it needs rather than the application context, so that its pools can
-     * outlive it. Use {@link #DatasourceFactory(DataSourceResolver, boolean)}.
+     * outlive it. Use {@link #DatasourceFactory(DataSourceResolver, UniversalConnectionPoolManagerConfiguration)}.
      */
     @Deprecated(since = "7.3.0", forRemoval = true)
     public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
