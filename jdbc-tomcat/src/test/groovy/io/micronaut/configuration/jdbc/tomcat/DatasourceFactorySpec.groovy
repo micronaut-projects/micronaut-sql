@@ -16,6 +16,10 @@
 package io.micronaut.configuration.jdbc.tomcat
 
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.event.ApplicationEventPublisher
+import io.micronaut.context.BeanLocator
+import io.micronaut.core.value.PropertyResolver
+import io.micronaut.inject.BeanDefinition
 import io.micronaut.jdbc.DataSourceResolver
 import org.apache.tomcat.jdbc.pool.DataSource
 import spock.lang.Specification
@@ -32,7 +36,7 @@ class DatasourceFactorySpec extends Specification {
             javax.sql.DataSource resolve(javax.sql.DataSource ds) {
                 return ds
             }
-        }, ApplicationContext.run())
+        })
 
         when:
         def metadata = datasourceFactory.tomcatPoolDataSourceMetadataProvider(dataSource)
@@ -61,7 +65,7 @@ class DatasourceFactorySpec extends Specification {
         }
 
         when:
-        def metadata = new DatasourceFactory(dataSourceResolver, ApplicationContext.run()).tomcatPoolDataSourceMetadataProvider(proxyDataSource)
+        def metadata = new DatasourceFactory(dataSourceResolver).tomcatPoolDataSourceMetadataProvider(proxyDataSource)
 
         then:
         metadata
@@ -70,5 +74,28 @@ class DatasourceFactorySpec extends Specification {
         metadata.active >= 0
         metadata.validationQuery == "SELECT 1"
         metadata.usage >= 0
+    }
+
+    def "the factory and its pools receive nothing bound to the context, so that development mode can retain them"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run(['datasources.default': [:]])
+
+        when:
+        BeanDefinition<DatasourceFactory> factory = applicationContext.getBeanDefinition(DatasourceFactory)
+        Collection<BeanDefinition<?>> pools = applicationContext.getBeanDefinitions(javax.sql.DataSource)
+
+        then:
+        !pools.isEmpty()
+        pools.every { it.stringValues(io.micronaut.context.annotation.Retain, "invalidatedBy") == ["datasources"] as String[] }
+        ([factory] + pools + applicationContext.getBeanDefinitions(DatasourceConfiguration)).every { BeanDefinition<?> definition ->
+            definition.requiredComponents.every { Class<?> type ->
+                !BeanLocator.isAssignableFrom(type)
+                        && !PropertyResolver.isAssignableFrom(type)
+                        && !ApplicationEventPublisher.isAssignableFrom(type)
+            }
+        }
+
+        cleanup:
+        applicationContext.close()
     }
 }

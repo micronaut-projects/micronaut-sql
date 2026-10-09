@@ -15,28 +15,32 @@
  */
 package io.micronaut.configuration.jdbc.hikari;
 
-import io.micrometer.core.instrument.MeterRegistry;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.annotation.Retain;
 import io.micronaut.jdbc.BaseDatasourceFactory;
+import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
-import io.micronaut.jdbc.OracleSessionProgramHelper;
-import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.annotation.PreDestroy;
+import jakarta.inject.Inject;
 import javax.sql.DataSource;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static io.micronaut.configuration.metrics.micrometer.MeterRegistryFactory.MICRONAUT_METRICS_BINDERS;
-
 /**
  * Creates a Hikari data source for each configuration bean.
+ * <p>
+ * The factory holds neither the application context nor anything bound to it, so that development mode can retain
+ * the factory with the pools it created across a restart, which {@link Retain} declares: a change of the
+ * configuration under {@code datasources} releases them. The factory closes its pools when it is destroyed. The
+ * Oracle session program and the metrics, which need the context, are applied by bean created event listeners:
+ * {@code OracleSessionProgramConfigurer} and {@code HikariMetricsConfigurer}.
  *
  * @author James Kleeh
  * @author Christian Oestreich
@@ -50,15 +54,28 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
 
     /**
      * Default constructor.
-     * @param applicationContext The application context
+     *
+     * @since 7.3.0
      */
+    @Inject
+    public DatasourceFactory() {
+    }
+
+    /**
+     * Constructor taking the application context, which the factory no longer uses. It is kept in the deprecated
+     * {@link BaseDatasourceFactory#applicationContext} field for subclasses compiled against an earlier release.
+     *
+     * @param applicationContext The application context
+     * @deprecated The factory holds no application context, so that its pools can outlive it. Use {@link #DatasourceFactory()}.
+     */
+    @Deprecated(since = "7.3.0", forRemoval = true)
     public DatasourceFactory(ApplicationContext applicationContext) {
         super(applicationContext);
     }
 
     /**
      * Method to wire up all the HikariCP connections based on the {@link DatasourceConfiguration}.
-     * If a {@link MeterRegistry} bean exists then the registry will be added to the datasource.
+     * If a {@code MeterRegistry} bean exists then the registry will be added to the datasource, by {@code HikariMetricsConfigurer}.
      *
      * @param datasourceConfiguration A {@link DatasourceConfiguration}
      * @return A {@link HikariUrlDataSource}
@@ -66,23 +83,9 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     @Context
     @EachBean(DatasourceConfiguration.class)
     @Requires(condition = JdbcDataSourceEnabled.class)
+    @Retain(invalidatedBy = BasicJdbcConfiguration.PREFIX)
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
-        try {
-            OracleSessionProgramHelper.apply(
-                    datasourceConfiguration.getName(),
-                    datasourceConfiguration.getUrl(),
-                    applicationContext.getProperty("datasources." + datasourceConfiguration.getName() + ".dialect", String.class).orElse(null),
-                    applicationContext.getEnvironment(),
-                    datasourceConfiguration::addDataSourceProperty,
-                    () -> datasourceConfiguration.getDataSourceProperties() != null && datasourceConfiguration.getDataSourceProperties().containsKey("v$session.program")
-            );
-        } catch (Exception e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
-            }
-        }
         HikariUrlDataSource ds = new HikariUrlDataSource(datasourceConfiguration);
-        addMeterRegistry(ds);
         dataSources.put(datasourceConfiguration.getName(), ds);
         return ds;
     }
@@ -103,25 +106,6 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         } else if (LOG.isDebugEnabled()) {
             LOG.debug("Datasource with name [{}] not found while trying to propagate datasource credentials changes.", dataSourceName);
         }
-    }
-
-    private void addMeterRegistry(HikariUrlDataSource ds) {
-        try {
-            MeterRegistry meterRegistry = getMeterRegistry();
-            if (ds != null && meterRegistry != null &&
-                    this.applicationContext
-                            .getProperty(MICRONAUT_METRICS_BINDERS + ".jdbc.enabled",
-                                    boolean.class).orElse(true)) {
-                ds.setMetricRegistry(meterRegistry);
-            }
-        } catch (NoClassDefFoundError ignore) {
-            LOG.debug("Could not wire metrics to HikariCP as there is no class of type MeterRegistry on the classpath, io.micronaut.micrometer:micrometer-core library missing.");
-        }
-    }
-
-    private @Nullable MeterRegistry getMeterRegistry() {
-        return this.applicationContext.containsBean(MeterRegistry.class) ?
-                this.applicationContext.getBean(MeterRegistry.class) : null;
     }
 
     @Override

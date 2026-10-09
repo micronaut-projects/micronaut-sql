@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -46,6 +47,7 @@ public class DatasourceFactory extends BaseDatasourceFactory {
     /**
      * @param applicationContext The application context
      */
+    @SuppressWarnings("deprecation")
     public DatasourceFactory(ApplicationContext applicationContext) {
         super(applicationContext);
     }
@@ -57,8 +59,10 @@ public class DatasourceFactory extends BaseDatasourceFactory {
     @Context
     @EachBean(DatasourceConfiguration.class)
     @Requires(condition = JdbcDataSourceEnabled.class)
+    @SuppressWarnings("deprecation")
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         DriverManagerDataSource dataSource = new DriverManagerDataSource(datasourceConfiguration);
+        ApplicationContext applicationContext = Objects.requireNonNull(this.applicationContext);
         try {
             OracleSessionProgramHelper.apply(
                     datasourceConfiguration.getName(),

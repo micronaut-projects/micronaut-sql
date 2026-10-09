@@ -16,46 +16,27 @@
 package io.micronaut.jdbc;
 
 import io.micronaut.context.ApplicationContext;
-import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.Internal;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
-import io.micronaut.core.util.CollectionUtils;
-import io.micronaut.core.util.StringUtils;
 import io.micronaut.runtime.context.scope.refresh.RefreshEvent;
 import io.micronaut.runtime.context.scope.refresh.RefreshEventListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
- * An abstract base class for datasource factories that listens for refresh events and updates datasource credentials accordingly.
+ * An abstract base class for datasource factories whose pools follow changes of the datasource credentials.
  * <p>
- * This class provides a basic implementation for handling refresh events and updating datasource credentials.
- * Subclasses are expected to implement the {@link #dataSourceCredentialsChanged(String, DataSourceCredentials)} method to handle the updated credentials.
+ * The {@code DataSourceCredentialsRefresher} listens for refresh events, compares the configured credentials of
+ * each affected datasource with the last applied ones, and calls {@link #dataSourceCredentialsChanged(String, DataSourceCredentials)}
+ * of each datasource factory with the credentials that actually changed.
  * <p>
- * On a refresh event, the configured credentials of each affected datasource (the datasources named by the changed keys,
- * or all of them for {@code new RefreshEvent()}) are compared with the last applied ones, so only credentials that
- * actually changed are propagated.
+ * The factory holds neither the application context nor its environment, so a factory and the pools it created can
+ * outlive the context that created them, as development mode does when it retains the pools across a restart.
  * <p>
- * The credentials the pools are created with are recorded when the factory is created, so the factory must be created
- * at startup together with its datasources, for example through a {@code @Context} datasource factory method.
+ * The factory still implements {@link RefreshEventListener}, for binary compatibility of its subclasses, but observes
+ * no refresh event: the {@code DataSourceCredentialsRefresher} handles them.
  *
  * @since 6.2.0
  */
@@ -63,221 +44,62 @@ import java.util.regex.Pattern;
 public abstract class BaseDatasourceFactory implements RefreshEventListener {
 
     /**
-     * A regular expression pattern used to match datasource username and password properties. Datasource names
-     * can not contain dots, so nested properties such as {@code datasources.default.data-source-properties.password} do not match.
+     * The application context, only when a deprecated constructor received it, for subclasses compiled against an
+     * earlier release. The factories of this project do not use it.
+     *
+     * @deprecated The factory holds no application context, so that its pools can outlive it. The unpooled and DBCP
+     * factories, whose pools are not retained by the factory, still use it.
      */
-    private static final Pattern DATASOURCE_CREDENTIALS_MATCHER = Pattern.compile(BasicJdbcConfiguration.PREFIX + "\\.([^.]+)\\.(username|password)");
-
-    private static final Logger LOG = LoggerFactory.getLogger(BaseDatasourceFactory.class);
-
-    private static final CredentialsFingerprint NO_CREDENTIALS = new CredentialsFingerprint(null, null);
+    @Deprecated(since = "7.3.0")
+    protected final @Nullable ApplicationContext applicationContext;
 
     /**
-     * The source of {@code new RefreshEvent()}, which Micronaut compares by identity to detect a full refresh.
+     * Constructor of a factory holding no application context.
+     *
+     * @since 7.3.0
      */
-    private static final Map<String, Object> ALL_KEYS = new RefreshEvent().getSource();
-
-    protected final ApplicationContext applicationContext;
+    protected BaseDatasourceFactory() {
+        this.applicationContext = null;
+    }
 
     /**
-     * The last known configured credentials per datasource, used to detect changes on a full refresh.
-     * Passwords are kept only as salted digests.
+     * Constructor of a factory holding the application context, for subclasses compiled against an earlier release.
+     * A factory holding the context cannot be retained by development mode across a restart.
+     *
+     * @param applicationContext The application context
+     * @deprecated The factory holds no application context, so that its pools can outlive it. Use
+     * {@link #BaseDatasourceFactory()}.
      */
-    private final Map<String, CredentialsFingerprint> knownCredentials = new ConcurrentHashMap<>(2);
-
-    private final byte[] passwordDigestSalt = new byte[16];
-
-    /**
-     * Refresh events are handled one at a time, so the same change is not applied twice by concurrent events.
-     */
-    private final Object refreshLock = new Object();
-
+    @Deprecated(since = "7.3.0")
     protected BaseDatasourceFactory(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
-        new SecureRandom().nextBytes(passwordDigestSalt);
-        for (String dataSourceName : getConfiguredDataSourceNames()) {
-            knownCredentials.put(dataSourceName, fingerprint(readConfiguredCredentials(dataSourceName)));
-        }
     }
 
+    /**
+     * @return no prefix, the {@code DataSourceCredentialsRefresher} observes the datasource configuration
+     */
     @Override
     public @NonNull Set<String> getObservedConfigurationPrefixes() {
-        return Set.of(BasicJdbcConfiguration.PREFIX);
+        return Set.of();
     }
 
+    /**
+     * @param event The refresh event
+     * @return false, the {@code DataSourceCredentialsRefresher} handles the refresh events
+     */
+    @Override
+    public boolean supports(RefreshEvent event) {
+        return false;
+    }
+
+    /**
+     * Does nothing, the {@code DataSourceCredentialsRefresher} handles the refresh events.
+     *
+     * @param event The refresh event
+     */
     @Override
     public void onApplicationEvent(RefreshEvent event) {
-        Map<String, Object> changes = event.getSource();
-        if (CollectionUtils.isEmpty(changes)) {
-            return;
-        }
-        synchronized (refreshLock) {
-            if (isFullRefresh(changes)) {
-                onFullRefresh();
-            } else {
-                onRefresh(changes);
-            }
-        }
-    }
-
-    /**
-     * Handles a refresh event with the changed keys.
-     *
-     * @param changes The changed keys
-     */
-    private void onRefresh(Map<String, Object> changes) {
-        // the changed keys select the datasources to check, the values in the event are not used
-        Set<String> dataSourceNames = LinkedHashSet.newLinkedHashSet(2);
-        for (String property : changes.keySet()) {
-            Matcher matcher = DATASOURCE_CREDENTIALS_MATCHER.matcher(property);
-            if (matcher.matches()) {
-                dataSourceNames.add(matcher.group(1));
-            }
-        }
-        Collection<String> configuredDataSourceNames = getConfiguredDataSourceNames();
-        for (String dataSourceName : dataSourceNames) {
-            if (configuredDataSourceNames.contains(dataSourceName)) {
-                refreshCredentials(dataSourceName);
-            } else if (LOG.isDebugEnabled()) {
-                LOG.debug("Datasource [{}] is not configured or is disabled, its credentials are not refreshed.", dataSourceName);
-            }
-        }
-    }
-
-    /**
-     * Handles a refresh event without specific keys, such as {@code new RefreshEvent()}, by checking every configured datasource.
-     */
-    private void onFullRefresh() {
-        for (String dataSourceName : getConfiguredDataSourceNames()) {
-            refreshCredentials(dataSourceName);
-        }
-    }
-
-    /**
-     * Compares the configured credentials of the datasource with the last applied ones and applies the ones that changed.
-     *
-     * @param dataSourceName The datasource name
-     */
-    private void refreshCredentials(String dataSourceName) {
-        CredentialsFingerprint previous = knownCredentials.getOrDefault(dataSourceName, NO_CREDENTIALS);
-        DataSourceCredentials current = readConfiguredCredentials(dataSourceName);
-        CredentialsFingerprint currentFingerprint = fingerprint(current);
-        boolean userNameChanged = !Objects.equals(previous.userName(), currentFingerprint.userName());
-        boolean passwordChanged = !Objects.equals(previous.passwordDigest(), currentFingerprint.passwordDigest());
-        if (!userNameChanged && !passwordChanged) {
-            return;
-        }
-        // never combine a new username with an old password or the other way round, the last applied
-        // credentials are kept so the whole change is applied once the configuration is fixed
-        if (userNameChanged && StringUtils.isEmpty(current.userName())) {
-            warnIgnoredChange(dataSourceName, "username is changed to empty or could not be read");
-            return;
-        }
-        if (passwordChanged && current.password() == null) {
-            warnIgnoredChange(dataSourceName, "password is removed or could not be read");
-            return;
-        }
-        DataSourceCredentials changedCredentials = new DataSourceCredentials(
-            userNameChanged ? current.userName() : null,
-            passwordChanged ? current.password() : null
-        );
-        if (notifyCredentialsChanged(dataSourceName, changedCredentials)) {
-            knownCredentials.put(dataSourceName, currentFingerprint);
-        }
-    }
-
-    /**
-     * @return whether the credentials were updated, {@code false} if the update failed
-     */
-    private boolean notifyCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Datasource [{}] credentials changed [{}]. Trying to refresh connection pool.", dataSourceName,
-                dataSourceCredentials.getChangeType());
-        }
-        try {
-            dataSourceCredentialsChanged(dataSourceName, dataSourceCredentials);
-            return true;
-        } catch (Exception e) {
-            // do not fail the refresh event publisher or prevent other datasources from being updated,
-            // the pool may now use credentials the database rejects until a later refresh event retries the change
-            if (LOG.isErrorEnabled()) {
-                LOG.error("Failed to update credentials for datasource [{}]. The change is retried by a later refresh event.", dataSourceName, e);
-            }
-            return false;
-        }
-    }
-
-    private static void warnIgnoredChange(String dataSourceName, String reason) {
-        if (LOG.isWarnEnabled()) {
-            LOG.warn("Datasource [{}] {}. Ignoring the credentials change of this datasource.", dataSourceName, reason);
-        }
-    }
-
-    /**
-     * @return the names of the configured datasources, without the disabled ones, which have no pool
-     */
-    private Collection<String> getConfiguredDataSourceNames() {
-        Environment environment = applicationContext.getEnvironment();
-        List<String> dataSourceNames = new ArrayList<>(2);
-        for (String dataSourceName : environment.getPropertyEntries(BasicJdbcConfiguration.PREFIX)) {
-            if (isEnabled(environment, dataSourceName)) {
-                dataSourceNames.add(dataSourceName);
-            }
-        }
-        return dataSourceNames;
-    }
-
-    /**
-     * Same check as {@link JdbcDataSourceEnabled}.
-     */
-    private static boolean isEnabled(Environment environment, String dataSourceName) {
-        String property = BasicJdbcConfiguration.PREFIX + "." + dataSourceName + ".enabled";
-        try {
-            return environment.getProperty(property, Boolean.class, true);
-        } catch (Exception e) {
-            // the datasource configuration itself reports an invalid value
-            return true;
-        }
-    }
-
-    private DataSourceCredentials readConfiguredCredentials(String dataSourceName) {
-        String prefix = BasicJdbcConfiguration.PREFIX + "." + dataSourceName + ".";
-        return new DataSourceCredentials(readProperty(prefix + "username"), readProperty(prefix + "password"));
-    }
-
-    private @Nullable String readProperty(String property) {
-        try {
-            return applicationContext.getProperty(property, String.class).orElse(null);
-        } catch (Exception e) {
-            // for example an unresolvable placeholder, which the datasource configuration itself will report
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Unable to read property [{}]: {}", property, e.getMessage());
-            }
-            return null;
-        }
-    }
-
-    private CredentialsFingerprint fingerprint(DataSourceCredentials credentials) {
-        return new CredentialsFingerprint(credentials.userName(), digest(credentials.password()));
-    }
-
-    private @Nullable String digest(@Nullable String password) {
-        if (password == null) {
-            return null;
-        }
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-            messageDigest.update(passwordDigestSalt);
-            return Base64.getEncoder().encodeToString(messageDigest.digest(password.getBytes(StandardCharsets.UTF_8)));
-        } catch (NoSuchAlgorithmException e) {
-            // SHA-256 is required to be supported by every Java platform
-            throw new IllegalStateException("SHA-256 is not available", e);
-        }
-    }
-
-    private static boolean isFullRefresh(Map<String, Object> changes) {
-        // same check as the refresh scope does
-        return changes == ALL_KEYS;
+        // handled by the DataSourceCredentialsRefresher, which holds the context
     }
 
     /**
@@ -351,14 +173,5 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
             USERNAME_AND_PASSWORD,
             NONE
         }
-    }
-
-    /**
-     * The last known credentials of a datasource.
-     *
-     * @param userName The username
-     * @param passwordDigest The salted digest of the password
-     */
-    private record CredentialsFingerprint(@Nullable String userName, @Nullable String passwordDigest) {
     }
 }

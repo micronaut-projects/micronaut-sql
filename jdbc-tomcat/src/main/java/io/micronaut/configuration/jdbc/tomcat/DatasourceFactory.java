@@ -21,11 +21,13 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.annotation.Retain;
 import io.micronaut.jdbc.BaseDatasourceFactory;
+import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
-import io.micronaut.jdbc.OracleSessionProgramHelper;
 import jakarta.annotation.PreDestroy;
+import jakarta.inject.Inject;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,10 +35,15 @@ import org.slf4j.LoggerFactory;
 import javax.sql.DataSource;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * Creates a tomcat data source for each configuration bean.
+ * <p>
+ * The factory holds neither the application context nor anything bound to it, so that development mode can retain
+ * the factory with the pools it created across a restart, which {@link Retain} declares: a change of the
+ * configuration under {@code datasources} releases them. The factory closes its pools when it is destroyed. The
+ * Oracle session program, which needs the environment, is applied by a bean created event listener,
+ * {@code OracleSessionProgramConfigurer}.
  *
  * @author James Kleeh
  * @author Christian Oestreich
@@ -54,8 +61,23 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
      * Default constructor.
      *
      * @param dataSourceResolver The data source resolver
-     * @param applicationContext The application context
+     * @since 7.3.0
      */
+    @Inject
+    public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver) {
+        super();
+        this.dataSourceResolver = dataSourceResolver == null ? DataSourceResolver.DEFAULT : dataSourceResolver;
+    }
+
+    /**
+     * Constructor taking the application context, which the factory no longer uses. It is kept in the deprecated
+     * {@link BaseDatasourceFactory#applicationContext} field for subclasses compiled against an earlier release.
+     *
+     * @param dataSourceResolver The data source resolver
+     * @param applicationContext The application context
+     * @deprecated The factory holds no application context, so that its pools can outlive it. Use {@link #DatasourceFactory(DataSourceResolver)}.
+     */
+    @Deprecated(since = "7.3.0", forRemoval = true)
     public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
                              ApplicationContext applicationContext) {
         super(applicationContext);
@@ -69,29 +91,9 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     @Context
     @EachBean(DatasourceConfiguration.class)
     @Requires(condition = JdbcDataSourceEnabled.class)
+    @Retain(invalidatedBy = BasicJdbcConfiguration.PREFIX)
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource(datasourceConfiguration);
-        try {
-            OracleSessionProgramHelper.apply(
-                    datasourceConfiguration.getName(),
-                    datasourceConfiguration.getUrl(),
-                    applicationContext.getProperty("datasources." + datasourceConfiguration.getName() + ".dialect", String.class).orElse(null),
-                    applicationContext.getEnvironment(),
-                    (k, v) -> {
-                        Properties p = ds.getDbProperties();
-                        if (p == null) {
-                            p = new Properties();
-                            ds.setDbProperties(p);
-                        }
-                        p.setProperty(k, v);
-                    },
-                    () -> ds.getDbProperties() != null && ds.getDbProperties().containsKey("v$session.program")
-            );
-        } catch (Exception e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Skipping Oracle session program auto-config due to: {}", e.getMessage());
-            }
-        }
         dataSources.put(datasourceConfiguration.getName(), ds);
         return ds;
     }

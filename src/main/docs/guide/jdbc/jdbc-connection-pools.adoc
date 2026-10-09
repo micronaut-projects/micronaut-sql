@@ -88,6 +88,12 @@ For a list of other properties able to be configured, simply refer to the implem
 
 |=======
 
+=== Development Mode Reloading
+
+In Micronaut development mode, a restart of the application keeps the Hikari, Tomcat, Apache DBCP2 and Oracle UCP connection pools: the next application context is served the same `DataSource`, still open, so its connections, and an in-memory database, survive the restart. A change of the configuration under `datasources` releases the pools: they are closed, and the next application context creates them again from the changed configuration. For Oracle UCP, a change under `ucp-manager` releases them too. Outside development mode nothing changes.
+
+A retained Hikari pool reports its metrics to the `MeterRegistry` of the current application context: as a context stops, the meters of the pool are removed from its registry, and the next context registers them in its own, so the pool keeps no registry of a stopped context.
+
 === Oracle Session Program Auto-Configuration
 
 Micronaut SQL can automatically set the Oracle `v$session.program` connection property so your application's sessions are easily identifiable in Oracle tools (such as `v$session`).
