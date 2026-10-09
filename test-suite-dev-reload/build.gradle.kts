@@ -11,6 +11,8 @@ testing {
         val test by getting(JvmTestSuite::class) {
             dependencies {
                 implementation(projects.micronautJdbcHikari)
+                // the pool reports to the meter registry of the current generation
+                implementation(mnMicrometer.micronaut.micrometer.core)
             }
         }
         register<JvmTestSuite>("ucpTest") {

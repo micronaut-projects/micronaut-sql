@@ -92,7 +92,7 @@ class HikariMetricsConfigurerSpec extends Specification {
 
         when: "the listener of this context runs again, then the listener of a next context, with a registry of its own"
         def again = applicationContext.getBean(HikariMetricsConfigurer).onCreated(event)
-        def next = new HikariMetricsConfigurer(new SimpleMeterRegistry(), null, true).onCreated(event)
+        def next = new HikariMetricsConfigurer(new SimpleMeterRegistry(), null, true, applicationContext.environment).onCreated(event)
 
         then: "Hikari, which accepts a registry once, is not given another, and the pool is registered once"
         noExceptionThrown()
@@ -120,12 +120,78 @@ class HikariMetricsConfigurerSpec extends Specification {
         }
 
         when:
-        new HikariMetricsConfigurer(new SimpleMeterRegistry(), null, true).onCreated(event)
+        new HikariMetricsConfigurer(new SimpleMeterRegistry(), null, true, applicationContext.environment).onCreated(event)
 
         then:
         noExceptionThrown()
         pool.metricRegistry == null
         pool.metricsTrackerFactory.is(trackerFactory)
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    void "in development mode a pool that the listener of a next context runs on reports to the next registry and drops the previous one"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run([
+                'datasources.default'  : [:],
+                'micronaut.dev.enabled': true,
+        ])
+        MeterRegistry first = applicationContext.getBean(MeterRegistry)
+        DataSource dataSource = applicationContext.getBean(DataSource)
+        HikariUrlDataSource pool = hikari(applicationContext, 'default')
+        BeanCreatedEvent<DataSource> event = Stub(BeanCreatedEvent) {
+            getBean() >> dataSource
+        }
+        MeterRegistry second = new SimpleMeterRegistry()
+        def next = new HikariMetricsConfigurer(second, null, true, applicationContext.environment)
+
+        expect: "the pool reports to the first registry, through a tracker that keeps no registry in the pool configuration"
+        pool.metricRegistry == null
+        first.find("hikaricp.connections").gauges().size() == 1
+
+        when: "the first context stops using the pool, and a next context is served it"
+        applicationContext.getBean(HikariMetricsConfigurer).unbind()
+        next.onCreated(event)
+        dataSource.connection.close()
+
+        then: "the pool reports to the next registry only, and no longer holds the first"
+        first.find("hikaricp.connections").gauges().isEmpty()
+        second.find("hikaricp.connections").gauges().size() == 1
+        second.find("hikaricp.connections.usage").timer().count() == 1
+        ((RebindableMetricsTrackerFactory) pool.metricsTrackerFactory).registry().is(second)
+
+        when: "the next context stops"
+        next.unbind()
+
+        then:
+        second.find("hikaricp.connections").gauges().isEmpty()
+        ((RebindableMetricsTrackerFactory) pool.metricsTrackerFactory).registry() == null
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    void "in development mode the registry of a next context that is served the pool first is kept when the previous context stops"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run([
+                'datasources.default'  : [:],
+                'micronaut.dev.enabled': true,
+        ])
+        DataSource dataSource = applicationContext.getBean(DataSource)
+        HikariUrlDataSource pool = hikari(applicationContext, 'default')
+        BeanCreatedEvent<DataSource> event = Stub(BeanCreatedEvent) {
+            getBean() >> dataSource
+        }
+        MeterRegistry second = new SimpleMeterRegistry()
+
+        when:
+        new HikariMetricsConfigurer(second, null, true, applicationContext.environment).onCreated(event)
+        applicationContext.getBean(HikariMetricsConfigurer).unbind()
+
+        then:
+        second.find("hikaricp.connections").gauges().size() == 1
+        ((RebindableMetricsTrackerFactory) pool.metricsTrackerFactory).registry().is(second)
 
         cleanup:
         applicationContext.close()

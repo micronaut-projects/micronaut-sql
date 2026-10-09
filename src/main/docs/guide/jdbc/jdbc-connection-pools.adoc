@@ -92,7 +92,7 @@ For a list of other properties able to be configured, simply refer to the implem
 
 In Micronaut development mode, a restart of the application keeps the Hikari, Tomcat, Apache DBCP2 and Oracle UCP connection pools: the next application context is served the same `DataSource`, still open, so its connections, and an in-memory database, survive the restart. A change of the configuration under `datasources` releases the pools: they are closed, and the next application context creates them again from the changed configuration. For Oracle UCP, a change under `ucp-manager` releases them too. Outside development mode nothing changes.
 
-NOTE: Known issue: Hikari pool metrics keep reporting to the first `MeterRegistry`. Hikari accepts a meter registry only once, when the pool is created, so a retained Hikari pool keeps reporting to the registry of the application context that created it, and the registry of each later context has no `hikaricp` metrics. Release the pool, by changing its configuration under `datasources` or by restarting development mode, to see its metrics again.
+A retained Hikari pool reports its metrics to the `MeterRegistry` of the current application context: as a context stops, the meters of the pool are removed from its registry, and the next context registers them in its own, so the pool keeps no registry of a stopped context.
 
 === Oracle Session Program Auto-Configuration
 

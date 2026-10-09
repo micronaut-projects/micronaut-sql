@@ -16,6 +16,8 @@
 package io.micronaut.sql.dev;
 
 import com.zaxxer.hikari.HikariDataSource;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.dev.tck.ReloadHarness;
 import io.micronaut.dev.tck.ReloadTck;
@@ -25,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import javax.sql.DataSource;
+import java.lang.ref.WeakReference;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -34,7 +37,9 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -84,6 +89,47 @@ class HikariRestartRetentionTest {
     }
 
     @Test
+    void theRetainedPoolReportsToTheMeterRegistryOfTheCurrentGenerationAndKeepsNoneOfAPreviousOne() throws SQLException {
+        String url = "jdbc:h2:mem:" + UUID.randomUUID();
+        try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
+            database(harness, url);
+            // the JVM binder (its GC notification listener) and the Logback binder (its turbo filter) keep a registry
+            // beyond its context, whatever the pool does: registry retention is a known issue of its own
+            harness.property("micronaut.metrics.binders.jvm.enabled", "false");
+            harness.property("micronaut.metrics.binders.logback.enabled", "false");
+            greeter(harness, "one");
+            harness.start();
+            HikariDataSource pool = pool(harness.context());
+            MeterRegistry first = harness.context().getBean(MeterRegistry.class);
+            execute(pool, "SELECT 1");
+            assertEquals(1, first.find("hikaricp.connections").gauges().size());
+            assertEquals(1, first.find("hikaricp.connections.usage").timer().count());
+
+            greeter(harness, "two");
+            harness.reload();
+            assertEquals(2, harness.generation());
+
+            assertSame(pool, pool(harness.context()));
+            MeterRegistry second = harness.context().getBean(MeterRegistry.class);
+            assertNotSame(first, second);
+            execute(pool, "SELECT 1");
+            assertEquals(1, second.find("hikaricp.connections").gauges().size(),
+                "the retained pool reports to the registry of the current generation");
+            Timer usage = second.find("hikaricp.connections.usage").timer();
+            assertNotNull(usage);
+            assertEquals(1, usage.count());
+            assertTrue(first.find("hikaricp.connections").gauges().isEmpty(),
+                "the meters of the retained pool are removed from the registry of the stopped generation");
+            assertNull(first.find("hikaricp.connections.usage").timer());
+
+            WeakReference<MeterRegistry> firstRegistry = new WeakReference<>(first);
+            first = null;
+            ReloadTck.assertRetiredGenerationsCollected(harness);
+            awaitCollected(firstRegistry);
+        }
+    }
+
+    @Test
     void aDatasourceConfigurationChangeReleasesThePool() {
         try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
             String url = "jdbc:h2:mem:" + UUID.randomUUID();
@@ -110,6 +156,19 @@ class HikariRestartRetentionTest {
             assertEquals(3, second.getMaximumPoolSize());
             ReloadTck.assertRetiredGenerationsCollected(harness);
         }
+    }
+
+    private static void awaitCollected(WeakReference<?> reference) {
+        for (int i = 0; i < 50 && reference.get() != null; i++) {
+            System.gc();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+        assertNull(reference.get(), "the retained pool keeps the meter registry of the stopped generation");
     }
 
     private static void database(ReloadHarness harness, String url) {
