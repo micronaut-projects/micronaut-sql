@@ -14,6 +14,11 @@ dependencies {
 
     compileOnly libs.managed.vertx.sql.client
     runtimeOnly libs.managed.ongres.scram.client
+    constraints {
+        implementation(libs.jackson2.core) {
+            because("Hibernate Reactive brings Vert.x 5.1.8, whose jackson-core 2.21.6 is affected by GHSA-7hhh-6rmp-j9qf and GHSA-p6pp-m3f8-5c89")
+        }
+    }
 
     testAnnotationProcessor mn.micronaut.inject.java
     testImplementation mn.micronaut.inject.java
