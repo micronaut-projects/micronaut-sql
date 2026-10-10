@@ -32,10 +32,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
 
 /**
  * Keeps Hibernate's {@code create} schema generation from dropping the tables of a data source that a development
@@ -68,7 +70,7 @@ final class DevelopmentSchemaSettingsSupplier implements SettingsSupplier {
      * The data sources that a session factory of this process was built on. A development runtime runs one
      * application per process, so a data source seen again is one a restart retained.
      */
-    private static final Set<DataSource> BUILT_ON = Collections.synchronizedSet(Collections.newSetFromMap(new WeakHashMap<>()));
+    private static final List<WeakReference<DataSource>> BUILT_ON = new ArrayList<>();
 
     private static final String[] JPA_ACTIONS = {
         SchemaToolingSettings.JAKARTA_HBM2DDL_DATABASE_ACTION,
@@ -92,7 +94,7 @@ final class DevelopmentSchemaSettingsSupplier implements SettingsSupplier {
         if (dataSourceResolver != null) {
             dataSource = dataSourceResolver.resolve(dataSource);
         }
-        if (BUILT_ON.add(dataSource)) {
+        if (remember(dataSource)) {
             // the first session factory on this data source: the schema is generated as configured
             return Collections.emptyMap();
         }
@@ -109,6 +111,31 @@ final class DevelopmentSchemaSettingsSupplier implements SettingsSupplier {
             property, jpaConfiguration.getProperties().get(key), jpaConfiguration.getName(), property, property);
         // Hibernate reads its own action names under the keys of the specification too
         return Collections.singletonMap(key, Action.UPDATE.getExternalHbm2ddlName());
+    }
+
+    /**
+     * Remembers a data source, by identity: a pool need not define equality, and one that does may equal another.
+     *
+     * @param dataSource The data source
+     * @return True when no session factory of this process was built on it before
+     */
+    @SuppressWarnings("ReferenceEquality") // a data source is the same pool by identity
+    private static boolean remember(DataSource dataSource) {
+        synchronized (BUILT_ON) {
+            boolean seen = false;
+            for (Iterator<WeakReference<DataSource>> i = BUILT_ON.iterator(); i.hasNext(); ) {
+                DataSource remembered = i.next().get();
+                if (remembered == null) {
+                    i.remove();
+                } else if (remembered == dataSource) {
+                    seen = true;
+                }
+            }
+            if (!seen) {
+                BUILT_ON.add(new WeakReference<>(dataSource));
+            }
+            return !seen;
+        }
     }
 
     /**
