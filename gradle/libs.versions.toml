@@ -20,7 +20,7 @@ micronaut-validation = "5.1.0"
 
 # Frameworks
 
-managed-vertx = "5.2.0"
+managed-vertx = "5.2.1"
 managed-jooq = "3.21.8"
 managed-hibernate = "7.4.10.Final"
 managed-hibernate-reactive = "4.5.7.Final"
@@ -55,6 +55,8 @@ managed-h2 = "2.5.250"
 # Other
 
 sfm-reflect = "9.0.2"
+# Patched jackson-core for the Vert.x 5.1 line that Hibernate Reactive brings
+jackson2 = "2.21.7"
 # Needed for vertx pg client and micronaut-data hibernate reactive
 managed-ongres-scram = "3.4"
 
@@ -97,6 +99,8 @@ managed-vertx-rx-java3 = { module = "io.vertx:vertx-rx-java3", version.ref = "ma
 
 boms-jooq = { module = "org.jooq:jooq-bom", version.ref = "managed-jooq" }
 managed-jooq = { module = "org.jooq:jooq", version.ref = "managed-jooq" }
+
+jackson2-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson2" }
 
 # Hibernate
 
