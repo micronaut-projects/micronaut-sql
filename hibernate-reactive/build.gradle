@@ -27,5 +27,11 @@ dependencies {
     testImplementation(mnTestResources.testcontainers.postgres)
     testImplementation libs.managed.vertx.pg.client
     testImplementation(mnData.micronaut.data.tx.hibernate)
+
+    constraints {
+        implementation(libs.jackson.core) {
+            because("Vert.x brings in a vulnerable jackson-core (GHSA-7hhh-6rmp-j9qf, GHSA-p6pp-m3f8-5c89)")
+        }
+    }
 }
 

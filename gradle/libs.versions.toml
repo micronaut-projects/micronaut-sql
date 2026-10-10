@@ -21,6 +21,8 @@ micronaut-validation = "5.2.1"
 # Frameworks
 
 managed-vertx = "5.2.0"
+# Overrides the jackson-core version brought in transitively by Vert.x (GHSA-7hhh-6rmp-j9qf, GHSA-p6pp-m3f8-5c89)
+jackson-core = "2.21.7"
 managed-jooq = "3.21.9"
 managed-hibernate = "7.4.11.Final"
 managed-hibernate-reactive = "4.5.8.Final"
@@ -94,6 +96,7 @@ managed-vertx-mssql-client = { module = "io.vertx:vertx-mssql-client", version.r
 managed-vertx-oracle-client = { module = "io.vertx:vertx-oracle-client", version.ref = "managed-vertx" }
 managed-vertx-rx-java2 = { module = "io.vertx:vertx-rx-java2", version.ref = "managed-vertx" }
 managed-vertx-rx-java3 = { module = "io.vertx:vertx-rx-java3", version.ref = "managed-vertx" }
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson-core" }
 
 boms-jooq = { module = "org.jooq:jooq-bom", version.ref = "managed-jooq" }
 managed-jooq = { module = "org.jooq:jooq", version.ref = "managed-jooq" }
