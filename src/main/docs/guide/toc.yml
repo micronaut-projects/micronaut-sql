@@ -21,6 +21,7 @@ hibernate:
   hibernate-reactive: Configuring Hibernate Reactive
   hibernate-proxies: Using compile-time Hibernate proxies
   hibernate-lazy-initialization: Understanding LazyInitializationException
+  hibernate-dev-mode: Development Mode Reloading
 jasync:
   title: Configuring JAsync SQL
   jasync-client: Configuring jasync-sql Client
