@@ -21,6 +21,8 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
+import io.micronaut.context.event.BeanDestroyedEvent;
+import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.runtime.context.scope.refresh.RefreshEvent;
 import io.micronaut.runtime.context.scope.refresh.RefreshEventListener;
 import org.slf4j.Logger;
@@ -108,6 +110,23 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
      * @param dataSourceCredentials the updated datasource credentials
      */
     protected abstract void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials);
+
+    /**
+     * Resolves the name of the data source whose bean was destroyed, if this factory produced the bean.
+     *
+     * @param event The bean destroyed event
+     * @return The name of the data source, or {@code null} if this factory did not produce a named bean
+     * @since 7.2.1
+     */
+    protected @Nullable String findDataSourceName(BeanDestroyedEvent<?> event) {
+        var definition = event.getBeanDefinition();
+        Class<?> declaringType = definition.getDeclaringType().orElse(null);
+        if (declaringType == null || !declaringType.isInstance(this)) {
+            return null;
+        }
+        var qualifier = definition.getDeclaredQualifier();
+        return qualifier == null ? null : Qualifiers.findName(qualifier);
+    }
 
     private void checkAndUpdateUsernameChange(String property, Matcher userNameMatcher, Map<String, DataSourceCredentials> dataSourceCredentialsMap) {
         String dataSourceName = userNameMatcher.group(1);

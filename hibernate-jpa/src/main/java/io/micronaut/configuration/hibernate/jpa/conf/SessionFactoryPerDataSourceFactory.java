@@ -74,9 +74,22 @@ final class SessionFactoryPerDataSourceFactory extends AbstractHibernateFactory 
         this.defaultJpaConfiguration = def != null ? def : new JpaConfiguration(applicationContext, integrator);
     }
 
+    /**
+     * Builds the service registry of the given data source.
+     *
+     * <p>The data source is injected, although the registry obtains it through the settings, so that it is recorded
+     * as a dependency of the registry and the beans built from it. The {@link SessionFactory} is then destroyed
+     * before the data source is closed, which a {@code create-drop} schema drop needs.</p>
+     *
+     * @param jpaConfiguration The JPA configuration of the data source, if any
+     * @param name The name of the data source
+     * @param dataSource The data source
+     * @return The service registry
+     */
     @EachBean(DataSource.class)
     ServiceRegistry buildHibernateStandardServiceRegistry(@Parameter @Nullable JpaConfiguration jpaConfiguration,
-                                                          @Parameter String name) {
+                                                          @Parameter String name,
+                                                          @Parameter DataSource dataSource) {
         if (jpaConfiguration == null) {
             jpaConfiguration = defaultJpaConfiguration.copy(name);
         } else if (!jpaConfiguration.isEnabled()) {
