@@ -22,8 +22,8 @@ micronaut-validation = "5.2.1"
 
 managed-vertx = "5.2.1"
 managed-jooq = "3.21.9"
-managed-hibernate = "7.4.12.Final"
-managed-hibernate-reactive = "4.5.9.Final"
+managed-hibernate = "7.4.13.Final"
+managed-hibernate-reactive = "4.5.10.Final"
 managed-jasync = "2.2.4"
 managed-mybatis = "3.5.19"
 managed-jdbi = "3.55.0"
@@ -60,6 +60,9 @@ managed-ongres-scram = "3.4"
 
 # Needed to compile against Hibernate APIs whose class metadata references Checker Framework annotations
 managed-checker-qual = "4.3.1"
+
+# Jackson 2 is pulled in transitively by Vert.x with known vulnerabilities in older releases
+jackson2 = "2.22.3"
 
 # Testing
 sonar-gradle-plugin = "7.5.0.8588"
@@ -162,6 +165,8 @@ managed-checker-qual = { module = "org.checkerframework:checker-qual", version.r
 micronaut-testresources-client = { module = 'io.micronaut.testresources:micronaut-test-resources-client', version.ref = "micronaut-test-resources" }
 
 testcontainers-oracle-free = { module = 'org.testcontainers:testcontainers-oracle-free' }
+
+jackson2-bom = { module = "com.fasterxml.jackson:jackson-bom", version.ref = "jackson2" }
 
 #PLUGINS
 
