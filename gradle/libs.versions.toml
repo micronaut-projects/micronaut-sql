@@ -23,7 +23,7 @@ micronaut-validation = "5.2.1"
 managed-vertx = "5.2.1"
 managed-jooq = "3.21.9"
 managed-hibernate = "7.4.12.Final"
-managed-hibernate-reactive = "4.5.8.Final"
+managed-hibernate-reactive = "4.5.9.Final"
 managed-jasync = "2.2.4"
 managed-mybatis = "3.5.19"
 managed-jdbi = "3.55.0"
@@ -59,7 +59,7 @@ sfm-reflect = "9.0.2"
 managed-ongres-scram = "3.4"
 
 # Needed to compile against Hibernate APIs whose class metadata references Checker Framework annotations
-managed-checker-qual = "4.3.0"
+managed-checker-qual = "4.3.1"
 
 # Testing
 sonar-gradle-plugin = "7.5.0.8588"
