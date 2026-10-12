@@ -41,11 +41,15 @@ class DatasourceFactorySpec extends Specification {
         then:
         manager.connectionPoolNames.contains(poolName)
 
-        when:
-        applicationContext.stop()
+        when: "the data source bean this factory produced is destroyed"
+        applicationContext.destroyBean(applicationContext.getBeanRegistration(DataSource, Qualifiers.byName('default')))
 
-        then:
+        then: "its pool is destroyed while the context is still running"
+        applicationContext.isRunning()
         !manager.connectionPoolNames.contains(poolName)
+
+        cleanup:
+        applicationContext.close()
     }
 
     void "close() destroys the pools that remain"() {

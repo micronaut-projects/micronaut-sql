@@ -51,11 +51,15 @@ class DatasourceFactorySpec extends Specification {
         then:
         !pool.isClosed()
 
-        when:
-        applicationContext.stop()
+        when: "the data source bean this factory produced is destroyed"
+        applicationContext.destroyBean(applicationContext.getBeanRegistration(DataSource, Qualifiers.byName('default')))
 
-        then:
+        then: "its pool is closed while the context is still running"
+        applicationContext.isRunning()
         pool.isClosed()
+
+        cleanup:
+        applicationContext.close()
     }
 
     def "close() closes the pools that remain open"() {
