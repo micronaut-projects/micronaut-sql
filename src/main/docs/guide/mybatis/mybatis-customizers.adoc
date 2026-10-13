@@ -5,7 +5,26 @@ For example, you can register mapper interfaces and tune MyBatis settings for a 
 
 snippet::example.micronaut.CustomConfigurationCustomizer[tags="imports,clazz", project-base="tests/mybatis"]
 
-This hook is also the right place to configure other MyBatis features that belong on the `Configuration`, such as type aliases, type handlers, interceptors, or additional mapper registrations.
+The `@Named("default")` qualifier applies the customizer to the `default` datasource. The `customize` method is the place for any MyBatis feature that belongs on the `Configuration`, such as type aliases, type handlers, interceptors, or additional mapper registrations. The `@MyBatisMapperScan` annotation registers the mapper interfaces of the `example.micronaut.mappers` package at compile time, see below. Python has no annotation processor, so the Python example uses MyBatis runtime scanning with `configuration.addMappers(...)` instead.
+
+==== Compile-time Mapper Registration
+
+MyBatis normally discovers mapper interfaces by scanning the classpath at runtime (`configuration.addMappers("com.example.mappers")`). Classpath scanning does not work in GraalVM native images. Instead, annotate any class with api:configuration.mybatis.MyBatisMapperScan[] and add the `micronaut-mybatis-processor` to your build:
+
+dependency:micronaut-mybatis-processor[groupId="io.micronaut.sql", scope="annotationProcessor"]
+
+NOTE: For Kotlin, add the `micronaut-mybatis-processor` dependency in https://docs.micronaut.io/latest/guide/#kaptOrKsp[kapt or ksp scope], and for Groovy add `micronaut-mybatis-processor` in compileOnly scope.
+
+The processor generates a api:configuration.mybatis.MyBatisMapperScanRegistration[] for every annotated class. It registers the mapper interfaces found in the given packages (including sub-packages) and any listed in the `mappers` member with the `Configuration` of the datasource named by the `datasource` member (`default` if not set). Registrations are applied after all customizers, so type aliases and type handlers set up by a customizer are available when the mapper interfaces are parsed. The processor also generates the GraalVM metadata for the mappers, see <<mybatis-graalvm, GraalVM native image>>. The annotation does not need to be placed on a bean; the customizer above is just a convenient place.
+
+Only mapper interfaces compiled together with the annotated class are discovered by package. For mapper interfaces from other modules, list them explicitly:
+
+[source,java]
+----
+@MyBatisMapperScan(value = "com.example.mappers", mappers = OtherModuleMapper.class, datasource = "orders")
+----
+
+If no mapper interface is found in a package at compile time, the processor emits a warning and the generated registration falls back to MyBatis runtime scanning for that package. That fallback works on the JVM but not in a native image.
 
 ==== TransactionFactory Customization
 
