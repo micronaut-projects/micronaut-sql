@@ -12,6 +12,9 @@ dependencies {
     api libs.managed.hibernate.reactive.core
     api mn.micronaut.runtime
 
+    // Vert.x pulls in Jackson 2 releases with known vulnerabilities
+    implementation(platform(libs.jackson2.bom))
+
     compileOnly libs.managed.vertx.sql.client
     runtimeOnly libs.managed.ongres.scram.client
 
