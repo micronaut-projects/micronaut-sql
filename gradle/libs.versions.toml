@@ -1,13 +1,13 @@
 [versions]
 
 # Micronaut
-micronaut = "5.2.15"
+micronaut = "5.2.16"
 micronaut-gradle-plugin = "5.0.2"
 micronaut-test-resources = "4.3.1"
 
 # Platform dependencies
 micronaut-cache = "6.1.1"
-micronaut-data = "5.2.2"
+micronaut-data = "5.2.3"
 micronaut-hibernate-validator = "5.1.0"
 micronaut-logging = "2.1.0"
 micronaut-micrometer = "6.1.0"
@@ -22,7 +22,7 @@ micronaut-validation = "5.2.1"
 
 managed-vertx = "5.2.1"
 managed-jooq = "3.21.9"
-managed-hibernate = "7.4.12.Final"
+managed-hibernate = "7.4.13.Final"
 managed-hibernate-reactive = "4.5.11.Final"
 managed-jasync = "2.2.4"
 managed-mybatis = "3.5.19"
@@ -34,7 +34,7 @@ managed-ojdbc = "23.26.3.0.0"
 managed-dms = "23.3.0.23.09"
 managed-postgres-driver = "42.7.14"
 managed-mariadb-driver = "3.5.10"
-managed-mssql-driver = "13.6.0.jre11"
+managed-mssql-driver = "13.6.1.jre11"
 managed-mysql-driver = "8.0.33"
 managed-mysql-connector-j = "26.7.0"
 managed-sqlite-jdbc = "3.53.4.0"
@@ -43,7 +43,7 @@ managed-sqlite-jdbc = "3.53.4.0"
 
 managed-hikari = "7.1.0"
 managed-commons-dbcp = "2.14.0"
-managed-tomcat-jdbc = "11.0.26"
+managed-tomcat-jdbc = "11.0.27"
 
 # JPA
 
@@ -60,6 +60,9 @@ managed-ongres-scram = "3.4"
 
 # Needed to compile against Hibernate APIs whose class metadata references Checker Framework annotations
 managed-checker-qual = "4.3.1"
+
+# Jackson 2 is pulled in transitively by Vert.x with known vulnerabilities in older releases
+jackson2 = "2.22.3"
 
 # Testing
 sonar-gradle-plugin = "7.5.0.8588"
@@ -162,6 +165,8 @@ managed-checker-qual = { module = "org.checkerframework:checker-qual", version.r
 micronaut-testresources-client = { module = 'io.micronaut.testresources:micronaut-test-resources-client', version.ref = "micronaut-test-resources" }
 
 testcontainers-oracle-free = { module = 'org.testcontainers:testcontainers-oracle-free' }
+
+jackson2-bom = { module = "com.fasterxml.jackson:jackson-bom", version.ref = "jackson2" }
 
 #PLUGINS
 
