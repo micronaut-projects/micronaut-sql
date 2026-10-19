@@ -187,13 +187,13 @@
         <h1>Micronaut SQL Libraries</h1>
         <p></p>
         <p>Projects to support SQL Database access in Micronaut</p>
-        <p><strong>Version:</strong> 7.3.0-SNAPSHOT </p>
+        <p><strong>Version:</strong> 7.2.1-SNAPSHOT </p>
     </div>
     
 <h1 id="introduction"><a class="anchor" href="#introduction"></a>1 Introduction</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/introduction.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/introduction.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -225,7 +225,7 @@
 <h1 id="releaseHistory"><a class="anchor" href="#releaseHistory"></a>2 Release History</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/releaseHistory.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/releaseHistory.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -241,7 +241,7 @@
 <h1 id="breaks"><a class="anchor" href="#breaks"></a>3 Breaking Changes</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/breaks.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/breaks.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -259,7 +259,7 @@
 <h1 id="jdbc"><a class="anchor" href="#jdbc"></a>4 Configuring JDBC</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jdbc.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jdbc.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -463,7 +463,7 @@ runtime = [
 <h2 id="jdbc-disable"><a class="anchor" href="#jdbc-disable"></a>4.1 Disable Micronaut JDBC Data Sources</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jdbc/jdbc-disable.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jdbc/jdbc-disable.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -491,7 +491,7 @@ Micronaut SQL 5.7.0 allowed disabling datasources via setting <code>datasources.
 <h2 id="jdbc-connection-pools"><a class="anchor" href="#jdbc-connection-pools"></a>4.2 Configuring JDBC Connection Pools</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jdbc/jdbc-connection-pools.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jdbc/jdbc-connection-pools.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -557,7 +557,7 @@ Micronaut SQL 5.7.0 allowed disabling datasources via setting <code>datasources.
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">["datasources.default"]</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">"datasources.default" = {}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -612,11 +612,7 @@ datasources.default.driverClassName=org.h2.Driver</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources.default]
-url = "jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
-username = "sa"
-password = ""
-driverClassName = "org.h2.Driver"</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">datasources = {default = {url = "jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE", username = "sa", password = "", driverClassName = "org.h2.Driver"}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -690,10 +686,7 @@ datasources.default.maxPoolSize=10</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources.default]
-connectionFactoryClassName = "oracle.jdbc.pool.OracleDataSource"
-minPoolSize = 1
-maxPoolSize = 10</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">datasources = {default = {url = null, connectionFactoryClassName = "oracle.jdbc.pool.OracleDataSource", username = null, password = null, minPoolSize = 1, maxPoolSize = 10}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -871,23 +864,8 @@ datasources:
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[micronaut.application]
-name = "my-app"
-
-[datasources.default]
-url = "jdbc:oracle:thin:@localhost:1521/orcl"
-username = "user"
-password = "pass"
-dialect = "ORACLE"
-
-[datasources.other]
-url = "jdbc:oracle:thin:@localhost:1521/orcl"
-username = "user"
-password = "pass"
-dialect = "ORACLE"
-
-[datasources.other.oracle.session]
-enabled = false</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">micronaut = {application = {name = "my-app"}}
+datasources = {default = {url = "jdbc:oracle:thin:@localhost:1521/orcl", username = "user", password = "pass", dialect = "ORACLE"}, other = {url = "jdbc:oracle:thin:@localhost:1521/orcl", username = "user", password = "pass", dialect = "ORACLE", oracle = {session = {enabled = false}}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -1025,17 +1003,8 @@ datasources:
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[micronaut.application]
-name = "my-app"
-
-[datasources.default]
-url = "jdbc:oracle:thin:@localhost:1521/orcl"
-username = "user"
-password = "pass"
-dialect = "ORACLE"
-
-[datasources.default.data-source-properties]
-"v$session.program" = "My Program"</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">micronaut = {application = {name = "my-app"}}
+datasources = {default = {url = "jdbc:oracle:thin:@localhost:1521/orcl", username = "user", password = "pass", dialect = "ORACLE", data-source-properties = {"v$session.program" = "My Program"}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -1109,7 +1078,7 @@ datasources {
 <h2 id="jdbc-multiple-datasources"><a class="anchor" href="#jdbc-multiple-datasources"></a>4.3 Configuring Multiple Data Sources</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jdbc/jdbc-multiple-datasources.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jdbc/jdbc-multiple-datasources.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1137,9 +1106,7 @@ datasources.warehouse=...</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources]
-default = "..."
-warehouse = "..."</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">datasources = {default = "...", warehouse = "..."}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -1335,7 +1302,7 @@ class InventoryService {
 <h2 id="jdbc-transactions"><a class="anchor" href="#jdbc-transactions"></a>4.4 Transaction Management</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jdbc/jdbc-transactions.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jdbc/jdbc-transactions.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1586,7 +1553,7 @@ class BookRepository {
 <h2 id="jdbc-healthchecks"><a class="anchor" href="#jdbc-healthchecks"></a>4.5 JDBC Health Checks</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jdbc/jdbc-healthchecks.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jdbc/jdbc-healthchecks.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1602,7 +1569,7 @@ class BookRepository {
 <h2 id="jdbc-runtime-password-update"><a class="anchor" href="#jdbc-runtime-password-update"></a>4.6 Data Source Runtime Password Change</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jdbc/jdbc-runtime-password-update.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jdbc/jdbc-runtime-password-update.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1626,13 +1593,10 @@ class BookRepository {
 <p>The application observes <code>datasources.&lt;name&gt;.password</code> and <code>datasources.&lt;name&gt;.username</code> configuration keys</p>
 </li>
 <li>
-<p>On a <code>RefreshEvent</code>, every datasource whose <code>username</code> or <code>password</code> key is in the event is checked: its configured username and password are compared with the last applied ones, and the ones that changed are applied together. The new values are always read from the application configuration, the values in the event are not used, so the event should not contain secrets.</p>
+<p>On a <code>RefreshEvent</code>, it checks if either password or username change have been sent in refresh event and builds a change set per datasource</p>
 </li>
 <li>
-<p>On a <code>RefreshEvent</code> without specific keys (<code>new RefreshEvent()</code>), every configured datasource is checked the same way. Call <code>Environment.refresh()</code> before publishing such an event so the new values are loaded.</p>
-</li>
-<li>
-<p>Implementations for the supported pools set the new username and/or password on the pool and evict existing connections so subsequent connections use the updated credentials (see the notes below for details per pool).</p>
+<p>Implementations for the supported pools set the new username and/or password on the pool and trigger a soft eviction of connections so subsequent connections use the updated credentials.</p>
 </li>
 </ul>
 </div>
@@ -1664,11 +1628,7 @@ datasources.default.password=${DB_PASSWORD}</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources.default]
-url = "jdbc:postgresql://localhost:5432/app"
-driver-class-name = "org.postgresql.Driver"
-username = "app_user"
-password = "${DB_PASSWORD}"</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">datasources = {default = {url = "jdbc:postgresql://localhost:5432/app", driver-class-name = "org.postgresql.Driver", username = "app_user", password = "${DB_PASSWORD}"}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -1755,9 +1715,8 @@ final class DbPasswordRefresher {
             // publishEvent with such RefreshEvent will trigger connection pool update and old connections eviction
             // The datasource event handler for this event will get actual password from the
             // application configuration that has been refreshed in refresh() call above
-            // and sending such event without prior calling refresh() will not work properly.
-            // Only the changed key matters, the event value is not used: do not put the secret into the event.
-            applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", "&lt;redacted&gt;")));
+            // and sending such event without prior calling refresh() will not work properly
+            applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", password)));
             this.currentPassword = password;
         }
     }
@@ -1800,9 +1759,8 @@ class DbPasswordRefresher:
             # publishEvent with such RefreshEvent will trigger connection pool update and old connections eviction
             # The datasource event handler for this event will get actual password from the
             # application configuration that has been refreshed in refresh() call above
-            # and sending such event without prior calling refresh() will not work properly.
-            # Only the changed key matters, the event value is not used: do not put the secret into the event.
-            self.application_context.publishEvent(RefreshEvent({"datasources.default.password": "&lt;redacted&gt;"}))
+            # and sending such event without prior calling refresh() will not work properly
+            self.application_context.publishEvent(RefreshEvent({"datasources.default.password": password}))
             self.current_password = password
 
     def get_secret_db_password(self) -&gt; str | None:
@@ -1834,9 +1792,8 @@ open class DbPasswordRefresher(
             // publishEvent with such RefreshEvent will trigger connection pool update and old connections eviction
             // The datasource event handler for this event will get actual password from the
             // application configuration that has been refreshed in refresh() call above
-            // and sending such event without prior calling refresh() will not work properly.
-            // Only the changed key matters, the event value is not used: do not put the secret into the event.
-            applicationContext.publishEvent(RefreshEvent(mapOf&lt;String, Any&gt;("datasources.default.password" to "&lt;redacted&gt;")))
+            // and sending such event without prior calling refresh() will not work properly
+            applicationContext.publishEvent(RefreshEvent(mapOf&lt;String, Any&gt;("datasources.default.password" to password)))
             currentPassword = password
         }
     }
@@ -1878,9 +1835,8 @@ class DbPasswordRefresher {
             // publishEvent with such RefreshEvent will trigger connection pool update and old connections eviction
             // The datasource event handler for this event will get actual password from the
             // application configuration that has been refreshed in refresh() call above
-            // and sending such event without prior calling refresh() will not work properly.
-            // Only the changed key matters, the event value is not used: do not put the secret into the event.
-            applicationContext.publishEvent(new RefreshEvent(["datasources.default.password": "&lt;redacted&gt;"]))
+            // and sending such event without prior calling refresh() will not work properly
+            applicationContext.publishEvent(new RefreshEvent(["datasources.default.password": password]))
             this.currentPassword = password
         }
     }
@@ -1892,7 +1848,7 @@ class DbPasswordRefresher {
 </div>
 </div>
 <div class="paragraph">
-<p>Alternatively, publish the keys reported by <code>Environment.refreshAndDiff()</code>. They include the <code>datasources.&lt;name&gt;.password</code> key when the placeholder it references changes. The reported values are the previous values, which may be secrets, so replace them before publishing the event:</p>
+<p>Alternative way to implement password rotation:</p>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
@@ -1901,7 +1857,6 @@ import io.micronaut.runtime.context.scope.refresh.RefreshEvent;
 import io.micronaut.scheduling.annotation.Scheduled;
 import jakarta.inject.Singleton;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Singleton
@@ -1915,18 +1870,15 @@ final class DbPasswordRefresher {
 
     @Scheduled(cron = "0 * * * * *")
     void refresh() {
-        // refreshAndDiff() reloads config values (Vault, Secret, etc.), updates the application configuration
-        // and returns the changed keys. When ${DB_PASSWORD} changes, the properties that reference it,
-        // such as datasources.default.password, are reported as changed too.
+        // refreshAndDiff() will register if there were changes in config values (Vault, Secret, etc.),
+        // update application configuration and populate the changes map.
         Map&lt;String, Object&gt; changes = applicationContext.getEnvironment().refreshAndDiff();
-        if (!changes.isEmpty()) {
-            // The values in the changes are the previous values, which may be secrets, and refresh event
-            // listeners only need the changed keys, so publish the keys with redacted values.
+        // ${DB_PASSWORD} placeholder in refreshAndDiff() call will be populated as `db-password` key in changes map
+        if (changes.containsKey("db-password")) {
+            String password = (String) changes.get("db-password");
             // The datasource event handler for this event will get actual password from the
             // application configuration that has been refreshed in refreshAndDiff() call above
-            Map&lt;String, Object&gt; changedKeys = new HashMap&lt;&gt;(changes.size());
-            changes.keySet().forEach(key -&gt; changedKeys.put(key, "&lt;redacted&gt;"));
-            applicationContext.publishEvent(new RefreshEvent(changedKeys));
+            applicationContext.publishEvent(new RefreshEvent(Map.of("datasources.default.password", password)));
         }
     }
 }</code></pre>
@@ -1946,17 +1898,15 @@ class DbPasswordRefresher:
 
     @Scheduled(cron="0 * * * * *")
     def refresh(self) -&gt; None:
-        # refreshAndDiff() reloads config values (Vault, Secret, etc.), updates the application configuration
-        # and returns the changed keys. When ${DB_PASSWORD} changes, the properties that reference it,
-        # such as datasources.default.password, are reported as changed too.
+        # refreshAndDiff() will register if there were changes in config values (Vault, Secret, etc.),
+        # update application configuration and populate the changes map.
         changes = self.application_context.getEnvironment().refreshAndDiff()
-        if not changes.isEmpty():
-            # The values in the changes are the previous values, which may be secrets, and refresh event
-            # listeners only need the changed keys, so publish the keys with redacted values.
+        # ${DB_PASSWORD} placeholder in refreshAndDiff() call will be populated as `db-password` key in changes map
+        if changes.containsKey("db-password"):
+            password = changes.get("db-password")
             # The datasource event handler for this event will get actual password from the
             # application configuration that has been refreshed in refreshAndDiff() call above
-            changed_keys = {key: "&lt;redacted&gt;" for key in changes.keySet()}
-            self.application_context.publishEvent(RefreshEvent(changed_keys))</code></pre>
+            self.application_context.publishEvent(RefreshEvent({"datasources.default.password": password}))</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -1971,17 +1921,15 @@ open class DbPasswordRefresher(private val applicationContext: ApplicationContex
 
     @Scheduled(cron = "0 * * * * *")
     open fun refresh() {
-        // refreshAndDiff() reloads config values (Vault, Secret, etc.), updates the application configuration
-        // and returns the changed keys. When ${DB_PASSWORD} changes, the properties that reference it,
-        // such as datasources.default.password, are reported as changed too.
+        // refreshAndDiff() will register if there were changes in config values (Vault, Secret, etc.),
+        // update application configuration and populate the changes map.
         val changes = applicationContext.environment.refreshAndDiff()
-        if (changes.isNotEmpty()) {
-            // The values in the changes are the previous values, which may be secrets, and refresh event
-            // listeners only need the changed keys, so publish the keys with redacted values.
+        // ${DB_PASSWORD} placeholder in refreshAndDiff() call will be populated as `db-password` key in changes map
+        if (changes.containsKey("db-password")) {
+            val password = changes["db-password"] as String
             // The datasource event handler for this event will get actual password from the
             // application configuration that has been refreshed in refreshAndDiff() call above
-            val changedKeys = changes.keys.associateWith&lt;String, Any&gt; { "&lt;redacted&gt;" }
-            applicationContext.publishEvent(RefreshEvent(changedKeys))
+            applicationContext.publishEvent(RefreshEvent(mapOf&lt;String, Any&gt;("datasources.default.password" to password)))
         }
     }
 }</code></pre>
@@ -2005,17 +1953,15 @@ class DbPasswordRefresher {
 
     @Scheduled(cron = "0 * * * * *")
     void refresh() {
-        // refreshAndDiff() reloads config values (Vault, Secret, etc.), updates the application configuration
-        // and returns the changed keys. When ${DB_PASSWORD} changes, the properties that reference it,
-        // such as datasources.default.password, are reported as changed too.
+        // refreshAndDiff() will register if there were changes in config values (Vault, Secret, etc.),
+        // update application configuration and populate the changes map.
         Map&lt;String, Object&gt; changes = applicationContext.environment.refreshAndDiff()
-        if (changes) {
-            // The values in the changes are the previous values, which may be secrets, and refresh event
-            // listeners only need the changed keys, so publish the keys with redacted values.
+        // ${DB_PASSWORD} placeholder in refreshAndDiff() call will be populated as `db-password` key in changes map
+        if (changes.containsKey("db-password")) {
+            String password = (String) changes.get("db-password")
             // The datasource event handler for this event will get actual password from the
             // application configuration that has been refreshed in refreshAndDiff() call above
-            Map&lt;String, Object&gt; changedKeys = changes.collectEntries { key, value -&gt; [(key): "&lt;redacted&gt;"] }
-            applicationContext.publishEvent(new RefreshEvent(changedKeys))
+            applicationContext.publishEvent(new RefreshEvent(["datasources.default.password": password]))
         }
     }
 }</code></pre>
@@ -2033,41 +1979,10 @@ class DbPasswordRefresher {
 <p>Username changes are supported as well; if both username and password change in the same refresh cycle, both are applied.</p>
 </li>
 <li>
-<p>How each pool applies the new credentials:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>HikariCP and Tomcat JDBC: existing connections are softly evicted, idle connections are closed immediately and connections in use are closed when they are returned to the pool.</p>
+<p>Existing connections are softly evicted where supported by the pool; new connections will be established with the updated credentials.</p>
 </li>
 <li>
-<p>Oracle UCP: the pool is reconfigured with <code>PoolDataSource.reconfigureDataSource</code>.</p>
-</li>
-<li>
-<p>Unpooled: the next connection uses the new credentials.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Only the <code>datasources.&lt;name&gt;.username</code> and <code>datasources.&lt;name&gt;.password</code> properties are observed. Credentials set through other properties, such as <code>data-source-properties</code> or <code>connection-properties</code>, are not updated at runtime.</p>
-</li>
-<li>
-<p>Credentials of disabled datasources (<code>datasources.&lt;name&gt;.enabled: false</code>) are not refreshed. Datasources are created at startup, so enabling or disabling a datasource requires an application restart.</p>
-</li>
-<li>
-<p>The new credentials are applied as they are, without being verified first. Update the credentials in the database, or make sure it accepts both the old and the new ones, before publishing the event. Otherwise evicted connections can not be re-established.</p>
-</li>
-<li>
-<p>If a username is changed to empty, or a username or password can not be read from the configuration, the credentials refresh ignores the whole change of that datasource and logs a warning, so it never applies a new username with an old password or the other way round. Note that Tomcat JDBC and Oracle UCP use the datasource configuration that Micronaut re-binds on a refresh event as the pool configuration, so for these pools a changed value can still reach the pool configuration directly.</p>
-</li>
-<li>
-<p>A failure to update the pool of one datasource is logged as an error and does not prevent other datasources from being updated.</p>
-</li>
-<li>
-<p>A skipped or failed change is not lost: it is applied by the next refresh event that contains a <code>username</code> or <code>password</code> key of that datasource, or by <code>new RefreshEvent()</code>. <code>new RefreshEvent()</code> does not change anything when no credentials change is pending, so it can be published periodically to retry.</p>
-</li>
-<li>
-<p>Supported pools: HikariCP, Tomcat JDBC, Oracle UCP and unpooled datasources.</p>
+<p>Supported pools: HikariCP, Tomcat JDBC, Oracle UCP.</p>
 </li>
 </ul>
 </div>
@@ -2076,7 +1991,7 @@ class DbPasswordRefresher {
 <h2 id="oracle-jdbc-driver-extensions"><a class="anchor" href="#oracle-jdbc-driver-extensions"></a>4.7 Oracle JDBC Driver Extensions</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jdbc/oracle-jdbc-driver-extensions.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jdbc/oracle-jdbc-driver-extensions.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2108,7 +2023,7 @@ datasources.default.data-source-properties.oracle.jdbc.provider.password.vaultId
 <h2 id="jdbc-sqlite"><a class="anchor" href="#jdbc-sqlite"></a>4.8 SQLite Support</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jdbc/jdbc-sqlite.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jdbc/jdbc-sqlite.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2169,8 +2084,7 @@ runtime = [
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources.default]
-url = "jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mode=WAL&amp;synchronous"</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">datasources = {default = {url = "jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mode=WAL&amp;synchronous"}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -2235,7 +2149,7 @@ url = "jdbc:sqlite:mydb.db?foreign_keys=on&amp;busy_timeout=5000&amp;journal_mod
 <h1 id="hibernate"><a class="anchor" href="#hibernate"></a>5 Configuring Hibernate</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/hibernate.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/hibernate.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2348,7 +2262,7 @@ runtime = [
 <h2 id="hibernate-disable"><a class="anchor" href="#hibernate-disable"></a>5.1 Disable Micronaut Hibernate JPA</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/hibernate/hibernate-disable.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/hibernate/hibernate-disable.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2361,7 +2275,7 @@ runtime = [
 <h2 id="hibernate-inject-session"><a class="anchor" href="#hibernate-inject-session"></a>5.2 Injecting an EntityManager or Hibernate Session</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/hibernate/hibernate-inject-session.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/hibernate/hibernate-inject-session.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2522,7 +2436,7 @@ class BookRepository {
 <h2 id="hibernate-customizing"><a class="anchor" href="#hibernate-customizing"></a>5.3 Customizing Hibernate/JPA Configuration</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/hibernate/hibernate-customizing.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/hibernate/hibernate-customizing.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2563,17 +2477,8 @@ jpa:
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources.default]
-name = "mydb"
-
-[jpa.default.entity-scan]
-packages = ["foo.bar", "foo.baz"]
-
-[jpa.default.properties.hibernate]
-show_sql = true
-
-[jpa.default.properties.hibernate.hbm2ddl]
-auto = "update"</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">datasources = {default = {name = "mydb"}}
+jpa = {default = {entity-scan = {packages = ["foo.bar", "foo.baz"]}, properties = {hibernate = {hbm2ddl = {auto = "update"}, show_sql = true}}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -2667,7 +2572,7 @@ jpa {
 <h2 id="hibernate-entity-scan"><a class="anchor" href="#hibernate-entity-scan"></a>5.4 Entity Scan Configuration</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/hibernate/hibernate-entity-scan.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/hibernate/hibernate-entity-scan.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2701,8 +2606,7 @@ jpa {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa.default.entity-scan]
-packages = ["foo.bar"]</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">jpa = {default = {entity-scan = {packages = ["foo.bar"]}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -2811,9 +2715,7 @@ jpa.default.entity-scan.packages[0]=foo.bar</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa.default.entity-scan]
-classpath = true
-packages = ["foo.bar"]</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">jpa = {default = {entity-scan = {classpath = true, packages = ["foo.bar"]}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -2875,7 +2777,7 @@ packages = ["foo.bar"]</code></pre>
 <h2 id="hibernate-graalvm"><a class="anchor" href="#hibernate-graalvm"></a>5.5 GraalVM native image</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/hibernate/hibernate-graalvm.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/hibernate/hibernate-graalvm.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2977,8 +2879,7 @@ class Application {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa.default]
-compile-time-hibernate-proxies = true</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">jpa = {default = {compile-time-hibernate-proxies = true}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -3384,7 +3285,7 @@ class Order {
 <h2 id="hibernate-reactive"><a class="anchor" href="#hibernate-reactive"></a>5.6 Configuring Hibernate Reactive</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/hibernate/hibernate-reactive.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/hibernate/hibernate-reactive.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -3599,13 +3500,7 @@ jpa.default.properties.hibernate.connection.password=myPassword</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa.default]
-reactive = true
-
-[jpa.default.properties.hibernate.connection]
-url = "jdbc:postgresql:database"
-username = "myUsername"
-password = "myPassword"</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">jpa = {default = {reactive = true, properties = {hibernate = {connection = {url = "jdbc:postgresql:database", username = "myUsername", password = "myPassword"}}}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -3753,13 +3648,7 @@ vertx.pg.client.max-size=10</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[vertx.pg.client]
-port = 5432
-host = "the-host"
-database = "the-db"
-user = "user"
-password = "secret"
-max-size = 10</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">vertx = {pg = {client = {port = 5432, host = "the-host", database = "the-db", user = "user", password = "secret", max-size = 10}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -3823,7 +3712,7 @@ max-size = 10</code></pre>
 <h2 id="hibernate-proxies"><a class="anchor" href="#hibernate-proxies"></a>5.7 Using compile-time Hibernate proxies</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/hibernate/hibernate-proxies.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/hibernate/hibernate-proxies.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -3864,8 +3753,7 @@ max-size = 10</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jpa.default]
-compile-time-hibernate-proxies = true</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">jpa = {default = {compile-time-hibernate-proxies = true}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -4092,7 +3980,7 @@ For GraalVM native image, enable compile-time proxies with the configuration sho
 <h2 id="hibernate-lazy-initialization"><a class="anchor" href="#hibernate-lazy-initialization"></a>5.8 Understanding LazyInitializationException</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/hibernate/hibernate-lazy-initialization.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/hibernate/hibernate-lazy-initialization.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -4114,7 +4002,7 @@ For GraalVM native image, enable compile-time proxies with the configuration sho
 <h1 id="jasync"><a class="anchor" href="#jasync"></a>6 Configuring JAsync SQL</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jasync.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jasync.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -4127,7 +4015,7 @@ For GraalVM native image, enable compile-time proxies with the configuration sho
 <h2 id="jasync-client"><a class="anchor" href="#jasync-client"></a>6.1 Configuring jasync-sql Client</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jasync/jasync-client.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jasync/jasync-client.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -4211,13 +4099,7 @@ jasync.client.maxActiveConnections=5</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jasync.client]
-port = 5432
-host = "the-host"
-database = "the-db"
-username = "test"
-password = "test"
-maxActiveConnections = 5</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">jasync = {client = {port = 5432, host = "the-host", database = "the-db", username = "test", password = "test", maxActiveConnections = 5}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -4296,7 +4178,7 @@ maxActiveConnections = 5</code></pre>
 <h2 id="jasync-healthchecks"><a class="anchor" href="#jasync-healthchecks"></a>6.2 Database Health Checks</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jasync/jasync-healthchecks.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jasync/jasync-healthchecks.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -4315,7 +4197,7 @@ maxActiveConnections = 5</code></pre>
 <h1 id="jooq"><a class="anchor" href="#jooq"></a>7 Configuring jOOQ</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jooq.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jooq.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -4387,7 +4269,7 @@ For each registered <code>DataSource</code> or <code>ConnectionFactory</code>, M
 <h2 id="jooq-r2dbc"><a class="anchor" href="#jooq-r2dbc"></a>7.1 Configuring R2DBC connection factories</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jooq/jooq-r2dbc.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jooq/jooq-r2dbc.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -4424,15 +4306,8 @@ jooq:
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[r2dbc.datasources.default]
-db-type = "postgres"
-
-[r2dbc.datasources.default.options]
-driver = "pool"
-protocol = "postgresql"
-
-[jooq.r2dbc-datasources.default]
-sql-dialect = "postgres"</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">r2dbc = {datasources = {default = {db-type = "postgres", options = {driver = "pool", protocol = "postgresql"}}}}
+jooq = {r2dbc-datasources = {default = {sql-dialect = "postgres"}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -4546,7 +4421,7 @@ jooq {
 <h2 id="jooq-dialect"><a class="anchor" href="#jooq-dialect"></a>7.2 Configuring SQL dialect</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jooq/jooq-dialect.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jooq/jooq-dialect.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -4576,8 +4451,7 @@ jooq {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jooq.datasources.default]
-sql-dialect = "POSTGRES"</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">jooq = {datasources = {default = {sql-dialect = "POSTGRES"}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -4623,7 +4497,7 @@ sql-dialect = "POSTGRES"</code></pre>
 <h2 id="jooq-provider-beans"><a class="anchor" href="#jooq-provider-beans"></a>7.3 Configuring additional provider beans</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jooq/jooq-provider-beans.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jooq/jooq-provider-beans.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -4683,7 +4557,7 @@ Only beans with the same name qualifier as the data source name will be used.</p
 <h2 id="jooq-jsonb"><a class="anchor" href="#jooq-jsonb"></a>7.4 Using JsonMapper to convert JSON(B) types</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jooq/jooq-jsonb.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jooq/jooq-jsonb.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -4710,8 +4584,7 @@ Only beans with the same name qualifier as the data source name will be used.</p
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jooq.datasources.default]
-json-converter-enabled = true</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">jooq = {datasources = {default = {json-converter-enabled = true}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -4757,7 +4630,7 @@ json-converter-enabled = true</code></pre>
 <h2 id="jooq-graalvm"><a class="anchor" href="#jooq-graalvm"></a>7.5 GraalVM native image</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jooq/jooq-graalvm.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jooq/jooq-graalvm.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -4843,7 +4716,7 @@ Find more information in the <a href="https://www.jooq.org/doc/latest/manual/cod
 <h1 id="jdbi"><a class="anchor" href="#jdbi"></a>8 Configuring Jdbi</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jdbi.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jdbi.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -4967,7 +4840,7 @@ For each registered <code>DataSource</code>, Micronaut will configure the follow
 <h2 id="jdbi-provider-beans"><a class="anchor" href="#jdbi-provider-beans"></a>8.1 Configuring additional provider beans</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/jdbi/jdbi-provider-beans.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/jdbi/jdbi-provider-beans.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -4997,7 +4870,7 @@ Only beans with a <code>Named</code> qualifier name with the same name as the da
 <h1 id="mybatis"><a class="anchor" href="#mybatis"></a>9 Configuring MyBatis</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/mybatis.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/mybatis.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -5063,11 +4936,7 @@ datasources.default.password=</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources.default]
-url = "jdbc:h2:mem:devDb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
-driverClassName = "org.h2.Driver"
-username = "sa"
-password = ""</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">datasources = {default = {url = "jdbc:h2:mem:devDb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE", driverClassName = "org.h2.Driver", username = "sa", password = ""}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -5144,7 +5013,7 @@ password = ""</code></pre>
 <h2 id="mybatis-session-access"><a class="anchor" href="#mybatis-session-access"></a>9.1 Injecting MyBatis runtime beans</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/mybatis/mybatis-session-access.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/mybatis/mybatis-session-access.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -5166,7 +5035,7 @@ password = ""</code></pre>
 <h2 id="mybatis-customizers"><a class="anchor" href="#mybatis-customizers"></a>9.2 Configuring MyBatis customizers</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/mybatis/mybatis-customizers.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/mybatis/mybatis-customizers.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -5259,7 +5128,7 @@ class CustomConfigurationCustomizer implements MyBatisConfigurationCustomizer {
 <h1 id="vertxmysqlclient"><a class="anchor" href="#vertxmysqlclient"></a>10 Configuring Reactive MySQL Client</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/vertxmysqlclient.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/vertxmysqlclient.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -5347,13 +5216,7 @@ vertx.mysql.client.maxSize=5</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[vertx.mysql.client]
-port = 3306
-host = "the-host"
-database = "the-db"
-user = "test"
-password = "test"
-maxSize = 5</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">vertx = {mysql = {client = {port = 3306, host = "the-host", database = "the-db", user = "test", password = "test", maxSize = 5}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -5448,7 +5311,7 @@ result = "id: ${id}"</code></pre>
 <h2 id="vertxmysqlclient-healthchecks"><a class="anchor" href="#vertxmysqlclient-healthchecks"></a>10.1 MySQL Health Checks</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/vertxmysqlclient/vertxmysqlclient-healthchecks.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/vertxmysqlclient/vertxmysqlclient-healthchecks.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -5467,7 +5330,7 @@ result = "id: ${id}"</code></pre>
 <h1 id="vertxpgclient"><a class="anchor" href="#vertxpgclient"></a>11 Configuring Reactive PostgreSQL Client</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/vertxpgclient.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/vertxpgclient.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -5555,13 +5418,7 @@ vertx.pg.client.maxSize=5</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[vertx.pg.client]
-port = 3306
-host = "the-host"
-database = "the-db"
-user = "test"
-password = "test"
-maxSize = 5</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">vertx = {pg = {client = {port = 3306, host = "the-host", database = "the-db", user = "test", password = "test", maxSize = 5}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -5656,12 +5513,7 @@ vertx.pg.client.pem-trust-options.cert-paths[0]=certs/ca.crt</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[vertx.pg.client]
-ssl = true
-ssl-mode = "VERIFY_CA"
-
-[vertx.pg.client.pem-trust-options]
-cert-paths = ["certs/ca.crt"]</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">vertx = {pg = {client = {ssl = true, ssl-mode = "VERIFY_CA", pem-trust-options = {cert-paths = ["certs/ca.crt"]}}}}</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -5745,7 +5597,7 @@ result = "Size: ${size}"</code></pre>
 <h2 id="vertxpgclient-healthchecks"><a class="anchor" href="#vertxpgclient-healthchecks"></a>11.1 PostgreSQL Health Checks</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/vertxpgclient/vertxpgclient-healthchecks.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/vertxpgclient/vertxpgclient-healthchecks.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -5764,7 +5616,7 @@ result = "Size: ${size}"</code></pre>
 <h1 id="repository"><a class="anchor" href="#repository"></a>12 Repository</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/repository.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.2.x/src/main/docs/guide/repository.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
