@@ -28,8 +28,9 @@ open class DbPasswordRefresher(
             // publishEvent with such RefreshEvent will trigger connection pool update and old connections eviction
             // The datasource event handler for this event will get actual password from the
             // application configuration that has been refreshed in refresh() call above
-            // and sending such event without prior calling refresh() will not work properly
-            applicationContext.publishEvent(RefreshEvent(mapOf<String, Any>("datasources.default.password" to password)))
+            // and sending such event without prior calling refresh() will not work properly.
+            // Only the changed key matters, the event value is not used: do not put the secret into the event.
+            applicationContext.publishEvent(RefreshEvent(mapOf<String, Any>("datasources.default.password" to "<redacted>")))
             currentPassword = password
         }
     }

@@ -156,6 +156,14 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
      */
     @Override
     public void setUsername(@Nullable String username) {
+        if (!StringUtils.hasText(username) && StringUtils.hasText(this.username)) {
+            // the configuration is re-bound on refresh and the delegate is the running pool,
+            // keep the previous username the same way CalculatedSettings does
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Datasource [{}] username is changed to empty. Keeping the previous username.", name);
+            }
+            return;
+        }
         try {
             if (!Objects.equals(this.username, username)) {
                 this.username = username;

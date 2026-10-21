@@ -7,6 +7,8 @@ dependencies {
     api(libs.managed.vertx.pg.client)
 
     implementation(libs.managed.vertx.codegen)
+    // Vert.x pulls in Jackson 2 releases with known vulnerabilities
+    implementation(platform(libs.jackson2.bom))
     implementation(mnReactor.micronaut.reactor)
 
     compileOnly(libs.managed.vertx.rx.java3)

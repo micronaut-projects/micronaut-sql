@@ -139,7 +139,8 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
             if (dataSourceCredentials.userName() != null) {
                 dataSource.setUsername(dataSourceCredentials.userName());
             }
-            dataSource.testIdle();
+            // soft eviction: idle connections are closed now, connections in use are closed when returned to the pool
+            dataSource.purge();
         } else if (LOG.isDebugEnabled()) {
             LOG.debug("Datasource with name [{}] not found while trying to propagate datasource credentials changes.", dataSourceName);
         }

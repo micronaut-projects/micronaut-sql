@@ -16,13 +16,15 @@ class DbPasswordRefresher:
 
     @Scheduled(cron="0 * * * * *")
     def refresh(self) -> None:
-        # refreshAndDiff() will register if there were changes in config values (Vault, Secret, etc.),
-        # update application configuration and populate the changes map.
+        # refreshAndDiff() reloads config values (Vault, Secret, etc.), updates the application configuration
+        # and returns the changed keys. When ${DB_PASSWORD} changes, the properties that reference it,
+        # such as datasources.default.password, are reported as changed too.
         changes = self.application_context.getEnvironment().refreshAndDiff()
-        # ${DB_PASSWORD} placeholder in refreshAndDiff() call will be populated as `db-password` key in changes map
-        if changes.containsKey("db-password"):
-            password = changes.get("db-password")
+        if not changes.isEmpty():
+            # The values in the changes are the previous values, which may be secrets, and refresh event
+            # listeners only need the changed keys, so publish the keys with redacted values.
             # The datasource event handler for this event will get actual password from the
             # application configuration that has been refreshed in refreshAndDiff() call above
-            self.application_context.publishEvent(RefreshEvent({"datasources.default.password": password}))
+            changed_keys = {key: "<redacted>" for key in changes.keySet()}
+            self.application_context.publishEvent(RefreshEvent(changed_keys))
 # end::clazz[]
