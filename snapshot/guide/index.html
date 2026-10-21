@@ -2043,6 +2043,9 @@ class DbPasswordRefresher {
 <p>Oracle UCP: the pool is reconfigured with <code>PoolDataSource.reconfigureDataSource</code>.</p>
 </li>
 <li>
+<p>Apache DBCP2: it does not apply credential changes to a running pool, so the pool is restarted instead. Idle connections are closed immediately, connections in use are closed when they are returned to the pool. When the datasource is wrapped by a <code>BeanCreatedEventListener</code>, for example by Micronaut Data JDBC, Micronaut Core 5.2.10 or later is required.</p>
+</li>
+<li>
 <p>Unpooled: the next connection uses the new credentials.</p>
 </li>
 </ul>
@@ -2058,7 +2061,7 @@ class DbPasswordRefresher {
 <p>The new credentials are applied as they are, without being verified first. Update the credentials in the database, or make sure it accepts both the old and the new ones, before publishing the event. Otherwise evicted connections can not be re-established.</p>
 </li>
 <li>
-<p>If a username is changed to empty, or a username or password can not be read from the configuration, the credentials refresh ignores the whole change of that datasource and logs a warning, so it never applies a new username with an old password or the other way round. Note that Tomcat JDBC and Oracle UCP use the datasource configuration that Micronaut re-binds on a refresh event as the pool configuration, so for these pools a changed value can still reach the pool configuration directly.</p>
+<p>If a username is changed to empty, or a username or password can not be read from the configuration, the credentials refresh ignores the whole change of that datasource and logs a warning, so it never applies a new username with an old password or the other way round. Note that Tomcat JDBC, Oracle UCP and Apache DBCP2 use the datasource configuration that Micronaut re-binds on a refresh event as the pool configuration, so for these pools a changed value can still reach the pool configuration directly.</p>
 </li>
 <li>
 <p>A failure to update the pool of one datasource is logged as an error and does not prevent other datasources from being updated.</p>
@@ -2067,7 +2070,7 @@ class DbPasswordRefresher {
 <p>A skipped or failed change is not lost: it is applied by the next refresh event that contains a <code>username</code> or <code>password</code> key of that datasource, or by <code>new RefreshEvent()</code>. <code>new RefreshEvent()</code> does not change anything when no credentials change is pending, so it can be published periodically to retry.</p>
 </li>
 <li>
-<p>Supported pools: HikariCP, Tomcat JDBC, Oracle UCP and unpooled datasources.</p>
+<p>Supported pools: HikariCP, Tomcat JDBC, Oracle UCP, Apache DBCP2 and unpooled datasources.</p>
 </li>
 </ul>
 </div>
