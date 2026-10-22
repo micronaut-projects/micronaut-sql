@@ -1,0 +1,5 @@
+Hibernate maps vector columns, such as the Oracle Database `VECTOR` type and PostgreSQL `pgvector`, with the `hibernate-vector` module. Micronaut SQL manages its version along with Hibernate:
+
+dependency:hibernate-vector[groupId="org.hibernate.orm"]
+
+With the module on the classpath, a vector attribute is mapped with `@JdbcTypeCode(SqlTypes.VECTOR)` and its dimensions with `@Array(length = ...)`, and vector distance functions such as `cosine_distance` and `euclidean_distance` are available in HQL and criteria queries. See the https://hibernate.org/orm/documentation/[Hibernate ORM documentation] for the mapping, the supported databases and the functions.

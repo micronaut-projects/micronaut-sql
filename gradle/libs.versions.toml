@@ -32,6 +32,7 @@ managed-jdbi = "3.55.0"
 
 managed-ojdbc = "23.26.3.0.0"
 managed-dms = "23.3.0.23.09"
+managed-ojdbc-providers = "1.1.0"
 managed-postgres-driver = "42.7.14"
 managed-mariadb-driver = "3.5.10"
 managed-mssql-driver = "13.6.1.jre11"
@@ -107,6 +108,7 @@ managed-hibernate-core = { module = "org.hibernate.orm:hibernate-core", version.
 managed-hibernate-jpamodelgen = { module = "org.hibernate.orm:hibernate-jpamodelgen", version.ref = "managed-hibernate" }
 managed-hibernate-jcache = { module = "org.hibernate.orm:hibernate-jcache", version.ref = "managed-hibernate" }
 managed-hibernate-micrometer = { module = "org.hibernate.orm:hibernate-micrometer", version.ref = "managed-hibernate" }
+managed-hibernate-vector = { module = "org.hibernate.orm:hibernate-vector", version.ref = "managed-hibernate" }
 managed-hibernate-reactive-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version.ref = "managed-hibernate-reactive" }
 
 # Jasync
@@ -146,6 +148,16 @@ managed-sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "manage
 
 managed-ojdbc11 = { module = "com.oracle.database.jdbc:ojdbc11", version.ref = "managed-ojdbc" }
 managed-ojdbc17 = { module = "com.oracle.database.jdbc:ojdbc17", version.ref = "managed-ojdbc" }
+# the providers' wallet dependency, kept at the driver version
+managed-oraclepki = { module = "com.oracle.database.security:oraclepki", version.ref = "managed-ojdbc" }
+managed-ojdbc-provider-common = { module = "com.oracle.database.jdbc:ojdbc-provider-common", version.ref = "managed-ojdbc-providers" }
+managed-ojdbc-provider-oci = { module = "com.oracle.database.jdbc:ojdbc-provider-oci", version.ref = "managed-ojdbc-providers" }
+managed-ojdbc-provider-azure = { module = "com.oracle.database.jdbc:ojdbc-provider-azure", version.ref = "managed-ojdbc-providers" }
+managed-ojdbc-provider-aws = { module = "com.oracle.database.jdbc:ojdbc-provider-aws", version.ref = "managed-ojdbc-providers" }
+managed-ojdbc-provider-gcp = { module = "com.oracle.database.jdbc:ojdbc-provider-gcp", version.ref = "managed-ojdbc-providers" }
+managed-ojdbc-provider-hashicorp = { module = "com.oracle.database.jdbc:ojdbc-provider-hashicorp", version.ref = "managed-ojdbc-providers" }
+managed-ojdbc-provider-jackson-oson = { module = "com.oracle.database.jdbc:ojdbc-provider-jackson-oson", version.ref = "managed-ojdbc-providers" }
+managed-ojdbc-provider-observability = { module = "com.oracle.database.jdbc:ojdbc-provider-observability", version.ref = "managed-ojdbc-providers" }
 
 managed-h2 = { module = "com.h2database:h2", version.ref = "managed-h2" }
 
