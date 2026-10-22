@@ -75,35 +75,10 @@ datasources:
 
 Some UCP settings take objects rather than values, such as an access token supplier for OCI IAM or Azure AD authentication, a connection creation consumer, or a connection labeling callback. Configure these with a bean that implements api:configuration.jdbc.ucp.PoolDataSourceCustomizer[]. Every customizer is applied to every UCP data source, in `Ordered` order, after configuration and before the pool starts. Use the data source name to target one:
 
-[source,java]
-----
-import io.micronaut.configuration.jdbc.ucp.PoolDataSourceCustomizer;
-import jakarta.inject.Singleton;
-import oracle.jdbc.AccessToken;
-import oracle.ucp.jdbc.PoolDataSource;
+snippet::example.micronaut.ConnectionCreationCounter[tags="imports,clazz", project-base="tests/jdbc-ucp-docs"]
 
-import java.sql.SQLException;
-import java.util.function.Supplier;
-
-@Singleton
-class TokenCustomizer implements PoolDataSourceCustomizer {
-
-    private final Supplier<AccessToken> tokenSupplier;
-
-    TokenCustomizer(Supplier<AccessToken> tokenSupplier) {
-        this.tokenSupplier = tokenSupplier;
-    }
-
-    @Override
-    public void customize(String dataSourceName, PoolDataSource pool) throws SQLException {
-        if ("default".equals(dataSourceName)) {
-            pool.setTokenSupplier(tokenSupplier);
-            pool.registerConnectionCreationConsumer(info ->
-                System.out.println("Connection creation: " + info.getStatus()));
-        }
-    }
-}
-----
+<1> The customizer is called for each UCP data source, with its name, before the pool starts.
+<2> Registers a connection creation consumer, one of the settings configuration cannot supply. A token supplier for OCI IAM or Azure AD authentication is set the same way, with `pool.setTokenSupplier(...)`.
 
 NOTE: Prefer `PoolDataSourceCustomizer` over a `BeanCreatedEventListener<PoolDataSource>`. Other listeners, such as the one Micronaut Data registers, can wrap the `DataSource` bean before such a listener runs.
 
