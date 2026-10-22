@@ -21,6 +21,7 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.context.exceptions.NoSuchBeanException;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.DataSourceResolver;
@@ -36,6 +37,7 @@ import jakarta.annotation.PreDestroy;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -77,13 +79,22 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
      * Method to get a PoolDataSource from the {@link DatasourceConfiguration}.
      *
      * @param datasourceConfiguration A {@link DatasourceConfiguration}
+     * @param customizers The pool data source customizers, applied in order before the pool starts
      * @return A {@link PoolDataSource}
      */
     @Context
     @EachBean(DatasourceConfiguration.class)
     @Requires(condition = JdbcDataSourceEnabled.class)
-    public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
+    public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration,
+                                     List<PoolDataSourceCustomizer> customizers) {
         PoolDataSource ds = datasourceConfiguration.getPoolDataSource();
+        for (PoolDataSourceCustomizer customizer : customizers) {
+            try {
+                customizer.customize(datasourceConfiguration.getName(), ds);
+            } catch (SQLException e) {
+                throw new ConfigurationException("Failed to customize data source [" + datasourceConfiguration.getName() + "]: " + e.getMessage(), e);
+            }
+        }
         dataSources.put(datasourceConfiguration.getName(), ds);
 
         return ds;
