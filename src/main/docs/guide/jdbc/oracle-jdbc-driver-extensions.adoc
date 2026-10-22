@@ -4,7 +4,42 @@ ____
 Starting with Oracle AI Database Release 26ai, you can extend the capabilities of Oracle JDBC drivers through service providers.
 ____
 
-https://github.com/oracle/ojdbc-extensions/[Oracle JDBC Driver Extensions] service providers are configured via connection properties. Use the `datasources.*.data-source-properties` prefix.
+https://github.com/oracle/ojdbc-extensions/[Oracle JDBC Driver Extensions] are service providers that the Oracle JDBC driver loads from the classpath. There are two kinds:
+
+* *Configuration providers* supply a whole connection configuration, including the connect descriptor, user and password, from a file, an HTTPS server, OCI Object Storage, OCI Database Tools, Azure App Configuration and other sources. The data source URL names the provider.
+* *Resource providers* supply one value, such as a password, an access token, a connection string, a TLS configuration or a trace event listener. They are configured with connection properties.
+
+Micronaut SQL manages the versions of the provider artifacts, so you can add them without a version:
+
+dependency:ojdbc-provider-oci[groupId="com.oracle.database.jdbc"]
+
+The managed artifacts are `ojdbc-provider-common`, `ojdbc-provider-oci`, `ojdbc-provider-azure`, `ojdbc-provider-aws`, `ojdbc-provider-gcp`, `ojdbc-provider-hashicorp`, `ojdbc-provider-jackson-oson` and `ojdbc-provider-observability`.
+
+=== Configuration providers
+
+With a configuration provider, the data source needs only a URL of the form `jdbc:oracle:thin:@config-<provider>:<location>`. The built-in `file` provider reads a JSON file:
+
+[configuration]
+----
+datasources:
+  default:
+    url: jdbc:oracle:thin:@config-file:///etc/myapp/oracle-config.json
+----
+
+[source,json]
+----
+{
+  "connect_descriptor": "dbhost:1521/orders",
+  "user": "app",
+  "password": {"type": "base64", "value": "c2VjcmV0"}
+}
+----
+
+Other providers follow the same pattern, for example `jdbc:oracle:thin:@config-ociobject:https://objectstorage...` or `jdbc:oracle:thin:@config-azure:myappconfig?key=sales_app1&label=dev`. See the https://github.com/oracle/ojdbc-extensions/[Oracle JDBC Driver Extensions] documentation for the options of each provider.
+
+=== Resource providers
+
+Resource providers are configured via connection properties. Use the `datasources.*.data-source-properties` prefix.
 
 For example, to configure the `oracle.jdbc.provider.password` property as the name of a password provider and `oracle.jdbc.provider.password.vaultId` as a parameter recognized by the password provider, you will use a configuration such as:
 
@@ -12,3 +47,7 @@ For example, to configure the `oracle.jdbc.provider.password` property as the na
 ----
 include::test-suite-ojdbc-extensions/src/testFixtures/resources/application.properties[]
 ----
+
+The same applies to the other resource provider properties: `oracle.jdbc.provider.accessToken` for OCI IAM or Azure AD database tokens, `oracle.jdbc.provider.connectionString`, `oracle.jdbc.provider.tlsConfiguration`, and `oracle.jdbc.provider.traceEventListener` for the tracing providers of `ojdbc-provider-observability`.
+
+TIP: With Oracle UCP, settings that take Java objects rather than values, such as a token supplier, are configured with a api:configuration.jdbc.ucp.PoolDataSourceCustomizer[] instead.
