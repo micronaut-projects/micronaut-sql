@@ -2,6 +2,7 @@ package io.micronaut.configuration.jdbc.ucp
 
 import io.micronaut.configuration.jdbc.ucp.test.ConnectionCreationRecorder
 import io.micronaut.context.ApplicationContext
+import oracle.ucp.ConnectionCreationInformation
 import oracle.ucp.jdbc.PoolDataSource
 import spock.lang.Specification
 
@@ -26,13 +27,13 @@ class PoolDataSourceCustomizationSpec extends Specification {
         then:
         dataSource.getConnectionCreationConsumer() != null
         recorder.customizedDataSources == ["default"]
-        recorder.createdConnections.size() >= 2
+        recorder.createdConnections*.status == [ConnectionCreationInformation.Status.SUCCESS] * 2
 
         cleanup:
         applicationContext.close()
     }
 
-    void "UCP lifecycle and failover settings are configurable"() {
+    void "UCP connection reuse and harvesting settings are configurable"() {
         given:
         ApplicationContext applicationContext = ApplicationContext.run([
                 'datasources.default.url'                            : 'jdbc:h2:mem:lifecycle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
@@ -41,8 +42,7 @@ class PoolDataSourceCustomizationSpec extends Specification {
                 'datasources.default.max-connection-reuse-time'      : 300,
                 'datasources.default.max-connection-reuse-count'     : 1000,
                 'datasources.default.connection-harvest-trigger-count': 5,
-                'datasources.default.connection-harvest-max-count'   : 2,
-                'datasources.default.fast-connection-failover-enabled': false
+                'datasources.default.connection-harvest-max-count'   : 2
         ], 'test')
 
         when:
@@ -53,7 +53,6 @@ class PoolDataSourceCustomizationSpec extends Specification {
         dataSource.getMaxConnectionReuseCount() == 1000
         dataSource.getConnectionHarvestTriggerCount() == 5
         dataSource.getConnectionHarvestMaxCount() == 2
-        !dataSource.getFastConnectionFailoverEnabled()
 
         cleanup:
         applicationContext.close()

@@ -25,7 +25,7 @@ import java.sql.SQLException;
  * <p>Use it for settings that configuration cannot express because they take objects, such as
  * {@link PoolDataSource#setTokenSupplier(java.util.function.Supplier)},
  * {@link PoolDataSource#registerConnectionCreationConsumer(java.util.function.Consumer)} and
- * {@link PoolDataSource#setConnectionLabelingCallback(oracle.ucp.ConnectionLabelingCallback)}.
+ * {@link PoolDataSource#registerConnectionLabelingCallback(oracle.ucp.ConnectionLabelingCallback)}.
  * Every customizer bean is applied to every UCP data source, ordered by
  * {@link io.micronaut.core.order.Ordered}; use the data source name to target one.</p>
  *

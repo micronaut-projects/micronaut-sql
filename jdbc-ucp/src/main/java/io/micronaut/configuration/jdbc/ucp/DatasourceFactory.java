@@ -79,6 +79,18 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
      * Method to get a PoolDataSource from the {@link DatasourceConfiguration}.
      *
      * @param datasourceConfiguration A {@link DatasourceConfiguration}
+     * @return A {@link PoolDataSource}
+     * @deprecated Use {@link #dataSource(DatasourceConfiguration, List)} instead.
+     */
+    @Deprecated(since = "7.3.0", forRemoval = true)
+    public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
+        return dataSource(datasourceConfiguration, List.of());
+    }
+
+    /**
+     * Method to get a PoolDataSource from the {@link DatasourceConfiguration}.
+     *
+     * @param datasourceConfiguration A {@link DatasourceConfiguration}
      * @param customizers The pool data source customizers, applied in order before the pool starts
      * @return A {@link PoolDataSource}
      */
