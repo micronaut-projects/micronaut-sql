@@ -148,6 +148,8 @@ managed-sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "manage
 
 managed-ojdbc11 = { module = "com.oracle.database.jdbc:ojdbc11", version.ref = "managed-ojdbc" }
 managed-ojdbc17 = { module = "com.oracle.database.jdbc:ojdbc17", version.ref = "managed-ojdbc" }
+# the providers' wallet dependency, kept at the driver version
+managed-oraclepki = { module = "com.oracle.database.security:oraclepki", version.ref = "managed-ojdbc" }
 managed-ojdbc-provider-common = { module = "com.oracle.database.jdbc:ojdbc-provider-common", version.ref = "managed-ojdbc-providers" }
 managed-ojdbc-provider-oci = { module = "com.oracle.database.jdbc:ojdbc-provider-oci", version.ref = "managed-ojdbc-providers" }
 managed-ojdbc-provider-azure = { module = "com.oracle.database.jdbc:ojdbc-provider-azure", version.ref = "managed-ojdbc-providers" }

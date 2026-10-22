@@ -13,11 +13,11 @@ Micronaut SQL manages the versions of the provider artifacts, so you can add the
 
 dependency:ojdbc-provider-oci[groupId="com.oracle.database.jdbc"]
 
-The managed artifacts are `ojdbc-provider-common`, `ojdbc-provider-oci`, `ojdbc-provider-azure`, `ojdbc-provider-aws`, `ojdbc-provider-gcp`, `ojdbc-provider-hashicorp`, `ojdbc-provider-jackson-oson` and `ojdbc-provider-observability`.
+The managed artifacts are `ojdbc-provider-common`, `ojdbc-provider-oci`, `ojdbc-provider-azure`, `ojdbc-provider-aws`, `ojdbc-provider-gcp`, `ojdbc-provider-hashicorp`, `ojdbc-provider-jackson-oson` and `ojdbc-provider-observability`. The providers depend on the Oracle wallet library, `com.oracle.database.security:oraclepki`, which is managed at the version of the driver.
 
 === Configuration providers
 
-With a configuration provider, the data source needs only a URL of the form `jdbc:oracle:thin:@config-<provider>:<location>`. The built-in `file` provider reads a JSON file:
+With a configuration provider, the data source needs only a URL of the form `jdbc:oracle:thin:@config-<provider>://<location>`. The built-in `file` provider reads a JSON file:
 
 [configuration]
 ----
@@ -35,7 +35,7 @@ datasources:
 }
 ----
 
-Other providers follow the same pattern, for example `jdbc:oracle:thin:@config-ociobject:https://objectstorage...` or `jdbc:oracle:thin:@config-azure:myappconfig?key=sales_app1&label=dev`. See the https://github.com/oracle/ojdbc-extensions/[Oracle JDBC Driver Extensions] documentation for the options of each provider.
+Other providers follow the same pattern, for example `jdbc:oracle:thin:@config-ociobject://mytenancy.objectstorage.us-phoenix-1.oci.customer-oci.com/n/mytenancy/b/bucket1/o/payload.json` or `jdbc:oracle:thin:@config-azure://myappconfig?key=/sales_app1/&label=dev`. See the https://github.com/oracle/ojdbc-extensions/[Oracle JDBC Driver Extensions] documentation for the options of each provider.
 
 === Resource providers
 

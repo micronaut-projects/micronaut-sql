@@ -18,7 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The URL names an Oracle JDBC {@code config-file} provider, which supplies the connect descriptor,
- * user and password. The data source configuration has only the URL.
+ * user and password. The data source configuration has only the URL. This backs the configuration
+ * providers section of {@code oracle-jdbc-driver-extensions.adoc}.
  */
 @MicronautTest(startApplication = false)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -32,10 +33,13 @@ public class HikariConfigFileProviderTest implements TestPropertyProvider {
             assertTrue(resultSet.next());
             assertEquals("TEST", resultSet.getString(1));
         }
+        // the file's password wins over the password provider configured in application.properties
+        assertEquals(0, FooBarPasswordProvider.invocations());
     }
 
     @Override
     public @NonNull Map<String, String> getProperties() {
+        FooBarPasswordProvider.reset();
         return Oracle.getConfigFileProperties();
     }
 }
