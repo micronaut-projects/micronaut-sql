@@ -72,7 +72,7 @@ datasources:
     connectionHarvestMaxCount: 2
 ----
 
-Some UCP settings take objects rather than values, such as a connection creation consumer, a connection labeling callback or a custom access token supplier. OCI IAM and Azure AD tokens can be configured without code, with the token providers of the <<oracle-jdbc-driver-extensions, Oracle JDBC Driver Extensions>>; use a customizer for a custom supplier. Configure these with a bean that implements api:configuration.jdbc.ucp.PoolDataSourceCustomizer[]. Every customizer is applied to every UCP data source, in `Ordered` order, after configuration and before the pool starts. Use the data source name to target one:
+Some UCP settings take objects rather than values, such as a connection creation consumer, a connection labeling callback or a custom access token supplier. Configure these with a bean that implements api:configuration.jdbc.ucp.PoolDataSourceCustomizer[]. OCI IAM and Azure AD tokens need no code: use the token providers of the <<oracle-jdbc-driver-extensions, Oracle JDBC Driver Extensions>>. Every customizer is applied to every UCP data source, in `Ordered` order, after configuration and before the pool starts. Use the data source name to target one:
 
 snippet::example.micronaut.ConnectionCreationCounter[tags="imports,clazz", project-base="tests/jdbc-ucp-docs"]
 
