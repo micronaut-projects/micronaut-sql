@@ -2,11 +2,13 @@ package io.micronaut.configuration.jdbc.ucp
 
 import io.micronaut.configuration.jdbc.ucp.test.ConnectionCreationRecorder
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.exceptions.ConfigurationException
 import oracle.ucp.ConnectionCreationInformation
 import oracle.ucp.jdbc.PoolDataSource
 import spock.lang.Specification
 
 import javax.sql.DataSource
+import java.sql.SQLException
 
 class PoolDataSourceCustomizationSpec extends Specification {
 
@@ -28,6 +30,47 @@ class PoolDataSourceCustomizationSpec extends Specification {
         dataSource.getConnectionCreationConsumer() != null
         recorder.customizedDataSources == ["default"]
         recorder.createdConnections*.status == [ConnectionCreationInformation.Status.SUCCESS] * 2
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    void "a customizer failure names the data source"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run([
+                'datasources.default.url'     : 'jdbc:h2:mem:failure;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+                'datasources.default.username': 'sa',
+                'datasources.default.password': ''
+        ], 'test')
+        DatasourceFactory factory = applicationContext.getBean(DatasourceFactory)
+        DatasourceConfiguration configuration = applicationContext.getBean(DatasourceConfiguration)
+        PoolDataSourceCustomizer failing = { String name, PoolDataSource pool -> throw new SQLException("bad setting") }
+
+        when:
+        factory.dataSource(configuration, [failing])
+
+        then:
+        ConfigurationException e = thrown()
+        e.message == 'Failed to customize data source [default]: bad setting'
+        e.cause instanceof SQLException
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    @SuppressWarnings('GrDeprecatedAPIUsage')
+    void "the deprecated factory method applies no customizers"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run([
+                'datasources.default.url'     : 'jdbc:h2:mem:deprecated;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+                'datasources.default.username': 'sa',
+                'datasources.default.password': ''
+        ], 'test')
+        DatasourceFactory factory = applicationContext.getBean(DatasourceFactory)
+        DatasourceConfiguration configuration = applicationContext.getBean(DatasourceConfiguration)
+
+        expect:
+        factory.dataSource(configuration).is(configuration.getPoolDataSource())
 
         cleanup:
         applicationContext.close()
