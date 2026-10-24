@@ -100,4 +100,33 @@ class PoolDataSourceCustomizationSpec extends Specification {
         cleanup:
         applicationContext.close()
     }
+
+    void "Fast Connection Failover is configurable"() {
+        given:
+        ApplicationContext defaults = ApplicationContext.run([
+                'datasources.default.url'     : 'jdbc:h2:mem:fandefault;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+                'datasources.default.username': 'sa',
+                'datasources.default.password': ''
+        ], 'test')
+        boolean enabledByDefault = defaults.getBean(DataSource).unwrap(PoolDataSource).getFastConnectionFailoverEnabled()
+        defaults.close()
+
+        when:
+        ApplicationContext applicationContext = ApplicationContext.run([
+                'datasources.default.url'                             : 'jdbc:h2:mem:fan;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+                'datasources.default.username'                        : 'sa',
+                'datasources.default.password'                        : '',
+                'datasources.default.fast-connection-failover-enabled': true,
+                'datasources.default.onsconfiguration'                : 'nodes=racnode1:6200,racnode2:6200'
+        ], 'test')
+        PoolDataSource dataSource = applicationContext.getBean(DataSource).unwrap(PoolDataSource)
+
+        then: 'FAN is off by default, and the ONS key follows the UCP setter name'
+        !enabledByDefault
+        dataSource.getFastConnectionFailoverEnabled()
+        dataSource.getONSConfiguration() == 'nodes=racnode1:6200,racnode2:6200'
+
+        cleanup:
+        applicationContext?.close()
+    }
 }
