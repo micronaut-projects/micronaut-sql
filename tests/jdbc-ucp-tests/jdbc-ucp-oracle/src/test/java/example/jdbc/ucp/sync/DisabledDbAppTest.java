@@ -33,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Property(name = "datasources.default.db-type", value = "oracle")
 @Property(name = "datasources.default.connection-factory-class-name", value = "oracle.jdbc.pool.OracleDataSource")
 @Property(name = "test-resources.containers.oracle.startup-timeout", value = "600s")
+@Property(name = "test-resources.containers.oracle.image-name", value = "gvenzl/oracle-free:23.26.3-slim-faststart")
 class DisabledDbAppTest {
 
     @Test
