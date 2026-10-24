@@ -5,7 +5,7 @@ import org.testcontainers.oracle.OracleContainer;
 import org.testcontainers.utility.DockerImageName;
 
 public class Oracle {
-    public static final String IMAGE_NAME = "gvenzl/oracle-free:23.26.1-faststart";
+    public static final String IMAGE_NAME = "gvenzl/oracle-free:23.26.3-slim-faststart";
     private static volatile OracleContainer container;
     public static Map<String, String> getProperties() {
         OracleContainer current = container;
