@@ -14,4 +14,8 @@ dependencies {
     testImplementation(mnData.micronaut.data.tx.hibernate) {
         exclude(group: "org.hibernate.orm")
     }
+    // the Vert.x Oracle client example of the guide
+    testImplementation projects.micronautVertxOracleClient
+    testImplementation platform(mnTest.boms.testcontainers)
+    testImplementation libs.testcontainers.oracle.free
 }

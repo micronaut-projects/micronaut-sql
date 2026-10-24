@@ -43,6 +43,7 @@ include 'jooq'
 
 include 'vertx-mysql-client'
 include 'vertx-pg-client'
+include 'vertx-oracle-client'
 include 'jdbi'
 include 'mybatis'
 
