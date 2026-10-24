@@ -127,6 +127,8 @@ managed-commons-dbcp2 = { module = "org.apache.commons:commons-dbcp2", version.r
 managed-tomcat-jdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "managed-tomcat-jdbc" }
 managed-ucp11 = { module = "com.oracle.database.jdbc:ucp11", version.ref = "managed-ojdbc" }
 managed-ucp17 = { module = "com.oracle.database.jdbc:ucp17", version.ref = "managed-ojdbc" }
+managed-ons = { module = "com.oracle.database.ha:ons", version.ref = "managed-ojdbc" }
+managed-simplefan = { module = "com.oracle.database.ha:simplefan", version.ref = "managed-ojdbc" }
 
 # UCP
 
