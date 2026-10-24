@@ -93,7 +93,33 @@ datasources:
       oracle.jdbc.DRCPConnectionClass: orders
 ----
 
-Oracle Database 23ai and later also support implicit connection pooling, which releases the pooled server at statement or transaction boundaries without application calls. It is enabled in the connect descriptor with `(POOL_BOUNDARY=STATEMENT)` or `(POOL_BOUNDARY=TRANSACTION)`.
+Oracle Database 23ai and later also support link:https://docs.oracle.com/en/database/oracle/oracle-database/26/netrf/local-naming-parameters-in-tns-ora-file.html[implicit connection pooling], which releases the pooled server at statement or transaction boundaries without application calls. It works with DRCP or Proxy Resident Connection Pooling, so the connect descriptor needs `(SERVER=POOLED)` as well as `(POOL_BOUNDARY=STATEMENT)` or `(POOL_BOUNDARY=TRANSACTION)`:
+
+[configuration]
+----
+datasources:
+  default:
+    url: jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=dbhost)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orders)(SERVER=POOLED)(POOL_BOUNDARY=TRANSACTION)))
+    connectionFactoryClassName: oracle.jdbc.pool.OracleDataSource
+----
+
+`STATEMENT` releases the server whenever the session is stateless, and `TRANSACTION` when a transaction ends or the session is stateless. When the connect descriptor sets `POOL_BOUNDARY`, it takes precedence over the pooling APIs, such as the DRCP attach and detach calls.
+
+Oracle can also reset the session state at the end of each request with the link:https://docs.oracle.com/en/database/oracle/oracle-database/26/adfns/high-availability.html[`RESET_STATE`] service attribute. A database administrator sets it on the service, with `DBMS_SERVICE` or `srvctl`. With `LEVEL1`, Oracle cancels cursors, clears PL/SQL package state and truncates session temporary tables. With `LOGIN`, it also restores the login-time settings. The default is `NONE`. `RESET_STATE` needs explicit request boundaries. UCP marks them whenever a connection is borrowed and returned. With other pools, Micronaut Data marks them when `datasources.<name>.request-boundaries` is `true`. It does not apply to the implicit boundaries of `POOL_BOUNDARY`. With UCP, set `validateConnectionOnBorrow: true` when the service combines `RESET_STATE=LEVEL1` with Application Continuity, or use `LOGIN`. `LEVEL1` cannot be combined with UCP connection labeling.
+
+To connect to an link:https://docs.oracle.com/en/database/oracle/oracle-database/26/shard/jdbc-sharding-data-source.html[Oracle sharded database] without passing sharding keys, enable the JDBC sharding data source. It derives the sharding key from each SQL statement and routes the statement to its shard:
+
+[configuration]
+----
+datasources:
+  default:
+    url: jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=gsmhost)(PORT=1522))(CONNECT_DATA=(SERVICE_NAME=oltp_rw_srvc.orders.oradbcloud)))
+    connectionFactoryClassName: oracle.jdbc.pool.OracleDataSource
+    data-source-properties:
+      oracle.jdbc.useShardingDriverConnection: true
+----
+
+The sharding data source works with the JDBC Thin driver only. It runs PL/SQL on the shard catalog, and so does every statement while auto-commit is off, which includes the statements of Micronaut transactions. Setting `oracle.jdbc.allowSingleShardTransactionSupport` to `true` runs those transactions on a shard instead, so each transaction must stay within a single shard.
 
 link:https://docs.oracle.com/en/database/oracle/oracle-database/26/jjucp/fast-connection-failover.html[Fast Connection Failover] (FCF) lets UCP react to Fast Application Notification (FAN) events from Oracle RAC or Data Guard: it removes connections to a failed instance and rebalances connections when an instance comes back. FCF is off by default. It needs Oracle's ONS client libraries on the runtime classpath, whose versions are managed by Micronaut:
 
