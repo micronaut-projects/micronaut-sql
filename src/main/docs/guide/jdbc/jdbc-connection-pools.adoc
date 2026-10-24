@@ -139,6 +139,20 @@ Without `onsconfiguration`, UCP reads the ONS configuration from the database (a
 
 WARNING: Without the `ons` and `simplefan` libraries, a pool with FCF enabled still opens connections, but UCP background threads fail with `NoClassDefFoundError: oracle/ons/Subscriber` and no FAN events are received.
 
+To pool XA connections for a transaction manager that enlists them in global transactions, set the connection factory class to an `XADataSource`, such as `oracle.jdbc.xa.client.OracleXADataSource`:
+
+[configuration]
+----
+datasources:
+  default:
+    url: jdbc:oracle:thin:@localhost:1521/FREEPDB1
+    username: scott
+    password: tiger
+    connection-factory-class-name: oracle.jdbc.xa.client.OracleXADataSource
+----
+
+The data source is then a UCP `PoolXADataSource`, and a `javax.sql.XADataSource` bean of the same name returns XA connections from that pool. The `XADataSource` bean is not a `DataSource`, so the pool remains the only `DataSource` bean of its name, and connections borrowed from it as a `DataSource` take part in local transactions as before.
+
 For a list of other properties able to be configured, simply refer to the implementation that is being used. All setter methods are candidates for configuration.
 
 |=======

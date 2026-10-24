@@ -23,6 +23,7 @@ import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
+import io.micronaut.core.reflect.ClassUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
@@ -31,10 +32,12 @@ import jakarta.annotation.PostConstruct;
 import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
 import oracle.ucp.jdbc.PoolDataSourceImpl;
+import oracle.ucp.jdbc.PoolXADataSource;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.sql.XADataSource;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.Objects;
@@ -62,7 +65,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceConfiguration.class);
 
     @ConfigurationBuilder(allowZeroArgs = true, excludes = {"connectionFactoryProperties", "URL", "username", "password"})
-    PoolDataSourceImpl delegate = (PoolDataSourceImpl) PoolDataSourceFactory.getPoolDataSource();
+    PoolDataSourceImpl delegate;
     private CalculatedSettings calculatedSettings;
     private String name;
     private @Nullable String username;
@@ -80,16 +83,37 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         super();
         this.name = name;
         this.environment = environment;
+        this.delegate = createPoolDataSource(name, environment);
         this.delegate.setConnectionPoolName(name);
         this.calculatedSettings = new CalculatedSettings(this);
     }
 
     /**
-     * @return the pool data source
+     * @return the pool data source, a {@link PoolXADataSource} when the connection factory class is an {@link XADataSource}
      * @since 4.1
      */
     public PoolDataSource getPoolDataSource() {
         return delegate;
+    }
+
+    /**
+     * @return whether the pool is an XA pool, because the configured connection factory class is an {@link XADataSource}
+     * @since 7.3.0
+     */
+    public boolean isXa() {
+        return delegate instanceof PoolXADataSource;
+    }
+
+    private static PoolDataSourceImpl createPoolDataSource(String name, Environment environment) {
+        // the pool type must be chosen before the configuration is bound to it, so the factory class is read up front
+        String prefix = DATASOURCES_PREFIX + name + ".";
+        String factoryClassName = environment.getProperty(prefix + "connection-factory-class-name", String.class)
+            .or(() -> environment.getProperty(prefix + "driver-class-name", String.class))
+            .orElse(null);
+        boolean xa = factoryClassName != null && ClassUtils.forName(factoryClassName, environment.getClassLoader())
+            .map(XADataSource.class::isAssignableFrom)
+            .orElse(false);
+        return (PoolDataSourceImpl) (xa ? PoolDataSourceFactory.getPoolXADataSource() : PoolDataSourceFactory.getPoolDataSource());
     }
 
     @Override
