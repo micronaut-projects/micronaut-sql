@@ -1,0 +1,26 @@
+vertx:
+  oracle:
+    client:
+      service-name: FREEPDB1
+      user: test
+      password: test
+      max-size: 2
+endpoints:
+  health:
+    details-visible: ANONYMOUS
+test-resources:
+  containers:
+    oracle-vertx:
+      image-name: gvenzl/oracle-free:23.26.3-slim-faststart
+      startup-timeout: 600s
+      hostnames:
+        - vertx.oracle.client.host
+      exposed-ports:
+        - vertx.oracle.client.port: 1521
+      env:
+        - ORACLE_PASSWORD: test
+        - APP_USER: test
+        - APP_USER_PASSWORD: test
+      wait-strategy:
+        log:
+          regex: ".*DATABASE IS READY TO USE!.*"
