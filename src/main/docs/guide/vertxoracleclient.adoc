@@ -21,7 +21,9 @@ vertx:
       max-size: 5
 ----
 
-You can also set `uri`, for example `oracle:thin:@the-host:1521/FREEPDB1`, instead of the host, port and service name. When the URI has no credentials, the configured `user` and `password` are used.
+You can also set `uri` instead of the host, port and service name, for example `oracle:thin:@the-host:1521/FREEPDB1`, a JDBC URL such as `jdbc:oracle:thin:@the-host:1521/FREEPDB1`, or a TNS alias such as `oracle:thin:@mydb_high`. The URI replaces the configured host, port, service name, SID and TNS alias, and the other configured options, such as `user`, `password` and `tns-admin`, still apply unless the URI sets them.
+
+The Oracle client connects through the Oracle JDBC driver, so Vert.x network options such as connect timeouts and TLS stores don't apply: configure those through the connection properties or the Oracle Net configuration instead. When there is no `io.vertx.core.Vertx` bean, the module creates a Vert.x instance for the pool and closes it with the application context.
 
 The module then provides an `io.vertx.sqlclient.Pool` bean, which you can inject to run queries:
 

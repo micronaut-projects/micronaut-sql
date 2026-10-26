@@ -67,4 +67,26 @@ class OracleClientSpec extends Specification {
         cleanup:
         applicationContext?.close()
     }
+
+    void "test the configured options apply with a JDBC URL"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run(
+                'vertx.oracle.client.uri': "jdbc:oracle:thin:@${oracle.host}:${oracle.oraclePort}/${oracle.databaseName}",
+                'vertx.oracle.client.user': oracle.username,
+                'vertx.oracle.client.password': oracle.password,
+                'vertx.oracle.client.max-rows': '1'
+        )
+
+        when:
+        int rows = applicationContext.getBean(Pool)
+            .query("SELECT 1 FROM dual UNION ALL SELECT 2 FROM dual UNION ALL SELECT 3 FROM dual").execute()
+            .map { result -> result.size() }
+            .toCompletionStage().toCompletableFuture().get()
+
+        then:
+        rows == 1
+
+        cleanup:
+        applicationContext?.close()
+    }
 }
