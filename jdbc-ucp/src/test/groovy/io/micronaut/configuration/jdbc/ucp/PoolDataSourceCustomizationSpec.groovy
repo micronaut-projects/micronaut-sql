@@ -5,6 +5,7 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.exceptions.ConfigurationException
 import oracle.ucp.ConnectionCreationInformation
 import oracle.ucp.jdbc.PoolDataSource
+import oracle.ucp.jdbc.PoolDataSourceImpl
 import spock.lang.Specification
 
 import javax.sql.DataSource
@@ -136,5 +137,28 @@ class PoolDataSourceCustomizationSpec extends Specification {
 
         where:
         onsKey << ['ons-configuration', 'onsConfiguration', 'onsconfiguration', 'ONSConfiguration']
+    }
+
+    void "an ONS configuration the pool rejects fails with a ConfigurationException"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run('test')
+        DatasourceConfiguration configuration = new DatasourceConfiguration('default', applicationContext.environment)
+        configuration.delegate = new PoolDataSourceImpl() {
+            @Override
+            void setONSConfiguration(String onsConfiguration) throws SQLException {
+                throw new SQLException('invalid ONS configuration')
+            }
+        }
+
+        when:
+        configuration.setOnsConfiguration('nodes=')
+
+        then:
+        ConfigurationException e = thrown()
+        e.message == 'Unable to set datasource ONS configuration: invalid ONS configuration'
+        e.cause instanceof SQLException
+
+        cleanup:
+        applicationContext?.close()
     }
 }
