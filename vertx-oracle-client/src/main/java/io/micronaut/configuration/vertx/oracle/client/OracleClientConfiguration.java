@@ -17,14 +17,13 @@ package io.micronaut.configuration.vertx.oracle.client;
 
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
-import io.vertx.core.net.NetClientOptions;
 import io.vertx.oracleclient.OracleConnectOptions;
 import io.vertx.sqlclient.PoolOptions;
 import org.jspecify.annotations.Nullable;
 
 /**
- * The configuration of the Vert.x Oracle client: the {@link OracleConnectOptions}, {@link PoolOptions} and
- * {@link NetClientOptions}, or a connection URI.
+ * The configuration of the Vert.x Oracle client: the {@link OracleConnectOptions} and {@link PoolOptions}, and
+ * optionally a connection URI. The Oracle client connects through JDBC, so it has no Vert.x net client options.
  *
  * @since 7.3.0
  */
@@ -37,13 +36,12 @@ public class OracleClientConfiguration {
     @ConfigurationBuilder
     protected PoolOptions poolOptions = new PoolOptions();
 
-    @ConfigurationBuilder
-    protected NetClientOptions netClientOptions = new NetClientOptions();
-
     protected @Nullable String uri;
 
     /**
-     * @return The Oracle connection URI, for example {@code oracle:thin:@localhost:1521/FREEPDB1}.
+     * @return The Oracle connection URI, for example {@code oracle:thin:@localhost:1521/FREEPDB1} or
+     * {@code jdbc:oracle:thin:@mydb_high}. It replaces the configured endpoint, and the other configured options
+     * still apply.
      */
     public @Nullable String getUri() {
         return uri;
@@ -61,12 +59,5 @@ public class OracleClientConfiguration {
      */
     public PoolOptions getPoolOptions() {
         return poolOptions;
-    }
-
-    /**
-     * @return The net client options for configuring the client.
-     */
-    public NetClientOptions getNetClientOptions() {
-        return netClientOptions;
     }
 }
