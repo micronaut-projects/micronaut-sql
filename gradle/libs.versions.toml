@@ -1,31 +1,31 @@
 [versions]
 
 # Micronaut
-micronaut = "5.2.17"
+micronaut = "5.2.20"
 micronaut-gradle-plugin = "5.0.2"
 micronaut-test-resources = "4.3.1"
 
 # Platform dependencies
 micronaut-cache = "6.1.1"
-micronaut-data = "5.2.3"
+micronaut-data = "5.2.4"
 micronaut-hibernate-validator = "5.1.0"
 micronaut-logging = "2.1.0"
 micronaut-micrometer = "6.1.0"
 micronaut-r2dbc = "7.2.0"
 micronaut-reactor = "4.3.0"
-micronaut-serde = "3.2.4"
+micronaut-serde = "3.2.6"
 micronaut-spring = "6.1.0"
 micronaut-test = "5.2.0"
 micronaut-validation = "5.2.1"
 
 # Frameworks
 
-managed-vertx = "5.2.1"
+managed-vertx = "5.2.2"
 managed-jooq = "3.21.9"
 managed-hibernate = "7.4.13.Final"
 managed-hibernate-reactive = "4.5.11.Final"
 managed-jasync = "2.2.4"
-managed-mybatis = "3.5.19"
+managed-mybatis = "3.6.0"
 managed-jdbi = "3.55.0"
 
 # JDBC Drivers
@@ -33,10 +33,10 @@ managed-jdbi = "3.55.0"
 managed-ojdbc = "23.26.3.0.0"
 managed-dms = "23.3.0.23.09"
 managed-postgres-driver = "42.7.14"
-managed-mariadb-driver = "3.5.10"
+managed-mariadb-driver = "3.5.11"
 managed-mssql-driver = "13.6.1.jre11"
 managed-mysql-driver = "8.0.33"
-managed-mysql-connector-j = "26.7.0"
+managed-mysql-connector-j = "26.10.0"
 managed-sqlite-jdbc = "3.53.4.0"
 
 # JDBC Pools
@@ -62,7 +62,7 @@ managed-ongres-scram = "3.4"
 managed-checker-qual = "4.3.1"
 
 # Jackson 2 is pulled in transitively by Vert.x with known vulnerabilities in older releases
-jackson2 = "2.22.3"
+jackson2 = "2.22.4"
 
 # Testing
 sonar-gradle-plugin = "7.5.0.8588"
