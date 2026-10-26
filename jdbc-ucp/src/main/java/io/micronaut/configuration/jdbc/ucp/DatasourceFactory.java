@@ -134,15 +134,15 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     }
 
     /**
-     * Exposes the pool of a data source whose connection factory class is an {@link XADataSource}, such as
-     * {@code oracle.jdbc.xa.client.OracleXADataSource}, as an {@link XADataSource} for transaction managers that
-     * enlist XA connections. The bean delegates to the {@link PoolXADataSource} of the
-     * {@link DatasourceConfiguration#getPoolDataSource() configuration} and is not itself a {@link DataSource}, so the
-     * pool remains the only {@link DataSource} bean of its name.
+     * Exposes the pool of a data source with {@link DatasourceConfiguration#setXa(boolean) xa} enabled as an
+     * {@link XADataSource} for transaction managers that enlist XA connections. The bean delegates to the
+     * {@link PoolXADataSource} of the {@link DatasourceConfiguration#getPoolDataSource() configuration} and is not
+     * itself a {@link DataSource}, so the pool remains the only {@link DataSource} bean of its name. That bean still
+     * opens connections for local transactions, from XA connections of the same pool.
      *
      * @param datasourceConfiguration A {@link DatasourceConfiguration}
      * @param dataSource The data source bean of the configuration, required so that the pool is created, customized and started first
-     * @return The XA data source; the bean is disabled when the connection factory class is not an {@link XADataSource}
+     * @return The XA data source; the bean is disabled when xa is not enabled
      * @since 7.3.0
      */
     @EachBean(DatasourceConfiguration.class)
@@ -150,7 +150,7 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     public XADataSource xaDataSource(DatasourceConfiguration datasourceConfiguration,
                                      @Parameter DataSource dataSource) {
         if (!datasourceConfiguration.isXa()) {
-            throw new DisabledBeanException("The connection factory of data source [" + datasourceConfiguration.getName() + "] is not an XADataSource");
+            throw new DisabledBeanException("Data source [" + datasourceConfiguration.getName() + "] does not have xa enabled");
         }
         return new UcpXADataSource((PoolXADataSource) datasourceConfiguration.getPoolDataSource());
     }

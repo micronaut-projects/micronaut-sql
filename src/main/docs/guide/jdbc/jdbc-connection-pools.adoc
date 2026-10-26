@@ -139,7 +139,7 @@ Without `ons-configuration`, UCP reads the ONS configuration from the database (
 
 WARNING: Without the `ons` and `simplefan` libraries, a pool with FCF enabled still opens connections, but UCP background threads fail with `NoClassDefFoundError: oracle/ons/Subscriber` and no FAN events are received.
 
-To pool XA connections for a transaction manager that enlists them in global transactions, set the connection factory class to an `XADataSource`, such as `oracle.jdbc.xa.client.OracleXADataSource`:
+To pool XA connections for a transaction manager that enlists them in global transactions, enable `xa` and set the connection factory class to an `XADataSource`, such as `oracle.jdbc.xa.client.OracleXADataSource`:
 
 [configuration]
 ----
@@ -148,10 +148,11 @@ datasources:
     url: jdbc:oracle:thin:@localhost:1521/FREEPDB1
     username: scott
     password: tiger
+    xa: true
     connection-factory-class-name: oracle.jdbc.xa.client.OracleXADataSource
 ----
 
-The data source is then a UCP `PoolXADataSource`, and a `javax.sql.XADataSource` bean of the same name returns XA connections from that pool. The `XADataSource` bean is not a `DataSource`, so the pool remains the only `DataSource` bean of its name, and connections borrowed from it as a `DataSource` take part in local transactions as before.
+The data source is then a UCP `PoolXADataSource`, and a `javax.sql.XADataSource` bean of the same name returns XA connections from that pool. The `XADataSource` bean is not a `DataSource`, so the pool remains the only `DataSource` bean of its name. UCP does not hand out plain connections from an XA pool, so the `DataSource` bean borrows an XA connection and returns its local connection, which takes part in local transactions such as `@Transactional` methods, and closing that connection returns the XA connection to the pool. Startup fails if `xa` is enabled and the connection factory class is not an `XADataSource`.
 
 For a list of other properties able to be configured, simply refer to the implementation that is being used. All setter methods are candidates for configuration.
 

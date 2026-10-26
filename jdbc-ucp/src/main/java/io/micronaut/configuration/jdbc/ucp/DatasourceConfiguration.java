@@ -89,7 +89,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     }
 
     /**
-     * @return the pool data source, a {@link PoolXADataSource} when the connection factory class is an {@link XADataSource}
+     * @return the pool data source, a {@link PoolXADataSource} when {@link #isXa() XA} is enabled
      * @since 4.1
      */
     public PoolDataSource getPoolDataSource() {
@@ -97,23 +97,45 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     }
 
     /**
-     * @return whether the pool is an XA pool, because the configured connection factory class is an {@link XADataSource}
+     * @return whether the pool is an XA pool, whose connection factory class is an {@link XADataSource}
      * @since 7.3.0
      */
     public boolean isXa() {
         return delegate instanceof PoolXADataSource;
     }
 
+    /**
+     * Whether to pool XA connections, for a transaction manager that enlists them in global transactions. The
+     * connection factory class must then be an {@link XADataSource}, such as
+     * {@code oracle.jdbc.xa.client.OracleXADataSource}. Defaults to {@code false}. The pool type is chosen when the
+     * data source is created, so a refresh cannot change it.
+     *
+     * @param xa Whether the pool is an XA pool
+     * @since 7.3.0
+     */
+    public void setXa(boolean xa) {
+        if (xa != isXa()) {
+            throw new ConfigurationException("Datasource [" + name + "] cannot switch between an XA and a plain pool without a restart");
+        }
+    }
+
     private static PoolDataSourceImpl createPoolDataSource(String name, Environment environment) {
-        // the pool type must be chosen before the configuration is bound to it, so the factory class is read up front
+        // the pool type must be chosen before the configuration is bound to it, so the settings are read up front
         String prefix = DATASOURCES_PREFIX + name + ".";
+        if (!environment.getProperty(prefix + "xa", Boolean.class).orElse(false)) {
+            return (PoolDataSourceImpl) PoolDataSourceFactory.getPoolDataSource();
+        }
         String factoryClassName = environment.getProperty(prefix + "connection-factory-class-name", String.class)
             .or(() -> environment.getProperty(prefix + "driver-class-name", String.class))
             .orElse(null);
-        boolean xa = factoryClassName != null && ClassUtils.forName(factoryClassName, environment.getClassLoader())
+        boolean xaFactory = factoryClassName != null && ClassUtils.forName(factoryClassName, environment.getClassLoader())
             .map(XADataSource.class::isAssignableFrom)
             .orElse(false);
-        return (PoolDataSourceImpl) (xa ? PoolDataSourceFactory.getPoolXADataSource() : PoolDataSourceFactory.getPoolDataSource());
+        if (!xaFactory) {
+            throw new ConfigurationException("Datasource [" + name + "] has xa enabled, but its connection factory class ["
+                + factoryClassName + "] is not an XADataSource");
+        }
+        return new LocalConnectionPoolXADataSource();
     }
 
     @Override
