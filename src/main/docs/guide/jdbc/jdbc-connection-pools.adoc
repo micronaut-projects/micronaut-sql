@@ -132,10 +132,10 @@ dependency:simplefan[groupId="com.oracle.database.ha", scope="runtime"]
 datasources:
   default:
     fast-connection-failover-enabled: true
-    onsconfiguration: nodes=racnode1:6200,racnode2:6200
+    ons-configuration: nodes=racnode1:6200,racnode2:6200
 ----
 
-Without `onsconfiguration`, UCP reads the ONS configuration from the database (auto-ONS), which is enough for most RAC and Data Guard setups. The `onsconfiguration` key follows the UCP setter name, `setONSConfiguration`.
+Without `ons-configuration`, UCP reads the ONS configuration from the database (auto-ONS), which is enough for most RAC and Data Guard setups. `onsconfiguration`, the key of the UCP setter `setONSConfiguration`, also works.
 
 WARNING: Without the `ons` and `simplefan` libraries, a pool with FCF enabled still opens connections, but UCP background threads fail with `NoClassDefFoundError: oracle/ons/Subscriber` and no FAN events are received.
 

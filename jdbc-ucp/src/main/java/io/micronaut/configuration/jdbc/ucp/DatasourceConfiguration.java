@@ -243,6 +243,22 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         }
     }
 
+    /**
+     * Sets the ONS configuration of Fast Connection Failover. It makes {@code ons-configuration} and
+     * {@code onsConfiguration} bind as well as {@code onsconfiguration}, the key of the UCP setter
+     * {@code setONSConfiguration}.
+     *
+     * @param onsConfiguration The ONS configuration
+     * @since 7.3.0
+     */
+    public void setOnsConfiguration(String onsConfiguration) {
+        try {
+            delegate.setONSConfiguration(onsConfiguration);
+        } catch (SQLException e) {
+            throw new ConfigurationException("Unable to set datasource ONS configuration: " + e.getMessage(), e);
+        }
+    }
+
     @Override
     public void setDataSourceProperties(@MapFormat(transformation = MapFormat.MapTransformation.FLAT, keyFormat = StringConvention.RAW) Map<String, ?> dsProperties) {
         if (dsProperties != null) {

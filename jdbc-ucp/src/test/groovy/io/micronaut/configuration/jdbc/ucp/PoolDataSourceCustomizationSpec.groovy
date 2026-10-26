@@ -101,32 +101,40 @@ class PoolDataSourceCustomizationSpec extends Specification {
         applicationContext.close()
     }
 
-    void "Fast Connection Failover is configurable"() {
+    void "Fast Connection Failover is off by default"() {
         given:
-        ApplicationContext defaults = ApplicationContext.run([
+        ApplicationContext applicationContext = ApplicationContext.run([
                 'datasources.default.url'     : 'jdbc:h2:mem:fandefault;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
                 'datasources.default.username': 'sa',
                 'datasources.default.password': ''
         ], 'test')
-        boolean enabledByDefault = defaults.getBean(DataSource).unwrap(PoolDataSource).getFastConnectionFailoverEnabled()
-        defaults.close()
 
-        when:
+        expect:
+        !applicationContext.getBean(DataSource).unwrap(PoolDataSource).getFastConnectionFailoverEnabled()
+
+        cleanup:
+        applicationContext?.close()
+    }
+
+    void "Fast Connection Failover and the ONS configuration bind with the key #onsKey"() {
+        given:
         ApplicationContext applicationContext = ApplicationContext.run([
                 'datasources.default.url'                             : 'jdbc:h2:mem:fan;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
                 'datasources.default.username'                        : 'sa',
                 'datasources.default.password'                        : '',
                 'datasources.default.fast-connection-failover-enabled': true,
-                'datasources.default.onsconfiguration'                : 'nodes=racnode1:6200,racnode2:6200'
+                ('datasources.default.' + onsKey)                     : 'nodes=racnode1:6200,racnode2:6200'
         ], 'test')
         PoolDataSource dataSource = applicationContext.getBean(DataSource).unwrap(PoolDataSource)
 
-        then: 'FAN is off by default, and the ONS key follows the UCP setter name'
-        !enabledByDefault
+        expect:
         dataSource.getFastConnectionFailoverEnabled()
         dataSource.getONSConfiguration() == 'nodes=racnode1:6200,racnode2:6200'
 
         cleanup:
         applicationContext?.close()
+
+        where:
+        onsKey << ['ons-configuration', 'onsConfiguration', 'onsconfiguration', 'ONSConfiguration']
     }
 }
