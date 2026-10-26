@@ -152,7 +152,7 @@ datasources:
     connection-factory-class-name: oracle.jdbc.xa.client.OracleXADataSource
 ----
 
-The data source is then a UCP `PoolXADataSource`, and a `javax.sql.XADataSource` bean of the same name returns XA connections from that pool. The `XADataSource` bean is not a `DataSource`, so the pool remains the only `DataSource` bean of its name. UCP does not hand out plain connections from an XA pool, so the `DataSource` bean borrows an XA connection and returns its local connection, which takes part in local transactions such as `@Transactional` methods, and closing that connection returns the XA connection to the pool. Startup fails if `xa` is enabled and the connection factory class is not an `XADataSource`.
+The data source is then a UCP `PoolXADataSource`, and a `javax.sql.XADataSource` bean of the same name returns XA connections from that pool. The `XADataSource` bean is not a `DataSource`, so the pool remains the only `DataSource` bean of its name. UCP does not hand out plain connections from an XA pool, so the `DataSource` bean borrows an XA connection and returns its local connection, which takes part in local transactions such as `@Transactional` methods, and closing that connection returns the XA connection to the pool. The pool's `createConnectionBuilder()`, which passes sharding keys and labels, returns connections the same way. Startup fails if `xa` is enabled and the connection factory class is not an `XADataSource`.
 
 For a list of other properties able to be configured, simply refer to the implementation that is being used. All setter methods are candidates for configuration.
 
