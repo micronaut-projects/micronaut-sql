@@ -45,4 +45,7 @@ vertxmysqlclient:
 vertxpgclient:
   title: Configuring Reactive PostgreSQL Client
   vertxpgclient-healthchecks: PostgreSQL Health Checks
+vertxoracleclient:
+  title: Configuring Reactive Oracle Client
+  vertxoracleclient-healthchecks: Oracle Health Checks
 repository: Repository

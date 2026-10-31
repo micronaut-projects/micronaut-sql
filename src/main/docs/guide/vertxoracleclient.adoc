@@ -1,0 +1,35 @@
+Micronaut supports the reactive and non-blocking https://vertx.io/docs/vertx-oracle-client/java/[Vert.x Oracle client], which runs on the asynchronous API of the Oracle JDBC driver.
+
+To use it, add the `vertx-oracle-client` module to your classpath:
+
+dependency:micronaut-vertx-oracle-client[groupId="io.micronaut.sql"]
+
+The module depends on the same Oracle JDBC driver (`ojdbc17`) as the other Micronaut SQL modules, instead of the older `ojdbc11` release the Vert.x Oracle client declares.
+
+Then configure the https://vertx.io/docs/vertx-oracle-client/java/[`OracleConnectOptions` and `PoolOptions`] of the database:
+
+[configuration]
+----
+vertx:
+  oracle:
+    client:
+      host: the-host
+      port: 1521
+      service-name: FREEPDB1
+      user: test
+      password: test
+      max-size: 5
+----
+
+You can also set `uri` instead of the host, port and service name, for example `oracle:thin:@the-host:1521/FREEPDB1`, a JDBC URL such as `jdbc:oracle:thin:@the-host:1521/FREEPDB1`, or a TNS alias such as `oracle:thin:@mydb_high`. The URI replaces the configured host, port, service name, SID and TNS alias, and the other configured options, such as `user`, `password` and `tns-admin`, still apply unless the URI sets them.
+
+The Oracle client connects through the Oracle JDBC driver, so Vert.x network options such as connect timeouts and TLS stores don't apply: configure those through the connection properties or the Oracle Net configuration instead. When there is no `io.vertx.core.Vertx` bean, the module creates a Vert.x instance for the pool and closes it with the application context.
+
+The module then provides an `io.vertx.sqlclient.Pool` bean, which you can inject to run queries:
+
+snippet::io.micronaut.docs.vertx.oracle.BookCatalog[tags="imports,clazz"]
+
+<1> The `Pool` bean configured by the `vertx.oracle.client` properties
+<2> A prepared query with a bind parameter, executed without blocking
+
+For more information on running queries with the reactive client, read the https://vertx.io/docs/vertx-oracle-client/java/[vertx-oracle-client] documentation.
