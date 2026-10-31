@@ -20,14 +20,17 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.exceptions.ConfigurationException;
+import io.micronaut.context.exceptions.DisabledBeanException;
 import io.micronaut.context.exceptions.NoSuchBeanException;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
 import oracle.ucp.jdbc.PoolDataSource;
+import oracle.ucp.jdbc.PoolXADataSource;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +38,7 @@ import org.slf4j.LoggerFactory;
 import jakarta.annotation.PreDestroy;
 
 import javax.sql.DataSource;
+import javax.sql.XADataSource;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -127,6 +131,28 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
             ucpDataSourcePoolMetadata = new OracleUcpDataSourcePoolMetadata(resolved, connectionPoolManager);
         }
         return ucpDataSourcePoolMetadata;
+    }
+
+    /**
+     * Exposes the pool of a data source with {@link DatasourceConfiguration#setXa(boolean) xa} enabled as an
+     * {@link XADataSource} for transaction managers that enlist XA connections. The bean delegates to the
+     * {@link PoolXADataSource} of the {@link DatasourceConfiguration#getPoolDataSource() configuration} and is not
+     * itself a {@link DataSource}, so the pool remains the only {@link DataSource} bean of its name. That bean still
+     * opens connections for local transactions, from XA connections of the same pool.
+     *
+     * @param datasourceConfiguration A {@link DatasourceConfiguration}
+     * @param dataSource The data source bean of the configuration, required so that the pool is created, customized and started first
+     * @return The XA data source; the bean is disabled when xa is not enabled
+     * @since 7.3.0
+     */
+    @EachBean(DatasourceConfiguration.class)
+    @Requires(condition = JdbcDataSourceEnabled.class)
+    public XADataSource xaDataSource(DatasourceConfiguration datasourceConfiguration,
+                                     @Parameter DataSource dataSource) {
+        if (!datasourceConfiguration.isXa()) {
+            throw new DisabledBeanException("Data source [" + datasourceConfiguration.getName() + "] does not have xa enabled");
+        }
+        return new UcpXADataSource((PoolXADataSource) datasourceConfiguration.getPoolDataSource());
     }
 
     @Override
