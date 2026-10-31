@@ -1,0 +1,14 @@
+plugins {
+    id 'io.micronaut.build.internal.test-application'
+}
+
+dependencies {
+    implementation projects.micronautVertxOracleClient
+    implementation mn.micronaut.management
+    implementation mnSerde.micronaut.serde.jackson
+    runtimeOnly mn.snakeyaml
+
+    testImplementation mnTest.micronaut.test.junit5
+
+    micronautBoms(platform(mnSerde.micronaut.serde.bom))
+}
