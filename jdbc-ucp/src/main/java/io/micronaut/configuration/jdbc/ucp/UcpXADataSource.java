@@ -49,7 +49,7 @@ record UcpXADataSource(PoolXADataSource pool) implements XADataSource {
 
     @Override
     public XAConnectionBuilder createXAConnectionBuilder() throws SQLException {
-        return ((XADataSource) pool).createXAConnectionBuilder();
+        return pool.createXAConnectionBuilder();
     }
 
     @Override
