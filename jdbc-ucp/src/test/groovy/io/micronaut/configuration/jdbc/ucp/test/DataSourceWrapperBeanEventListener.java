@@ -4,6 +4,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.event.BeanCreatedEvent;
 import io.micronaut.context.event.BeanCreatedEventListener;
 import io.micronaut.core.order.Ordered;
+import io.micronaut.core.util.StringUtils;
 import jakarta.inject.Singleton;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
@@ -11,10 +12,12 @@ import javax.sql.DataSource;
 
 /**
  * A {@link BeanCreatedEventListener} that wraps each {@link DataSource} in a {@link TransactionAwareDataSourceProxy}
- * to create an example of a wrapped {@link DataSource} for test cases.
+ * to create an example of a wrapped {@link DataSource} for test cases. Setting {@code test.wrap-data-source} to
+ * {@code false} turns it off, for test cases that need the unwrapped {@link DataSource}.
  */
 @Singleton
 @Requires(env = "test")
+@Requires(property = "test.wrap-data-source", notEquals = StringUtils.FALSE)
 public class DataSourceWrapperBeanEventListener implements BeanCreatedEventListener<DataSource>, Ordered {
 
     public DataSource onCreated(BeanCreatedEvent<DataSource> event) {

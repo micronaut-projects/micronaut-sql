@@ -21,6 +21,8 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.event.BeanDestroyedEvent;
+import io.micronaut.context.event.BeanDestroyedEventListener;
 import io.micronaut.context.exceptions.NoSuchBeanException;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.DataSourceResolver;
@@ -46,7 +48,7 @@ import java.util.Properties;
  * @since 2.0.1
  */
 @Factory
-public class DatasourceFactory extends BaseDatasourceFactory implements AutoCloseable {
+public class DatasourceFactory extends BaseDatasourceFactory implements AutoCloseable, BeanDestroyedEventListener<DataSource> {
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
     private final UniversalConnectionPoolManagerConfiguration configuration;
 
@@ -106,20 +108,40 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         return ucpDataSourcePoolMetadata;
     }
 
+    /**
+     * Closes the pool of a data source once its bean is destroyed, after the beans that depend on it, such as a
+     * JPA {@code SessionFactory} that drops the schema on close. The remaining pools are closed by {@link #close()}.
+     *
+     * @param event The bean destroyed event
+     */
+    @Override
+    public void onDestroyed(BeanDestroyedEvent<DataSource> event) {
+        String name = findDataSourceName(event);
+        PoolDataSource dataSource = name == null ? null : dataSources.remove(name);
+        if (dataSource != null) {
+            close(dataSource);
+        }
+    }
+
     @Override
     @PreDestroy
     public void close() {
+        for (PoolDataSource dataSource : dataSources.values()) {
+            close(dataSource);
+        }
+        dataSources.clear();
+    }
+
+    private void close(PoolDataSource dataSource) {
         if (configuration.isEnabled() && connectionPoolManager != null) {
-            for (PoolDataSource dataSource : dataSources.values()) {
-                try {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Closing connection pool named: {}", dataSource.getConnectionPoolName());
-                    }
-                    connectionPoolManager.destroyConnectionPool(dataSource.getConnectionPoolName());
-                } catch (Exception e) {
-                    if (LOG.isWarnEnabled()) {
-                        LOG.warn("Error closing data source [" + dataSource + "]: " + e.getMessage(), e);
-                    }
+            try {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Closing connection pool named: {}", dataSource.getConnectionPoolName());
+                }
+                connectionPoolManager.destroyConnectionPool(dataSource.getConnectionPoolName());
+            } catch (Exception e) {
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn("Error closing data source [" + dataSource + "]: " + e.getMessage(), e);
                 }
             }
         }
