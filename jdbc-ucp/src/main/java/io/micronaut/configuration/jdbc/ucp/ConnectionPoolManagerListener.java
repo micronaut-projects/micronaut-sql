@@ -38,7 +38,8 @@ import java.sql.SQLException;
 
 
 /**
- * {@link BeanCreatedEventListener} that starts the {@link PoolDataSource} using the {@link UniversalConnectionPoolManager}.
+ * {@link BeanCreatedEventListener} that starts the pool of each {@link PoolDataSource} when the data source is created,
+ * registered with the {@link UniversalConnectionPoolManager}.
  *
  * @author Pavol Gressa
  * @since 4.0.3
