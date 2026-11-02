@@ -84,13 +84,46 @@ class OracleClientConfigurationSpec extends Specification {
         options.fetchSize == 50
     }
 
-    void "a URI with another scheme fails with a ConfigurationException"() {
+    void "a URI with another scheme fails with a ConfigurationException that leaves out the URI"() {
         when:
-        OracleClientFactory.fromUri('postgresql://localhost/db', new OracleConnectOptions())
+        OracleClientFactory.fromUri('postgresql://app:s3cret@db/app', new OracleConnectOptions())
 
         then:
         ConfigurationException e = thrown()
-        e.message.startsWith('Invalid Oracle connection URI [postgresql://localhost/db]')
+        e.message.startsWith('Invalid Oracle connection URI, expected')
+        !e.message.contains('s3cret')
+        e.cause == null
+    }
+
+    void "connection properties of the URI are added to the configured ones"() {
+        given:
+        OracleConnectOptions configured = new OracleConnectOptions()
+                .setHost('the-host')
+                .setServiceName('CONFIGURED')
+                .addProperty('a', '1')
+
+        when:
+        OracleConnectOptions options = OracleClientFactory.fromUri('oracle:thin:@db-host:1523/FREEPDB1?b=2', configured)
+
+        then:
+        options.host == 'db-host'
+        options.properties == [a: '1', b: '2']
+    }
+
+    void "a URI naming the default endpoint replaces the configured endpoint"() {
+        given:
+        OracleConnectOptions configured = new OracleConnectOptions()
+                .setHost('the-host')
+                .setPort(1522)
+                .setServiceName('CONFIGURED')
+
+        when:
+        OracleConnectOptions options = OracleClientFactory.fromUri('oracle:thin:@localhost:1521/FREEPDB1', configured)
+
+        then:
+        options.host == 'localhost'
+        options.port == 1521
+        options.serviceName == 'FREEPDB1'
     }
 
     void "the Vert.x instance created for the pool is closed with the context"() {

@@ -25,7 +25,6 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.NetClientOptions;
 import io.vertx.oracleclient.OracleConnectOptions;
-import io.vertx.oracleclient.impl.OracleConnectionUriParser;
 import io.vertx.oracleclient.spi.OracleDriver;
 import io.vertx.sqlclient.Pool;
 import jakarta.annotation.PreDestroy;
@@ -33,6 +32,8 @@ import jakarta.inject.Singleton;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * The factory for the Vert.x Oracle client {@link Pool}.
@@ -101,8 +102,8 @@ public class OracleClientFactory {
 
     /**
      * Applies the options a URI sets to a copy of the configured options, so the other configured options, such as
-     * the {@code tns-admin} directory of a TNS alias, still apply. A URI that names the database replaces the whole
-     * configured endpoint.
+     * the {@code tns-admin} directory of a TNS alias, still apply. The URI names the database, so it replaces the
+     * whole configured endpoint. Connection properties of the URI are added to the configured ones.
      *
      * @param uri        The URI, with or without the {@code jdbc:} prefix
      * @param configured The configured options
@@ -110,14 +111,23 @@ public class OracleClientFactory {
      */
     static OracleConnectOptions fromUri(String uri, OracleConnectOptions configured) {
         String oracleUri = uri.regionMatches(true, 0, JDBC_PREFIX, 0, JDBC_PREFIX.length()) ? uri.substring(JDBC_PREFIX.length()) : uri;
-        JsonObject parsed = OracleConnectionUriParser.parse(oracleUri, false);
-        if (parsed == null) {
-            throw new ConfigurationException("Invalid Oracle connection URI [" + uri + "], expected oracle:thin:@<database> or jdbc:oracle:thin:@<database>");
+        JsonObject fromUri;
+        try {
+            fromUri = OracleConnectOptions.fromUri(oracleUri).toJson();
+        } catch (IllegalArgumentException e) {
+            // neither the URI nor the cause, whose message repeats it, as the URI can carry a password
+            throw new ConfigurationException("Invalid Oracle connection URI, expected oracle:thin:@<database> or jdbc:oracle:thin:@<database>");
+        }
+        // the endpoint, and the other options the URI sets, which differ from the defaults
+        JsonObject defaults = new OracleConnectOptions().toJson();
+        JsonObject set = new JsonObject();
+        for (Map.Entry<String, Object> option : fromUri) {
+            if (ENDPOINT_OPTIONS.contains(option.getKey()) || !Objects.equals(option.getValue(), defaults.getValue(option.getKey()))) {
+                set.put(option.getKey(), option.getValue());
+            }
         }
         JsonObject options = configured.toJson();
-        if (ENDPOINT_OPTIONS.stream().anyMatch(parsed::containsKey)) {
-            ENDPOINT_OPTIONS.forEach(options::remove);
-        }
-        return new OracleConnectOptions(options.mergeIn(parsed));
+        ENDPOINT_OPTIONS.forEach(options::remove);
+        return new OracleConnectOptions(options.mergeIn(set, true));
     }
 }
