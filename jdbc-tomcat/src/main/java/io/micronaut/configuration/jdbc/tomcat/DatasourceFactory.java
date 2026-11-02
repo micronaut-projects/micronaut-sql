@@ -21,6 +21,8 @@ import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.event.BeanDestroyedEvent;
+import io.micronaut.context.event.BeanDestroyedEventListener;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
@@ -43,7 +45,7 @@ import java.util.Properties;
  * @since 1.0
  */
 @Factory
-public class DatasourceFactory extends BaseDatasourceFactory implements AutoCloseable {
+public class DatasourceFactory extends BaseDatasourceFactory implements AutoCloseable, BeanDestroyedEventListener<DataSource> {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
     private final Map<String, org.apache.tomcat.jdbc.pool.DataSource> dataSources = new LinkedHashMap<>(2);
@@ -115,16 +117,36 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         return dataSourcePoolMetadata;
     }
 
+    /**
+     * Closes the pool of a data source once its bean is destroyed, after the beans that depend on it, such as a
+     * JPA {@code SessionFactory} that drops the schema on close. The remaining pools are closed by {@link #close()}.
+     *
+     * @param event The bean destroyed event
+     */
+    @Override
+    public void onDestroyed(BeanDestroyedEvent<DataSource> event) {
+        String name = findDataSourceName(event);
+        org.apache.tomcat.jdbc.pool.DataSource dataSource = name == null ? null : dataSources.remove(name);
+        if (dataSource != null) {
+            close(dataSource);
+        }
+    }
+
     @Override
     @PreDestroy
     public void close() {
         for (org.apache.tomcat.jdbc.pool.DataSource dataSource : dataSources.values()) {
-            try {
-                dataSource.close();
-            } catch (Exception e) {
-                if (LOG.isWarnEnabled()) {
-                    LOG.warn("Error closing data source [" + dataSource + "]: " + e.getMessage(), e);
-                }
+            close(dataSource);
+        }
+        dataSources.clear();
+    }
+
+    private static void close(org.apache.tomcat.jdbc.pool.DataSource dataSource) {
+        try {
+            dataSource.close();
+        } catch (Exception e) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Error closing data source [" + dataSource + "]: " + e.getMessage(), e);
             }
         }
     }

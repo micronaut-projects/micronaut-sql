@@ -24,5 +24,6 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 @Property(name = "datasources.default.driverClassName", value = "oracle.jdbc.OracleDriver")
 @Property(name = "jpa.default.properties.hibernate.dialect", value = "org.hibernate.dialect.OracleDialect")
 @Property(name = "test-resources.containers.oracle.startup-timeout", value = "600s")
+@Property(name = "test-resources.containers.oracle.image-name", value = "gvenzl/oracle-free:23.26.3-slim-faststart")
 public class OracleDBApp extends AbstractApp {
 }
