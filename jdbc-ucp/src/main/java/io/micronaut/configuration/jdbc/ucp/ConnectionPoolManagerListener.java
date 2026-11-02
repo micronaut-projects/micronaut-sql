@@ -29,6 +29,7 @@ import oracle.ucp.UniversalConnectionPoolAdapter;
 import oracle.ucp.UniversalConnectionPoolException;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
 import oracle.ucp.jdbc.PoolDataSource;
+import oracle.ucp.jdbc.PoolDataSourceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,6 +82,10 @@ public class ConnectionPoolManagerListener implements BeanCreatedEventListener<D
 
     private void createAndStartConnectionPool(PoolDataSource poolDataSource) {
         final String poolName = poolDataSource.getConnectionPoolName();
+        if (poolDataSource instanceof PoolDataSourceImpl poolDataSourceImpl) {
+            startPool(poolDataSourceImpl, poolName);
+            return;
+        }
         try {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Creating connection pool named: {}", poolName);
@@ -96,6 +101,25 @@ public class ConnectionPoolManagerListener implements BeanCreatedEventListener<D
             }
 
         } catch (UniversalConnectionPoolException e) {
+            throw new ConfigurationException(String.format("Failed to start connection pool named: %s", poolName), e);
+        }
+    }
+
+    private static void startPool(PoolDataSourceImpl poolDataSource, String poolName) {
+        // startPool() is what every getConnection() runs before it borrows a connection. Holding the data source's
+        // own lock, it creates the pool and registers it with the manager unless that already happened, then starts
+        // it unless it already started. So a Liquibase or Flyway migration that took a connection before this
+        // listener, on this thread or another, does not make it fail, while a pool that cannot start, or a pool name
+        // that another data source already uses, still does.
+        try {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Starting connection pool named: {}", poolName);
+            }
+            poolDataSource.startPool();
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Connection pool named: {} started", poolName);
+            }
+        } catch (SQLException e) {
             throw new ConfigurationException(String.format("Failed to start connection pool named: %s", poolName), e);
         }
     }
