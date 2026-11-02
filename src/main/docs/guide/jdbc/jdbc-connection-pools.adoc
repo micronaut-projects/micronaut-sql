@@ -111,9 +111,9 @@ Which values are available depends on the release:
 
 * `LOGIN` is new in Oracle Database 26ai, and the Oracle JDBC driver supports it from 23.26.2. Earlier releases only offer `NONE` and `LEVEL1`.
 * Before 26ai, `RESET_STATE` depends on Application Continuity: on 21c and 23ai, it needs a service with Application Continuity or Transparent Application Continuity enabled. 26ai removed that dependency.
-* With DRCP or Proxy Resident Connection Pooling, `LOGIN` behaves like `LEVEL1`, as Oracle downgrades session-pooled environments to `LEVEL1`.
+* With DRCP, or when connecting through Oracle Connection Manager in Traffic Director Mode (CMAN-TDM) 23.26.4, `LOGIN` behaves like `LEVEL1`.
 
-`RESET_STATE` needs explicit request boundaries. UCP marks them whenever a connection is borrowed and returned. With other pools, Micronaut Data 5.3.0 and later marks them when `datasources.<name>.request-boundaries` is `true`. It does not apply to the implicit boundaries of `POOL_BOUNDARY`. With UCP, set `validateConnectionOnBorrow: true` when the service combines `RESET_STATE=LEVEL1` with Application Continuity. Without DRCP, `LOGIN` is an alternative; with DRCP it behaves like `LEVEL1`, so set `validateConnectionOnBorrow: true` there as well. `LEVEL1` cannot be combined with UCP connection labeling.
+`RESET_STATE` needs explicit request boundaries. UCP marks them whenever a connection is borrowed and returned. With other pools, Micronaut Data 5.3.0 and later marks them when `datasources.<name>.request-boundaries` is `true`. It does not apply to the implicit boundaries of `POOL_BOUNDARY`. With UCP, set `validateConnectionOnBorrow: true` when the service combines `RESET_STATE=LEVEL1` with Application Continuity. Without DRCP or CMAN-TDM, `LOGIN` is an alternative; with either, it behaves like `LEVEL1`, so set `validateConnectionOnBorrow: true` there as well. `LEVEL1` cannot be combined with UCP connection labeling.
 
 To connect to an link:https://docs.oracle.com/en/database/oracle/oracle-database/26/shard/jdbc-sharding-data-source.html[Oracle sharded database] without passing sharding keys, enable the JDBC sharding data source. It derives the sharding key from each SQL statement and routes the statement to its shard:
 
