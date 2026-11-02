@@ -141,6 +141,8 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-lazy-initialization"><a href="#hibernate-lazy-initialization"><strong>5.8</strong><span>Understanding LazyInitializationException</span></a></div>
         
+        <div class="toc-item" style="margin-left:10px" id="toc-item-hibernate-vector"><a href="#hibernate-vector"><strong>5.9</strong><span>Vector types</span></a></div>
+        
         <div class="toc-item" style="margin-left:0px" id="toc-item-jasync"><a href="#jasync"><strong>6</strong><span>Configuring JAsync SQL</span></a></div>
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-jasync-client"><a href="#jasync-client"><strong>6.1</strong><span>Configuring jasync-sql Client</span></a></div>
@@ -2096,7 +2098,125 @@ class DbPasswordRefresher {
 </blockquote>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/oracle/ojdbc-extensions/">Oracle JDBC Driver Extensions</a> service providers are configured via connection properties. Use the <code>datasources.*.data-source-properties</code> prefix.</p>
+<p><a href="https://github.com/oracle/ojdbc-extensions/">Oracle JDBC Driver Extensions</a> are service providers that the Oracle JDBC driver loads from the classpath. There are two kinds:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Configuration providers</strong> supply a whole connection configuration, including the connect descriptor, user and password, from a file, an HTTPS server, OCI Object Storage, OCI Database Tools, Azure App Configuration and other sources. The data source URL names the provider.</p>
+</li>
+<li>
+<p><strong>Resource providers</strong> supply one value, such as a password, an access token, a connection string, a TLS configuration or a trace event listener. They are configured with connection properties.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Micronaut SQL manages the versions of the provider artifacts, so you can add them without a version:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"com.oracle.database.jdbc:ojdbc-provider-oci")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;com.oracle.database.jdbc&lt;/groupId&gt;
+    &lt;artifactId&gt;ojdbc-provider-oci&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"com.oracle.database.jdbc:ojdbc-provider-oci"</span>,
+]</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>The managed artifacts are <code>ojdbc-provider-common</code>, <code>ojdbc-provider-oci</code>, <code>ojdbc-provider-azure</code>, <code>ojdbc-provider-aws</code>, <code>ojdbc-provider-gcp</code>, <code>ojdbc-provider-hashicorp</code>, <code>ojdbc-provider-jackson-oson</code> and <code>ojdbc-provider-observability</code>. The providers depend on the Oracle wallet library, <code>com.oracle.database.security:oraclepki</code>, which is managed at the version of the driver.</p>
+</div>
+<div class="sect2">
+<h3 id="_configuration_providers">Configuration providers</h3>
+<div class="paragraph">
+<p>With a configuration provider, the data source needs only a URL of the form <code>jdbc:oracle:thin:@config-&lt;provider&gt;://&lt;location&gt;</code>. The built-in <code>file</code> provider reads a JSON file:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">datasources.default.url=jdbc:oracle:thin:@config-file:///etc/myapp/oracle-config.json</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">datasources:
+  default:
+    url: jdbc:oracle:thin:@config-file:///etc/myapp/oracle-config.json</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[datasources.default]
+url = "jdbc:oracle:thin:@config-file:///etc/myapp/oracle-config.json"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">datasources {
+  'default' {
+    url = "jdbc:oracle:thin:@config-file:///etc/myapp/oracle-config.json"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  datasources {
+    default {
+      url = "jdbc:oracle:thin:@config-file:///etc/myapp/oracle-config.json"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "datasources": {
+    "default": {
+      "url": "jdbc:oracle:thin:@config-file:///etc/myapp/oracle-config.json"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "connect_descriptor": "dbhost:1521/orders",
+  "user": "app",
+  "password": {"type": "base64", "value": "c2VjcmV0"}
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Other providers follow the same pattern, for example <code>jdbc:oracle:thin:@config-ociobject://mytenancy.objectstorage.us-phoenix-1.oci.customer-oci.com/n/mytenancy/b/bucket1/o/payload.json</code> or <code>jdbc:oracle:thin:@config-azure://myappconfig?key=/sales_app1/&amp;label=dev</code>. See the <a href="https://github.com/oracle/ojdbc-extensions/">Oracle JDBC Driver Extensions</a> documentation for the options of each provider.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_resource_providers">Resource providers</h3>
+<div class="paragraph">
+<p>Resource providers are configured via connection properties. Use the <code>datasources.*.data-source-properties</code> prefix.</p>
 </div>
 <div class="paragraph">
 <p>For example, to configure the <code>oracle.jdbc.provider.password</code> property as the name of a password provider and <code>oracle.jdbc.provider.password.vaultId</code> as a parameter recognized by the password provider, you will use a configuration such as:</p>
@@ -2105,6 +2225,22 @@ class DbPasswordRefresher {
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">datasources.default.data-source-properties.oracle.jdbc.provider.password=example-provider
 datasources.default.data-source-properties.oracle.jdbc.provider.password.vaultId=9999-8888-7777</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The same applies to the other resource provider properties: <code>oracle.jdbc.provider.accessToken</code> for OCI IAM or Azure AD database tokens, <code>oracle.jdbc.provider.connectionString</code>, <code>oracle.jdbc.provider.tlsConfiguration</code>, and <code>oracle.jdbc.provider.traceEventListener</code> for the tracing providers of <code>ojdbc-provider-observability</code>.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+With Oracle UCP, settings that take Java objects rather than values, such as a token supplier, are configured with a <a href="../api/io/micronaut/configuration/jdbc/ucp/PoolDataSourceCustomizer.html">PoolDataSourceCustomizer</a> instead.
+</td>
+</tr>
+</table>
 </div>
 </div>
 
@@ -4112,6 +4248,48 @@ For GraalVM native image, enable compile-time proxies with the configuration sho
 </div>
 <div class="paragraph">
 <p>If you encounter a <code>LazyInitializationException</code> when returning a Hibernate entity from a method it is an indication that your query is suboptimal and you should perform a join.</p>
+</div>
+
+<h2 id="hibernate-vector"><a class="anchor" href="#hibernate-vector"></a>5.9 Vector types</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/hibernate/hibernate-vector.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Hibernate maps vector columns, such as the Oracle Database <code>VECTOR</code> type and PostgreSQL <code>pgvector</code>, with the <code>hibernate-vector</code> module. Micronaut SQL manages its version along with Hibernate:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"org.hibernate.orm:hibernate-vector")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;org.hibernate.orm&lt;/groupId&gt;
+    &lt;artifactId&gt;hibernate-vector&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"org.hibernate.orm:hibernate-vector"</span>,
+]</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>With the module on the classpath, a vector attribute is mapped with <code>@JdbcTypeCode(SqlTypes.VECTOR)</code> and its dimensions with <code>@Array(length = &#8230;&#8203;)</code>, and vector distance functions such as <code>cosine_distance</code> and <code>euclidean_distance</code> are available in HQL and criteria queries. See the <a href="https://hibernate.org/orm/documentation/">Hibernate ORM documentation</a> for the mapping, the supported databases and the functions.</p>
 </div>
 
 <h1 id="jasync"><a class="anchor" href="#jasync"></a>6 Configuring JAsync SQL</h1>
