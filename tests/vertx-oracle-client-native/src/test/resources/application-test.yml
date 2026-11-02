@@ -1,0 +1,5 @@
+micronaut:
+  http:
+    client:
+      # the first request starts the Oracle container through Test Resources, which takes longer than the default 10s
+      read-timeout: 120s
