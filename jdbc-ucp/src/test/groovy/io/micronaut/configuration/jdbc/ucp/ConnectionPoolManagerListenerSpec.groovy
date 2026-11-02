@@ -203,6 +203,22 @@ class ConnectionPoolManagerListenerSpec extends Specification {
         destroyPoolIfRegistered("FAILED_TO_START")
     }
 
+    void "test ucp-manager creates and starts the pool through the manager for other PoolDataSource implementations"() {
+        given: "a PoolDataSource that does not extend PoolDataSourceImpl"
+        UniversalConnectionPoolManager poolManager = Mock()
+        PoolDataSource dataSource = Mock(PoolDataSource, additionalInterfaces: [UniversalConnectionPoolAdapter])
+        dataSource.getConnectionPoolName() >> "OTHER_IMPLEMENTATION"
+
+        when:
+        new ConnectionPoolManagerListener(poolManager, null).onCreated(createdEvent(dataSource))
+
+        then:
+        1 * poolManager.createConnectionPool(dataSource)
+
+        then:
+        1 * poolManager.startConnectionPool("OTHER_IMPLEMENTATION")
+    }
+
     void "test ucp-manager waits while a first connection on another thread starts the pool"() {
         given: "a first connection on another thread has created the pool but not registered or started it yet"
         var poolManager = UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager()
