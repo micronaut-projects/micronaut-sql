@@ -8,10 +8,10 @@ dependencies {
     testImplementation(mn.micronaut.inject.python.test)
     testImplementation(mn.micronaut.context.python)
     testImplementation(projects.micronautJdbcUcp)
-    testRuntimeOnly(libs.managed.h2)
     testImplementation(mnTest.micronaut.test.junit5)
-    testRuntimeOnly(mnTest.junit.jupiter.engine)
     testImplementation(mnTest.junit.platform.launcher)
+    testRuntimeOnly(libs.managed.h2)
+    testRuntimeOnly(mnTest.junit.jupiter.engine)
     testRuntimeOnly(mnLogging.logback.classic)
 }
 tasks.withType<Test>().configureEach {
