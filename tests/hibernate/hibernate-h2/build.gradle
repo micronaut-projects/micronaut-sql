@@ -5,6 +5,7 @@ plugins {
 dependencies {
     implementation projects.micronautTests.micronautHibernate.micronautHibernateSyncCommon
     testImplementation projects.micronautTests.micronautCommonTests
+    testImplementation mnLogging.logback.classic
 
     runtimeOnly projects.micronautJdbcHikari
 
