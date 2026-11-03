@@ -166,13 +166,13 @@ class XaDatasourceSpec extends Specification {
             'datasources.default.url': 'jdbc:h2:mem:xaPlain;DB_CLOSE_ON_EXIT=FALSE',
             'datasources.default.username': 'sa',
             'datasources.default.password': '',
-            'datasources.default.connection-factory-class-name': 'org.h2.jdbcx.JdbcDataSource',
+            'datasources.default.connection-factory-class-name': 'oracle.jdbc.pool.OracleDataSource',
             'datasources.default.xa': true
         ).close()
 
         then:
         Exception e = thrown()
-        (e.message + e.cause?.message).contains("its connection factory class [org.h2.jdbcx.JdbcDataSource] is not an XADataSource")
+        (e.message + e.cause?.message).contains("its connection factory class [oracle.jdbc.pool.OracleDataSource] is not an XADataSource")
     }
 
     void "test no XA pool without an XA connection factory"() {
