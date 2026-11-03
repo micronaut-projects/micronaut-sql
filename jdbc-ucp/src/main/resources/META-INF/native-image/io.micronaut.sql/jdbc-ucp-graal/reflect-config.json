@@ -1,0 +1,8 @@
+[
+  {
+    "name": "oracle.jdbc.xa.client.OracleXADataSource",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true
+  }
+]

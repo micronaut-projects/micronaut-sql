@@ -128,10 +128,17 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         String factoryClassName = environment.getProperty(prefix + "connection-factory-class-name", String.class)
             .or(() -> environment.getProperty(prefix + "driver-class-name", String.class))
             .orElse(null);
-        boolean xaFactory = factoryClassName != null && ClassUtils.forName(factoryClassName, environment.getClassLoader())
-            .map(XADataSource.class::isAssignableFrom)
-            .orElse(false);
-        if (!xaFactory) {
+        if (factoryClassName == null) {
+            throw new ConfigurationException("Datasource [" + name + "] has xa enabled, but sets no connection factory class: "
+                + "set connection-factory-class-name to an XADataSource, such as oracle.jdbc.xa.client.OracleXADataSource");
+        }
+        Class<?> factoryClass = ClassUtils.forName(factoryClassName, environment.getClassLoader()).orElse(null);
+        if (factoryClass == null) {
+            // in a native image, also when the class is not registered for reflection
+            throw new ConfigurationException("Datasource [" + name + "] has xa enabled, but its connection factory class ["
+                + factoryClassName + "] was not found");
+        }
+        if (!XADataSource.class.isAssignableFrom(factoryClass)) {
             throw new ConfigurationException("Datasource [" + name + "] has xa enabled, but its connection factory class ["
                 + factoryClassName + "] is not an XADataSource");
         }

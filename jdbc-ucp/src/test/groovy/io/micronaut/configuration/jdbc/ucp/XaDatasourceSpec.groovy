@@ -142,7 +142,37 @@ class XaDatasourceSpec extends Specification {
 
         then:
         Exception e = thrown()
-        (e.message + e.cause?.message).contains("has xa enabled, but its connection factory class [null] is not an XADataSource")
+        (e.message + e.cause?.message).contains("has xa enabled, but sets no connection factory class")
+    }
+
+    void "test xa with a connection factory class that cannot be loaded fails"() {
+        when:
+        ApplicationContext.run(
+            'datasources.default.url': 'jdbc:h2:mem:xaMissing;DB_CLOSE_ON_EXIT=FALSE',
+            'datasources.default.username': 'sa',
+            'datasources.default.password': '',
+            'datasources.default.connection-factory-class-name': 'oracle.jdbc.xa.client.OracleXADataSourceTypo',
+            'datasources.default.xa': true
+        ).close()
+
+        then:
+        Exception e = thrown()
+        (e.message + e.cause?.message).contains("its connection factory class [oracle.jdbc.xa.client.OracleXADataSourceTypo] was not found")
+    }
+
+    void "test xa with a connection factory class that is not an XADataSource fails"() {
+        when:
+        ApplicationContext.run(
+            'datasources.default.url': 'jdbc:h2:mem:xaPlain;DB_CLOSE_ON_EXIT=FALSE',
+            'datasources.default.username': 'sa',
+            'datasources.default.password': '',
+            'datasources.default.connection-factory-class-name': 'org.h2.jdbcx.JdbcDataSource',
+            'datasources.default.xa': true
+        ).close()
+
+        then:
+        Exception e = thrown()
+        (e.message + e.cause?.message).contains("its connection factory class [org.h2.jdbcx.JdbcDataSource] is not an XADataSource")
     }
 
     void "test no XA pool without an XA connection factory"() {
