@@ -29,6 +29,7 @@ loadScripts(document, 'script');</script>
 <ul id="navbar-top-firstrow" class="nav-list" title="Navigation">
 <li><a href="index.html">Overview</a></li>
 <li><a href="overview-tree.html">Tree</a></li>
+<li><a href="deprecated-list.html">Deprecated</a></li>
 <li class="nav-bar-cell1-rev">Index</li>
 <li><a href="search.html">Search</a></li>
 <li><a href="help-doc.html#index">Help</a></li>
@@ -49,7 +50,7 @@ loadScripts(document, 'script');</script>
 <div class="header">
 <h1>Index</h1>
 </div>
-<a href="#I:$">$</a>&nbsp;<a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:J">J</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:Q">Q</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<a href="#I:W">W</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="constant-values.html">Constant&nbsp;Field&nbsp;Values</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialized&nbsp;Form</a>
+<a href="#I:$">$</a>&nbsp;<a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:J">J</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:Q">Q</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<a href="#I:W">W</a>&nbsp;<a href="#I:X">X</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="constant-values.html">Constant&nbsp;Field&nbsp;Values</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialized&nbsp;Form</a>
 <h2 class="title" id="I:$">$</h2>
 <dl class="index">
 <dt><a href="io/micronaut/configuration/hibernate/jpa/proxy/IntroducedHibernateProxy.html#$registerInterceptor(io.micronaut.aop.MethodInterceptor)" class="member-name-link">$registerInterceptor(MethodInterceptor)</a> - Method in interface io.micronaut.configuration.hibernate.jpa.proxy.<a href="io/micronaut/configuration/hibernate/jpa/proxy/IntroducedHibernateProxy.html" title="interface in io.micronaut.configuration.hibernate.jpa.proxy">IntroducedHibernateProxy</a></dt>
@@ -201,6 +202,10 @@ registered with the <code>UniversalConnectionPoolManager</code>.</div>
 <dd>
 <div class="block">Returns the value of the <a href="./io/micronaut/configuration/jdbc/ucp/OracleUcpConfiguration.html#param-createConnectionInBorrowThread"><code>createConnectionInBorrowThread</code></a> record component.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/jdbc/ucp/PoolDataSourceCustomizer.html#customize(java.lang.String,oracle.ucp.jdbc.PoolDataSource)" class="member-name-link">customize(String, PoolDataSource)</a> - Method in interface io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/PoolDataSourceCustomizer.html" title="interface in io.micronaut.configuration.jdbc.ucp">PoolDataSourceCustomizer</a></dt>
+<dd>
+<div class="block">Customizes the pool data source.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/mybatis/MyBatisConfigurationCustomizer.html#customize(org.apache.ibatis.session.Configuration)" class="member-name-link">customize(Configuration)</a> - Method in interface io.micronaut.configuration.mybatis.<a href="io/micronaut/configuration/mybatis/MyBatisConfigurationCustomizer.html" title="interface in io.micronaut.configuration.mybatis">MyBatisConfigurationCustomizer</a></dt>
 <dd>
 <div class="block">Performs custom configuration operations on the given MyBatis configuration.</div>
@@ -219,6 +224,12 @@ registered with the <code>UniversalConnectionPoolManager</code>.</div>
 <dt><a href="io/micronaut/configuration/jdbc/tomcat/DatasourceFactory.html#dataSource(io.micronaut.configuration.jdbc.tomcat.DatasourceConfiguration)" class="member-name-link">dataSource(DatasourceConfiguration)</a> - Method in class io.micronaut.configuration.jdbc.tomcat.<a href="io/micronaut/configuration/jdbc/tomcat/DatasourceFactory.html" title="class in io.micronaut.configuration.jdbc.tomcat">DatasourceFactory</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbc/ucp/DatasourceFactory.html#dataSource(io.micronaut.configuration.jdbc.ucp.DatasourceConfiguration)" class="member-name-link">dataSource(DatasourceConfiguration)</a> - Method in class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/DatasourceFactory.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceFactory</a></dt>
+<dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Use <a href="io/micronaut/configuration/jdbc/ucp/DatasourceFactory.html#dataSource(io.micronaut.configuration.jdbc.ucp.DatasourceConfiguration,java.util.List)"><code>DatasourceFactory.dataSource(DatasourceConfiguration, List)</code></a> instead.</div>
+</div>
+</dd>
+<dt><a href="io/micronaut/configuration/jdbc/ucp/DatasourceFactory.html#dataSource(io.micronaut.configuration.jdbc.ucp.DatasourceConfiguration,java.util.List)" class="member-name-link">dataSource(DatasourceConfiguration, List)</a> - Method in class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/DatasourceFactory.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceFactory</a></dt>
 <dd>
 <div class="block">Method to get a PoolDataSource from the <a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp"><code>DatasourceConfiguration</code></a>.</div>
 </dd>
@@ -1028,6 +1039,8 @@ more compliant with the other datasource types.</div>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/jdbc/unpooled/DriverManagerDataSource.html#isWrapperFor(java.lang.Class)" class="member-name-link">isWrapperFor(Class)</a> - Method in class io.micronaut.configuration.jdbc.unpooled.<a href="io/micronaut/configuration/jdbc/unpooled/DriverManagerDataSource.html" title="class in io.micronaut.configuration.jdbc.unpooled">DriverManagerDataSource</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html#isXa()" class="member-name-link">isXa()</a> - Method in class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceConfiguration</a></dt>
+<dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:J">J</h2>
 <dl class="index">
@@ -1369,6 +1382,10 @@ consistently across JDBC pools.</div>
 <dd>
 <div class="block">Constructor.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/jdbc/ucp/PoolDataSourceCustomizer.html" class="type-name-link" title="interface in io.micronaut.configuration.jdbc.ucp">PoolDataSourceCustomizer</a> - Interface in <a href="io/micronaut/configuration/jdbc/ucp/package-summary.html">io.micronaut.configuration.jdbc.ucp</a></dt>
+<dd>
+<div class="block">Customizes a UCP <code>PoolDataSource</code> after it is configured and before the pool starts.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html#poolOptions" class="member-name-link">poolOptions</a> - Variable in class io.micronaut.configuration.vertx.mysql.client.<a href="io/micronaut/configuration/vertx/mysql/client/MySQLClientConfiguration.html" title="class in io.micronaut.configuration.vertx.mysql.client">MySQLClientConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/vertx/pg/client/PgClientConfiguration.html#poolOptions" class="member-name-link">poolOptions</a> - Variable in class io.micronaut.configuration.vertx.pg.client.<a href="io/micronaut/configuration/vertx/pg/client/PgClientConfiguration.html" title="class in io.micronaut.configuration.vertx.pg.client">PgClientConfiguration</a></dt>
@@ -1544,6 +1561,10 @@ if not set manually.</div>
 </dd>
 <dt><a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html#setName(java.lang.String)" class="member-name-link">setName(String)</a> - Method in class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html#setOnsConfiguration(java.lang.String)" class="member-name-link">setOnsConfiguration(String)</a> - Method in class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceConfiguration</a></dt>
+<dd>
+<div class="block">Sets the ONS configuration of Fast Connection Failover.</div>
+</dd>
 <dt><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html#setPackages(java.lang.String%5B%5D)" class="member-name-link">setPackages(String[])</a> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.EntityScanConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration.EntityScanConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html#setPackagesToScan(java.lang.String...)" class="member-name-link">setPackagesToScan(String...)</a> - Method in class io.micronaut.configuration.hibernate.jpa.<a href="io/micronaut/configuration/hibernate/jpa/JpaConfiguration.html" title="class in io.micronaut.configuration.hibernate.jpa">JpaConfiguration</a></dt>
@@ -1609,6 +1630,10 @@ if not set manually.</div>
 <dt><a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html#setValidationQuery(java.lang.String)" class="member-name-link">setValidationQuery(String)</a> - Method in class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceConfiguration</a></dt>
 <dd>
 <div class="block">Sets the validation query.</div>
+</dd>
+<dt><a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html#setXa(boolean)" class="member-name-link">setXa(boolean)</a> - Method in class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceConfiguration</a></dt>
+<dd>
+<div class="block">Whether to pool XA connections, for a transaction manager that enlists them in global transactions.</div>
 </dd>
 <dt><a href="io/micronaut/configuration/jdbi/transaction/spring/SpringTransactionHandler.html" class="type-name-link" title="class in io.micronaut.configuration.jdbi.transaction.spring">SpringTransactionHandler</a> - Class in <a href="io/micronaut/configuration/jdbi/transaction/spring/package-summary.html">io.micronaut.configuration.jdbi.transaction.spring</a></dt>
 <dd>
@@ -1728,7 +1753,15 @@ if not set manually.</div>
 <div class="block">Returns a new <a href="io/micronaut/jdbc/BaseDatasourceFactory.DataSourceCredentials.html" title="class in io.micronaut.jdbc"><code>BaseDatasourceFactory.DataSourceCredentials</code></a> instance with the given username.</div>
 </dd>
 </dl>
-<a href="#I:$">$</a>&nbsp;<a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:J">J</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:Q">Q</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<a href="#I:W">W</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="constant-values.html">Constant&nbsp;Field&nbsp;Values</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialized&nbsp;Form</a></main>
+<h2 class="title" id="I:X">X</h2>
+<dl class="index">
+<dt><a href="io/micronaut/configuration/jdbc/ucp/DatasourceFactory.html#xaDataSource(io.micronaut.configuration.jdbc.ucp.DatasourceConfiguration,javax.sql.DataSource)" class="member-name-link">xaDataSource(DatasourceConfiguration, DataSource)</a> - Method in class io.micronaut.configuration.jdbc.ucp.<a href="io/micronaut/configuration/jdbc/ucp/DatasourceFactory.html" title="class in io.micronaut.configuration.jdbc.ucp">DatasourceFactory</a></dt>
+<dd>
+<div class="block">Exposes the pool of a data source with <a href="io/micronaut/configuration/jdbc/ucp/DatasourceConfiguration.html#setXa(boolean)"><code>xa</code></a> enabled as an
+<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/XADataSource.html" title="class or interface in javax.sql" class="external-link"><code>XADataSource</code></a> for transaction managers that enlist XA connections.</div>
+</dd>
+</dl>
+<a href="#I:$">$</a>&nbsp;<a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:J">J</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:Q">Q</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<a href="#I:W">W</a>&nbsp;<a href="#I:X">X</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="constant-values.html">Constant&nbsp;Field&nbsp;Values</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialized&nbsp;Form</a></main>
 </div>
 </body>
 </html>

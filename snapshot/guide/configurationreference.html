@@ -1579,6 +1579,15 @@
 </thead>
 <tbody>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.xa</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to pool XA connections, for a transaction manager that enlists them in global transactions. The
+ connection factory class must then be an {@link XADataSource}, such as
+ {@code oracle.jdbc.xa.client.OracleXADataSource}. Defaults to {@code false}. The pool type is chosen when the
+ data source is created, so a refresh cannot change it.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">the name of the datasource</p></td>
@@ -1612,6 +1621,14 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.validation-query</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sets the validation query.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datasources.*.ons-configuration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the ONS configuration of Fast Connection Failover. It makes {@code ons-configuration} and
+ {@code onsConfiguration} bind as well as {@code onsconfiguration}, the key of the UCP setter
+ {@code setONSConfiguration}.</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
