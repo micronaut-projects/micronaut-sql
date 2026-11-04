@@ -16,10 +16,9 @@
 package io.micronaut.configuration.jdbc.dbcp;
 
 import io.micronaut.context.env.Environment;
-import io.micronaut.context.event.BeanCreatedEvent;
-import io.micronaut.context.event.BeanCreatedEventListener;
+import io.micronaut.context.event.BeanInitializedEventListener;
+import io.micronaut.context.event.BeanInitializingEvent;
 import io.micronaut.core.annotation.Internal;
-import io.micronaut.core.order.Ordered;
 import io.micronaut.jdbc.OracleSessionProgramHelper;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
@@ -30,15 +29,15 @@ import org.slf4j.LoggerFactory;
  * pool, as it is created and before the pool opens a connection. It holds the environment, so the pool does not
  * need to.
  * <p>
- * It runs before the other listeners of the configuration, as the configuration's {@code @PostConstruct} used to,
- * so that it receives the configuration itself rather than a {@link javax.sql.DataSource} wrapper. Applying it again
- * to the same configuration, as development mode does to a retained one, changes nothing.
+ * It runs when the configuration is initialized, as the configuration's {@code @PostConstruct} used to, and so before
+ * any listener of bean creation, one of which may replace the configuration with a {@link javax.sql.DataSource} wrapper
+ * whatever its order. A configuration that development mode retains already has it.
  *
  * @since 7.3.0
  */
 @Internal
 @Singleton
-final class OracleSessionProgramConfigurer implements BeanCreatedEventListener<DatasourceConfiguration>, Ordered {
+final class OracleSessionProgramConfigurer implements BeanInitializedEventListener<DatasourceConfiguration> {
 
     private static final Logger LOG = LoggerFactory.getLogger(OracleSessionProgramConfigurer.class);
 
@@ -52,7 +51,7 @@ final class OracleSessionProgramConfigurer implements BeanCreatedEventListener<D
     }
 
     @Override
-    public DatasourceConfiguration onCreated(BeanCreatedEvent<DatasourceConfiguration> event) {
+    public DatasourceConfiguration onInitialized(BeanInitializingEvent<DatasourceConfiguration> event) {
         DatasourceConfiguration datasourceConfiguration = event.getBean();
         try {
             OracleSessionProgramHelper.apply(
@@ -69,10 +68,5 @@ final class OracleSessionProgramConfigurer implements BeanCreatedEventListener<D
             }
         }
         return datasourceConfiguration;
-    }
-
-    @Override
-    public int getOrder() {
-        return HIGHEST_PRECEDENCE;
     }
 }
