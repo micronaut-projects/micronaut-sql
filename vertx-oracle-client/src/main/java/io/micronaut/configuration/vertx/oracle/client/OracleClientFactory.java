@@ -115,8 +115,11 @@ public class OracleClientFactory {
         try {
             fromUri = OracleConnectOptions.fromUri(oracleUri).toJson();
         } catch (IllegalArgumentException e) {
-            // neither the URI nor the cause, whose message repeats it, as the URI can carry a password
-            throw new ConfigurationException("Invalid Oracle connection URI, expected oracle:thin:@<database> or jdbc:oracle:thin:@<database>");
+            // the URI can carry a password, so leave out this exception, whose message repeats the URI, and a reason
+            // with a colon, which quotes part of it, such as "Connection property without value: x"
+            String reason = e.getCause() != null ? e.getCause().getMessage() : null;
+            throw new ConfigurationException("Invalid Oracle connection URI, expected oracle:thin:@<database> or jdbc:oracle:thin:@<database>"
+                + (reason != null && !reason.contains(":") ? ": " + reason : ""));
         }
         // the endpoint, and the other options the URI sets, which differ from the defaults
         JsonObject defaults = new OracleConnectOptions().toJson();

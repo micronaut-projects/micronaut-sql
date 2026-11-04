@@ -20,9 +20,12 @@ package io.micronaut.configuration.vertx.oracle.client;
  *
  * @since 7.3.0
  */
-public interface OracleClientSettings {
+public final class OracleClientSettings {
     /**
      * The prefix to use for all Vert.x Oracle client settings.
      */
-    String PREFIX = "vertx.oracle.client";
+    public static final String PREFIX = "vertx.oracle.client";
+
+    private OracleClientSettings() {
+    }
 }

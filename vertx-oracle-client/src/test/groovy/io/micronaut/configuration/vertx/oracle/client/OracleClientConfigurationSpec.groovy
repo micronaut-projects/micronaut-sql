@@ -95,6 +95,33 @@ class OracleClientConfigurationSpec extends Specification {
         e.cause == null
     }
 
+    void "a URI Vert.x cannot parse fails with the reason, without the URI"() {
+        when:
+        OracleClientFactory.fromUri(uri, new OracleConnectOptions())
+
+        then:
+        ConfigurationException e = thrown()
+        e.message.endsWith(reason)
+        !e.message.contains('s3cret')
+        e.cause == null
+
+        where:
+        uri                                                                                                                       | reason
+        'jdbc:oracle:thin:scott/s3cret@(DESCRIPTION=(ADDRESS=(PROTOCOL=tcps)(HOST=h)(PORT=1522))(CONNECT_DATA=(SERVICE_NAME=s)))' | ': TNS URL Format is not supported'
+        'oracle:thin:scott/s3cret@host1:1521,host2:1521/svc'                                                                       | ': URLs with multiple hosts are not supported yet'
+        'oracle:thin:scott/s3cret@ldap://ldap.example.com/svc'                                                                     | ': LDAP Syntax is not supported'
+        'oracle:thin:scott/s3cret@host:1521'                                                                                       | ': Missing service name or service id'
+    }
+
+    void "a reason that quotes part of the URI is left out, as it can be part of a password"() {
+        when: "an ampersand in the password splits it into a connection property without a value"
+        OracleClientFactory.fromUri('oracle:thin:@host:1521/svc?user=scott&password=abc&s3cret', new OracleConnectOptions())
+
+        then:
+        ConfigurationException e = thrown()
+        e.message == 'Invalid Oracle connection URI, expected oracle:thin:@<database> or jdbc:oracle:thin:@<database>'
+    }
+
     void "connection properties of the URI are added to the configured ones"() {
         given:
         OracleConnectOptions configured = new OracleConnectOptions()
