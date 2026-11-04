@@ -25,6 +25,18 @@ testing {
                 implementation(projects.micronautJdbcDbcp)
             }
         }
+        // Hibernate builds its session factory on the retained Hikari pool
+        register<JvmTestSuite>("hibernateTest") {
+            dependencies {
+                implementation(projects.micronautHibernateJpa)
+                implementation(mnData.micronaut.data.tx.hibernate) {
+                    exclude(group = "org.hibernate.orm")
+                }
+                implementation(projects.micronautJdbcHikari)
+                // the schema warning is asserted on
+                implementation(mnLogging.logback.classic)
+            }
+        }
         withType<JvmTestSuite>().configureEach {
             targets.configureEach {
                 testTask.configure {
@@ -48,5 +60,5 @@ testing {
 }
 
 tasks.named("check") {
-    dependsOn(testing.suites.named("ucpTest"), testing.suites.named("dbcpTest"))
+    dependsOn(testing.suites.named("ucpTest"), testing.suites.named("dbcpTest"), testing.suites.named("hibernateTest"))
 }

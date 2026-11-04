@@ -1,0 +1,19 @@
+In Micronaut development mode, a change that restarts the application builds a new `SessionFactory` (the `EntityManagerFactory`) from the entity classes of the new generation, so an entity that gained or lost a field is mapped as it now is. The `DataSource` is not recreated: the connection pools are retained across the restart (see <<jdbc-connection-pools, Development Mode Reloading of the connection pools>>), and the new `SessionFactory` is built on the same pool, so an in-memory database survives the restart. The `SessionFactory` of the previous generation is closed as that generation stops, and neither it nor Hibernate keeps the previous entity classes, which are collected with their generation.
+
+A change of method bodies only, such as a new body of a repository, service or entity method, that the runtime redefines in place, as it does when its instrumentation agent is attached, does not restart the application: the `SessionFactory` is kept, since the entities keep their fields.
+
+=== Schema Generation
+
+Whether the schema follows an entity change depends on the schema generation Hibernate is configured with. Set it for the `dev` environment, which development mode activates, in `src/main/resources/application-dev.properties`, rather than in `application.properties`, which production reads too:
+
+.application-dev.properties
+[source,properties]
+----
+jpa.default.properties.hibernate.hbm2ddl.auto=create-drop
+----
+
+* `create-drop` drops the tables as each generation stops and creates them from the current entities as the next starts: a new field gets its column, but the rows are reset on each restart. Seed the data you need at startup if you want it back.
+* `update` creates the missing tables and adds the missing columns, and keeps the rows. It never drops a table or a column, so a removed field leaves its column behind, and a column it adds must accept the rows already in the table: a field of a primitive type, which maps to a `NOT NULL` column, cannot be added to a table that has rows on most databases. Use a wrapper type, or a column default.
+* `create`, the `drop-and-create` of the Jakarta Persistence specification, drops and recreates the tables as each `SessionFactory` starts, which would silently delete the rows on each restart. Development mode never does that to a retained data source: the first `SessionFactory` built on a data source generates the schema as configured, as the application does when it starts, and one built on the same data source after a restart updates the schema instead, as `update` does, and logs a warning that recommends `create-drop` or `update` for the `dev` environment. A change under `datasources` releases the pool, and the first `SessionFactory` on the new pool generates the schema as configured again.
+
+The same applies to `jakarta.persistence.schema-generation.database.action`, which takes precedence over `hibernate.hbm2ddl.auto`. Outside development mode nothing changes. To evolve a schema while keeping its data in every environment, use a migration tool such as Flyway or Liquibase.
