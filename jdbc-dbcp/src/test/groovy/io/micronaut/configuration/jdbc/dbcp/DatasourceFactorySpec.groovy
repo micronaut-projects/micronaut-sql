@@ -89,7 +89,7 @@ class DatasourceFactorySpec extends Specification {
         then:
         !pools.isEmpty()
         pools.every { it.beanType == DatasourceConfiguration }
-        pools.every { it.stringValues(Retain, "invalidatedBy") == ["datasources"] as String[] }
+        pools.every { it.stringValues(Retain, "invalidatedBy") == ["datasources", "micronaut.application"] as String[] }
         pools.every { BeanDefinition<?> definition ->
             !definition.proxy && definition.requiredComponents.every { Class<?> type ->
                 !BeanLocator.isAssignableFrom(type)

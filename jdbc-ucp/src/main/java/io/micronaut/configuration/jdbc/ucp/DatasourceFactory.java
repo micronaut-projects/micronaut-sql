@@ -31,6 +31,7 @@ import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
+import io.micronaut.jdbc.OracleSessionProgramHelper;
 import oracle.ucp.UniversalConnectionPoolException;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
 import oracle.ucp.admin.UniversalConnectionPoolManagerImpl;
@@ -56,8 +57,8 @@ import java.util.Properties;
  * <p>
  * The factory holds neither the application context nor anything bound to it, so that development mode can retain
  * the factory with the pools it created across a restart, which {@link Retain} declares: a change of the
- * configuration under {@code datasources} or {@code ucp-manager} releases them. The factory destroys its pools when
- * it is destroyed.
+ * configuration under {@code datasources} or {@code ucp-manager}, or of the application name that the Oracle session
+ * program comes from, releases them. The factory destroys its pools when it is destroyed.
  *
  * @author toddsharp
  * @since 2.0.1
@@ -149,7 +150,7 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     @Context
     @EachBean(DatasourceConfiguration.class)
     @Requires(condition = JdbcDataSourceEnabled.class)
-    @Retain(invalidatedBy = {BasicJdbcConfiguration.PREFIX, UniversalConnectionPoolManagerConfiguration.PREFIX})
+    @Retain(invalidatedBy = {BasicJdbcConfiguration.PREFIX, OracleSessionProgramHelper.APPLICATION_PREFIX, UniversalConnectionPoolManagerConfiguration.PREFIX})
     public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration,
                                      List<PoolDataSourceCustomizer> customizers) {
         PoolDataSource ds = datasourceConfiguration.getPoolDataSource();

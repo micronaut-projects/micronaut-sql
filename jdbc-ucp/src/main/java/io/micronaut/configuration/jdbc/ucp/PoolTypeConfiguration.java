@@ -35,6 +35,31 @@ final class PoolTypeConfiguration {
     private boolean xa;
     private @Nullable String connectionFactoryClassName;
     private @Nullable String driverClassName;
+    private @Nullable ClassLoader classLoader;
+    private boolean developmentMode;
+
+    /**
+     * @param classLoader The class loader of the application context
+     * @param developmentMode Whether development mode is on, in which the pool may be retained across a restart
+     */
+    void useEnvironmentSettings(ClassLoader classLoader, boolean developmentMode) {
+        this.classLoader = classLoader;
+        this.developmentMode = developmentMode;
+    }
+
+    /**
+     * @return The class loader of the application context, or else the one of this module
+     */
+    ClassLoader classLoader() {
+        return classLoader != null ? classLoader : PoolTypeConfiguration.class.getClassLoader();
+    }
+
+    /**
+     * @return Whether development mode is on
+     */
+    boolean isDevelopmentMode() {
+        return developmentMode;
+    }
 
     boolean isXa() {
         return xa;

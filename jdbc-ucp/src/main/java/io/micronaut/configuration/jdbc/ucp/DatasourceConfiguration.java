@@ -85,7 +85,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
      */
     @Inject
     DatasourceConfiguration(@Parameter String name, @Parameter PoolTypeConfiguration poolType) throws SQLException {
-        this(name, poolType.isXa(), poolType.factoryClassName());
+        this(name, poolType.isXa(), poolType.factoryClassName(), poolType.classLoader(), poolType.isDevelopmentMode());
     }
 
     /**
@@ -104,13 +104,15 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
             environment.getProperty(DATASOURCES_PREFIX + name + ".xa", Boolean.class).orElse(false),
             environment.getProperty(DATASOURCES_PREFIX + name + ".connection-factory-class-name", String.class)
                 .or(() -> environment.getProperty(DATASOURCES_PREFIX + name + ".driver-class-name", String.class))
-                .orElse(null));
+                .orElse(null),
+            environment.getClassLoader(),
+            environment.isDevelopmentMode());
     }
 
-    private DatasourceConfiguration(String name, boolean xa, @Nullable String factoryClassName) throws SQLException {
+    private DatasourceConfiguration(String name, boolean xa, @Nullable String factoryClassName, ClassLoader classLoader, boolean developmentMode) throws SQLException {
         super();
         this.name = name;
-        this.delegate = createPoolDataSource(name, xa, factoryClassName);
+        this.delegate = createPoolDataSource(name, xa, factoryClassName, classLoader, developmentMode);
         this.delegate.setConnectionPoolName(name);
         this.calculatedSettings = new CalculatedSettings(this);
     }
@@ -146,7 +148,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         }
     }
 
-    private static PoolDataSourceImpl createPoolDataSource(String name, boolean xa, @Nullable String factoryClassName) {
+    private static PoolDataSourceImpl createPoolDataSource(String name, boolean xa, @Nullable String factoryClassName, ClassLoader classLoader, boolean developmentMode) {
         if (!xa) {
             return (PoolDataSourceImpl) PoolDataSourceFactory.getPoolDataSource();
         }
@@ -154,7 +156,7 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
             throw new ConfigurationException("Datasource [" + name + "] has xa enabled, but sets no connection factory class: "
                 + "set connection-factory-class-name to an XADataSource, such as oracle.jdbc.xa.client.OracleXADataSource");
         }
-        Class<?> factoryClass = ClassUtils.forName(factoryClassName, DatasourceConfiguration.class.getClassLoader()).orElse(null);
+        Class<?> factoryClass = findFactoryClass(name, factoryClassName, classLoader, developmentMode);
         if (factoryClass == null) {
             // in a native image, also when the class is not registered for reflection
             throw new ConfigurationException("Datasource [" + name + "] has xa enabled, but its connection factory class ["
@@ -165,6 +167,26 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
                 + factoryClassName + "] is not an XADataSource");
         }
         return new LocalConnectionPoolXADataSource();
+    }
+
+    /**
+     * Finds the connection factory class. Outside development mode that is the class loader of the application context.
+     * Development mode may retain the pool across a restart, while that class loader is the one of a generation of the
+     * application, so only the class loader of the pool is looked in: the pool loading a class of a generation could
+     * keep the retired class loader reachable.
+     */
+    private static @Nullable Class<?> findFactoryClass(String name, String factoryClassName, ClassLoader classLoader, boolean developmentMode) {
+        if (!developmentMode) {
+            return ClassUtils.forName(factoryClassName, classLoader).orElse(null);
+        }
+        Class<?> factoryClass = ClassUtils.forName(factoryClassName, DatasourceConfiguration.class.getClassLoader()).orElse(null);
+        if (factoryClass == null && ClassUtils.forName(factoryClassName, classLoader).isPresent()) {
+            throw new ConfigurationException("Datasource [" + name + "] has xa enabled, but its connection factory class ["
+                + factoryClassName + "] is only visible to the application's reloadable classes, which development mode does not support "
+                + "for a pool it retains across restarts, since the pool could keep a stopped generation of the application in memory: "
+                + "move the class to a dependency of the application, on its runtime classpath");
+        }
+        return factoryClass;
     }
 
     @Override

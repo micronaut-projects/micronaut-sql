@@ -48,7 +48,7 @@ class DatasourceFactorySpec extends Specification {
         then:
         // the factory receives no connection pool manager, whose bean receives a configuration implemented by introduction advice
         !pools.isEmpty()
-        pools.every { it.stringValues(Retain, "invalidatedBy") == ["datasources", "ucp-manager"] as String[] }
+        pools.every { it.stringValues(Retain, "invalidatedBy") == ["datasources", "micronaut.application", "ucp-manager"] as String[] }
         closure.every { BeanDefinition<?> definition ->
             !definition.proxy && definition.requiredComponents.every { Class<?> type ->
                 !BeanLocator.isAssignableFrom(type)

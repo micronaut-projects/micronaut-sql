@@ -27,6 +27,7 @@ import io.micronaut.core.convert.format.MapFormat;
 import io.micronaut.core.naming.conventions.StringConvention;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.CalculatedSettings;
+import io.micronaut.jdbc.OracleSessionProgramHelper;
 import jakarta.inject.Inject;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.jspecify.annotations.Nullable;
@@ -48,15 +49,16 @@ import java.util.Map;
  * <p>
  * The configuration is the pool. It holds neither the application context nor anything bound to it, so that
  * development mode can retain the pool across a restart, which {@link Retain} declares: a change of the configuration
- * under {@code datasources} releases it. The Oracle session program, which needs the environment, is applied by a bean
- * created event listener, {@code OracleSessionProgramConfigurer}.
+ * under {@code datasources}, or of the application name that the Oracle session program comes from, releases it. The
+ * Oracle session program, which needs the environment, is applied by a bean created event listener,
+ * {@code OracleSessionProgramConfigurer}.
  *
  * @author James Kleeh
  * @since 1.0
  */
 @Context
 @EachProperty(value = BasicJdbcConfiguration.PREFIX, primary = "default")
-@Retain(invalidatedBy = BasicJdbcConfiguration.PREFIX)
+@Retain(invalidatedBy = {BasicJdbcConfiguration.PREFIX, OracleSessionProgramHelper.APPLICATION_PREFIX})
 public class DatasourceConfiguration extends BasicDataSource implements BasicJdbcConfiguration {
 
     private static final String ORACLE_VSESSION_PROGRAM = "v$session.program";

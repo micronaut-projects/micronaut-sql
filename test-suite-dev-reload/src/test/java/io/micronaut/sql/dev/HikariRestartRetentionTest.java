@@ -158,6 +158,33 @@ class HikariRestartRetentionTest {
         }
     }
 
+    @Test
+    void anApplicationNameChangeReleasesThePool() {
+        try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
+            String url = "jdbc:h2:mem:" + UUID.randomUUID();
+            database(harness, url);
+            harness.property("micronaut.application.name", "one");
+            greeter(harness, "one");
+            harness.start();
+            HikariDataSource first = pool(harness.context());
+
+            // the Oracle session program of a pool comes from the application name
+            harness.resource("application.properties", """
+                datasources.default.url=%s
+                datasources.default.username=sa
+                datasources.default.password=
+                datasources.default.driver-class-name=org.h2.Driver
+                micronaut.application.name=two
+                """.formatted(url));
+            greeter(harness, "two");
+            harness.reload();
+            assertEquals(2, harness.generation());
+
+            assertNotSame(first, pool(harness.context()));
+            assertTrue(first.isClosed(), "the released pool is closed");
+        }
+    }
+
     private static void awaitCollected(WeakReference<?> reference) {
         for (int i = 0; i < 50 && reference.get() != null; i++) {
             System.gc();

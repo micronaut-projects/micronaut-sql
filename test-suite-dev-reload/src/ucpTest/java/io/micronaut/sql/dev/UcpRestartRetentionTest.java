@@ -24,6 +24,7 @@ import oracle.ucp.UniversalConnectionPoolLifeCycleState;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
 import oracle.ucp.admin.UniversalConnectionPoolManagerImpl;
 import oracle.ucp.jdbc.PoolDataSource;
+import oracle.ucp.jdbc.PoolXADataSource;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -40,6 +41,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -121,6 +123,86 @@ class UcpRestartRetentionTest {
             // the released pool was destroyed, so the manager runs only the new pool of the same name
             assertEquals(List.of("default"), List.of(manager().getConnectionPoolNames()));
             execute(second, "SELECT 1");
+        }
+    }
+
+    @Test
+    void anApplicationNameChangeReleasesThePool() throws Exception {
+        try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
+            String url = "jdbc:h2:mem:" + UUID.randomUUID();
+            database(harness, url);
+            harness.property("micronaut.application.name", "one");
+            greeter(harness, "one");
+            harness.start();
+            PoolDataSource first = pool(harness.context());
+            execute(first, "SELECT 1");
+
+            // the Oracle session program of a pool comes from the application name
+            harness.resource("application.properties", """
+                datasources.default.url=%s
+                datasources.default.username=sa
+                datasources.default.password=
+                datasources.default.driver-class-name=org.h2.Driver
+                micronaut.application.name=two
+                """.formatted(url));
+            greeter(harness, "two");
+            harness.reload();
+            assertEquals(2, harness.generation());
+
+            PoolDataSource second = pool(harness.context());
+            assertNotSame(first, second);
+            assertEquals(List.of("default"), List.of(manager().getConnectionPoolNames()));
+            execute(second, "SELECT 1");
+        }
+    }
+
+    @Test
+    void anXaPoolIsRetainedAcrossARestart() throws Exception {
+        try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
+            database(harness, "jdbc:h2:mem:" + UUID.randomUUID());
+            harness.property("datasources.default.connection-factory-class-name", "org.h2.jdbcx.JdbcDataSource");
+            harness.property("datasources.default.xa", "true");
+            greeter(harness, "one");
+            harness.start();
+            PoolDataSource pool = pool(harness.context());
+            assertTrue(pool instanceof PoolXADataSource);
+
+            greeter(harness, "two");
+            harness.reload();
+
+            ReloadTck.assertRetained(harness, pool);
+            assertSame(pool, pool(harness.context()));
+        }
+    }
+
+    @Test
+    void anXaFactoryClassAmongTheReloadableClassesIsRefused() {
+        try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
+            database(harness, "jdbc:h2:mem:" + UUID.randomUUID());
+            harness.property("datasources.default.connection-factory-class-name", "example.ReloadableXaDataSource");
+            harness.property("datasources.default.xa", "true");
+            harness.source("example.ReloadableXaDataSource", """
+                package example;
+
+                public class ReloadableXaDataSource implements javax.sql.XADataSource {
+                    private final javax.sql.XADataSource delegate = new org.h2.jdbcx.JdbcDataSource();
+                    public javax.sql.XAConnection getXAConnection() throws java.sql.SQLException { return delegate.getXAConnection(); }
+                    public javax.sql.XAConnection getXAConnection(String user, String password) throws java.sql.SQLException { return delegate.getXAConnection(user, password); }
+                    public java.io.PrintWriter getLogWriter() throws java.sql.SQLException { return delegate.getLogWriter(); }
+                    public void setLogWriter(java.io.PrintWriter out) throws java.sql.SQLException { delegate.setLogWriter(out); }
+                    public void setLoginTimeout(int seconds) throws java.sql.SQLException { delegate.setLoginTimeout(seconds); }
+                    public int getLoginTimeout() throws java.sql.SQLException { return delegate.getLoginTimeout(); }
+                    public java.util.logging.Logger getParentLogger() throws java.sql.SQLFeatureNotSupportedException { return delegate.getParentLogger(); }
+                }
+                """);
+            greeter(harness, "one");
+
+            Throwable failure = assertThrows(Throwable.class, harness::start);
+            String messages = "";
+            for (Throwable cause = failure; cause != null; cause = cause.getCause()) {
+                messages += cause.getMessage() + "\n";
+            }
+            assertTrue(messages.contains("[example.ReloadableXaDataSource] is only visible to the application's reloadable classes"), messages);
         }
     }
 
