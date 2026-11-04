@@ -19,8 +19,13 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.BeanLocator
 import io.micronaut.context.annotation.Retain
 import io.micronaut.context.event.ApplicationEventPublisher
+import io.micronaut.context.event.BeanDestroyedEvent
 import io.micronaut.core.value.PropertyResolver
 import io.micronaut.inject.BeanDefinition
+import io.micronaut.inject.qualifiers.Qualifiers
+import io.micronaut.jdbc.DataSourceResolver
+import oracle.ucp.admin.UniversalConnectionPoolManager
+import oracle.ucp.jdbc.PoolDataSource
 import spock.lang.Specification
 
 import javax.sql.DataSource
@@ -54,5 +59,67 @@ class DatasourceFactorySpec extends Specification {
 
         cleanup:
         applicationContext.close()
+    }
+
+    void "destroys the pool of a data source once its bean is destroyed"() {
+        given:
+        ApplicationContext applicationContext = startContext('destroyedPool')
+        DatasourceFactory factory = applicationContext.getBean(DatasourceFactory)
+        UniversalConnectionPoolManager manager = applicationContext.getBean(UniversalConnectionPoolManager)
+        String poolName = openPool(applicationContext)
+
+        when: "a data source bean this factory did not produce is destroyed"
+        factory.onDestroyed(new BeanDestroyedEvent(applicationContext, foreignDefinition(), Mock(DataSource)))
+
+        then:
+        manager.connectionPoolNames.contains(poolName)
+
+        when: "the data source bean this factory produced is destroyed"
+        applicationContext.destroyBean(applicationContext.getBeanRegistration(DataSource, Qualifiers.byName('default')))
+
+        then: "its pool is destroyed while the context is still running"
+        applicationContext.isRunning()
+        !manager.connectionPoolNames.contains(poolName)
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    void "close() destroys the pools that remain"() {
+        given:
+        ApplicationContext applicationContext = startContext('remainingPool')
+        UniversalConnectionPoolManager manager = applicationContext.getBean(UniversalConnectionPoolManager)
+        String poolName = openPool(applicationContext)
+
+        when:
+        applicationContext.getBean(DatasourceFactory).close()
+
+        then:
+        !manager.connectionPoolNames.contains(poolName)
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    private static ApplicationContext startContext(String database) {
+        return ApplicationContext.run([
+                "datasources.default.url"     : "jdbc:h2:mem:${database};DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE".toString(),
+                "datasources.default.username": "sa",
+                "datasources.default.password": ""
+        ], "test")
+    }
+
+    private static String openPool(ApplicationContext applicationContext) {
+        DataSourceResolver resolver = applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
+        PoolDataSource pool = (PoolDataSource) resolver.resolve(applicationContext.getBean(DataSource))
+        pool.getConnection().close()
+        return pool.connectionPoolName
+    }
+
+    private BeanDefinition<DataSource> foreignDefinition() {
+        BeanDefinition<DataSource> definition = Mock()
+        definition.getDeclaringType() >> Optional.of(String)
+        definition.getDeclaredQualifier() >> Qualifiers.byName('default')
+        return definition
     }
 }

@@ -60,6 +60,110 @@ There is also property `oracle.ucp.createConnectionInBorrowThread` that can cont
 Adding configuration `oracle.ucp.createConnectionInBorrowThread=true` will switch to the old behavior.
 More about it can be read here link:https://docs.oracle.com/en/database/oracle/oracle-database/23/jjucp/borrowing-ucp-connections.html[Borrowing Connections from UCP].
 
+UCP lifecycle settings are configured like any other pool property. For example, to recycle connections before a firewall idle timeout and to enable connection harvesting:
+
+[configuration]
+----
+datasources:
+  default:
+    maxConnectionReuseTime: 300
+    maxConnectionReuseCount: 1000
+    connectionHarvestTriggerCount: 5
+    connectionHarvestMaxCount: 2
+----
+
+Some UCP settings take objects rather than values, such as a connection creation consumer, a connection labeling callback or a custom access token supplier. Configure these with a bean that implements api:configuration.jdbc.ucp.PoolDataSourceCustomizer[]. OCI IAM and Azure AD tokens need no code: use the token providers of the <<oracle-jdbc-driver-extensions, Oracle JDBC Driver Extensions>>. Every customizer is applied to every UCP data source, in `Ordered` order, after configuration and before the pool starts. Use the data source name to target one:
+
+snippet::example.micronaut.ConnectionCreationCounter[tags="imports,clazz", project-base="tests/jdbc-ucp-docs"]
+
+<1> The customizer is called for each UCP data source, with its name, before the pool starts.
+<2> Registers a connection creation consumer, one of the settings configuration cannot supply. A token supplier for OCI IAM or Azure AD authentication is set the same way, with `pool.setTokenSupplier(...)`.
+
+NOTE: Prefer `PoolDataSourceCustomizer` over a `BeanCreatedEventListener<PoolDataSource>`. Other listeners, such as the one Micronaut Data registers, can wrap the `DataSource` bean before such a listener runs.
+
+To use link:https://docs.oracle.com/en/database/oracle/oracle-database/26/jjdbc/database-resident-connection-pooling.html[Database Resident Connection Pooling] (DRCP), append `:POOLED` to the service name of the URL (or add `(SERVER=POOLED)` to a long connect descriptor) and optionally name the connection class. UCP uses the pool name as the connection class when none is set. Add `(POOL_NAME=<name>)` to the connect descriptor to use one of the named pools of a multi-pool DRCP.
+
+[configuration]
+----
+datasources:
+  default:
+    url: jdbc:oracle:thin:@dbhost:1521/orders:POOLED
+    connectionFactoryClassName: oracle.jdbc.pool.OracleDataSource
+    data-source-properties:
+      oracle.jdbc.DRCPConnectionClass: orders
+----
+
+Oracle Database 23ai and later also support link:https://docs.oracle.com/en/database/oracle/oracle-database/26/netrf/local-naming-parameters-in-tns-ora-file.html[implicit connection pooling], which releases the pooled server at statement or transaction boundaries without application calls. It works with DRCP or Proxy Resident Connection Pooling, so the connect descriptor needs `(SERVER=POOLED)` as well as `(POOL_BOUNDARY=STATEMENT)` or `(POOL_BOUNDARY=TRANSACTION)`:
+
+[configuration]
+----
+datasources:
+  default:
+    url: jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=dbhost)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orders)(SERVER=POOLED)(POOL_BOUNDARY=TRANSACTION)))
+    connectionFactoryClassName: oracle.jdbc.pool.OracleDataSource
+----
+
+`STATEMENT` releases the server whenever the session is stateless, and `TRANSACTION` when a transaction ends or the session is stateless. When the connect descriptor sets `POOL_BOUNDARY`, it takes precedence over the pooling APIs: a release call on a session that was already released at a boundary does nothing, and a release call on a session that still holds state releases it.
+
+Oracle can also reset the session state at the end of each request with the link:https://docs.oracle.com/en/database/oracle/oracle-database/26/adfns/high-availability.html[`RESET_STATE`] service attribute. A database administrator sets it on the service, with `DBMS_SERVICE` or `srvctl`. With `LEVEL1`, Oracle cancels cursors, clears PL/SQL package state and truncates session temporary tables. With `LOGIN`, it also restores the login-time settings. The default is `NONE`.
+
+Which values are available depends on the release:
+
+* `LOGIN` is new in Oracle Database 26ai, and the Oracle JDBC driver supports it from 23.26.2. Earlier releases only offer `NONE` and `LEVEL1`.
+* Before 26ai, `RESET_STATE` depends on Application Continuity: on 21c and 23ai, it needs a service with Application Continuity or Transparent Application Continuity enabled. 26ai removed that dependency.
+* With DRCP, or when connecting through Oracle Connection Manager in Traffic Director Mode (CMAN-TDM) 23.26.4, `LOGIN` behaves like `LEVEL1`.
+
+`RESET_STATE` needs explicit request boundaries. UCP marks them whenever a connection is borrowed and returned. With other pools, Micronaut Data 5.3.0 and later marks them when `datasources.<name>.request-boundaries` is `true`. `RESET_STATE` does not apply to the implicit boundaries of `POOL_BOUNDARY`, nor to the implicit request boundaries that Transparent Application Continuity adds. With UCP, set `validateConnectionOnBorrow: true` when the service combines `RESET_STATE=LEVEL1` with Application Continuity. Without DRCP or CMAN-TDM, `LOGIN` is an alternative; with either, it behaves like `LEVEL1`, so set `validateConnectionOnBorrow: true` there as well. `LEVEL1` cannot be combined with UCP connection labeling.
+
+To connect to an link:https://docs.oracle.com/en/database/oracle/oracle-database/26/shard/jdbc-sharding-data-source.html[Oracle sharded database] without passing sharding keys, enable the JDBC sharding data source. When it can derive the sharding key from a SQL statement, it routes the statement directly to that shard, except in the cases described after this example:
+
+[configuration]
+----
+datasources:
+  default:
+    url: jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=gsmhost)(PORT=1522))(CONNECT_DATA=(SERVICE_NAME=oltp_rw_srvc.orders.oradbcloud)))
+    connectionFactoryClassName: oracle.jdbc.pool.OracleDataSource
+    data-source-properties:
+      oracle.jdbc.useShardingDriverConnection: true
+----
+
+NOTE: Oracle documents the sharding data source as a plain `OracleDataSource`: the driver keeps its own UCP pools for the shard catalog and for the shards, so it needs no pool of its own. Under `micronaut-jdbc-ucp`, every pooled connection is a sharding connection backed by those internal pools. This combination has not been tested against a sharded database.
+
+The sharding data source works with the JDBC Thin driver only. It runs PL/SQL on the shard catalog, and so does every statement while auto-commit is off, which includes the statements of Micronaut transactions. Setting `oracle.jdbc.allowSingleShardTransactionSupport` to `true` runs those transactions on a shard instead, so each transaction must stay within a single shard.
+
+link:https://docs.oracle.com/en/database/oracle/oracle-database/26/jjucp/fast-connection-failover.html[Fast Connection Failover] (FCF) lets UCP react to Fast Application Notification (FAN) events from Oracle RAC or Data Guard: it removes connections to a failed instance and rebalances connections when an instance comes back. FCF is off by default. It needs Oracle's ONS client libraries on the runtime classpath, whose versions are managed by Micronaut:
+
+dependency:ons[groupId="com.oracle.database.ha", scope="runtime"]
+
+dependency:simplefan[groupId="com.oracle.database.ha", scope="runtime"]
+
+[configuration]
+----
+datasources:
+  default:
+    fast-connection-failover-enabled: true
+    ons-configuration: nodes=racnode1:6200,racnode2:6200
+----
+
+Without `ons-configuration`, UCP reads the ONS configuration from the database (auto-ONS), which is enough for most RAC and Data Guard setups. `onsconfiguration`, the key of the UCP setter `setONSConfiguration`, also works.
+
+WARNING: Without the `ons` and `simplefan` libraries, a pool with FCF enabled still opens connections, but UCP background threads fail with `NoClassDefFoundError: oracle/ons/Subscriber` and no FAN events are received.
+
+To pool XA connections for a transaction manager that enlists them in global transactions, enable `xa` and set the connection factory class to an `XADataSource`, such as `oracle.jdbc.xa.client.OracleXADataSource`:
+
+[configuration]
+----
+datasources:
+  default:
+    url: jdbc:oracle:thin:@localhost:1521/FREEPDB1
+    username: scott
+    password: tiger
+    xa: true
+    connection-factory-class-name: oracle.jdbc.xa.client.OracleXADataSource
+----
+
+The data source is then a UCP `PoolXADataSource`, and a `javax.sql.XADataSource` bean of the same name returns XA connections from that pool. The `XADataSource` bean is not a `DataSource`, so the pool remains the only `DataSource` bean of its name. UCP does not hand out plain connections from an XA pool, so the `DataSource` bean borrows an XA connection and returns its local connection, which takes part in local transactions such as `@Transactional` methods, and closing that connection returns the XA connection to the pool. The pool's `createConnectionBuilder()`, which passes sharding keys and labels, returns connections the same way. These connections wrap UCP's connection, so they aren't an `OracleConnection`, a `ValidConnection` or a `LabelableConnection` themselves: use `connection.unwrap(...)` rather than a cast to reach those interfaces. Startup fails if `xa` is enabled and the connection factory class is not an `XADataSource`.
+
 For a list of other properties able to be configured, simply refer to the implementation that is being used. All setter methods are candidates for configuration.
 
 |=======

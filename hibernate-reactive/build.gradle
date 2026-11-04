@@ -12,8 +12,13 @@ dependencies {
     api libs.managed.hibernate.reactive.core
     api mn.micronaut.runtime
 
+    // Vert.x pulls in Jackson 2 releases with known vulnerabilities
+    implementation(platform(libs.jackson2.bom))
+
     compileOnly libs.managed.vertx.sql.client
     runtimeOnly libs.managed.ongres.scram.client
+    // Hibernate Reactive brings Vert.x 5.1.8, whose jackson-core 2.21.6 is affected by GHSA-7hhh-6rmp-j9qf and GHSA-p6pp-m3f8-5c89
+    runtimeOnly libs.managed.vertx.sql.client
 
     testAnnotationProcessor mn.micronaut.inject.java
     testImplementation mn.micronaut.inject.java
