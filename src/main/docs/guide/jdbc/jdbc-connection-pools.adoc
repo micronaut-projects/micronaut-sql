@@ -60,6 +60,41 @@ There is also property `oracle.ucp.createConnectionInBorrowThread` that can cont
 Adding configuration `oracle.ucp.createConnectionInBorrowThread=true` will switch to the old behavior.
 More about it can be read here link:https://docs.oracle.com/en/database/oracle/oracle-database/23/jjucp/borrowing-ucp-connections.html[Borrowing Connections from UCP].
 
+UCP lifecycle settings are configured like any other pool property. For example, to recycle connections before a firewall idle timeout and to enable connection harvesting:
+
+[configuration]
+----
+datasources:
+  default:
+    maxConnectionReuseTime: 300
+    maxConnectionReuseCount: 1000
+    connectionHarvestTriggerCount: 5
+    connectionHarvestMaxCount: 2
+----
+
+Some UCP settings take objects rather than values, such as a connection creation consumer, a connection labeling callback or a custom access token supplier. Configure these with a bean that implements api:configuration.jdbc.ucp.PoolDataSourceCustomizer[]. OCI IAM and Azure AD tokens need no code: use the token providers of the <<oracle-jdbc-driver-extensions, Oracle JDBC Driver Extensions>>. Every customizer is applied to every UCP data source, in `Ordered` order, after configuration and before the pool starts. Use the data source name to target one:
+
+snippet::example.micronaut.ConnectionCreationCounter[tags="imports,clazz", project-base="tests/jdbc-ucp-docs"]
+
+<1> The customizer is called for each UCP data source, with its name, before the pool starts.
+<2> Registers a connection creation consumer, one of the settings configuration cannot supply. A token supplier for OCI IAM or Azure AD authentication is set the same way, with `pool.setTokenSupplier(...)`.
+
+NOTE: Prefer `PoolDataSourceCustomizer` over a `BeanCreatedEventListener<PoolDataSource>`. Other listeners, such as the one Micronaut Data registers, can wrap the `DataSource` bean before such a listener runs.
+
+To use link:https://docs.oracle.com/en/database/oracle/oracle-database/26/jjdbc/database-resident-connection-pooling.html[Database Resident Connection Pooling] (DRCP), append `:POOLED` to the service name of the URL (or add `(SERVER=POOLED)` to a long connect descriptor) and optionally name the connection class. UCP uses the pool name as the connection class when none is set. Add `(POOL_NAME=<name>)` to the connect descriptor to use one of the named pools of a multi-pool DRCP.
+
+[configuration]
+----
+datasources:
+  default:
+    url: jdbc:oracle:thin:@dbhost:1521/orders:POOLED
+    connectionFactoryClassName: oracle.jdbc.pool.OracleDataSource
+    data-source-properties:
+      oracle.jdbc.DRCPConnectionClass: orders
+----
+
+Oracle Database 23ai and later also support implicit connection pooling, which releases the pooled server at statement or transaction boundaries without application calls. It is enabled in the connect descriptor with `(POOL_BOUNDARY=STATEMENT)` or `(POOL_BOUNDARY=TRANSACTION)`.
+
 For a list of other properties able to be configured, simply refer to the implementation that is being used. All setter methods are candidates for configuration.
 
 |=======
