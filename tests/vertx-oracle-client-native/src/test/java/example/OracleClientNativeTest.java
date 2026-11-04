@@ -5,6 +5,7 @@ import io.micronaut.http.HttpRequest;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import io.vertx.sqlclient.Pool;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +20,10 @@ class OracleClientNativeTest {
     @Inject
     @Client("/")
     HttpClient client;
+
+    // starts the Oracle container before the first request, which would otherwise time out waiting for it
+    @Inject
+    Pool pool;
 
     @Test
     void queriesThroughTheVertxOracleClient() {

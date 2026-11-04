@@ -22,7 +22,8 @@ final class BookController {
 
     @Post("/setup")
     CompletionStage<String> setup() {
-        return pool.query("CREATE TABLE book (id NUMBER PRIMARY KEY, title VARCHAR2(100), published TIMESTAMP)").execute()
+        return pool.query("DROP TABLE IF EXISTS book").execute()
+            .compose(dropped -> pool.query("CREATE TABLE book (id NUMBER PRIMARY KEY, title VARCHAR2(100), published TIMESTAMP)").execute())
             .compose(created -> pool.preparedQuery("INSERT INTO book (id, title, published) VALUES (?, ?, ?)")
                 .executeBatch(List.of(
                     Tuple.of(1, "The Stand", java.time.LocalDateTime.of(1978, 10, 3, 0, 0)),
