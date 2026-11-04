@@ -26,6 +26,7 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
+import io.micronaut.context.exceptions.DisabledBeanException;
 import io.micronaut.core.annotation.Internal;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -58,6 +59,11 @@ final class SessionFactoryPerJpaConfigurationFactory extends AbstractHibernateFa
     @Override
     @EachBean(JpaConfiguration.class)
     ServiceRegistry buildHibernateStandardServiceRegistry(JpaConfiguration jpaConfiguration) {
+        if (!jpaConfiguration.isEnabled()) {
+            // No service registry means no SessionFactory is built for this configuration,
+            // so Hibernate does not try to connect to its database at startup
+            throw new DisabledBeanException("JPA configuration [" + jpaConfiguration.getName() + "] is disabled");
+        }
         return super.buildHibernateStandardServiceRegistry(jpaConfiguration);
     }
 

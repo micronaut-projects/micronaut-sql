@@ -78,6 +78,22 @@ class CurrentSessionWithMultipleDataSourcesSpec extends Specification {
             context.close()
     }
 
+    void "test an application that defines multiple JPA configurations - one disabled"() {
+        when:
+            def context = ApplicationContext.run(
+                    'datasources.default.name': 'db1',
+                    'datasources.db2.url': 'jdbc:h2:mem:db2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+                    'jpa.default.entity-scan.packages': ['io.micronaut.configuration.hibernate.reactive.datasources.db1'],
+                    'jpa.db2.entity-scan.packages': ['io.micronaut.configuration.hibernate.reactive.datasources.db2'],
+                    'jpa.db2.enabled': false,
+            )
+        then:
+            context.findBean(SessionFactory, Qualifiers.byName("default")).isPresent()
+            !context.findBean(SessionFactory, Qualifiers.byName("db2")).isPresent()
+        cleanup:
+            context.close()
+    }
+
     void "test parallel init of non-default SessionFactory with missing entities"() {
         when:
             def context = ApplicationContext.run(
