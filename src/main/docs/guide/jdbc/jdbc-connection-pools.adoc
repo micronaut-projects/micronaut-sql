@@ -95,6 +95,24 @@ datasources:
 
 Oracle Database 23ai and later also support implicit connection pooling, which releases the pooled server at statement or transaction boundaries without application calls. It is enabled in the connect descriptor with `(POOL_BOUNDARY=STATEMENT)` or `(POOL_BOUNDARY=TRANSACTION)`.
 
+link:https://docs.oracle.com/en/database/oracle/oracle-database/26/jjucp/fast-connection-failover.html[Fast Connection Failover] (FCF) lets UCP react to Fast Application Notification (FAN) events from Oracle RAC or Data Guard: it removes connections to a failed instance and rebalances connections when an instance comes back. FCF is off by default. It needs Oracle's ONS client libraries on the runtime classpath, whose versions are managed by Micronaut:
+
+dependency:ons[groupId="com.oracle.database.ha", scope="runtime"]
+
+dependency:simplefan[groupId="com.oracle.database.ha", scope="runtime"]
+
+[configuration]
+----
+datasources:
+  default:
+    fast-connection-failover-enabled: true
+    ons-configuration: nodes=racnode1:6200,racnode2:6200
+----
+
+Without `ons-configuration`, UCP reads the ONS configuration from the database (auto-ONS), which is enough for most RAC and Data Guard setups. `onsconfiguration`, the key of the UCP setter `setONSConfiguration`, also works.
+
+WARNING: Without the `ons` and `simplefan` libraries, a pool with FCF enabled still opens connections, but UCP background threads fail with `NoClassDefFoundError: oracle/ons/Subscriber` and no FAN events are received.
+
 For a list of other properties able to be configured, simply refer to the implementation that is being used. All setter methods are candidates for configuration.
 
 |=======

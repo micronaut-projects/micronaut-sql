@@ -5,6 +5,7 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.exceptions.ConfigurationException
 import oracle.ucp.ConnectionCreationInformation
 import oracle.ucp.jdbc.PoolDataSource
+import oracle.ucp.jdbc.PoolDataSourceImpl
 import spock.lang.Specification
 
 import javax.sql.DataSource
@@ -99,5 +100,65 @@ class PoolDataSourceCustomizationSpec extends Specification {
 
         cleanup:
         applicationContext.close()
+    }
+
+    void "Fast Connection Failover is off by default"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run([
+                'datasources.default.url'     : 'jdbc:h2:mem:fandefault;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+                'datasources.default.username': 'sa',
+                'datasources.default.password': ''
+        ], 'test')
+
+        expect:
+        !applicationContext.getBean(DataSource).unwrap(PoolDataSource).getFastConnectionFailoverEnabled()
+
+        cleanup:
+        applicationContext?.close()
+    }
+
+    void "Fast Connection Failover and the ONS configuration bind with the key #onsKey"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run([
+                'datasources.default.url'                             : 'jdbc:h2:mem:fan;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+                'datasources.default.username'                        : 'sa',
+                'datasources.default.password'                        : '',
+                'datasources.default.fast-connection-failover-enabled': true,
+                ('datasources.default.' + onsKey)                     : 'nodes=racnode1:6200,racnode2:6200'
+        ], 'test')
+        PoolDataSource dataSource = applicationContext.getBean(DataSource).unwrap(PoolDataSource)
+
+        expect:
+        dataSource.getFastConnectionFailoverEnabled()
+        dataSource.getONSConfiguration() == 'nodes=racnode1:6200,racnode2:6200'
+
+        cleanup:
+        applicationContext?.close()
+
+        where:
+        onsKey << ['ons-configuration', 'onsConfiguration', 'onsconfiguration', 'ONSConfiguration']
+    }
+
+    void "an ONS configuration the pool rejects fails with a ConfigurationException"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run('test')
+        DatasourceConfiguration configuration = new DatasourceConfiguration('default', applicationContext.environment)
+        configuration.delegate = new PoolDataSourceImpl() {
+            @Override
+            void setONSConfiguration(String onsConfiguration) throws SQLException {
+                throw new SQLException('invalid ONS configuration')
+            }
+        }
+
+        when:
+        configuration.setOnsConfiguration('nodes=')
+
+        then:
+        ConfigurationException e = thrown()
+        e.message == 'Unable to set datasource ONS configuration: invalid ONS configuration'
+        e.cause instanceof SQLException
+
+        cleanup:
+        applicationContext?.close()
     }
 }
