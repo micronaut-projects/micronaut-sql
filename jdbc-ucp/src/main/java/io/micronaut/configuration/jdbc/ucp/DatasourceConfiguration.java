@@ -77,18 +77,40 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
     private final Properties dataSourceProperties = new Properties();
 
     /**
-     * Constructor. The environment is read only to choose between an XA and a plain pool: the configuration does not
-     * keep it.
+     * Constructor.
+     *
+     * @param name name that comes from properties
+     * @param poolType The settings that choose between an XA and a plain pool
+     * @throws SQLException if the pool name cannot be set
+     */
+    @Inject
+    DatasourceConfiguration(@Parameter String name, @Parameter PoolTypeConfiguration poolType) throws SQLException {
+        this(name, poolType.isXa(), poolType.factoryClassName());
+    }
+
+    /**
+     * Constructor reading the settings that choose between an XA and a plain pool from the environment, which the
+     * configuration does not keep.
      *
      * @param name name that comes from properties
      * @param environment The Micronaut {@link Environment}
      * @throws SQLException if the pool name cannot be set
+     * @deprecated The configuration receives no environment, so that the pool it configures can outlive it. The
+     * context creates the configuration from its own settings.
      */
-    @Inject
-    public DatasourceConfiguration(@Parameter String name, Environment environment) throws SQLException {
+    @Deprecated(since = "7.3.0", forRemoval = true)
+    public DatasourceConfiguration(String name, Environment environment) throws SQLException {
+        this(name,
+            environment.getProperty(DATASOURCES_PREFIX + name + ".xa", Boolean.class).orElse(false),
+            environment.getProperty(DATASOURCES_PREFIX + name + ".connection-factory-class-name", String.class)
+                .or(() -> environment.getProperty(DATASOURCES_PREFIX + name + ".driver-class-name", String.class))
+                .orElse(null));
+    }
+
+    private DatasourceConfiguration(String name, boolean xa, @Nullable String factoryClassName) throws SQLException {
         super();
         this.name = name;
-        this.delegate = createPoolDataSource(name, environment);
+        this.delegate = createPoolDataSource(name, xa, factoryClassName);
         this.delegate.setConnectionPoolName(name);
         this.calculatedSettings = new CalculatedSettings(this);
     }
@@ -124,20 +146,15 @@ public class DatasourceConfiguration implements BasicJdbcConfiguration {
         }
     }
 
-    private static PoolDataSourceImpl createPoolDataSource(String name, Environment environment) {
-        // the pool type must be chosen before the configuration is bound to it, so the settings are read up front
-        String prefix = DATASOURCES_PREFIX + name + ".";
-        if (!environment.getProperty(prefix + "xa", Boolean.class).orElse(false)) {
+    private static PoolDataSourceImpl createPoolDataSource(String name, boolean xa, @Nullable String factoryClassName) {
+        if (!xa) {
             return (PoolDataSourceImpl) PoolDataSourceFactory.getPoolDataSource();
         }
-        String factoryClassName = environment.getProperty(prefix + "connection-factory-class-name", String.class)
-            .or(() -> environment.getProperty(prefix + "driver-class-name", String.class))
-            .orElse(null);
         if (factoryClassName == null) {
             throw new ConfigurationException("Datasource [" + name + "] has xa enabled, but sets no connection factory class: "
                 + "set connection-factory-class-name to an XADataSource, such as oracle.jdbc.xa.client.OracleXADataSource");
         }
-        Class<?> factoryClass = ClassUtils.forName(factoryClassName, environment.getClassLoader()).orElse(null);
+        Class<?> factoryClass = ClassUtils.forName(factoryClassName, DatasourceConfiguration.class.getClassLoader()).orElse(null);
         if (factoryClass == null) {
             // in a native image, also when the class is not registered for reflection
             throw new ConfigurationException("Datasource [" + name + "] has xa enabled, but its connection factory class ["
