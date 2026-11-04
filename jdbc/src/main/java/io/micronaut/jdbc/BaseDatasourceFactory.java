@@ -16,7 +16,9 @@
 package io.micronaut.jdbc;
 
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.event.BeanDestroyedEvent;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.runtime.context.scope.refresh.RefreshEvent;
 import io.micronaut.runtime.context.scope.refresh.RefreshEventListener;
 import org.jspecify.annotations.NonNull;
@@ -113,6 +115,23 @@ public abstract class BaseDatasourceFactory implements RefreshEventListener {
      * @throws SQLException if the pool could not be updated
      */
     protected abstract void dataSourceCredentialsChanged(String dataSourceName, DataSourceCredentials dataSourceCredentials) throws SQLException;
+
+    /**
+     * Resolves the name of the data source whose bean was destroyed, if this factory produced the bean.
+     *
+     * @param event The bean destroyed event
+     * @return The name of the data source, or {@code null} if this factory did not produce a named bean
+     * @since 7.2.1
+     */
+    protected @Nullable String findDataSourceName(BeanDestroyedEvent<?> event) {
+        var definition = event.getBeanDefinition();
+        Class<?> declaringType = definition.getDeclaringType().orElse(null);
+        if (declaringType == null || !declaringType.isInstance(this)) {
+            return null;
+        }
+        var qualifier = definition.getDeclaredQualifier();
+        return qualifier == null ? null : Qualifiers.findName(qualifier);
+    }
 
     /**
      * A record representing datasource credentials.

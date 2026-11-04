@@ -20,8 +20,13 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.annotation.Retain;
+import io.micronaut.context.exceptions.ConfigurationException;
+import io.micronaut.context.exceptions.DisabledBeanException;
+import io.micronaut.context.event.BeanDestroyedEvent;
+import io.micronaut.context.event.BeanDestroyedEventListener;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.DataSourceResolver;
@@ -30,6 +35,7 @@ import oracle.ucp.UniversalConnectionPoolException;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
 import oracle.ucp.admin.UniversalConnectionPoolManagerImpl;
 import oracle.ucp.jdbc.PoolDataSource;
+import oracle.ucp.jdbc.PoolXADataSource;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +44,10 @@ import jakarta.annotation.PreDestroy;
 import jakarta.inject.Inject;
 
 import javax.sql.DataSource;
+import javax.sql.XADataSource;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -55,7 +63,7 @@ import java.util.Properties;
  * @since 2.0.1
  */
 @Factory
-public class DatasourceFactory extends BaseDatasourceFactory implements AutoCloseable {
+public class DatasourceFactory extends BaseDatasourceFactory implements AutoCloseable, BeanDestroyedEventListener<DataSource> {
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
     private final boolean connectionPoolManagerEnabled;
 
@@ -124,13 +132,34 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
      *
      * @param datasourceConfiguration A {@link DatasourceConfiguration}
      * @return A {@link PoolDataSource}
+     * @deprecated Use {@link #dataSource(DatasourceConfiguration, List)} instead.
+     */
+    @Deprecated(since = "7.3.0", forRemoval = true)
+    public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
+        return dataSource(datasourceConfiguration, List.of());
+    }
+
+    /**
+     * Method to get a PoolDataSource from the {@link DatasourceConfiguration}.
+     *
+     * @param datasourceConfiguration A {@link DatasourceConfiguration}
+     * @param customizers The pool data source customizers, applied in order before the pool starts
+     * @return A {@link PoolDataSource}
      */
     @Context
     @EachBean(DatasourceConfiguration.class)
     @Requires(condition = JdbcDataSourceEnabled.class)
     @Retain(invalidatedBy = {BasicJdbcConfiguration.PREFIX, UniversalConnectionPoolManagerConfiguration.PREFIX})
-    public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
+    public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration,
+                                     List<PoolDataSourceCustomizer> customizers) {
         PoolDataSource ds = datasourceConfiguration.getPoolDataSource();
+        for (PoolDataSourceCustomizer customizer : customizers) {
+            try {
+                customizer.customize(datasourceConfiguration.getName(), ds);
+            } catch (SQLException e) {
+                throw new ConfigurationException("Failed to customize data source [" + datasourceConfiguration.getName() + "]: " + e.getMessage(), e);
+            }
+        }
         dataSources.put(datasourceConfiguration.getName(), ds);
 
         return ds;
@@ -153,21 +182,66 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         return ucpDataSourcePoolMetadata;
     }
 
+    /**
+     * Exposes the pool of a data source with {@link DatasourceConfiguration#setXa(boolean) xa} enabled as an
+     * {@link XADataSource} for transaction managers that enlist XA connections. The bean delegates to the
+     * {@link PoolXADataSource} of the data source bean, which development mode may have retained from an earlier
+     * context, and is not itself a {@link DataSource}, so the pool remains the only {@link DataSource} bean of its
+     * name. That bean still opens connections for local transactions, from XA connections of the same pool.
+     *
+     * @param datasourceConfiguration A {@link DatasourceConfiguration}
+     * @param dataSource The data source bean of the configuration, required so that the pool is created, customized and started first
+     * @return The XA data source; the bean is disabled when xa is not enabled
+     * @since 7.3.0
+     */
+    @EachBean(DatasourceConfiguration.class)
+    @Requires(condition = JdbcDataSourceEnabled.class)
+    public XADataSource xaDataSource(DatasourceConfiguration datasourceConfiguration,
+                                     @Parameter DataSource dataSource) {
+        if (!datasourceConfiguration.isXa()) {
+            throw new DisabledBeanException("Data source [" + datasourceConfiguration.getName() + "] does not have xa enabled");
+        }
+        PoolXADataSource pool = dataSourceResolver.resolve(dataSource) instanceof PoolXADataSource resolved
+            ? resolved
+            : (PoolXADataSource) datasourceConfiguration.getPoolDataSource();
+        return new UcpXADataSource(pool);
+    }
+
+    /**
+     * Closes the pool of a data source once its bean is destroyed, after the beans that depend on it, such as a
+     * JPA {@code SessionFactory} that drops the schema on close. The remaining pools are closed by {@link #close()}.
+     *
+     * @param event The bean destroyed event
+     */
+    @Override
+    public void onDestroyed(BeanDestroyedEvent<DataSource> event) {
+        String name = findDataSourceName(event);
+        PoolDataSource dataSource = name == null ? null : dataSources.remove(name);
+        if (dataSource != null) {
+            close(dataSource);
+        }
+    }
+
     @Override
     @PreDestroy
     public void close() {
+        for (PoolDataSource dataSource : dataSources.values()) {
+            close(dataSource);
+        }
+        dataSources.clear();
+    }
+
+    private void close(PoolDataSource dataSource) {
         UniversalConnectionPoolManager connectionPoolManager = connectionPoolManager();
         if (connectionPoolManager != null) {
-            for (PoolDataSource dataSource : dataSources.values()) {
-                try {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Closing connection pool named: {}", dataSource.getConnectionPoolName());
-                    }
-                    connectionPoolManager.destroyConnectionPool(dataSource.getConnectionPoolName());
-                } catch (Exception e) {
-                    if (LOG.isWarnEnabled()) {
-                        LOG.warn("Error closing data source [" + dataSource + "]: " + e.getMessage(), e);
-                    }
+            try {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Closing connection pool named: {}", dataSource.getConnectionPoolName());
+                }
+                connectionPoolManager.destroyConnectionPool(dataSource.getConnectionPoolName());
+            } catch (Exception e) {
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn("Error closing data source [" + dataSource + "]: " + e.getMessage(), e);
                 }
             }
         }

@@ -16,11 +16,14 @@
 package io.micronaut.configuration.jdbc.tomcat
 
 import io.micronaut.context.ApplicationContext
-import io.micronaut.context.event.ApplicationEventPublisher
 import io.micronaut.context.BeanLocator
+import io.micronaut.context.event.ApplicationEventPublisher
+import io.micronaut.context.event.BeanDestroyedEvent
 import io.micronaut.core.value.PropertyResolver
 import io.micronaut.inject.BeanDefinition
+import io.micronaut.inject.qualifiers.Qualifiers
 import io.micronaut.jdbc.DataSourceResolver
+import org.apache.tomcat.jdbc.pool.ConnectionPool
 import org.apache.tomcat.jdbc.pool.DataSource
 import spock.lang.Specification
 
@@ -97,5 +100,62 @@ class DatasourceFactorySpec extends Specification {
 
         cleanup:
         applicationContext.close()
+    }
+
+    def "closes the pool of a data source once its bean is destroyed"() {
+        given:
+        ApplicationContext applicationContext = startContext('destroyedPool')
+        DataSource dataSource = openPool(applicationContext)
+        ConnectionPool pool = dataSource.pool
+
+        when: "a data source bean this factory did not produce is destroyed"
+        applicationContext.getBean(DatasourceFactory).onDestroyed(
+                new BeanDestroyedEvent(applicationContext, foreignDefinition(), dataSource))
+
+        then:
+        !pool.isClosed()
+
+        when: "the data source bean this factory produced is destroyed"
+        applicationContext.destroyBean(applicationContext.getBeanRegistration(javax.sql.DataSource, Qualifiers.byName('default')))
+
+        then: "its pool is closed while the context is still running"
+        applicationContext.isRunning()
+        pool.isClosed()
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    def "close() closes the pools that remain open"() {
+        given:
+        ApplicationContext applicationContext = startContext('remainingPool')
+        ConnectionPool pool = openPool(applicationContext).pool
+
+        when:
+        applicationContext.getBean(DatasourceFactory).close()
+
+        then:
+        pool.isClosed()
+
+        cleanup:
+        applicationContext.close()
+    }
+
+    private static ApplicationContext startContext(String database) {
+        return ApplicationContext.run('datasources.default.url': "jdbc:h2:mem:${database};DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE".toString())
+    }
+
+    private static DataSource openPool(ApplicationContext applicationContext) {
+        DataSourceResolver resolver = applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT)
+        DataSource pool = (DataSource) resolver.resolve(applicationContext.getBean(javax.sql.DataSource))
+        pool.getConnection().close()
+        return pool
+    }
+
+    private BeanDefinition<javax.sql.DataSource> foreignDefinition() {
+        BeanDefinition<javax.sql.DataSource> definition = Mock()
+        definition.getDeclaringType() >> Optional.of(String)
+        definition.getDeclaredQualifier() >> Qualifiers.byName('default')
+        return definition
     }
 }
