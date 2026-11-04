@@ -7,15 +7,25 @@ import oracle.ucp.ConnectionLabelingCallback
 import oracle.ucp.jdbc.PoolDataSource
 import oracle.ucp.jdbc.PoolXADataSource
 import spock.lang.Specification
+import spock.lang.TempDir
 
 import javax.sql.DataSource
+import javax.tools.ToolProvider
 import java.sql.Connection
 import javax.sql.XAConnection
 import javax.sql.XADataSource
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.net.URLClassLoader
+import java.nio.file.Files
+import java.nio.file.Path
 
 class XaDatasourceSpec extends Specification {
+
+    private static final String CHILD_ONLY_FACTORY = "childonly.ChildOnlyXADataSource"
+
+    @TempDir
+    Path classes
 
     void "test an XA pool is created when xa is enabled"() {
         given:
@@ -173,6 +183,115 @@ class XaDatasourceSpec extends Specification {
         then:
         Exception e = thrown()
         (e.message + e.cause?.message).contains("its connection factory class [oracle.jdbc.pool.OracleDataSource] is not an XADataSource")
+    }
+
+    void "test a connection factory class only the class loader of the context sees is found outside development mode"() {
+        given:
+        URLClassLoader loader = childOnlyLoader()
+        ClassLoader threadLoader = Thread.currentThread().contextClassLoader
+        // UCP loads the connection factory class from the thread context class loader as it starts the pool
+        Thread.currentThread().contextClassLoader = loader
+
+        when:
+        ApplicationContext context = ApplicationContext.builder(
+            'datasources.default.url': 'jdbc:h2:mem:xaChildLoader;DB_CLOSE_ON_EXIT=FALSE',
+            'datasources.default.username': 'sa',
+            'datasources.default.password': '',
+            'datasources.default.connection-factory-class-name': CHILD_ONLY_FACTORY,
+            'datasources.default.xa': true
+        ).classLoader(loader).start()
+
+        then:
+        context.getBean(DatasourceConfiguration).xa
+        context.getBean(XADataSource) != null
+
+        cleanup:
+        context?.close()
+        loader?.close()
+        Thread.currentThread().contextClassLoader = threadLoader
+    }
+
+    void "test a connection factory class only the class loader of the context sees is refused in development mode"() {
+        given:
+        URLClassLoader loader = childOnlyLoader()
+
+        when:
+        ApplicationContext.builder(
+            'micronaut.dev.enabled': true,
+            'datasources.default.url': 'jdbc:h2:mem:xaChildLoaderDev;DB_CLOSE_ON_EXIT=FALSE',
+            'datasources.default.username': 'sa',
+            'datasources.default.password': '',
+            'datasources.default.connection-factory-class-name': CHILD_ONLY_FACTORY,
+            'datasources.default.xa': true
+        ).classLoader(loader).start().close()
+
+        then:
+        Exception e = thrown()
+        String message = e.message + e.cause?.message
+        message.contains("its connection factory class [$CHILD_ONLY_FACTORY] is only visible to the application's reloadable classes")
+        message.contains("move the class to a dependency of the application")
+
+        cleanup:
+        loader?.close()
+    }
+
+    void "test a connection factory class the pool can see is used in development mode"() {
+        given:
+        ApplicationContext context = ApplicationContext.run(
+            'micronaut.dev.enabled': true,
+            'datasources.default.url': 'jdbc:h2:mem:xaDev;DB_CLOSE_ON_EXIT=FALSE',
+            'datasources.default.username': 'sa',
+            'datasources.default.password': '',
+            'datasources.default.connection-factory-class-name': 'org.h2.jdbcx.JdbcDataSource',
+            'datasources.default.xa': true
+        )
+
+        expect:
+        context.getBean(DatasourceConfiguration).xa
+
+        cleanup:
+        context?.close()
+    }
+
+    void "test a connection factory class that cannot be loaded in development mode is reported as not found"() {
+        when:
+        ApplicationContext.run(
+            'micronaut.dev.enabled': true,
+            'datasources.default.url': 'jdbc:h2:mem:xaMissingDev;DB_CLOSE_ON_EXIT=FALSE',
+            'datasources.default.username': 'sa',
+            'datasources.default.password': '',
+            'datasources.default.connection-factory-class-name': 'oracle.jdbc.xa.client.OracleXADataSourceTypo',
+            'datasources.default.xa': true
+        ).close()
+
+        then:
+        Exception e = thrown()
+        (e.message + e.cause?.message).contains("its connection factory class [oracle.jdbc.xa.client.OracleXADataSourceTypo] was not found")
+    }
+
+    /**
+     * @return A class loader with a class of its own, which the class loader of the module does not see
+     */
+    private URLClassLoader childOnlyLoader() {
+        Path source = classes.resolve("ChildOnlyXADataSource.java")
+        Files.writeString(source, """
+package childonly;
+
+public class ChildOnlyXADataSource implements javax.sql.XADataSource {
+    private final javax.sql.XADataSource delegate = new org.h2.jdbcx.JdbcDataSource();
+    public javax.sql.XAConnection getXAConnection() throws java.sql.SQLException { return delegate.getXAConnection(); }
+    public javax.sql.XAConnection getXAConnection(String user, String password) throws java.sql.SQLException { return delegate.getXAConnection(user, password); }
+    public java.io.PrintWriter getLogWriter() throws java.sql.SQLException { return delegate.getLogWriter(); }
+    public void setLogWriter(java.io.PrintWriter out) throws java.sql.SQLException { delegate.setLogWriter(out); }
+    public void setLoginTimeout(int seconds) throws java.sql.SQLException { delegate.setLoginTimeout(seconds); }
+    public int getLoginTimeout() throws java.sql.SQLException { return delegate.getLoginTimeout(); }
+    public java.util.logging.Logger getParentLogger() throws java.sql.SQLFeatureNotSupportedException { return delegate.getParentLogger(); }
+}
+""")
+        int compiled = ToolProvider.systemJavaCompiler.run(null, null, null,
+            "-cp", System.getProperty("java.class.path"), "-d", classes.toString(), source.toString())
+        assert compiled == 0
+        return new URLClassLoader([classes.toUri().toURL()] as URL[], getClass().classLoader)
     }
 
     void "test no XA pool without an XA connection factory"() {
