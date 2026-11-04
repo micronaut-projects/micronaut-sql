@@ -3184,6 +3184,9 @@ runtime = [
 <div class="paragraph">
 <p>You can disable Micronaut Hibernate JPA, for example in a test, by setting <code>jpa.enabled</code> to <code>false</code>.</p>
 </div>
+<div class="paragraph">
+<p>To disable a single JPA configuration and keep the others, set <code>jpa.&lt;name&gt;.enabled</code> to <code>false</code>, for example <code>jpa.default.enabled</code>. No <code>SessionFactory</code> is created for a disabled configuration, so Hibernate does not connect to its database at startup.</p>
+</div>
 
 <h2 id="hibernate-inject-session"><a class="anchor" href="#hibernate-inject-session"></a>5.2 Injecting an EntityManager or Hibernate Session</h2>
 
