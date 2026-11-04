@@ -40,6 +40,8 @@ dependencyResolutionManagement {
 }
 gradle.beforeProject {
     micronautSnapshotRepositories(it.repositories)
+    // a project repository disables the settings ones, so a project without its own still needs Central
+    it.repositories.mavenCentral()
 }
 
 micronautBuild {
