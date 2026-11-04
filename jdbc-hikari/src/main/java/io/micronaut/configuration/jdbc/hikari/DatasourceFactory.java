@@ -26,6 +26,7 @@ import io.micronaut.context.event.BeanDestroyedEventListener;
 import io.micronaut.jdbc.BaseDatasourceFactory;
 import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
+import io.micronaut.jdbc.OracleSessionProgramHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +41,8 @@ import java.util.Map;
  * <p>
  * The factory holds neither the application context nor anything bound to it, so that development mode can retain
  * the factory with the pools it created across a restart, which {@link Retain} declares: a change of the
- * configuration under {@code datasources} releases them. The factory closes its pools when it is destroyed. The
+ * configuration under {@code datasources}, or of the application name that the Oracle session program comes from,
+ * releases them. The factory closes its pools when it is destroyed. The
  * Oracle session program and the metrics, which need the context, are applied by bean created event listeners:
  * {@code OracleSessionProgramConfigurer} and {@code HikariMetricsConfigurer}.
  *
@@ -85,7 +87,7 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     @Context
     @EachBean(DatasourceConfiguration.class)
     @Requires(condition = JdbcDataSourceEnabled.class)
-    @Retain(invalidatedBy = BasicJdbcConfiguration.PREFIX)
+    @Retain(invalidatedBy = {BasicJdbcConfiguration.PREFIX, OracleSessionProgramHelper.APPLICATION_PREFIX})
     public DataSource dataSource(DatasourceConfiguration datasourceConfiguration) {
         HikariUrlDataSource ds = new HikariUrlDataSource(datasourceConfiguration);
         dataSources.put(datasourceConfiguration.getName(), ds);
