@@ -1,0 +1,9 @@
+# the values come from the Oracle Free test container started by example.vertx.oracle.OracleTestConfigurer
+vertx:
+  oracle:
+    client:
+      host: ${test.oracle.host}
+      port: ${test.oracle.port}
+      service-name: ${test.oracle.service-name}
+      user: ${test.oracle.user}
+      password: ${test.oracle.password}

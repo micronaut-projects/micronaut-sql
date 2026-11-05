@@ -1,0 +1,5 @@
+When the `vertx-oracle-client` module is configured, a api:configuration.vertx.oracle.client.health.OracleHealthIndicator[] is activated, and the `/health` endpoint and the api:health.CurrentHealthStatus[] interface report the health of the Oracle connection, with the database version as a detail.
+
+The only configuration option is to enable or disable the indicator with the `endpoints.health.vertx.oracle.client.enabled` key.
+
+See the section on the https://docs.micronaut.io/latest/guide/index.html#healthEndpoint[Health Endpoint] for more information.

@@ -1,0 +1,27 @@
+plugins {
+    id 'io.micronaut.build.internal.sql-module'
+}
+
+dependencies {
+    api(mn.micronaut.inject)
+    api(libs.managed.vertx.oracle.client) {
+        // the Oracle JDBC driver is aligned with the rest of Micronaut SQL below
+        exclude(group: "com.oracle.database.jdbc", module: "ojdbc11")
+    }
+    api(libs.managed.ojdbc17)
+
+    implementation(libs.managed.vertx.codegen)
+    // Vert.x pulls in Jackson 2 releases with known vulnerabilities
+    implementation(platform(libs.jackson2.bom))
+    implementation(mnReactor.micronaut.reactor)
+
+    compileOnly(mn.micronaut.management)
+
+    testImplementation(mn.micronaut.management)
+    testImplementation(platform(mnTest.boms.testcontainers))
+    testImplementation(libs.testcontainers.oracle.free)
+}
+
+micronautBuild {
+    binaryCompatibility.enabledAfter("7.3.0")
+}

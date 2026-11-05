@@ -4,12 +4,18 @@ plugins {
 }
 
 dependencies {
+    // the Java helper in src/test/java (Oracle @ContextConfigurer) is processed by javac
+    testAnnotationProcessor mn.micronaut.inject.java
     // Annotation processors MUST be testImplementation (not testAnnotationProcessor): the Python compiler
     // compiler takes the compile classpath as its annotation processor path.
     testImplementation mn.micronaut.inject.python.test
     testImplementation mn.micronaut.context.python
     // maps jakarta.transaction.Transactional to Micronaut's transactional advice
     testImplementation mnData.micronaut.data.processor
+    // the Vert.x Oracle client example of the guide
+    testImplementation projects.micronautVertxOracleClient
+    testImplementation platform(mnTest.boms.testcontainers)
+    testImplementation libs.testcontainers.oracle.free
 }
 
 tasks.withType(Test).configureEach {

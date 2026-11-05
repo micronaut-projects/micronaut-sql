@@ -1,0 +1,195 @@
+package io.micronaut.configuration.vertx.oracle.client
+
+import io.micronaut.context.ApplicationContext
+import io.micronaut.context.exceptions.ConfigurationException
+import io.vertx.oracleclient.OracleConnectOptions
+import io.vertx.sqlclient.Pool
+import spock.lang.Specification
+import spock.util.concurrent.PollingConditions
+
+class OracleClientConfigurationSpec extends Specification {
+
+    void "test vertx-oracle-client configuration"() {
+        when:
+        ApplicationContext applicationContext = ApplicationContext.run(
+                'vertx.oracle.client.port': '1522',
+                'vertx.oracle.client.host': 'the-host',
+                'vertx.oracle.client.service-name': 'FREEPDB1',
+                'vertx.oracle.client.user': 'user',
+                'vertx.oracle.client.password': 'secret',
+                'vertx.oracle.client.fetch-size': '50',
+                'vertx.oracle.client.max-size': '5'
+        )
+        OracleClientConfiguration configuration = applicationContext.getBean(OracleClientConfiguration)
+
+        then:
+        configuration.connectOptions.port == 1522
+        configuration.connectOptions.host == 'the-host'
+        configuration.connectOptions.serviceName == 'FREEPDB1'
+        configuration.connectOptions.user == 'user'
+        configuration.connectOptions.password == 'secret'
+        configuration.connectOptions.fetchSize == 50
+        configuration.poolOptions.maxSize == 5
+
+        cleanup:
+        applicationContext?.stop()
+    }
+
+    void "a TNS alias URI keeps the other configured options"() {
+        given:
+        OracleConnectOptions configured = new OracleConnectOptions()
+                .setHost('the-host')
+                .setPort(1522)
+                .setServiceName('CONFIGURED')
+                .setUser('user')
+                .setPassword('secret')
+                .setTnsAdmin('/wallet')
+                .setFetchSize(50)
+
+        when:
+        OracleConnectOptions options = OracleClientFactory.fromUri(uri, configured)
+
+        then:
+        options.tnsAlias == 'mydb_high'
+        options.host == OracleConnectOptions.DEFAULT_HOST
+        options.port == OracleConnectOptions.DEFAULT_PORT
+        options.serviceName == null
+        options.tnsAdmin == '/wallet'
+        options.fetchSize == 50
+        options.user == 'user'
+        options.password == 'secret'
+
+        where:
+        uri << ['oracle:thin:@mydb_high', 'jdbc:oracle:thin:@mydb_high', 'JDBC:oracle:thin:@mydb_high']
+    }
+
+    void "a URI replaces the configured endpoint and sets what it carries"() {
+        given:
+        OracleConnectOptions configured = new OracleConnectOptions()
+                .setTnsAlias('configured_alias')
+                .setUser('user')
+                .setPassword('secret')
+                .setFetchSize(50)
+
+        when:
+        OracleConnectOptions options = OracleClientFactory.fromUri('oracle:thin:scott/tiger@db-host:1523/FREEPDB1', configured)
+
+        then:
+        options.tnsAlias == null
+        options.host == 'db-host'
+        options.port == 1523
+        options.serviceName == 'FREEPDB1'
+        options.user == 'scott'
+        options.password == 'tiger'
+        options.fetchSize == 50
+    }
+
+    void "a URI with another scheme fails with a ConfigurationException that leaves out the URI"() {
+        when:
+        OracleClientFactory.fromUri('postgresql://app:s3cret@db/app', new OracleConnectOptions())
+
+        then:
+        ConfigurationException e = thrown()
+        e.message.startsWith('Invalid Oracle connection URI, expected')
+        !e.message.contains('s3cret')
+        e.cause == null
+    }
+
+    void "a URI Vert.x cannot parse fails with the reason, without the URI"() {
+        when:
+        OracleClientFactory.fromUri(uri, new OracleConnectOptions())
+
+        then:
+        ConfigurationException e = thrown()
+        e.message.endsWith(reason)
+        !e.message.contains('s3cret')
+        e.cause == null
+
+        where:
+        uri                                                                                                                       | reason
+        'jdbc:oracle:thin:scott/s3cret@(DESCRIPTION=(ADDRESS=(PROTOCOL=tcps)(HOST=h)(PORT=1522))(CONNECT_DATA=(SERVICE_NAME=s)))' | ': TNS URL Format is not supported'
+        'oracle:thin:scott/s3cret@host1:1521,host2:1521/svc'                                                                       | ': URLs with multiple hosts are not supported yet'
+        'oracle:thin:scott/s3cret@ldap://ldap.example.com/svc'                                                                     | ': LDAP Syntax is not supported'
+        'oracle:thin:scott/s3cret@host:1521'                                                                                       | ': Missing service name or service id'
+    }
+
+    void "a reason that quotes part of the URI is left out, as it can be part of a password"() {
+        when: "an ampersand in the password splits it into a connection property without a value"
+        OracleClientFactory.fromUri('oracle:thin:@host:1521/svc?user=scott&password=abc&s3cret', new OracleConnectOptions())
+
+        then:
+        ConfigurationException e = thrown()
+        e.message == 'Invalid Oracle connection URI, expected oracle:thin:@<database> or jdbc:oracle:thin:@<database>'
+    }
+
+    void "connection properties of the URI are added to the configured ones"() {
+        given:
+        OracleConnectOptions configured = new OracleConnectOptions()
+                .setHost('the-host')
+                .setServiceName('CONFIGURED')
+                .addProperty('a', '1')
+
+        when:
+        OracleConnectOptions options = OracleClientFactory.fromUri('oracle:thin:@db-host:1523/FREEPDB1?b=2', configured)
+
+        then:
+        options.host == 'db-host'
+        options.properties == [a: '1', b: '2']
+    }
+
+    void "a URI naming the default endpoint replaces the configured endpoint"() {
+        given:
+        OracleConnectOptions configured = new OracleConnectOptions()
+                .setHost('the-host')
+                .setPort(1522)
+                .setServiceName('CONFIGURED')
+
+        when:
+        OracleConnectOptions options = OracleClientFactory.fromUri('oracle:thin:@localhost:1521/FREEPDB1', configured)
+
+        then:
+        options.host == 'localhost'
+        options.port == 1521
+        options.serviceName == 'FREEPDB1'
+    }
+
+    void "the Vert.x instance created for the pool is closed with the context"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run(
+                'vertx.oracle.client.host': 'localhost',
+                'vertx.oracle.client.service-name': 'FREEPDB1'
+        )
+        applicationContext.getBean(Pool)
+        OracleClientFactory factory = applicationContext.getBean(OracleClientFactory)
+        // Vert.x starts its threads on demand
+        factory.createdVertx.executeBlocking { -> 'started' }.toCompletionStage().toCompletableFuture().get()
+
+        expect:
+        vertxThreads()
+
+        when:
+        applicationContext.close()
+
+        then:
+        factory.createdVertx == null
+        new PollingConditions(timeout: 10).eventually {
+            assert !vertxThreads()
+        }
+    }
+
+    private static List<Thread> vertxThreads() {
+        Thread.getAllStackTraces().keySet().findAll { it.alive && it.name.startsWith('vert.x-') }.toList()
+    }
+
+    void "test no pool is created without vertx-oracle-client configuration"() {
+        when:
+        ApplicationContext applicationContext = ApplicationContext.run()
+
+        then:
+        !applicationContext.containsBean(OracleClientConfiguration)
+        !applicationContext.containsBean(Pool)
+
+        cleanup:
+        applicationContext?.stop()
+    }
+}
