@@ -58,9 +58,9 @@ public final class IntrospectedHibernateBytecodeProvider implements BytecodeProv
     }
 
     @Override
-    public @Nullable ReflectionOptimizer getReflectionOptimizer(Class clazz, String[] getterNames, String[] setterNames, Class[] types) {
+    public ReflectionOptimizer getReflectionOptimizer(Class clazz, String[] getterNames, String[] setterNames, Class[] types) {
         // This is deprecated and no longer used
-        return null;
+        throw new UnsupportedOperationException("Reflection optimizers are not supported by compile-time proxies");
     }
 
     @Override

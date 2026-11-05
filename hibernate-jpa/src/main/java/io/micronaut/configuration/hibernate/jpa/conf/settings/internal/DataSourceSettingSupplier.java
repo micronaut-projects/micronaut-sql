@@ -25,7 +25,7 @@ import io.micronaut.core.annotation.Internal;
 import org.jspecify.annotations.Nullable;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.jdbc.DataSourceResolver;
-import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.JdbcSettings;
 
 import javax.sql.DataSource;
 import java.util.Collections;
@@ -60,6 +60,6 @@ final class DataSourceSettingSupplier implements SettingsSupplier {
         if (dataSourceResolver != null) {
             dataSource = dataSourceResolver.resolve(dataSource);
         }
-        return Collections.singletonMap(AvailableSettings.JAKARTA_NON_JTA_DATASOURCE, dataSource);
+        return Collections.singletonMap(JdbcSettings.JAKARTA_NON_JTA_DATASOURCE, dataSource);
     }
 }

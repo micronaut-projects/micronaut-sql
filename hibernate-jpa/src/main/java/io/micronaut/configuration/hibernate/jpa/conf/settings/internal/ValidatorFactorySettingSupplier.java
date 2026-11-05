@@ -21,7 +21,7 @@ import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Internal;
 import jakarta.validation.ValidatorFactory;
-import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.ValidationSettings;
 
 import java.util.Collections;
 import java.util.Map;
@@ -45,6 +45,6 @@ final class ValidatorFactorySettingSupplier implements SettingsSupplier {
 
     @Override
     public Map<String, Object> supply(JpaConfiguration jpaConfiguration) {
-        return Collections.singletonMap(AvailableSettings.JAKARTA_VALIDATION_FACTORY, validatorFactory);
+        return Collections.singletonMap(ValidationSettings.JAKARTA_VALIDATION_FACTORY, validatorFactory);
     }
 }
