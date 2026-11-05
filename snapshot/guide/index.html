@@ -68,7 +68,9 @@
                                 
                                 <div class="toc-item" style="margin-left:0"><a href="#vertxpgclient"><strong>11</strong><span>Configuring Reactive PostgreSQL Client</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#repository"><strong>12</strong><span>Repository</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#vertxoracleclient"><strong>12</strong><span>Configuring Reactive Oracle Client</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="#repository"><strong>13</strong><span>Repository</span></a></div>
                                 
                             </div>
                         </div>
@@ -179,7 +181,11 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-vertxpgclient-healthchecks"><a href="#vertxpgclient-healthchecks"><strong>11.1</strong><span>PostgreSQL Health Checks</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>12</strong><span>Repository</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-vertxoracleclient"><a href="#vertxoracleclient"><strong>12</strong><span>Configuring Reactive Oracle Client</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-vertxoracleclient-healthchecks"><a href="#vertxoracleclient-healthchecks"><strong>12.1</strong><span>Oracle Health Checks</span></a></div>
+        
+        <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>13</strong><span>Repository</span></a></div>
         
         </div>
     </div>
@@ -6633,7 +6639,277 @@ result = "Size: ${size}"</code></pre>
 <p>See the section on the &lt;<a href="https://docs.micronaut.io/latest/guide/index.html#healthEndpoint">Health Endpoint</a> for more information.</p>
 </div>
 
-<h1 id="repository"><a class="anchor" href="#repository"></a>12 Repository</h1>
+<h1 id="vertxoracleclient"><a class="anchor" href="#vertxoracleclient"></a>12 Configuring Reactive Oracle Client</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/vertxoracleclient.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Micronaut supports the reactive and non-blocking <a href="https://vertx.io/docs/vertx-oracle-client/java/">Vert.x Oracle client</a>, which runs on the asynchronous API of the Oracle JDBC driver.</p>
+</div>
+<div class="paragraph">
+<p>To use it, add the <code>vertx-oracle-client</code> module to your classpath:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.sql:micronaut-vertx-oracle-client")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.sql&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-vertx-oracle-client&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.sql:micronaut-vertx-oracle-client"</span>,
+]</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>The module depends on the same Oracle JDBC driver (<code>ojdbc17</code>) as the other Micronaut SQL modules, instead of the older <code>ojdbc11</code> release the Vert.x Oracle client declares.</p>
+</div>
+<div class="paragraph">
+<p>Then configure the <a href="https://vertx.io/docs/vertx-oracle-client/java/"><code>OracleConnectOptions</code> and <code>PoolOptions</code></a> of the database:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">vertx.oracle.client.host=the-host
+vertx.oracle.client.port=1521
+vertx.oracle.client.service-name=FREEPDB1
+vertx.oracle.client.user=test
+vertx.oracle.client.password=test
+vertx.oracle.client.max-size=5</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">vertx:
+  oracle:
+    client:
+      host: the-host
+      port: 1521
+      service-name: FREEPDB1
+      user: test
+      password: test
+      max-size: 5</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[vertx.oracle.client]
+host = "the-host"
+port = 1521
+service-name = "FREEPDB1"
+user = "test"
+password = "test"
+max-size = 5</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">vertx {
+  oracle {
+    client {
+      host = "the-host"
+      port = 1521
+      serviceName = "FREEPDB1"
+      user = "test"
+      password = "test"
+      maxSize = 5
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  vertx {
+    oracle {
+      client {
+        host = "the-host"
+        port = 1521
+        service-name = "FREEPDB1"
+        user = "test"
+        password = "test"
+        max-size = 5
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "vertx": {
+    "oracle": {
+      "client": {
+        "host": "the-host",
+        "port": 1521,
+        "service-name": "FREEPDB1",
+        "user": "test",
+        "password": "test",
+        "max-size": 5
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also set <code>uri</code> instead of the host, port and service name, for example <code>oracle:thin:@the-host:1521/FREEPDB1</code>, a JDBC URL such as <code>jdbc:oracle:thin:@the-host:1521/FREEPDB1</code>, or a TNS alias such as <code>oracle:thin:@mydb_high</code>. The URI replaces the configured host, port, service name, SID and TNS alias, and the other configured options, such as <code>user</code>, <code>password</code> and <code>tns-admin</code>, still apply unless the URI sets them. Connection properties in the URI are added to the configured <code>properties</code>.</p>
+</div>
+<div class="paragraph">
+<p>The Oracle client connects through the Oracle JDBC driver, so Vert.x network options such as connect timeouts and TLS stores don&#8217;t apply: configure those through the connection properties or the Oracle Net configuration instead. When there is no <code>io.vertx.core.Vertx</code> bean, the module creates a Vert.x instance for the pool and closes it with the application context.</p>
+</div>
+<div class="paragraph">
+<p>The module then provides an <code>io.vertx.sqlclient.Pool</code> bean, which you can inject to run queries:</p>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.vertx.sqlclient.Pool;
+import io.vertx.sqlclient.Tuple;
+import jakarta.inject.Singleton;
+
+import java.util.concurrent.CompletionStage;
+
+@Singleton
+public class BookCatalog {
+
+    private final Pool pool; // <b class="conum">(1)</b>
+
+    public BookCatalog(Pool pool) {
+        this.pool = pool;
+    }
+
+    public CompletionStage&lt;String&gt; findTitle(long id) {
+        return pool.preparedQuery("SELECT title FROM book WHERE id = ?") // <b class="conum">(2)</b>
+            .execute(Tuple.of(id))
+            .map(rows -&gt; rows.iterator().next().getString("TITLE"))
+            .toCompletionStage();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from typing import Annotated
+
+from io.vertx.sqlclient import Pool, Tuple
+from jakarta.inject import Inject, Singleton
+from java.util.concurrent import CompletionStage
+
+@Singleton
+class BookCatalog:
+    pool: Annotated[Pool, Inject]  # <b class="conum">(1)</b>
+
+    def find_title(self, id: int) -&gt; CompletionStage:
+        return (self.pool.preparedQuery("SELECT title FROM book WHERE id = ?")  # <b class="conum">(2)</b>
+                .execute(Tuple.of(id))
+                .map(lambda rows: rows.iterator().next().getString("TITLE"))
+                .toCompletionStage())</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.vertx.sqlclient.Pool
+import io.vertx.sqlclient.Tuple
+import jakarta.inject.Singleton
+import java.util.concurrent.CompletionStage
+
+@Singleton
+class BookCatalog(private val pool: Pool) { // <b class="conum">(1)</b>
+
+    fun findTitle(id: Long): CompletionStage&lt;String&gt; =
+        pool.preparedQuery("SELECT title FROM book WHERE id = ?") // <b class="conum">(2)</b>
+            .execute(Tuple.of(id))
+            .map { rows -&gt; rows.iterator().next().getString("TITLE") }
+            .toCompletionStage()
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import io.vertx.sqlclient.Pool
+import io.vertx.sqlclient.Tuple
+import jakarta.inject.Singleton
+
+import java.util.concurrent.CompletionStage
+
+@Singleton
+class BookCatalog {
+
+    private final Pool pool // <b class="conum">(1)</b>
+
+    BookCatalog(Pool pool) {
+        this.pool = pool
+    }
+
+    CompletionStage&lt;String&gt; findTitle(long id) {
+        pool.preparedQuery("SELECT title FROM book WHERE id = ?") // <b class="conum">(2)</b>
+            .execute(Tuple.of(id))
+            .map { rows -&gt; rows.iterator().next().getString("TITLE") }
+            .toCompletionStage()
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>Pool</code> bean configured by the <code>vertx.oracle.client</code> properties</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>A prepared query with a bind parameter, executed without blocking</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For more information on running queries with the reactive client, read the <a href="https://vertx.io/docs/vertx-oracle-client/java/">vertx-oracle-client</a> documentation.</p>
+</div>
+
+<h2 id="vertxoracleclient-healthchecks"><a class="anchor" href="#vertxoracleclient-healthchecks"></a>12.1 Oracle Health Checks</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/vertxoracleclient/vertxoracleclient-healthchecks.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>When the <code>vertx-oracle-client</code> module is configured, a <a href="../api/io/micronaut/configuration/vertx/oracle/client/health/OracleHealthIndicator.html">OracleHealthIndicator</a> is activated, and the <code>/health</code> endpoint and the <a href="../api/io/micronaut/health/CurrentHealthStatus.html">CurrentHealthStatus</a> interface report the health of the Oracle connection, with the database version as a detail.</p>
+</div>
+<div class="paragraph">
+<p>The only configuration option is to enable or disable the indicator with the <code>endpoints.health.vertx.oracle.client.enabled</code> key.</p>
+</div>
+<div class="paragraph">
+<p>See the section on the <a href="https://docs.micronaut.io/latest/guide/index.html#healthEndpoint">Health Endpoint</a> for more information.</p>
+</div>
+
+<h1 id="repository"><a class="anchor" href="#repository"></a>13 Repository</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/repository.adoc"'>
