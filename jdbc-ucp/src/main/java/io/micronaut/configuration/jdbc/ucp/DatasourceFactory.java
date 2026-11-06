@@ -115,9 +115,13 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
      * @return The connection pool manager, or null when it is disabled or unavailable
      */
     private @Nullable UniversalConnectionPoolManager connectionPoolManager() {
-        if (!connectionPoolManagerEnabled) {
-            return null;
-        }
+        return connectionPoolManagerEnabled ? jvmConnectionPoolManager() : null;
+    }
+
+    /**
+     * @return The connection pool manager of the JVM, or null when it is unavailable
+     */
+    private static @Nullable UniversalConnectionPoolManager jvmConnectionPoolManager() {
         try {
             return UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager();
         } catch (UniversalConnectionPoolException e) {
@@ -233,17 +237,23 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     }
 
     private void close(PoolDataSource dataSource) {
-        UniversalConnectionPoolManager connectionPoolManager = connectionPoolManager();
-        if (connectionPoolManager != null) {
-            try {
+        try {
+            // disabling the manager only leaves the pool to start with its first connection: UCP then registers it with
+            // the manager of the JVM all the same, and that manager is the only way to destroy it. A data source that
+            // opened no connection has no pool, and a pool of its name would be another data source's
+            if (!connectionPoolManagerEnabled && dataSource.getStatistics() == null) {
+                return;
+            }
+            UniversalConnectionPoolManager connectionPoolManager = jvmConnectionPoolManager();
+            if (connectionPoolManager != null) {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Closing connection pool named: {}", dataSource.getConnectionPoolName());
                 }
                 connectionPoolManager.destroyConnectionPool(dataSource.getConnectionPoolName());
-            } catch (Exception e) {
-                if (LOG.isWarnEnabled()) {
-                    LOG.warn("Error closing data source [" + dataSource + "]: " + e.getMessage(), e);
-                }
+            }
+        } catch (Exception e) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Error closing data source [" + dataSource + "]: " + e.getMessage(), e);
             }
         }
     }

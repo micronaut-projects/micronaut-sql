@@ -35,6 +35,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,6 +54,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class UcpRestartRetentionTest {
 
     private static final String GREETER = "example.Greeter";
+    private static final String MANAGER_ENABLED = "ucp-manager.enabled";
 
     @TempDir
     Path project;
@@ -127,6 +129,71 @@ class UcpRestartRetentionTest {
     }
 
     @Test
+    void thePoolIsRetainedAcrossARestartWithTheManagerDisabled() throws Exception {
+        String url = "jdbc:h2:mem:" + UUID.randomUUID() + ";LOCK_TIMEOUT=10000";
+        PoolDataSource pool;
+        try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
+            database(harness, url);
+            harness.property(MANAGER_ENABLED, "false");
+            harness.property("datasources.default.initial-pool-size", "2");
+            harness.property("datasources.default.min-pool-size", "2");
+            greeter(harness, "one");
+            harness.start();
+            pool = pool(harness.context());
+            // without the manager, the first connection starts the pool
+            execute(pool, "CREATE TABLE RETAINED (ID INT)");
+
+            greeter(harness, "two");
+            harness.reload();
+            assertEquals(2, harness.generation());
+
+            ReloadTck.assertRetained(harness, pool);
+            assertSame(pool, pool(harness.context()));
+            assertEquals(List.of("default"), List.of(manager().getConnectionPoolNames()));
+            assertTrue(tableExists(pool, "RETAINED"), "the database of the retained pool was kept");
+            assertEquals(2, sessions(pool), "the retained pool keeps its connections");
+        }
+        assertEquals(List.of(), List.of(manager().getConnectionPoolNames()), "the pool is destroyed when the last generation stops");
+    }
+
+    @Test
+    void aDatasourceConfigurationChangeAndItsRevertReleaseThePoolWithTheManagerDisabled() throws Exception {
+        try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
+            String url = "jdbc:h2:mem:" + UUID.randomUUID() + ";DB_CLOSE_DELAY=-1";
+            String original = managerDisabled(url) + "datasources.default.initial-pool-size=3\ndatasources.default.min-pool-size=3\n";
+            configure(harness, original);
+            greeter(harness, "one");
+            connectionAtStartup(harness);
+            harness.start();
+            PoolDataSource first = pool(harness.context());
+            assertEquals(3, sessions(first));
+
+            harness.resource("application.properties", managerDisabled(url) + "datasources.default.initial-pool-size=1\ndatasources.default.min-pool-size=1\n");
+            greeter(harness, "two");
+            harness.reload();
+            assertEquals(2, harness.generation());
+
+            PoolDataSource second = pool(harness.context());
+            assertNotSame(first, second);
+            assertEquals(1, second.getInitialPoolSize());
+            assertEquals(List.of("default"), List.of(manager().getConnectionPoolNames()));
+            assertEquals(1, sessions(second), "the released pool closed its connections");
+
+            harness.resource("application.properties", original);
+            greeter(harness, "three");
+            harness.reload();
+            assertEquals(3, harness.generation());
+
+            PoolDataSource third = pool(harness.context());
+            assertNotSame(second, third);
+            assertEquals(3, third.getInitialPoolSize());
+            assertEquals(List.of("default"), List.of(manager().getConnectionPoolNames()));
+            assertEquals(3, sessions(third), "the released pool closed its connections");
+        }
+        assertEquals(List.of(), List.of(manager().getConnectionPoolNames()));
+    }
+
+    @Test
     void anApplicationNameChangeReleasesThePool() throws Exception {
         try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
             String url = "jdbc:h2:mem:" + UUID.randomUUID();
@@ -197,7 +264,11 @@ class UcpRestartRetentionTest {
                 """);
             greeter(harness, "one");
 
-            Throwable failure = assertThrows(Throwable.class, harness::start);
+            Throwable failure = assertThrows(Throwable.class, () -> {
+                harness.start();
+                // the development launcher keeps running after a failed start, and reports it
+                harness.runtime().awaitGeneration(harness.generation(), Duration.ofSeconds(30));
+            });
             String messages = "";
             for (Throwable cause = failure; cause != null; cause = cause.getCause()) {
                 messages += cause.getMessage() + "\n";
@@ -215,6 +286,42 @@ class UcpRestartRetentionTest {
         harness.property("datasources.default.username", "sa");
         harness.property("datasources.default.password", "");
         harness.property("datasources.default.driver-class-name", "org.h2.Driver");
+    }
+
+    private static void configure(ReloadHarness harness, String properties) {
+        properties.lines().forEach(line -> {
+            int separator = line.indexOf('=');
+            harness.property(line.substring(0, separator), line.substring(separator + 1));
+        });
+    }
+
+    private static String properties(String url) {
+        return """
+            datasources.default.url=%s
+            datasources.default.username=sa
+            datasources.default.password=
+            datasources.default.driver-class-name=org.h2.Driver
+            """.formatted(url);
+    }
+
+    private static String managerDisabled(String url) {
+        return properties(url) + MANAGER_ENABLED + "=false\n";
+    }
+
+    /**
+     * A bean that takes a connection as the context starts, as Flyway does.
+     */
+    private static void connectionAtStartup(ReloadHarness harness) {
+        harness.source("example.ConnectionAtStartup", """
+            package example;
+
+            @io.micronaut.context.annotation.Context
+            public class ConnectionAtStartup {
+                public ConnectionAtStartup(javax.sql.DataSource dataSource) throws java.sql.SQLException {
+                    dataSource.getConnection().close();
+                }
+            }
+            """);
     }
 
     private static void greeter(ReloadHarness harness, String greeting) {
@@ -251,6 +358,18 @@ class UcpRestartRetentionTest {
         try (Connection connection = dataSource.getConnection();
              ResultSet tables = connection.getMetaData().getTables(null, null, table, null)) {
             return tables.next();
+        }
+    }
+
+    /**
+     * @return How many connections the database of the data source has, whichever pool opened them
+     */
+    private static int sessions(DataSource dataSource) throws SQLException {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet sessions = statement.executeQuery("SELECT COUNT(*) FROM INFORMATION_SCHEMA.SESSIONS")) {
+            sessions.next();
+            return sessions.getInt(1);
         }
     }
 }

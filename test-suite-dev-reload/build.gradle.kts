@@ -25,6 +25,11 @@ testing {
                 implementation(projects.micronautJdbcDbcp)
             }
         }
+        register<JvmTestSuite>("tomcatTest") {
+            dependencies {
+                implementation(projects.micronautJdbcTomcat)
+            }
+        }
         withType<JvmTestSuite>().configureEach {
             targets.configureEach {
                 testTask.configure {
@@ -48,5 +53,5 @@ testing {
 }
 
 tasks.named("check") {
-    dependsOn(testing.suites.named("ucpTest"), testing.suites.named("dbcpTest"))
+    dependsOn(testing.suites.named("ucpTest"), testing.suites.named("dbcpTest"), testing.suites.named("tomcatTest"))
 }

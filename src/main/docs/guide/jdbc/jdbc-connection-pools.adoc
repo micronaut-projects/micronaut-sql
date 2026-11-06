@@ -50,7 +50,7 @@ datasources:
     maxPoolSize: 10
 ----
 
-The Oracle UCP is managed by the link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/admin/UniversalConnectionPoolManager.html[UniversalConnectionPoolManager]. The manager can be disabled by setting `ucp-manager.enabled` to `false`. Additionally, you can enable the link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/jmx-based-management.html[JMX-Based Management] by setting the `ucp-manager.jmx.enabled` to `true`. When using current Oracle JDBC 23ai driver versions, the extra `ojdbc*dms.jar` driver artifacts are not required.
+The Oracle UCP is managed by the link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjuar/oracle/ucp/admin/UniversalConnectionPoolManager.html[UniversalConnectionPoolManager]. The manager can be disabled by setting `ucp-manager.enabled` to `false`. The pool then starts with its first connection instead of at startup, and there is no `UniversalConnectionPoolManager` bean. UCP still registers the pool with the manager of the JVM, and Micronaut destroys it there when the data source is destroyed. Additionally, you can enable the link:https://docs.oracle.com/en/database/oracle/oracle-database/21/jjucp/jmx-based-management.html[JMX-Based Management] by setting the `ucp-manager.jmx.enabled` to `true`. When using current Oracle JDBC 23ai driver versions, the extra `ojdbc*dms.jar` driver artifacts are not required.
 
 The `micronaut-jdbc-ucp` module uses Oracle's `ojdbc17` and `ucp17` artifacts by default. Applications that need the JDK 11 driver line must exclude those default transitive dependencies and add direct dependencies on Oracle's `ojdbc11` and `ucp11` artifacts instead. The `ojdbc11` and `ucp11` artifacts remain managed, so after excluding `ojdbc17` and `ucp17`, you can rely on Micronaut's managed versions for the replacement dependencies.
 
@@ -198,7 +198,7 @@ In Micronaut development mode, a restart of the application keeps the Hikari, To
 
 For an Oracle UCP pool with `xa` enabled, development mode requires the connection factory class to be on the runtime classpath, in a dependency of the application: a class among the application's reloadable classes fails at startup, since a retained pool could keep a stopped generation of the application in memory.
 
-Oracle UCP pool metadata and the closing of a pool always go through the `UniversalConnectionPoolManager` of the JVM, in and out of development mode, while the pool is started through the `UniversalConnectionPoolManager` bean. An application that replaces that bean does not get those calls on its replacement.
+Oracle UCP pool metadata and the closing of a pool always go through the `UniversalConnectionPoolManager` of the JVM, in and out of development mode, while the pool is started through the `UniversalConnectionPoolManager` bean, when the manager is enabled. An application that replaces that bean does not get those calls on its replacement.
 
 A retained Hikari pool reports its metrics to the `MeterRegistry` of the current application context: as a context stops, the meters of the pool are removed from its registry, and the next context registers them in its own, so the pool keeps no registry of a stopped context.
 
