@@ -30,6 +30,7 @@ import oracle.ucp.jdbc.PoolDataSource
 import spock.lang.Specification
 
 import javax.sql.DataSource
+import java.sql.SQLException
 
 class DatasourceFactorySpec extends Specification {
 
@@ -148,6 +149,31 @@ class DatasourceFactorySpec extends Specification {
 
         cleanup:
         unopened?.close()
+        running?.close()
+    }
+
+    void "with the manager disabled, a data source refused the name of a running pool leaves that pool alone"() {
+        given:
+        UniversalConnectionPoolManager manager = UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager()
+        ApplicationContext running = startContextWithoutManager('refusedSameName')
+        String poolName = openPool(running)
+        ApplicationContext refused = startContextWithoutManager('refusedSameName')
+
+        when:
+        openPool(refused)
+
+        then:
+        thrown(SQLException)
+
+        when:
+        refused.close()
+
+        then:
+        manager.connectionPoolNames.contains(poolName)
+        sessions(running) == 1
+
+        cleanup:
+        refused?.close()
         running?.close()
     }
 
