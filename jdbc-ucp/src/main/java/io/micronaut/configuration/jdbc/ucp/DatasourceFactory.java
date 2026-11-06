@@ -22,15 +22,19 @@ import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.annotation.Retain;
 import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.context.exceptions.DisabledBeanException;
 import io.micronaut.context.event.BeanDestroyedEvent;
 import io.micronaut.context.event.BeanDestroyedEventListener;
-import io.micronaut.context.exceptions.NoSuchBeanException;
 import io.micronaut.jdbc.BaseDatasourceFactory;
+import io.micronaut.jdbc.BasicJdbcConfiguration;
 import io.micronaut.jdbc.DataSourceResolver;
 import io.micronaut.jdbc.JdbcDataSourceEnabled;
+import io.micronaut.jdbc.OracleSessionProgramHelper;
+import oracle.ucp.UniversalConnectionPoolException;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
+import oracle.ucp.admin.UniversalConnectionPoolManagerImpl;
 import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolXADataSource;
 import org.jspecify.annotations.Nullable;
@@ -38,6 +42,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.annotation.PreDestroy;
+import jakarta.inject.Inject;
 
 import javax.sql.DataSource;
 import javax.sql.XADataSource;
@@ -49,6 +54,11 @@ import java.util.Properties;
 
 /**
  * Creates an ucp data source for each configuration bean.
+ * <p>
+ * The factory holds neither the application context nor anything bound to it, so that development mode can retain
+ * the factory with the pools it created across a restart, which {@link Retain} declares: a change of the
+ * configuration under {@code datasources} or {@code ucp-manager}, or of the application name that the Oracle session
+ * program comes from, releases them. The factory destroys its pools when it is destroyed.
  *
  * @author toddsharp
  * @since 2.0.1
@@ -56,29 +66,70 @@ import java.util.Properties;
 @Factory
 public class DatasourceFactory extends BaseDatasourceFactory implements AutoCloseable, BeanDestroyedEventListener<DataSource> {
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceFactory.class);
-    private final UniversalConnectionPoolManagerConfiguration configuration;
+    private final boolean connectionPoolManagerEnabled;
 
     private final Map<String, PoolDataSource> dataSources = new LinkedHashMap<>(2);
-    private UniversalConnectionPoolManager connectionPoolManager;
     private final DataSourceResolver dataSourceResolver;
 
     /**
      * Default constructor.
+     * <p>
+     * The factory copies whether the connection pool manager is enabled from its configuration, rather than holding the
+     * configuration or the manager bean, whose implementations resolve through the application context: development
+     * mode binds the configuration again for each restart, and a change under {@value UniversalConnectionPoolManagerConfiguration#PREFIX}
+     * releases the factory. The manager is the one of the JVM,
+     * {@link UniversalConnectionPoolManagerImpl#getUniversalConnectionPoolManager()}, which the manager bean also is.
+     *
+     * @param dataSourceResolver The data source resolver
+     * @param configuration The configuration of the connection pool manager
+     * @since 7.3.0
+     */
+    @Inject
+    public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
+                             UniversalConnectionPoolManagerConfiguration configuration) {
+        super();
+        this.connectionPoolManagerEnabled = configuration.isEnabled();
+        this.dataSourceResolver = dataSourceResolver == null ? DataSourceResolver.DEFAULT : dataSourceResolver;
+    }
+
+    /**
+     * Constructor reading the configuration of the connection pool manager from the application context. The context
+     * is kept only in the deprecated {@link BaseDatasourceFactory#applicationContext} field, for subclasses compiled
+     * against an earlier release.
      *
      * @param dataSourceResolver The data source resolver
      * @param applicationContext The application context
+     * @deprecated The factory receives what it needs rather than the application context, so that its pools can
+     * outlive it. Use {@link #DatasourceFactory(DataSourceResolver, UniversalConnectionPoolManagerConfiguration)}.
      */
-    @SuppressWarnings("NullAway.Init")
+    @Deprecated(since = "7.3.0", forRemoval = true)
     public DatasourceFactory(@Nullable DataSourceResolver dataSourceResolver,
                              ApplicationContext applicationContext) {
         super(applicationContext);
-        this.configuration = applicationContext.getBean(UniversalConnectionPoolManagerConfiguration.class);
-        try {
-            this.connectionPoolManager = applicationContext.getBean(UniversalConnectionPoolManager.class);
-        } catch (NoSuchBeanException e) {
-            // no-op
-        }
+        this.connectionPoolManagerEnabled = applicationContext.getBean(UniversalConnectionPoolManagerConfiguration.class).isEnabled()
+                && applicationContext.containsBean(UniversalConnectionPoolManager.class);
         this.dataSourceResolver = dataSourceResolver == null ? DataSourceResolver.DEFAULT : dataSourceResolver;
+    }
+
+    /**
+     * @return The connection pool manager, or null when it is disabled or unavailable
+     */
+    private @Nullable UniversalConnectionPoolManager connectionPoolManager() {
+        return connectionPoolManagerEnabled ? jvmConnectionPoolManager() : null;
+    }
+
+    /**
+     * @return The connection pool manager of the JVM, or null when it is unavailable
+     */
+    private static @Nullable UniversalConnectionPoolManager jvmConnectionPoolManager() {
+        try {
+            return UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager();
+        } catch (UniversalConnectionPoolException e) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Unable to obtain the Universal Connection Pool Manager: " + e.getMessage(), e);
+            }
+            return null;
+        }
     }
 
     /**
@@ -103,6 +154,7 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     @Context
     @EachBean(DatasourceConfiguration.class)
     @Requires(condition = JdbcDataSourceEnabled.class)
+    @Retain(invalidatedBy = {BasicJdbcConfiguration.PREFIX, OracleSessionProgramHelper.APPLICATION_PREFIX, UniversalConnectionPoolManagerConfiguration.PREFIX})
     public PoolDataSource dataSource(DatasourceConfiguration datasourceConfiguration,
                                      List<PoolDataSourceCustomizer> customizers) {
         PoolDataSource ds = datasourceConfiguration.getPoolDataSource();
@@ -130,7 +182,7 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         OracleUcpDataSourcePoolMetadata ucpDataSourcePoolMetadata = null;
 
         if (dataSourceResolver.resolve(dataSource) instanceof PoolDataSource resolved) {
-            ucpDataSourcePoolMetadata = new OracleUcpDataSourcePoolMetadata(resolved, connectionPoolManager);
+            ucpDataSourcePoolMetadata = new OracleUcpDataSourcePoolMetadata(resolved, connectionPoolManager());
         }
         return ucpDataSourcePoolMetadata;
     }
@@ -138,9 +190,9 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     /**
      * Exposes the pool of a data source with {@link DatasourceConfiguration#setXa(boolean) xa} enabled as an
      * {@link XADataSource} for transaction managers that enlist XA connections. The bean delegates to the
-     * {@link PoolXADataSource} of the {@link DatasourceConfiguration#getPoolDataSource() configuration} and is not
-     * itself a {@link DataSource}, so the pool remains the only {@link DataSource} bean of its name. That bean still
-     * opens connections for local transactions, from XA connections of the same pool.
+     * {@link PoolXADataSource} of the data source bean, which development mode may have retained from an earlier
+     * context, and is not itself a {@link DataSource}, so the pool remains the only {@link DataSource} bean of its
+     * name. That bean still opens connections for local transactions, from XA connections of the same pool.
      *
      * @param datasourceConfiguration A {@link DatasourceConfiguration}
      * @param dataSource The data source bean of the configuration, required so that the pool is created, customized and started first
@@ -154,7 +206,10 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
         if (!datasourceConfiguration.isXa()) {
             throw new DisabledBeanException("Data source [" + datasourceConfiguration.getName() + "] does not have xa enabled");
         }
-        return new UcpXADataSource((PoolXADataSource) datasourceConfiguration.getPoolDataSource());
+        PoolXADataSource pool = dataSourceResolver.resolve(dataSource) instanceof PoolXADataSource resolved
+            ? resolved
+            : (PoolXADataSource) datasourceConfiguration.getPoolDataSource();
+        return new UcpXADataSource(pool);
     }
 
     /**
@@ -182,16 +237,23 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
     }
 
     private void close(PoolDataSource dataSource) {
-        if (configuration.isEnabled() && connectionPoolManager != null) {
-            try {
+        try {
+            // disabling the manager only leaves the pool to start with its first connection: UCP then registers it with
+            // the manager of the JVM all the same, and that manager is the only way to destroy it. A data source that
+            // opened no connection has no pool, and a pool of its name would be another data source's
+            if (!connectionPoolManagerEnabled && dataSource.getStatistics() == null) {
+                return;
+            }
+            UniversalConnectionPoolManager connectionPoolManager = jvmConnectionPoolManager();
+            if (connectionPoolManager != null) {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Closing connection pool named: {}", dataSource.getConnectionPoolName());
                 }
                 connectionPoolManager.destroyConnectionPool(dataSource.getConnectionPoolName());
-            } catch (Exception e) {
-                if (LOG.isWarnEnabled()) {
-                    LOG.warn("Error closing data source [" + dataSource + "]: " + e.getMessage(), e);
-                }
+            }
+        } catch (Exception e) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Error closing data source [" + dataSource + "]: " + e.getMessage(), e);
             }
         }
     }

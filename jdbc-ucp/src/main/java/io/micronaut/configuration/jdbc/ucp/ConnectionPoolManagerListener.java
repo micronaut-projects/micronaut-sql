@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 
 /**
@@ -88,6 +89,13 @@ public class ConnectionPoolManagerListener implements BeanCreatedEventListener<D
             return;
         }
         try {
+            if (isManaged(poolDataSource, poolName)) {
+                // a pool retained by development mode across a restart, which an earlier context started
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Connection pool named: {} is already managed", poolName);
+                }
+                return;
+            }
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Creating connection pool named: {}", poolName);
             }
@@ -104,6 +112,16 @@ public class ConnectionPoolManagerListener implements BeanCreatedEventListener<D
         } catch (UniversalConnectionPoolException e) {
             throw new ConfigurationException(String.format("Failed to start connection pool named: %s", poolName), e);
         }
+    }
+
+    /**
+     * Whether the data source has its pool, and the manager manages a pool of its name: the data source was created
+     * and started by this listener in an earlier context, and is retained by development mode across a restart.
+     * Creating it again would fail, or destroy the running pool when {@code oracle.ucp.destroyOnReload} is set.
+     */
+    private boolean isManaged(PoolDataSource poolDataSource, String poolName) throws UniversalConnectionPoolException {
+        return poolDataSource.getStatistics() != null
+            && Arrays.asList(connectionPoolManager.getConnectionPoolNames()).contains(poolName);
     }
 
     private static void startPool(PoolDataSourceImpl poolDataSource, String poolName) {

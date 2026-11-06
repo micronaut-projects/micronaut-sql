@@ -305,6 +305,31 @@ class ConnectionPoolManagerListenerSpec extends Specification {
         applicationContext.close()
     }
 
+    void "starting a pool that is already managed, as development mode does to a retained pool, keeps it running"() {
+        given:
+        var applicationContext = ApplicationContext.run(
+                [
+                        "datasources.default.url": "jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE",
+                        "datasources.default.username": "sa",
+                        "datasources.default.password": ""],
+                "test")
+        var poolManager = applicationContext.getBean(UniversalConnectionPoolManager)
+        var dataSource = applicationContext.getBean(DataSource)
+        var pool = applicationContext.findBean(DataSourceResolver).orElse(DataSourceResolver.DEFAULT).resolve(dataSource) as PoolDataSource
+        var listener = new ConnectionPoolManagerListener(poolManager, null)
+
+        when:
+        listener.onCreated(new BeanCreatedEvent<DataSource>(applicationContext, applicationContext.getBeanDefinition(DataSource), BeanIdentifier.of("default"), dataSource))
+
+        then:
+        poolManager.getConnectionPoolNames() == new String[]{"default"}
+        poolManager.getConnectionPool("default").lifeCycleState == UniversalConnectionPoolLifeCycleState.LIFE_CYCLE_RUNNING
+        pool.connection.withCloseable { it.valid }
+
+        cleanup:
+        applicationContext.close()
+    }
+
     private static PoolDataSource poolDataSource(String poolName, String url) {
         return configure(PoolDataSourceFactory.getPoolDataSource(), poolName, url)
     }
