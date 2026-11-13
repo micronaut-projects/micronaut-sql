@@ -31,6 +31,12 @@ import java.util.function.BooleanSupplier;
 @Internal
 public final class OracleSessionProgramHelper {
 
+    /**
+     * The configuration prefix of the application name, which the session program comes from: a pool retained across a
+     * development restart is released by a change under it.
+     */
+    public static final String APPLICATION_PREFIX = "micronaut.application";
+
     private static final String ORACLE_JDBC_PREFIX = "jdbc:oracle";
     private static final String DIALECT_ORACLE = "oracle";
     private static final String KEY_PROGRAM = "v$session.program";
@@ -85,7 +91,7 @@ public final class OracleSessionProgramHelper {
             return false;
         }
 
-        String program = environment.getProperty("micronaut.application.name", String.class).orElse(null);
+        String program = environment.getProperty(APPLICATION_PREFIX + ".name", String.class).orElse(null);
         if (StringUtils.isNotEmpty(program)) {
             addConnectionProperty.accept(KEY_PROGRAM, program);
             return true;

@@ -1,0 +1,375 @@
+/*
+ * Copyright 2017-2026 original authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.micronaut.sql.dev;
+
+import io.micronaut.context.ApplicationContext;
+import io.micronaut.dev.tck.ReloadHarness;
+import io.micronaut.dev.tck.ReloadTck;
+import io.micronaut.jdbc.DataSourceResolver;
+import oracle.ucp.UniversalConnectionPoolException;
+import oracle.ucp.UniversalConnectionPoolLifeCycleState;
+import oracle.ucp.admin.UniversalConnectionPoolManager;
+import oracle.ucp.admin.UniversalConnectionPoolManagerImpl;
+import oracle.ucp.jdbc.PoolDataSource;
+import oracle.ucp.jdbc.PoolXADataSource;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import javax.sql.DataSource;
+import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.Duration;
+import java.util.List;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/**
+ * Runs an application with a UCP pool of an H2 database through the development runtime, which restarts the
+ * application on a change. The pool factory declares its pools retainable, so the next generation is served the same
+ * pool, still running in the connection pool manager, with no {@code micronaut.dev.retain} entry. Configuration under
+ * {@code datasources} releases the pool.
+ */
+class UcpRestartRetentionTest {
+
+    private static final String GREETER = "example.Greeter";
+    private static final String MANAGER_ENABLED = "ucp-manager.enabled";
+
+    @TempDir
+    Path project;
+
+    @BeforeAll
+    static void initializeH2() throws ClassNotFoundException {
+        // H2 preallocates an exception as it initializes TraceObject, whose stack trace would otherwise hold the
+        // frames of the first generation that opens a connection, and with them its classes
+        Class.forName("org.h2.message.TraceObject", true, UcpRestartRetentionTest.class.getClassLoader());
+    }
+
+    @Test
+    void thePoolIsRetainedAcrossARestart() throws Exception {
+        String url = "jdbc:h2:mem:" + UUID.randomUUID() + ";LOCK_TIMEOUT=10000";
+        PoolDataSource pool;
+        try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
+            database(harness, url);
+            // the pool keeps a connection open, so that the in-memory database lives as long as the pool
+            harness.property("datasources.default.initial-pool-size", "1");
+            harness.property("datasources.default.min-pool-size", "1");
+            greeter(harness, "one");
+            harness.start();
+            pool = pool(harness.context());
+            execute(pool, "CREATE TABLE RETAINED (ID INT)");
+
+            greeter(harness, "two");
+            harness.reload();
+            assertEquals(2, harness.generation());
+
+            ReloadTck.assertRetained(harness, pool);
+            assertSame(pool, pool(harness.context()));
+            assertEquals(List.of("default"), List.of(manager().getConnectionPoolNames()));
+            assertEquals(UniversalConnectionPoolLifeCycleState.LIFE_CYCLE_RUNNING, manager().getConnectionPool("default").getLifeCycleState());
+            assertTrue(tableExists(pool, "RETAINED"), "the database of the retained pool was kept");
+            // ReloadTck.assertRetiredGenerationsCollected is not asserted, here nor when the pool is released: UCP runs
+            // JVM-wide threads (UCP Clock, UCP-ScheduledThreadPoolExecutor-Thread-*, UCP-worker-thread-*) that keep the
+            // context class loader of the generation that started them. They belong to no pool and outlive the pools,
+            // so the development runtime does not re-point them as it does the threads of a retained bean
+        }
+        assertEquals(List.of(), List.of(manager().getConnectionPoolNames()), "the pool is destroyed when the last generation stops");
+    }
+
+    @Test
+    void aDatasourceConfigurationChangeReleasesThePool() throws Exception {
+        try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
+            String url = "jdbc:h2:mem:" + UUID.randomUUID();
+            database(harness, url);
+            greeter(harness, "one");
+            harness.start();
+            PoolDataSource first = pool(harness.context());
+            execute(first, "SELECT 1");
+
+            // the application properties change under datasources, together with a class, so the application restarts
+            harness.resource("application.properties", """
+                datasources.default.url=%s
+                datasources.default.username=sa
+                datasources.default.password=
+                datasources.default.driver-class-name=org.h2.Driver
+                datasources.default.max-pool-size=3
+                """.formatted(url));
+            greeter(harness, "two");
+            harness.reload();
+            assertEquals(2, harness.generation());
+
+            PoolDataSource second = pool(harness.context());
+            assertNotSame(first, second);
+            assertEquals(3, second.getMaxPoolSize());
+            // the released pool was destroyed, so the manager runs only the new pool of the same name
+            assertEquals(List.of("default"), List.of(manager().getConnectionPoolNames()));
+            execute(second, "SELECT 1");
+        }
+    }
+
+    @Test
+    void thePoolIsRetainedAcrossARestartWithTheManagerDisabled() throws Exception {
+        String url = "jdbc:h2:mem:" + UUID.randomUUID() + ";LOCK_TIMEOUT=10000";
+        PoolDataSource pool;
+        try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
+            database(harness, url);
+            harness.property(MANAGER_ENABLED, "false");
+            harness.property("datasources.default.initial-pool-size", "2");
+            harness.property("datasources.default.min-pool-size", "2");
+            greeter(harness, "one");
+            harness.start();
+            pool = pool(harness.context());
+            // without the manager, the first connection starts the pool
+            execute(pool, "CREATE TABLE RETAINED (ID INT)");
+
+            greeter(harness, "two");
+            harness.reload();
+            assertEquals(2, harness.generation());
+
+            ReloadTck.assertRetained(harness, pool);
+            assertSame(pool, pool(harness.context()));
+            assertEquals(List.of("default"), List.of(manager().getConnectionPoolNames()));
+            assertTrue(tableExists(pool, "RETAINED"), "the database of the retained pool was kept");
+            assertEquals(2, sessions(pool), "the retained pool keeps its connections");
+        }
+        assertEquals(List.of(), List.of(manager().getConnectionPoolNames()), "the pool is destroyed when the last generation stops");
+    }
+
+    @Test
+    void aDatasourceConfigurationChangeAndItsRevertReleaseThePoolWithTheManagerDisabled() throws Exception {
+        try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
+            String url = "jdbc:h2:mem:" + UUID.randomUUID() + ";DB_CLOSE_DELAY=-1";
+            String original = managerDisabled(url) + "datasources.default.initial-pool-size=3\ndatasources.default.min-pool-size=3\n";
+            configure(harness, original);
+            greeter(harness, "one");
+            connectionAtStartup(harness);
+            harness.start();
+            PoolDataSource first = pool(harness.context());
+            assertEquals(3, sessions(first));
+
+            harness.resource("application.properties", managerDisabled(url) + "datasources.default.initial-pool-size=1\ndatasources.default.min-pool-size=1\n");
+            greeter(harness, "two");
+            harness.reload();
+            assertEquals(2, harness.generation());
+
+            PoolDataSource second = pool(harness.context());
+            assertNotSame(first, second);
+            assertEquals(1, second.getInitialPoolSize());
+            assertEquals(List.of("default"), List.of(manager().getConnectionPoolNames()));
+            assertEquals(1, sessions(second), "the released pool closed its connections");
+
+            harness.resource("application.properties", original);
+            greeter(harness, "three");
+            harness.reload();
+            assertEquals(3, harness.generation());
+
+            PoolDataSource third = pool(harness.context());
+            assertNotSame(second, third);
+            assertEquals(3, third.getInitialPoolSize());
+            assertEquals(List.of("default"), List.of(manager().getConnectionPoolNames()));
+            assertEquals(3, sessions(third), "the released pool closed its connections");
+        }
+        assertEquals(List.of(), List.of(manager().getConnectionPoolNames()));
+    }
+
+    @Test
+    void anApplicationNameChangeReleasesThePool() throws Exception {
+        try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
+            String url = "jdbc:h2:mem:" + UUID.randomUUID();
+            database(harness, url);
+            harness.property("micronaut.application.name", "one");
+            greeter(harness, "one");
+            harness.start();
+            PoolDataSource first = pool(harness.context());
+            execute(first, "SELECT 1");
+
+            // the Oracle session program of a pool comes from the application name
+            harness.resource("application.properties", """
+                datasources.default.url=%s
+                datasources.default.username=sa
+                datasources.default.password=
+                datasources.default.driver-class-name=org.h2.Driver
+                micronaut.application.name=two
+                """.formatted(url));
+            greeter(harness, "two");
+            harness.reload();
+            assertEquals(2, harness.generation());
+
+            PoolDataSource second = pool(harness.context());
+            assertNotSame(first, second);
+            assertEquals(List.of("default"), List.of(manager().getConnectionPoolNames()));
+            execute(second, "SELECT 1");
+        }
+    }
+
+    @Test
+    void anXaPoolIsRetainedAcrossARestart() throws Exception {
+        try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
+            database(harness, "jdbc:h2:mem:" + UUID.randomUUID());
+            harness.property("datasources.default.connection-factory-class-name", "org.h2.jdbcx.JdbcDataSource");
+            harness.property("datasources.default.xa", "true");
+            greeter(harness, "one");
+            harness.start();
+            PoolDataSource pool = pool(harness.context());
+            assertTrue(pool instanceof PoolXADataSource);
+
+            greeter(harness, "two");
+            harness.reload();
+
+            ReloadTck.assertRetained(harness, pool);
+            assertSame(pool, pool(harness.context()));
+        }
+    }
+
+    @Test
+    void anXaFactoryClassAmongTheReloadableClassesIsRefused() {
+        try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
+            database(harness, "jdbc:h2:mem:" + UUID.randomUUID());
+            harness.property("datasources.default.connection-factory-class-name", "example.ReloadableXaDataSource");
+            harness.property("datasources.default.xa", "true");
+            harness.source("example.ReloadableXaDataSource", """
+                package example;
+
+                public class ReloadableXaDataSource implements javax.sql.XADataSource {
+                    private final javax.sql.XADataSource delegate = new org.h2.jdbcx.JdbcDataSource();
+                    public javax.sql.XAConnection getXAConnection() throws java.sql.SQLException { return delegate.getXAConnection(); }
+                    public javax.sql.XAConnection getXAConnection(String user, String password) throws java.sql.SQLException { return delegate.getXAConnection(user, password); }
+                    public java.io.PrintWriter getLogWriter() throws java.sql.SQLException { return delegate.getLogWriter(); }
+                    public void setLogWriter(java.io.PrintWriter out) throws java.sql.SQLException { delegate.setLogWriter(out); }
+                    public void setLoginTimeout(int seconds) throws java.sql.SQLException { delegate.setLoginTimeout(seconds); }
+                    public int getLoginTimeout() throws java.sql.SQLException { return delegate.getLoginTimeout(); }
+                    public java.util.logging.Logger getParentLogger() throws java.sql.SQLFeatureNotSupportedException { return delegate.getParentLogger(); }
+                }
+                """);
+            greeter(harness, "one");
+
+            Throwable failure = assertThrows(Throwable.class, () -> {
+                harness.start();
+                // the development launcher keeps running after a failed start, and reports it
+                harness.runtime().awaitGeneration(harness.generation(), Duration.ofSeconds(30));
+            });
+            String messages = "";
+            for (Throwable cause = failure; cause != null; cause = cause.getCause()) {
+                messages += cause.getMessage() + "\n";
+            }
+            assertTrue(messages.contains("[example.ReloadableXaDataSource] is only visible to the application's reloadable classes"), messages);
+        }
+    }
+
+    private static UniversalConnectionPoolManager manager() throws UniversalConnectionPoolException {
+        return UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager();
+    }
+
+    private static void database(ReloadHarness harness, String url) {
+        harness.property("datasources.default.url", url);
+        harness.property("datasources.default.username", "sa");
+        harness.property("datasources.default.password", "");
+        harness.property("datasources.default.driver-class-name", "org.h2.Driver");
+    }
+
+    private static void configure(ReloadHarness harness, String properties) {
+        properties.lines().forEach(line -> {
+            int separator = line.indexOf('=');
+            harness.property(line.substring(0, separator), line.substring(separator + 1));
+        });
+    }
+
+    private static String properties(String url) {
+        return """
+            datasources.default.url=%s
+            datasources.default.username=sa
+            datasources.default.password=
+            datasources.default.driver-class-name=org.h2.Driver
+            """.formatted(url);
+    }
+
+    private static String managerDisabled(String url) {
+        return properties(url) + MANAGER_ENABLED + "=false\n";
+    }
+
+    /**
+     * A bean that takes a connection as the context starts, as Flyway does.
+     */
+    private static void connectionAtStartup(ReloadHarness harness) {
+        harness.source("example.ConnectionAtStartup", """
+            package example;
+
+            @io.micronaut.context.annotation.Context
+            public class ConnectionAtStartup {
+                public ConnectionAtStartup(javax.sql.DataSource dataSource) throws java.sql.SQLException {
+                    dataSource.getConnection().close();
+                }
+            }
+            """);
+    }
+
+    private static void greeter(ReloadHarness harness, String greeting) {
+        harness.source(GREETER, """
+            package example;
+
+            @jakarta.inject.Singleton
+            public class Greeter {
+                private final javax.sql.DataSource dataSource;
+
+                public Greeter(javax.sql.DataSource dataSource) {
+                    this.dataSource = dataSource;
+                }
+
+                public String greet() {
+                    return "%s";
+                }
+            }
+            """.formatted(greeting));
+    }
+
+    private static PoolDataSource pool(ApplicationContext context) {
+        DataSourceResolver resolver = context.findBean(DataSourceResolver.class).orElse(DataSourceResolver.DEFAULT);
+        return (PoolDataSource) resolver.resolve(context.getBean(DataSource.class));
+    }
+
+    private static void execute(DataSource dataSource, String sql) throws SQLException {
+        try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+        }
+    }
+
+    private static boolean tableExists(DataSource dataSource, String table) throws SQLException {
+        try (Connection connection = dataSource.getConnection();
+             ResultSet tables = connection.getMetaData().getTables(null, null, table, null)) {
+            return tables.next();
+        }
+    }
+
+    /**
+     * @return How many connections the database of the data source has, whichever pool opened them
+     */
+    private static int sessions(DataSource dataSource) throws SQLException {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet sessions = statement.executeQuery("SELECT COUNT(*) FROM INFORMATION_SCHEMA.SESSIONS")) {
+            sessions.next();
+            return sessions.getInt(1);
+        }
+    }
+}

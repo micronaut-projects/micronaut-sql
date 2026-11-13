@@ -16,17 +16,52 @@
 package io.micronaut.configuration.jdbc.ucp
 
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.BeanLocator
+import io.micronaut.context.annotation.Retain
+import io.micronaut.context.event.ApplicationEventPublisher
 import io.micronaut.context.event.BeanDestroyedEvent
+import io.micronaut.core.value.PropertyResolver
 import io.micronaut.inject.BeanDefinition
 import io.micronaut.inject.qualifiers.Qualifiers
 import io.micronaut.jdbc.DataSourceResolver
 import oracle.ucp.admin.UniversalConnectionPoolManager
+import oracle.ucp.admin.UniversalConnectionPoolManagerImpl
 import oracle.ucp.jdbc.PoolDataSource
 import spock.lang.Specification
 
 import javax.sql.DataSource
+import java.sql.SQLException
 
 class DatasourceFactorySpec extends Specification {
+
+    def "the factory and its pools receive nothing bound to the context, so that development mode can retain them"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run([
+                'datasources.default.url'     : 'jdbc:h2:mem:retainable;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE',
+                'datasources.default.username': 'sa',
+                'datasources.default.password': ''
+        ])
+
+        when:
+        Collection<BeanDefinition<?>> pools = applicationContext.getBeanDefinitions(DataSource)
+        Collection<BeanDefinition<?>> closure = [applicationContext.getBeanDefinition(DatasourceFactory)] + pools +
+                applicationContext.getBeanDefinitions(DatasourceConfiguration)
+
+        then:
+        // the factory receives no connection pool manager, whose bean receives a configuration implemented by introduction advice
+        !pools.isEmpty()
+        pools.every { it.stringValues(Retain, "invalidatedBy") == ["datasources", "micronaut.application", "ucp-manager"] as String[] }
+        closure.every { BeanDefinition<?> definition ->
+            !definition.proxy && definition.requiredComponents.every { Class<?> type ->
+                !BeanLocator.isAssignableFrom(type)
+                        && !PropertyResolver.isAssignableFrom(type)
+                        && !ApplicationEventPublisher.isAssignableFrom(type)
+            }
+        }
+
+        cleanup:
+        applicationContext.close()
+    }
 
     void "destroys the pool of a data source once its bean is destroyed"() {
         given:
@@ -68,8 +103,91 @@ class DatasourceFactorySpec extends Specification {
         applicationContext.close()
     }
 
+    void "with the manager disabled, stopping the context destroys the pool that the first connection started"() {
+        given:
+        UniversalConnectionPoolManager manager = UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager()
+        ApplicationContext first = startContextWithoutManager('disabledManager')
+        String poolName = openPool(first)
+
+        expect: "UCP registers the pool with the manager of the JVM, whatever ucp-manager.enabled says"
+        !first.containsBean(UniversalConnectionPoolManager)
+        manager.connectionPoolNames.contains(poolName)
+        sessions(first) == 1
+
+        when:
+        first.close()
+
+        then:
+        !manager.connectionPoolNames.contains(poolName)
+
+        when: "another context in this JVM uses the name"
+        ApplicationContext second = startContextWithoutManager('disabledManager')
+        openPool(second)
+
+        then:
+        noExceptionThrown()
+        sessions(second) == 1
+
+        cleanup:
+        first?.close()
+        second?.close()
+    }
+
+    void "with the manager disabled, a data source that opened no connection leaves the pool of its name alone"() {
+        given:
+        UniversalConnectionPoolManager manager = UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager()
+        ApplicationContext running = startContextWithoutManager('unopenedSameName')
+        String poolName = openPool(running)
+        ApplicationContext unopened = startContextWithoutManager('unopenedSameName')
+
+        when:
+        unopened.close()
+
+        then:
+        manager.connectionPoolNames.contains(poolName)
+        sessions(running) == 1
+
+        cleanup:
+        unopened?.close()
+        running?.close()
+    }
+
+    void "with the manager disabled, a data source refused the name of a running pool leaves that pool alone"() {
+        given:
+        UniversalConnectionPoolManager manager = UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager()
+        ApplicationContext running = startContextWithoutManager('refusedSameName')
+        String poolName = openPool(running)
+        ApplicationContext refused = startContextWithoutManager('refusedSameName')
+
+        when:
+        openPool(refused)
+
+        then:
+        thrown(SQLException)
+
+        when:
+        refused.close()
+
+        then:
+        manager.connectionPoolNames.contains(poolName)
+        sessions(running) == 1
+
+        cleanup:
+        refused?.close()
+        running?.close()
+    }
+
     private static ApplicationContext startContext(String database) {
         return ApplicationContext.run([
+                "datasources.default.url"     : "jdbc:h2:mem:${database};DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE".toString(),
+                "datasources.default.username": "sa",
+                "datasources.default.password": ""
+        ], "test")
+    }
+
+    private static ApplicationContext startContextWithoutManager(String database) {
+        return ApplicationContext.run([
+                "ucp-manager.enabled"         : false,
                 "datasources.default.url"     : "jdbc:h2:mem:${database};DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE".toString(),
                 "datasources.default.username": "sa",
                 "datasources.default.password": ""
@@ -81,6 +199,17 @@ class DatasourceFactorySpec extends Specification {
         PoolDataSource pool = (PoolDataSource) resolver.resolve(applicationContext.getBean(DataSource))
         pool.getConnection().close()
         return pool.connectionPoolName
+    }
+
+    private static int sessions(ApplicationContext applicationContext) {
+        applicationContext.getBean(DataSource).connection.withCloseable { connection ->
+            connection.createStatement().withCloseable { statement ->
+                statement.executeQuery("SELECT COUNT(*) FROM INFORMATION_SCHEMA.SESSIONS").withCloseable { rows ->
+                    rows.next()
+                    return rows.getInt(1)
+                }
+            }
+        }
     }
 
     private BeanDefinition<DataSource> foreignDefinition() {
