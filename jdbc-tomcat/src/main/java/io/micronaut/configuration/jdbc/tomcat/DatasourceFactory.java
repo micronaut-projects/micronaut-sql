@@ -79,15 +79,17 @@ public class DatasourceFactory extends BaseDatasourceFactory implements AutoClos
                     datasourceConfiguration.getUrl(),
                     applicationContext.getProperty("datasources." + datasourceConfiguration.getName() + ".dialect", String.class).orElse(null),
                     applicationContext.getEnvironment(),
+                    // Read and write the configuration's own properties: since Tomcat 11.0.29 the data source's
+                    // getDbProperties() returns a copy without the password, so changes to it never reach the driver.
                     (k, v) -> {
-                        Properties p = ds.getDbProperties();
+                        Properties p = datasourceConfiguration.getDbProperties();
                         if (p == null) {
                             p = new Properties();
-                            ds.setDbProperties(p);
+                            datasourceConfiguration.setDbProperties(p);
                         }
                         p.setProperty(k, v);
                     },
-                    () -> ds.getDbProperties() != null && ds.getDbProperties().containsKey("v$session.program")
+                    () -> datasourceConfiguration.getDbProperties() != null && datasourceConfiguration.getDbProperties().containsKey("v$session.program")
             );
         } catch (Exception e) {
             if (LOG.isDebugEnabled()) {
