@@ -173,6 +173,8 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-mybatis-customizers"><a href="#mybatis-customizers"><strong>9.2</strong><span>Configuring MyBatis customizers</span></a></div>
         
+        <div class="toc-item" style="margin-left:10px" id="toc-item-mybatis-graalvm"><a href="#mybatis-graalvm"><strong>9.3</strong><span>GraalVM native image</span></a></div>
+        
         <div class="toc-item" style="margin-left:0px" id="toc-item-vertxmysqlclient"><a href="#vertxmysqlclient"><strong>10</strong><span>Configuring Reactive MySQL Client</span></a></div>
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-vertxmysqlclient-healthchecks"><a href="#vertxmysqlclient-healthchecks"><strong>10.1</strong><span>MySQL Health Checks</span></a></div>
@@ -6060,16 +6062,17 @@ Only beans of type <a href="../api/io/micronaut/configuration/mybatis/MyBatisCon
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.configuration.mybatis.MyBatisConfigurationCustomizer;
+import io.micronaut.configuration.mybatis.MyBatisMapperScan;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import org.apache.ibatis.session.Configuration;
 
+@MyBatisMapperScan("example.micronaut.mappers")
 @Named("default")
 @Singleton
 public class CustomConfigurationCustomizer implements MyBatisConfigurationCustomizer {
     @Override
     public void customize(Configuration configuration) {
-        configuration.addMappers("example.micronaut.mappers");
         configuration.setMapUnderscoreToCamelCase(true);
     }
 }</code></pre>
@@ -6092,15 +6095,16 @@ class CustomConfigurationCustomizer(MyBatisConfigurationCustomizer):
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.configuration.mybatis.MyBatisConfigurationCustomizer
+import io.micronaut.configuration.mybatis.MyBatisMapperScan
 import jakarta.inject.Named
 import jakarta.inject.Singleton
 import org.apache.ibatis.session.Configuration
 
+@MyBatisMapperScan("example.micronaut.mappers")
 @Named("default")
 @Singleton
 class CustomConfigurationCustomizer : MyBatisConfigurationCustomizer {
     override fun customize(configuration: Configuration) {
-        configuration.addMappers("example.micronaut.mappers")
         configuration.isMapUnderscoreToCamelCase = true
     }
 }</code></pre>
@@ -6109,29 +6113,123 @@ class CustomConfigurationCustomizer : MyBatisConfigurationCustomizer {
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import io.micronaut.configuration.mybatis.MyBatisConfigurationCustomizer
+import io.micronaut.configuration.mybatis.MyBatisMapperScan
 import jakarta.inject.Named
 import jakarta.inject.Singleton
 import org.apache.ibatis.session.Configuration
 
+@MyBatisMapperScan("example.micronaut.mappers")
 @Named("default")
 @Singleton
 class CustomConfigurationCustomizer implements MyBatisConfigurationCustomizer {
     @Override
     void customize(Configuration configuration) {
-        configuration.addMappers("example.micronaut.mappers")
         configuration.mapUnderscoreToCamelCase = true
     }
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This hook is also the right place to configure other MyBatis features that belong on the <code>Configuration</code>, such as type aliases, type handlers, interceptors, or additional mapper registrations.</p>
+<p>The <code>@Named("default")</code> qualifier applies the customizer to the <code>default</code> datasource. The <code>customize</code> method is the place for any MyBatis feature that belongs on the <code>Configuration</code>, such as type aliases, type handlers, interceptors, or additional mapper registrations. The <code>@MyBatisMapperScan</code> annotation registers the mapper interfaces of the <code>example.micronaut.mappers</code> package at compile time, see below. Python has no annotation processor, so the Python example uses MyBatis runtime scanning with <code>configuration.addMappers(&#8230;&#8203;)</code> instead.</p>
+</div>
+<div class="sect3">
+<h4 id="_compile_time_mapper_registration">Compile-time Mapper Registration</h4>
+<div class="paragraph">
+<p>MyBatis normally discovers mapper interfaces by scanning the classpath at runtime (<code>configuration.addMappers("com.example.mappers")</code>). Classpath scanning does not work in GraalVM native images. Instead, annotate any class with <a href="../api/io/micronaut/configuration/mybatis/MyBatisMapperScan.html">MyBatisMapperScan</a> and add the <code>micronaut-mybatis-processor</code> to your build:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">annotationProcessor(<span class="hljs-string">"io.micronaut.sql:micronaut-mybatis-processor")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;annotationProcessorPaths&gt;
+    &lt;path&gt;
+        &lt;groupId&gt;io.micronaut.sql&lt;/groupId&gt;
+        &lt;artifactId&gt;micronaut-mybatis-processor&lt;/artifactId&gt;
+    &lt;/path&gt;
+&lt;/annotationProcessorPaths&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+build = [
+    <span class="hljs-string">"io.micronaut.sql:micronaut-mybatis-processor"</span>,
+]</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For Kotlin, add the <code>micronaut-mybatis-processor</code> dependency in <a href="https://docs.micronaut.io/latest/guide/#kaptOrKsp">kapt or ksp scope</a>, and for Groovy add <code>micronaut-mybatis-processor</code> in compileOnly scope.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The processor generates a <a href="../api/io/micronaut/configuration/mybatis/MyBatisMapperScanRegistration.html">MyBatisMapperScanRegistration</a> for every annotated class. It registers the mapper interfaces found in the given packages (including sub-packages) and any listed in the <code>mappers</code> member with the <code>Configuration</code> of the datasource named by the <code>datasource</code> member (<code>default</code> if not set). Registrations are applied after all customizers, so type aliases and type handlers set up by a customizer are available when the mapper interfaces are parsed. The processor also generates the GraalVM metadata for the mappers, see <a href="#mybatis-graalvm">GraalVM native image</a>. The annotation does not need to be placed on a bean; the customizer above is just a convenient place.</p>
+</div>
+<div class="paragraph">
+<p>Only mapper interfaces compiled together with the annotated class are discovered by package. For mapper interfaces from other modules, list them explicitly:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@MyBatisMapperScan(value = "com.example.mappers", mappers = OtherModuleMapper.class, datasource = "orders")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If no mapper interface is found in a package at compile time, the processor emits a warning and the generated registration falls back to MyBatis runtime scanning for that package. That fallback works on the JVM but not in a native image.</p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_transactionfactory_customization">TransactionFactory Customization</h4>
 <div class="paragraph">
 <p>Micronaut also looks for a <a href="https://mybatis.org/mybatis-3/apidocs/org/apache/ibatis/transaction/TransactionFactory.html">TransactionFactory</a> bean qualified with the datasource name. If none is present, Micronaut falls back to <a href="https://mybatis.org/mybatis-3/apidocs/org/apache/ibatis/transaction/jdbc/JdbcTransactionFactory.html">JdbcTransactionFactory</a>.</p>
 </div>
+</div>
+
+<h2 id="mybatis-graalvm"><a class="anchor" href="#mybatis-graalvm"></a>9.3 GraalVM native image</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-sql/edit/7.3.x/src/main/docs/guide/mybatis/mybatis-graalvm.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>When you use <a href="../api/io/micronaut/configuration/mybatis/MyBatisMapperScan.html">MyBatisMapperScan</a> (see <a href="#mybatis-customizers">Configuring MyBatis customizers</a>), the <code>micronaut-mybatis-processor</code> generates the GraalVM metadata for your mappers:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>every mapper interface is registered as a dynamic proxy, because MyBatis implements mappers with <code>java.lang.reflect.Proxy</code></p>
+</li>
+<li>
+<p>the result and parameter types of the mapper methods (unwrapping arrays, collections, maps, <code>Optional</code> and reactive publishers) are registered for reflection, because MyBatis instantiates and populates them reflectively</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The metadata is generated through the same mechanism as <code>@ReflectiveAccess</code>, which requires <code>micronaut-graal</code> on the annotation processor path; the Micronaut Gradle and Maven plugins add it automatically for native image builds. It is ignored when running on the JVM, so no manual configuration is needed for the common case. Set <code>nativeImageMetadata = false</code> on the annotation if you prefer to manage the native image configuration yourself.</p>
+</div>
+<div class="paragraph">
+<p>Types that MyBatis reaches only through mapping metadata rather than method signatures still have to be registered manually, for example the <code>javaType</code> of a <code>@Result</code>, association or collection types of nested result maps, or custom type handlers and object factories. Annotate such classes with <code>@ReflectiveAccess</code>, or declare them in your own <code>reflect-config.json</code>.</p>
+</div>
+<div class="paragraph">
+<p>Mapper interfaces registered by MyBatis runtime package scanning (<code>configuration.addMappers(String)</code>) are not supported in native images.</p>
 </div>
 
 <h1 id="vertxmysqlclient"><a class="anchor" href="#vertxmysqlclient"></a>10 Configuring Reactive MySQL Client</h1>
