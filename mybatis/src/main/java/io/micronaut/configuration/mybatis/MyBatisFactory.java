@@ -15,11 +15,13 @@
  */
 package io.micronaut.configuration.mybatis;
 
+import io.micronaut.context.BeanContext;
 import io.micronaut.context.BeanLocator;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Parameter;
+import io.micronaut.core.io.service.SoftServiceLoader;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
@@ -31,6 +33,8 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.jspecify.annotations.Nullable;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Configures MyBatis beans from Micronaut {@link DataSource} beans.
@@ -64,7 +68,26 @@ public class MyBatisFactory {
         )) {
             customizer.customize(configuration);
         }
+        // Mapper registrations run after the customizers so that type aliases, type handlers etc.
+        // configured by customizers are available when the mapper interfaces are parsed.
+        for (MyBatisMapperScanRegistration registration : mapperScanRegistrations(beanLocator)) {
+            if (name.equals(registration.getDatasourceName())) {
+                registration.register(configuration);
+            }
+        }
         return configuration;
+    }
+
+    private static List<MyBatisMapperScanRegistration> mapperScanRegistrations(BeanLocator beanLocator) {
+        // The generated registrations live with the application classes, which may be loaded by a
+        // child of the class loader that loaded this factory, so use the context's class loader.
+        ClassLoader classLoader = beanLocator instanceof BeanContext beanContext
+            ? beanContext.getClassLoader()
+            : MyBatisFactory.class.getClassLoader();
+        List<MyBatisMapperScanRegistration> registrations = new ArrayList<>();
+        SoftServiceLoader.load(MyBatisMapperScanRegistration.class, classLoader)
+            .collectAll(registrations);
+        return registrations;
     }
 
     /**
